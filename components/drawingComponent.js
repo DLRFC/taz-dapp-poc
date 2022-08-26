@@ -6,6 +6,7 @@ const Drawing = () => {
   const [tool, setTool] = React.useState('pen');
   const [lines, setLines] = React.useState([]);
   const isDrawing = React.useRef(false);
+  const stageRef = React.useRef(null);
 
   const handleMouseDown = (e) => {
     isDrawing.current = true;
@@ -33,8 +34,13 @@ const Drawing = () => {
     isDrawing.current = false;
   };
 
+  const exportUri = () => {
+    const uri = stageRef.current.toDataURL();
+    console.log(uri);
+  }
+
   return (
-    <div className="border-black bg-gray-300 touch-none">
+    <div className="border-black bg-transparent touch-none">
       <div className="border-black max-w-[250px] border-2 touch-none">
       <Stage
         width="250"
@@ -46,6 +52,7 @@ const Drawing = () => {
         onMouseDown={handleMouseDown}
         onMousemove={handleMouseMove}
         onMouseup={handleMouseUp}
+        ref={stageRef}
 
       >
         <Layer>
@@ -76,6 +83,7 @@ const Drawing = () => {
         <option value="pen">Pen</option>
         <option value="eraser">Eraser</option>
       </select>
+      <button onClick={exportUri}>Export Uri</button>
     </div>
   );
 };

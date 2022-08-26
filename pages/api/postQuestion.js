@@ -10,8 +10,30 @@ export default function handler(req, res) {
     console.log("Backend received this input from the fontend: ", question);
     
     // send transaction to smart contract with question as argument
-    
-    // send response with any data back to the client afterwards (just an example:)
-    res.send(`Your question "${question}" has been handled by the backend`);
+
+
+     // send transaction with member as argument to smart contract
+
+  
+     const semaphoreAddress = "";
+     const semaphoreAbi=""
+     const provider = ""
+
+     const fullSolidityProof="req.fullProof" // from (req body)
+     const nullifierHash = "req.nullifierHash" // from (req body)
+     const signal = "parse32Bytes(req.signal)" // need to check the exact ethers parsing method
+     const externalNullifier = "req.externalNullifier" // (from req body)
+     const groupId = 42
+     
+
+     // const signer = new ethers.Wallet("").connect(provider)
+     // const semaphoreContract = new ethers.Contract(semaphoreAddress,semaphoreAbi,provider);
+ 
+     // const postQuesttion = await semaphoreContract.verifyProof(groupId,signal,nullifierHash,externalNullifier,fullSolidityProof);
+     // const finalTx = await addMemberTx.wait()
+ 
+     // return finalTx;
+
+
   }
   
