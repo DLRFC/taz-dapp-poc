@@ -8,7 +8,7 @@ const Drawing2 = dynamic(() => import('../components/drawingComponent2'), { ssr:
 const CanvasPage: FC = () => {
   return (
     <>
-        <Drawing />
+        <Drawing2 />
     </>
     
 
