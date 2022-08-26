@@ -34,8 +34,8 @@ const Drawing = () => {
   };
 
   return (
-    <div className="border-black bg-gray-300">
-      <div className="border-black max-w-[250px] border-2">
+    <div className="border-black bg-gray-300 touch-none">
+      <div className="border-black max-w-[250px] border-2 touch-none">
       <Stage
         width="250"
         height="250"
