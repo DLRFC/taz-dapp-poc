@@ -34,10 +34,11 @@ const Drawing = () => {
   };
 
   return (
-    <div>
+    <div className="border-black bg-gray-300">
+      <div className="border-black max-w-[250px] border-2">
       <Stage
-        width={window.innerWidth}
-        height={window.innerHeight}
+        width="250"
+        height="250"
         onTouchStart={handleMouseDown}
         onTouchEnd={handleMouseUp}
         onTouchmove={handleMouseMove}
@@ -65,6 +66,7 @@ const Drawing = () => {
           ))}
         </Layer>
       </Stage>
+      </div>
       <select
         value={tool}
         onChange={(e) => {
