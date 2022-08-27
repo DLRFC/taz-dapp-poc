@@ -8,10 +8,10 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ["JetBrains Mono"],
-        year: ["Poopins"]
+        year: ["Poppins"]
 
       },
-      color: {
+      colors: {
         brand: {
           beige: "#EAE1DA",
           beige2: "#F0EBE8",
