@@ -1,4 +1,4 @@
-//SPDX-License-Identifier: MIT
+//SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.13;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
@@ -13,6 +13,7 @@ contract TazToken is ERC721, ERC721URIStorage, Ownable {
 
     constructor() ERC721("TazToken", "TAZ") {}
 
+    // We're not using dynamically assigned URIs
     // function _baseURI() internal pure override returns (string memory) {
     //     return "base URI";
     // }
