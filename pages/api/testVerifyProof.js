@@ -31,12 +31,14 @@ export default async function handler(req, res) {
         console.log(bytes32Signal);
 
         const tx = await semaphoreContract.verifyProof(42,bytes32Signal,nullifierHash,externalNullifier,solidityProof,{ gasLimit: 1500000});
-        const res = await tx.wait();
+        const response = await tx.wait();
 
-        console.log(tx);
-        console.log(res);
+        // console.log(tx);
+        console.log(response);
 
-        res.status(201).json(res);
+        const result = "true";
+
+        res.status(201).json(response);
     }
     
 }

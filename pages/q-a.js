@@ -5,6 +5,8 @@ import { Group } from "@semaphore-protocol/group"
 const { generateProof } =require("@semaphore-protocol/proof")
 const { verifyProof } = require("@semaphore-protocol/proof")
 const { packToSolidityProof } = require("@semaphore-protocol/proof");
+const { Subgraph } = require("@semaphore-protocol/subgraph");
+
 import axios from 'axios';
 
   
@@ -43,8 +45,8 @@ export default function QandA() {
         //there 100 members
 
         //Generate Proof
-        const externalNullifier = 10;
-        const signal = "This is my Signal";
+        const externalNullifier = Math.round(Math.random() * 10000);
+        const signal = "10000";
 
         const fullProof = await generateProof(newIdentity,group,externalNullifier,signal, {
             zkeyFilePath: "https://www.trusted-setup-pse.org/semaphore/16/semaphore.zkey",
@@ -92,6 +94,19 @@ export default function QandA() {
         console.log(response.data);
 
     }
+
+    const handleSubgraphCall = async () => {
+        const subgraph = new Subgraph("goerli")
+        const group = new Group(16);
+
+        const {members} = await subgraph.getGroup("42",  { members: true });
+        group.addMembers(members);
+        const root = group.root;
+        console.log(subgraph);
+        console.log(root);
+
+
+    }
     
   
     
@@ -101,6 +116,8 @@ export default function QandA() {
 
                 <input className="bg-gray-300 p-10 mt-3 rounded-2xl" placeholder="Question or Feedback"/>
                 <button className="bg-blue-300 p-5 mt-3 rounded-2xl" onClick={handleAddMember}>Add Member</button>
+                <button className="bg-blue-300 p-5 mt-3 rounded-2xl" onClick={handleSubgraphCall}>Test Subgraph</button>
+
 
                 <button className="bg-blue-300 p-5 mt-3 rounded-2xl" onClick={handleGenerateProof}>Generate Proof</button>
                 
