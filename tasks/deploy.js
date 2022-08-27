@@ -1,6 +1,6 @@
 const { task } = require("hardhat/config");
 
-const SEMAPHORE_CONTRACT_GOERLI = "0x7a9aBb8C43916a9Ddcf9307e0664aC37A822a0Aa";
+const SEMAPHORE_CONTRACT_GOERLI = "0x99aAb52e60f40AAC0BFE53e003De847bBDbC9611";
 
 task("deployTazToken", "Deploy a TazToken contract")
     .addOptionalParam("logs", "Print the logs", true, types.boolean)

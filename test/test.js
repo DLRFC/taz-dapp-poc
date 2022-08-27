@@ -14,7 +14,11 @@ describe("TazMessage", function () {
     })
 
     it("Should add message", async () => {
-        
+        const tx = await tazMessageContract.addMessage(1, "What is the Name of the Dapp?");
+        receipt = await tx.wait();
+        // console.log("LOG | Message added. Receipt: ", receipt);
+        // console.log("LOG | Event emitted. Event: ", receipt.events[0].eventSignature);
+        expect(receipt.events[0].event).to.equal("MessageAdded");
     })
 });
 

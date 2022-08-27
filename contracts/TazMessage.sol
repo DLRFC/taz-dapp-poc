@@ -5,26 +5,31 @@ import "hardhat/console.sol";
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 
 interface ISemaphore {
-    function verifyProof(uint256 groupdId, bytes32 signal, uint256 nullifierHash, uint256 externalNullifier, uint256[8] calldata proof) external;
+    function verifyProof(uint256 groupId, bytes32 signal, uint256 nullifierHash, uint256 externalNullifier, uint256[8] calldata proof) external;
 }
 
 contract TazMessage is Ownable { 
 
     ISemaphore public semaContract;
 
-    event MessageAdded(uint256 _parentMessageId, uint256 _messageId, string _messageContent);
+    event MessageAdded(uint256 parentMessageId, uint256 messageId, string messageContent);
 
-    constructor(ISemaphore _semaContract) {
-        semaContract = _semaContract;
+    constructor(ISemaphore semaContractAddr) {
+        semaContract = semaContractAddr;
         console.log("Deploying a TazMessage contract with owner:", msg.sender);
     }
 
-    function addMessage(uint256 _messageId, string memory _messageContent) external {
-        emit MessageAdded(0, _messageId, _messageContent);
+    function addMessage(uint256 messageId, string memory messageContent) external {
+        emit MessageAdded(0, messageId, messageContent);
     }
 
-    function replyToMessage(uint256 _parentMessageId, uint256 _messageId, string memory _messageContent) external {
-        emit MessageAdded(_parentMessageId, _messageId, _messageContent);
+    function replyToMessage(uint256 parentMessageId, uint256 messageId, string memory messageContent) external {
+        emit MessageAdded(parentMessageId, messageId, messageContent);
+    }
+
+    // This method will emit an event of signature ProofVerified(uint256 indexed groupId, bytes32 signal) if the proof is verified.
+    function verifyProof(uint256 groupId, bytes32 signal, uint256 nullifierHash, uint256 externalNullifier, uint256[8] calldata proof) external {
+        semaContract.verifyProof(groupId, signal, nullifierHash, externalNullifier, proof);
     }
 
 }
