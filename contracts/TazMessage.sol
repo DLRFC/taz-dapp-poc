@@ -19,17 +19,39 @@ contract TazMessage is Ownable {
         console.log("Deploying a TazMessage contract with owner:", msg.sender);
     }
 
-    function addMessage(uint256 messageId, string memory messageContent) external {
+    function addMessage(
+        uint256 messageId, 
+        string memory messageContent, 
+        uint256 groupId, 
+        bytes32 signal, 
+        uint256 nullifierHash, 
+        uint256 externalNullifier, 
+        uint256[8] calldata proof) external {
+
+        // Verify proof with Sempahore contract
+        semaContract.verifyProof(groupId, signal, nullifierHash, externalNullifier, proof);
+
+        // Emit event with message if verification was successful 
         emit MessageAdded(0, messageId, messageContent);
     }
 
-    function replyToMessage(uint256 parentMessageId, uint256 messageId, string memory messageContent) external {
+    function replyToMessage(
+        uint256 parentMessageId, 
+        uint256 messageId, 
+        string memory messageContent,
+        uint256 groupId, 
+        bytes32 signal, 
+        uint256 nullifierHash, 
+        uint256 externalNullifier, 
+        uint256[8] calldata proof) external {
+
+        // Require a valid parentMessageId
+        require(parentMessageId > 0, "Invalid ID provided for parent message");
+        
+        // Verify proof with Sempahore contract
+        semaContract.verifyProof(groupId, signal, nullifierHash, externalNullifier, proof);
+
+        // Emit event with message if verification was successful 
         emit MessageAdded(parentMessageId, messageId, messageContent);
     }
-
-    // This method will emit an event of signature ProofVerified(uint256 indexed groupId, bytes32 signal) if the proof is verified.
-    function verifyProof(uint256 groupId, bytes32 signal, uint256 nullifierHash, uint256 externalNullifier, uint256[8] calldata proof) external {
-        semaContract.verifyProof(groupId, signal, nullifierHash, externalNullifier, proof);
-    }
-
 }
