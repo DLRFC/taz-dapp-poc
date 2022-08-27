@@ -61,7 +61,7 @@ export default function QandA() {
             solidityProof : solidityProof
         }
 
-        const response = await axios.post('/api/testVerifyProof', JSON.stringify(body));
+        const response = await axios.post('/api/testVerifyProof', body);
         console.log(response);
         console.log(response.data);
 
