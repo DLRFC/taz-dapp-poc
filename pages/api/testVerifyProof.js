@@ -20,21 +20,21 @@ export default async function handler(req, res) {
     } else if( req.method === 'POST'){
         //Need to read these data but they are giving back undefined
         const { externalNullifier , solidityProof , signal, nullifierHash } = req.body
-        console.log(semaphoreContract);
+        // console.log(semaphoreContract);
         console.log(solidityProof);
         console.log(externalNullifier);
         console.log(signal);
         console.log(nullifierHash);
 
         const bytes32Signal = ethers.utils.formatBytes32String(signal); 
+   
+        console.log(bytes32Signal);
 
-        const tx = await semaphoreContract.verifyProof(42,bytes32Signal,nullifierHash,externalNullifier,solidityProof);
+        const tx = await semaphoreContract.verifyProof(42,bytes32Signal,nullifierHash,externalNullifier,solidityProof,{ gasLimit: 1500000});
         const res = await tx.wait();
 
         console.log(tx);
         console.log(res);
-
-
 
         res.status(201).json(res);
     }
