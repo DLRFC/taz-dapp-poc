@@ -50,7 +50,7 @@ describe("TazMessage", function () {
         const newIdentityCommitment = newIdentity.generateCommitment();
         const group = new Group();
         group.addMember(newIdentityCommitment);
-        const groupId = 999; // TODO find out how to get real groupid
+        const groupId = 42; // fixed at 42
         console.log("About to generate proof");
         const fullProof = await generateProof(
             newIdentity,
