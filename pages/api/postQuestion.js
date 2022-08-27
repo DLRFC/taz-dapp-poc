@@ -8,7 +8,7 @@ dotenv.config({path: '../../.env.local'});
 
 
 export default function handler(req, res) {
-    iof(req.method === 'GET'){
+    if(req.method === 'GET'){
         res.status(200).json(comments)
     }
 
