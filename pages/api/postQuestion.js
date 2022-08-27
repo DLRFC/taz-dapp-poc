@@ -6,8 +6,11 @@ const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL);
 const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 
 export default function handler(req, res) {
-
+    const { question } = req.body;
+    console.log("Backend received this input from the fontend: ", question);
+    
     // send transaction to smart contract with question as argument
+
 
      // send transaction with member as argument to smart contract
 
@@ -30,6 +33,7 @@ export default function handler(req, res) {
      // const finalTx = await addMemberTx.wait()
  
      // return finalTx;
+
 
   }
   
