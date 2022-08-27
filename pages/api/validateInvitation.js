@@ -1,17 +1,20 @@
-import { ethers } from "ethers";
-import dotenv from "dotenv";
-
-dotenv.config({path: '../../.env.local'});
-const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL);
-const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
+import { invitationCodes } from "../../data/invitationCodes";
 
 export default function handler(req, res) {
-    const { invitation } = req.body;
-    console.log("Backend received this input from the fontend: ", invitation);
-    
-    // send transaction to smart contract with invitation string as argument
-    
-    // send response with any data back to the client afterwards. (just an example:)
-    res.send(`Your invitation code "${invitation}" has been validated by the backend`);
+  const { invitation } = req.body;
+
+  console.log(invitation);
+
+  if (req.method === "GET") {
+    res.status(400).json({
+      error: "Ensure that you are sending a POST request to this endpoint",
+    });
+  } else if (!invitation) {
+    res
+      .status(400)
+      .json({ error: "Request needs to have an invitation string" });
+  } else if (req.method === "POST") {
+    const isValidInvitation = invitationCodes.includes(invitation);
+    res.status(200).send(isValidInvitation);
   }
-  
+}
