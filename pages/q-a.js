@@ -5,6 +5,7 @@ import { Group } from "@semaphore-protocol/group"
 const { generateProof } =require("@semaphore-protocol/proof")
 const { verifyProof } = require("@semaphore-protocol/proof")
 const { packToSolidityProof } = require("@semaphore-protocol/proof");
+import axios from 'axios';
 
   
 export default function QandA() {
@@ -26,12 +27,59 @@ export default function QandA() {
         content:"I really Loved the Devcon Experience! Thank You for all the Team!"
     },
 ]
-    const handleGenerateProof = () => {
+    const handleGenerateProof = async () => {
         const newIdentity = new Identity()
+        const identityCommitment = newIdentity.generateCommitment()
+
+        console.log(identityCommitment);
+
         //Generate Group
+        const group = new Group();
+        group.addMember(identityCommitment);
+
+        //Subgraph - fetch from subgraph all the group members
+        // group.addMember([member1,member2,member3...member100]);
+
+        //there 100 members
+
         //Generate Proof
+        const externalNullifier = 10;
+        const signal = "This is my Signal";
+
+        const fullProof = await generateProof(newIdentity,group,externalNullifier,signal, {
+            zkeyFilePath: "https://www.trusted-setup-pse.org/semaphore/20/semaphore.zkey",
+            wasmFilePath: "https://www.trusted-setup-pse.org/semaphore/20/semaphore.wasm"
+        })
+
+        const { nullifierHash } = fullProof.publicSignals
+        const solidityProof = packToSolidityProof(fullProof.proof)
+
+        const body ={
+            externalNullifier:externalNullifier,
+            signal: signal,
+            nullifierHash : nullifierHash,
+            solidityProof : solidityProof
+        }
+
+        const response = await axios.post('/api/testVerifyProof', JSON.stringify(body));
+        console.log(response);
+        console.log(response.data);
+
+
         //Verify Proof Off Chain
-        //Verify Proof On Chain
+        // Fetch Verification Key
+        // const verificationKey = await fetch(
+        // 'https://www.trusted-setup-pse.org/semaphore/20/semaphore.json',
+        // ).then(function (res) {
+        // return res.json()
+        // })
+
+        // const res = await verifyProof(verificationKey, fullProof);
+        // console.log("Verification");
+        // console.log(res);
+        
+
+      
     }
     
   
