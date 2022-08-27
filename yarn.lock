@@ -2335,10 +2335,10 @@
     circomlibjs "0.0.8"
     snarkjs "^0.4.13"
 
-"@semaphore-protocol/subgraph@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@semaphore-protocol/subgraph/-/subgraph-0.1.1.tgz#4771097e76a586bcc34895dac03e7445c1b6009e"
-  integrity sha512-YVpxTNDDC1XBrRdXUt4uYlMNezOoMI7O6BgidbrJYcKaXDd4/jULWvtpIlBfkVAyT4SCu5oRjpO7xl9KA/UKPA==
+"@semaphore-protocol/subgraph@0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@semaphore-protocol/subgraph/-/subgraph-0.2.0.tgz#ed2576d40cd48d1a4b0a09b7e647c5b2da8a1be7"
+  integrity sha512-bhwnjQ0QJqDtTE6z4VtGigJiG9PxF6aZs7MXtJGx6P0h7KnyGzqjD/142xj8X41OeB5oob/KUdoLgmirXxMaMg==
   dependencies:
     axios "^0.27.2"
 

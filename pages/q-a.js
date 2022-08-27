@@ -5,7 +5,7 @@ import { Group } from "@semaphore-protocol/group"
 const { generateProof } =require("@semaphore-protocol/proof")
 const { verifyProof } = require("@semaphore-protocol/proof")
 const { packToSolidityProof } = require("@semaphore-protocol/proof");
-import { Subgraph } from "@semaphore-protocol/subgraph"
+const { Subgraph } = require("@semaphore-protocol/subgraph");
 
 import axios from 'axios';
 
@@ -97,13 +97,14 @@ export default function QandA() {
 
     const handleSubgraphCall = async () => {
         const subgraph = new Subgraph("goerli")
-        const groups = new Group(16);
+        const group = new Group(16);
 
-
-        // const { members } = subgraph.getGroup("42", { members: true})
-        const { verifiedProofs } = await subgraph.getGroup("7539", { verifiedProofs: true })
+        const {members} = await subgraph.getGroup("42",  { members: true });
+        group.addMembers(members);
+        const root = group.root;
         console.log(subgraph);
-        // console.log(verifiedProofs);
+        console.log(root);
+
 
     }
     
