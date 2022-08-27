@@ -18,7 +18,6 @@ export default async function handler(req, res) {
         res.status(200).json("Hello World");
 
     } else if( req.method === 'POST'){
-        //Need to read these data but they are giving back undefined
         const { identityCommitment } = req.body
         console.log(semaphoreContract);
         console.log(identityCommitment);
