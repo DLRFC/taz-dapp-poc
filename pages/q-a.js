@@ -28,13 +28,13 @@ export default function QandA() {
     },
 ]
     const handleGenerateProof = async () => {
-        const newIdentity = new Identity()
+        const newIdentity = new Identity('secret-message')
         const identityCommitment = newIdentity.generateCommitment()
 
         console.log(identityCommitment);
 
         //Generate Group
-        const group = new Group();
+        const group = new Group(16);
         group.addMember(identityCommitment);
 
         //Subgraph - fetch from subgraph all the group members
@@ -47,8 +47,8 @@ export default function QandA() {
         const signal = "This is my Signal";
 
         const fullProof = await generateProof(newIdentity,group,externalNullifier,signal, {
-            zkeyFilePath: "https://www.trusted-setup-pse.org/semaphore/20/semaphore.zkey",
-            wasmFilePath: "https://www.trusted-setup-pse.org/semaphore/20/semaphore.wasm"
+            zkeyFilePath: "https://www.trusted-setup-pse.org/semaphore/16/semaphore.zkey",
+            wasmFilePath: "https://www.trusted-setup-pse.org/semaphore/16/semaphore.wasm"
         })
 
         const { nullifierHash } = fullProof.publicSignals
@@ -61,7 +61,7 @@ export default function QandA() {
             solidityProof : solidityProof
         }
 
-        const response = await axios.post('/api/testVerifyProof', JSON.stringify(body));
+        const response = await axios.post('/api/testVerifyProof', body);
         console.log(response);
         console.log(response.data);
 
@@ -81,6 +81,17 @@ export default function QandA() {
 
       
     }
+
+    const handleAddMember = async () => {
+        const identity = new Identity('secret-message');
+        const identityCommitment = (identity.generateCommitment()).toString();
+        
+        const response = await axios.post('./api/addMember', {identityCommitment});
+
+        console.log(identityCommitment);
+        console.log(response.data);
+
+    }
     
   
     
@@ -89,7 +100,10 @@ export default function QandA() {
                 <h1 className="font-bold text-2xl">Question and Answer</h1>
 
                 <input className="bg-gray-300 p-10 mt-3 rounded-2xl" placeholder="Question or Feedback"/>
+                <button className="bg-blue-300 p-5 mt-3 rounded-2xl" onClick={handleAddMember}>Add Member</button>
+
                 <button className="bg-blue-300 p-5 mt-3 rounded-2xl" onClick={handleGenerateProof}>Generate Proof</button>
+                
                 <button className="bg-blue-300 p-5 mt-3 rounded-2xl">Submit Question</button>
 
                 
