@@ -23,12 +23,12 @@ export default async function handler(req, res) {
         console.log(identityCommitment);
 
         const tx = await semaphoreContract.addMember(42,identityCommitment);
-        const res = await tx.wait();
+        const response = await tx.wait();
 
         console.log(tx);
-        console.log(res);
+        console.log(response);
 
-        res.status(201).json(res);
+        res.status(201).json(response);
     }
     
 }
