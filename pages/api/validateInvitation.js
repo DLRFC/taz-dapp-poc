@@ -25,10 +25,11 @@ export default async function handler(req, res) {
       );
 
       const match = dbs.data.filter((code) => code.data.code === invitation);
+      console.log(match[0].data);
 
       let isValid;
 
-      if (match[0]) {
+      if (match[0] && !match[0].data.isUsed) {
         isValid = true;
 
         client
