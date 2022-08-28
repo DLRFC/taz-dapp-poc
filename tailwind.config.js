@@ -21,6 +21,9 @@ module.exports = {
           black:"#1E1E1E",
           yellow: "#EFAD5F"
         }
+      },
+      boxShadow: {
+        'question': '4px 4px 25px rgba(0, 0, 0, 0.25)',
       }
     },
   },
