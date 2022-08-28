@@ -2,15 +2,15 @@ import { useState } from "react";
 import axios from "axios";
 
 const ValidateInvitation = () => {
-  const [invitation, setInvitation] = useState("test-code-3");
+  const [invitation, setInvitation] = useState("test-code-15");
   const [response, setResponse] = useState("");
 
   const validate = async () => {
     const response = await axios.post("/api/validateInvitation", {
       invitation,
     });
-    console.log(response.data);
-    setResponse(response.data);
+    console.log("Is code valid and not used yet? ", response.data.isValid);
+    setResponse(response.data.isValid);
   };
 
   return (
