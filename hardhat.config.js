@@ -9,6 +9,10 @@ module.exports = {
   solidity: "0.8.13",
   networks: {
     hardhat: {
+      forking: {
+        url: process.env.GOERLI_URL,
+        blockNumber: 7486741
+      }
     },
     goerli: {
       url: process.env.GOERLI_URL,
