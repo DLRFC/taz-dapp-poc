@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { Identity } from '@semaphore-protocol/identity'
 // import { Group } from '@semaphore-protocol/group'
 
-import QuestionForm from '../components/QuestionForm'
 import ValidateInvitation from '../components/ValidateInvitation'
 
 // import { ethers } from 'ethers'
@@ -62,8 +61,6 @@ export default function Home() {
         Generate Id
         {testIdentity}
       </button>
-
-      <QuestionForm />
       <ValidateInvitation />
     </div>
   )

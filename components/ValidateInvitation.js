@@ -6,7 +6,7 @@ const ValidateInvitation = () => {
   const [response, setResponse] = useState('')
 
   const validate = async () => {
-    // setInvitation('test-code-15')
+    setInvitation('test-code-15')
     const response = await axios.post('/api/validateInvitation', {
       invitation,
     })
