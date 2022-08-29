@@ -94,7 +94,7 @@ const Drawing = () => {
           ref={stageRef}
         >
           <Layer>
-            <Text text="Just start drawing" x={5} y={30} />
+            {/* <Text text="Just start drawing" x={5} y={30} /> */}
             {lines.map((line, i) => (
               <Line
                 key={i}
