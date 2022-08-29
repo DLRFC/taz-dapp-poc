@@ -1,9 +1,9 @@
-import AskQuestion from '../components/AskQuestion'
+import QuestionsBoard from '../components/questionsBoard'
 
 export default function AskQuestionPage() {
   return (
     <div>
-      <AskQuestion />
+      <QuestionsBoard />
     </div>
   )
 }

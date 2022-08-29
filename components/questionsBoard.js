@@ -1,4 +1,5 @@
 import Header from './Header'
+import Link from 'next/link'
 
 // Page 4 Page List of all Questions
 const QuestionsBoard = () => {
@@ -34,14 +35,17 @@ const QuestionsBoard = () => {
             <p>+</p>
           </button>
         </div>
-        <div className="border-b-1 flex w-full flex-row items-center border-gray-700 py-4 px-5">
-          <p className="w-[90%]">
-            How lorem ipsum lorem ipsu lorem ipsu lorem ipsu How lorem ipsum
-            lorem ipsu lorem ipsu lorem ipsu How lorem ipsum lorem ipsu lorem
-            ipsu lorem ipsu
-          </p>
-          <p className="-mr-3">X</p>
-        </div>
+        <Link href="/answers-board-page">
+          <div className="border-b-1 flex w-full flex-row items-center border-gray-700 py-4 px-5">
+            <p className="w-[90%]">
+              How lorem ipsum lorem ipsu lorem ipsu lorem ipsu How lorem ipsum
+              lorem ipsu lorem ipsu lorem ipsu How lorem ipsum lorem ipsu lorem
+              ipsu lorem ipsu
+            </p>
+
+            <p className="-mr-3">X</p>
+          </div>
+        </Link>
         <div className="border-b-1 flex w-full flex-row items-center py-3 px-6">
           <p className="w-[90%]">
             How lorem ipsum lorem ipsu lorem ipsu lorem ipsu How lorem ipsum
