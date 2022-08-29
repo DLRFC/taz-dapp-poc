@@ -1,4 +1,5 @@
 import Header from './Header'
+import Link from 'next/link'
 
 // 3. Ask Question Page
 const AskQuestion = () => {
@@ -51,6 +52,9 @@ const AskQuestion = () => {
         <p className="ml-10">X</p>
         <div className="bg-black absolute w-full h-[20%] bottom-[50px] left-0 -z-10"></div>
       </div>
+      <Link href="questions-page">
+        <button>Go to Questions Board Page(Test)</button>
+      </Link>
     </div>
   )
 }

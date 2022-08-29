@@ -1,7 +1,8 @@
 import Header from './Header'
+import Link from 'next/link'
 
 // Page 3 will Generate Identity and Join Group
-const GenerateIdentity = () => {
+export const GenerateIdentity = () => {
   return (
     <div className="p-4 font-sans bg-brand-beige">
       <Header />
@@ -39,9 +40,8 @@ const GenerateIdentity = () => {
           </button>
         </div>
       </div>
+      <Link href="/ask-question-page">Go to Ask Question Page(Test)</Link>
       <div className="absolute bottom-[50px] left-0 -z-10 h-[20%] w-full bg-black"></div>
     </div>
   )
 }
-
-export default GenerateIdentity

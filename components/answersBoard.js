@@ -30,7 +30,7 @@ const AnswerBoard = () => {
         <div className="border-b-1 flex items-center justify-between border-gray-700 p-3">
           <p className="text-3xl font-bold">Q&A</p>
           <button className="flex gap-2 border-2 border-black p-2 shadow-[-3px_3px_0px_0px_rgba(0,0,0)]">
-            <p>Ask a question</p>
+            <p>Answer Question</p>
             <p>+</p>
           </button>
         </div>
