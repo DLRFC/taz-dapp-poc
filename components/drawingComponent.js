@@ -1,14 +1,30 @@
 import React from "react";
+import { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { Stage, Layer, Line, Text } from "react-konva";
 import { Random } from "roughjs/bin/math";
 
-const Drawing = () => {
+const Drawing = (props) => {
   const [tool, setTool] = React.useState("pen");
   const [lines, setLines] = React.useState([]);
   const [color, setColor] = React.useState([]);
   const isDrawing = React.useRef(false);
   const stageRef = React.useRef(null);
+  const [uriStorage, setUriStorage] = React.useState([
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+  ]);
+
+  // useEffect(() => {
+  //   setUriStorage(uriStorage);
+  // },[uriStorage])
 
   const handleMouseDown = (e) => {
     isDrawing.current = true;
@@ -39,27 +55,59 @@ const Drawing = () => {
   const handleMouseUp = () => {
     isDrawing.current = false;
     //store color of last drawn lines
-    
-    console.log(lines)
+
+    console.log(lines);
   };
 
   const newColor = () => {
-    const newColor = "rgb(" + (Math.random() * 255) + "," + (Math.random() * 255) + "," + (Math.random() * 255) + ")";
+    const newColor =
+      "rgb(" +
+      Math.random() * 255 +
+      "," +
+      Math.random() * 255 +
+      "," +
+      Math.random() * 255 +
+      ")";
     setColor(newColor);
-  }
+  };
 
   const handleUndo = () => {
-      lines.pop();
-      setLines(lines.concat());
+    lines.pop();
+    setLines(lines.concat());
   };
 
   const exportUri = () => {
     const uri = stageRef.current.toDataURL();
+    setUriStorage([...uriStorage, uri.toString()]);
+
+    setUriStorage((uriStorage) => {
+      uriStorage[props.selectedImage] = [
+        ...uriStorage[props.selectedImage],
+        uri.toString(),
+      ];
+      return uriStorage;
+    });
+
     console.log(uri);
+    console.log("uriStorage:", uriStorage);
+  };
+
+  let uriStorageRender = () => {
+    if (uriStorage[props.selectedImage]) {
+      let uriStorageRender = uriStorage[props.selectedImage].map(
+        (item, index) => (
+          <div className="container" key={index}>
+            <img src={item} alt="" className="image"></img>
+          </div>
+        )
+      );
+      return uriStorageRender;
+    }
   };
 
   return (
     <div className="border-black bg-transparent touch-none">
+      <h1>for testing, image #{props.selectedImage} selected</h1>
       <div className="border-black max-w-[250px] border-2 touch-none">
         <Stage
           width={250}
@@ -73,12 +121,12 @@ const Drawing = () => {
           ref={stageRef}
         >
           <Layer>
-            <Text text="Just start drawing" x={5} y={30} />
+            {/* <Text text="Just start drawing" x={5} y={30} /> */}
             {lines.map((line, i) => (
               <Line
                 key={i}
                 points={line.points}
-                stroke= {line.color}
+                stroke={line.color}
                 strokeWidth={5}
                 tension={0.5}
                 lineCap="round"
@@ -103,6 +151,9 @@ const Drawing = () => {
       <button onClick={newColor}>New Color </button>
       <button onClick={handleUndo}>Undo</button>
       <button onClick={exportUri}>Export Uri</button>
+
+      <div className="uriStorageRendering">{uriStorageRender()}</div>
+      {/* <img src={uriStorage[1]} alt=''></img> */}
     </div>
   );
 };
