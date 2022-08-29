@@ -5,7 +5,7 @@ async function main() {
 console.log("Deploy started");
 
 const TazMessage = await hre.ethers.getContractFactory("TazMessage");
-const taz = await TazMessage.deploy(TEST_SEMAPHORE_CONTRACT_GOERLI);
+const taz = await TazMessage.deploy(SEMAPHORE_CONTRACT_GOERLI);
 
 await taz.deployed();
 
