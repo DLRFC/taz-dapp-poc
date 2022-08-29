@@ -1,35 +1,35 @@
-import { useState } from "react";
-import axios from "axios";
+import { useState } from 'react'
+import axios from 'axios'
 
 const QuestionForm = () => {
-  const [question, setQuestion] = useState("");
-  const [response, setResponse] = useState("");
+  const [question, setQuestion] = useState('')
+  const [response, setResponse] = useState('')
 
   const postQuestion = async () => {
-    const var2 = "This is a test Var2";
-    const var3 = 100;
-    const response = await axios.post("/api/postQuestion", {
+    const var2 = 'This is a test Var2'
+    const var3 = 100
+    const response = await axios.post('/api/postQuestion', {
       question,
       var2,
       var3,
-    });
+    })
 
-    console.log(response.data);
-    console.log(response);
+    console.log(response.data)
+    console.log(response)
 
     // setResponse(response.data);
-  };
+  }
 
   const postQuestion2 = async () => {
-    const var2 = "This is a test Var2";
-    const var3 = 100;
-    const response2 = await axios.post("/api/postQuestion", {
+    const var2 = 'This is a test Var2'
+    const var3 = 100
+    const response2 = await axios.post('/api/postQuestion', {
       question,
       var2,
       var3,
-    });
-    console.log(response2.data);
-  };
+    })
+    console.log(response2.data)
+  }
 
   return (
     <div>
@@ -55,9 +55,9 @@ const QuestionForm = () => {
           Submit2
         </button>
       </div>
-      {response ? <p className="bg-gray-100 p-2 mt-2">{response}</p> : ""}
+      {response ? <p className="bg-gray-100 p-2 mt-2">{response}</p> : ''}
     </div>
-  );
-};
+  )
+}
 
-export default QuestionForm;
+export default QuestionForm
