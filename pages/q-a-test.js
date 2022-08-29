@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+// import React, { useState } from 'react'
 import { Identity } from '@semaphore-protocol/identity'
 import { Group } from '@semaphore-protocol/group'
 
 import axios from 'axios'
 const { generateProof } = require('@semaphore-protocol/proof')
-const { verifyProof } = require('@semaphore-protocol/proof')
+// const { verifyProof } = require('@semaphore-protocol/proof')
 const { packToSolidityProof } = require('@semaphore-protocol/proof')
 const { Subgraph } = require('@semaphore-protocol/subgraph')
 

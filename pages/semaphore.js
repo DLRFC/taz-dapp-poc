@@ -99,6 +99,7 @@ export default function Home() {
       <p>{nullifier.toString()}</p>
       <h5>Identity Commitment</h5>
       <p>{identityCommitment.toString()}</p>
+      <p>{identity}</p>
     </div>
   )
 }

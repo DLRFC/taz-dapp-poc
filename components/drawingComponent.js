@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
-import { createRoot } from 'react-dom/client'
-import { Stage, Layer, Line, Text } from 'react-konva'
-import { Random } from 'roughjs/bin/math'
+import React from 'react'
+// import { createRoot } from 'react-dom/client'
+import { Stage, Layer, Line } from 'react-konva'
+// import { Random } from 'roughjs/bin/math'
 
 const Drawing = (props) => {
   const [tool, setTool] = React.useState('pen')

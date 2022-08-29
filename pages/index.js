@@ -1,48 +1,48 @@
 import { useState } from 'react'
-import dynamic from 'next/dynamic'
+// import dynamic from 'next/dynamic'
 import { Identity } from '@semaphore-protocol/identity'
-import { Group } from '@semaphore-protocol/group'
+// import { Group } from '@semaphore-protocol/group'
 
 import QuestionForm from '../components/QuestionForm'
 import ValidateInvitation from '../components/ValidateInvitation'
 
-import { ethers } from 'ethers'
+// import { ethers } from 'ethers'
 
-const QrReader = dynamic(() => import('react-qr-reader'), {
-  ssr: false,
-})
-const { generateProof } = require('@semaphore-protocol/proof')
-const { verifyProof } = require('@semaphore-protocol/proof')
-const { packToSolidityProof } = require('@semaphore-protocol/proof')
+// const QrReader = dynamic(() => import('react-qr-reader'), {
+//   ssr: false,
+// })
+// const { generateProof } = require('@semaphore-protocol/proof')
+// const { verifyProof } = require('@semaphore-protocol/proof')
+// const { packToSolidityProof } = require('@semaphore-protocol/proof')
 
 export default function Home() {
-  const [selected, setSelected] = useState('environment')
-  const [startScan, setStartScan] = useState(false)
-  const [loadingScan, setLoadingScan] = useState(false)
-  const [data, setData] = useState('')
+  // const [selected, setSelected] = useState('environment')
+  // const [startScan, setStartScan] = useState(false)
+  // const [loadingScan, setLoadingScan] = useState(false)
+  // const [data, setData] = useState('')
   const [testIdentity, setTestIdentity] = useState('')
-  const [trapdoor, setTrapdoor] = useState('')
-  const [nullifier, setNullifier] = useState('')
-  const [identityCommitment, setIdentityCommitment] = useState('')
+  // const [trapdoor, setTrapdoor] = useState('')
+  // const [nullifier, setNullifier] = useState('')
+  // const [identityCommitment, setIdentityCommitment] = useState('')
 
-  const handleScan = async (scanData) => {
-    setLoadingScan(true)
-    console.log(`loaded data data`, scanData)
-    if (scanData && scanData !== '') {
-      console.log(`loaded >>>`, scanData)
-      setData(scanData)
-      setStartScan(false)
-      setLoadingScan(false)
-      // setPrecScan(scanData);
-    }
-  }
-  const handleError = (err) => {
-    console.error(err)
-  }
+  // const handleScan = async (scanData) => {
+  //   setLoadingScan(true)
+  //   console.log(`loaded data data`, scanData)
+  //   if (scanData && scanData !== '') {
+  //     console.log(`loaded >>>`, scanData)
+  //     setData(scanData)
+  //     setStartScan(false)
+  //     setLoadingScan(false)
+  //     // setPrecScan(scanData);
+  //   }
+  // }
+  // const handleError = (err) => {
+  //   console.error(err)
+  // }
 
   const handleGenerateId = () => {
     const newIdentity = new Identity()
-    const group = new Group()
+    // const group = new Group()
 
     const newIdentityCommitment = newIdentity.generateCommitment()
 
@@ -60,6 +60,7 @@ export default function Home() {
         onClick={handleGenerateId}
       >
         Generate Id
+        {testIdentity}
       </button>
 
       <QuestionForm />

@@ -6,7 +6,8 @@ const Drawing = dynamic(() => import('../components/drawingComponent'), {
 })
 
 export default function artBoardPage() {
-  const [selectedImage, setSelectedImage] = useState()
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [selectedImage, setSelectedImage] = useState('')
 
   const onImageClick = (e) => {
     console.log('clicked pic' + e.currentTarget.id)

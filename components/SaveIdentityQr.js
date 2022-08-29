@@ -28,13 +28,13 @@ const SaveIdentityQr = () => {
       <div className="flex flex-col items-center rounded-md px-3">
         <div className="z-10 mt-3 h-[586px] w-full py-3 px-4">
           <p className="px-3 text-xl font-bold">
-            You're in. Save this QR code to sign in anonymously to other apps.
+            Youre in. Save this QR code to sign in anonymously to other apps.
           </p>
           <p className="mb-3 py-5 px-3 text-sm text-[#513E2E]">
             The code contains a Semaphore ID learn more...{' '}
             <a className="underline">here</a>
           </p>
-          <img href="" />
+          <img href="" alt="qr-code" />
           <button className="mb-8 w-full rounded-lg border-2 border-brand-gray2 bg-brand-beige2 p-2 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]">
             Save to Camera Roll
           </button>

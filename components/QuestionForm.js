@@ -8,15 +8,15 @@ const QuestionForm = () => {
   const postQuestion = async () => {
     const var2 = 'This is a test Var2'
     const var3 = 100
-    const response = await axios.post('/api/postQuestion', {
+    const response2 = await axios.post('/api/postQuestion', {
       question,
       var2,
       var3,
     })
 
-    console.log(response.data)
-    console.log(response)
+    console.log(response2.data)
 
+    setResponse(response2.data)
     // setResponse(response.data);
   }
 
