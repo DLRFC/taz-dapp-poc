@@ -2,6 +2,8 @@ import Header from './Header'
 import Link from 'next/link'
 
 // Page 4 Page List of all Questions
+// Fetch Questions from Events
+// Map them on this component
 const QuestionsBoard = () => {
   return (
     <div className="p-4 font-sans bg-brand-beige">

@@ -1,8 +1,31 @@
-import Header from './Header'
 import Link from 'next/link'
+import { useState } from 'react'
+import axios from 'axios'
+import { Identity } from '@semaphore-protocol/identity'
+import Header from './Header'
+import QRCode from 'qrcode'
 
 // Page 3 will Generate Identity and Join Group
 export const GenerateIdentity = () => {
+  const [imageUrl, setImageUrl] = useState('')
+  const handleJoinButton = async () => {
+    const identity = new Identity()
+    const identityCommitment = identity.generateCommitment().toString()
+    const identityKey = identity.toString()
+    console.log(identityCommitment)
+
+    const response = await axios.post('./api/addMember', { identityCommitment })
+
+    try {
+      const responseQR = await QRCode.toDataURL(identityKey)
+      setImageUrl(responseQR)
+    } catch (error) {
+      console.log(error)
+    }
+
+    console.log(response.data)
+  }
+
   return (
     <div className="p-4 font-sans bg-brand-beige">
       <Header />
@@ -35,12 +58,31 @@ export const GenerateIdentity = () => {
             This is a Semaphore group...
           </p>
 
-          <button className="mb-8 w-full rounded-lg border-2 border-brand-gray2 bg-brand-beige2 p-2 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]">
-            Join
-          </button>
+          {imageUrl ? (
+            <a
+              href={imageUrl}
+              download="semaphore.jpg"
+              className="flex items-center justify-center flex-col"
+            >
+              <img src={imageUrl} alt="img" className="mb-7 " />
+              <p className="text-xl font-bold mb-12"> Click Here to Download</p>
+              <Link href="/ask-question-page">
+                <button className="p-3 text-2xl font-bold bg-brand-beige2 border-brand-gray2 border-2 rounded-xl">
+                  Go to Ask Question Page(Test)
+                </button>
+              </Link>
+            </a>
+          ) : (
+            <button
+              className="mb-9 w-full rounded-lg border-2 border-brand-gray2 bg-brand-beige2 p-2 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]"
+              onClick={handleJoinButton}
+            >
+              Join
+            </button>
+          )}
         </div>
       </div>
-      <Link href="/ask-question-page">Go to Ask Question Page(Test)</Link>
+      <Link href="/ask-question-page">Go to Ask Question Page</Link>
       <div className="absolute bottom-[50px] left-0 -z-10 h-[20%] w-full bg-black"></div>
     </div>
   )

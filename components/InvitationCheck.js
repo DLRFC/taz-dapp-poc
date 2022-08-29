@@ -9,6 +9,7 @@ export const InvitationCheck = () => {
   const [response, setResponse] = useState('')
 
   const validate = async () => {
+    console.log(invitation)
     const apiResponse = await axios.post('/api/validateInvitation', {
       invitation,
     })
@@ -52,7 +53,10 @@ export const InvitationCheck = () => {
             Paste Invitation Code
           </p>
 
-          <input className="border-2 border-black w-full mb-3 py-2 rounded-lg "></input>
+          <input
+            className="border-2 border-black w-full mb-3 py-2 rounded-lg"
+            onChange={(e) => setInvitation(e.target.value)}
+          ></input>
           <button
             className="bg-gray-300 w-full p-2 rounded-lg border-2 border-brand-gray2 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]"
             onClick={validate}
@@ -61,11 +65,12 @@ export const InvitationCheck = () => {
           </button>
 
           {response ? (
-            <Link href="/generate-id-page">
-              <p className="bg-gray-100 p-2 mt-2">{response}</p>
-
-              <button> Next Page</button>
-            </Link>
+            <div>
+              <Link href="/generate-id-page">
+                <p className="bg-gray-100 p-2 mt-2">{response}</p>
+                <button> Next Page</button>
+              </Link>
+            </div>
           ) : null}
         </div>
         <Link href="/generate-id-page">

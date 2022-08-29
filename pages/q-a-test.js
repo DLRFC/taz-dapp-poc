@@ -4,7 +4,7 @@ import { Group } from '@semaphore-protocol/group'
 
 import axios from 'axios'
 const { generateProof } = require('@semaphore-protocol/proof')
-// const { verifyProof } = require('@semaphore-protocol/proof')
+const { verifyProof } = require('@semaphore-protocol/proof')
 const { packToSolidityProof } = require('@semaphore-protocol/proof')
 const { Subgraph } = require('@semaphore-protocol/subgraph')
 
@@ -29,14 +29,18 @@ export default function QandA() {
     },
   ]
   const handleGenerateProof = async () => {
-    const newIdentity = new Identity('secret-message')
+    const newIdentity = new Identity('secret-message3')
     const identityCommitment = newIdentity.generateCommitment()
 
-    console.log(identityCommitment)
+    console.log(identityCommitment.toString())
 
     // Generate Group
-    const group = new Group(16)
-    group.addMember(identityCommitment)
+    // const group = new Group(16)
+    // const subgraph = new Subgraph('goerli')
+
+    // const { members } = await subgraph.getGroup('1080', { members: true })
+
+    // group.addMember(members)
 
     // Subgraph - fetch from subgraph all the group members
     // group.addMember([member1,member2,member3...member100]);
@@ -44,35 +48,35 @@ export default function QandA() {
     // there 100 members
 
     // Generate Proof
-    const externalNullifier = Math.round(Math.random() * 10000)
-    const signal = '10000'
+    // const externalNullifier = Math.round(Math.random() * 10000)
+    // const signal = '10000'
 
-    const fullProof = await generateProof(
-      newIdentity,
-      group,
-      externalNullifier,
-      signal,
-      {
-        zkeyFilePath:
-          'https://www.trusted-setup-pse.org/semaphore/16/semaphore.zkey',
-        wasmFilePath:
-          'https://www.trusted-setup-pse.org/semaphore/16/semaphore.wasm',
-      },
-    )
+    // const fullProof = await generateProof(
+    //   newIdentity,
+    //   group,
+    //   externalNullifier,
+    //   signal,
+    //   {
+    //     zkeyFilePath:
+    //       'https://www.trusted-setup-pse.org/semaphore/16/semaphore.zkey',
+    //     wasmFilePath:
+    //       'https://www.trusted-setup-pse.org/semaphore/16/semaphore.wasm',
+    //   },
+    // )
 
-    const { nullifierHash } = fullProof.publicSignals
-    const solidityProof = packToSolidityProof(fullProof.proof)
+    // const { nullifierHash } = fullProof.publicSignals
+    // const solidityProof = packToSolidityProof(fullProof.proof)
 
-    const body = {
-      externalNullifier,
-      signal,
-      nullifierHash,
-      solidityProof,
-    }
+    // const body = {
+    //   externalNullifier,
+    //   signal,
+    //   nullifierHash,
+    //   solidityProof,
+    // }
 
-    const response = await axios.post('/api/testVerifyProof', body)
-    console.log(response)
-    console.log(response.data)
+    // const response = await axios.post('/api/testVerifyProof', body)
+    // console.log(response)
+    // console.log(response.data)
 
     // Verify Proof Off Chain
     // Fetch Verification Key
@@ -101,7 +105,7 @@ export default function QandA() {
     const subgraph = new Subgraph('goerli')
     const group = new Group(16)
 
-    const { members } = await subgraph.getGroup('42', { members: true })
+    const { members } = await subgraph.getGroup('1080', { members: true })
     group.addMembers(members)
     const root = group.root
     console.log(subgraph)
