@@ -1,15 +1,14 @@
-import React from "react";
-import { useEffect } from "react";
-import { createRoot } from "react-dom/client";
-import { Stage, Layer, Line, Text } from "react-konva";
-import { Random } from "roughjs/bin/math";
+import React from 'react'
+// import { createRoot } from 'react-dom/client'
+import { Stage, Layer, Line } from 'react-konva'
+// import { Random } from 'roughjs/bin/math'
 
 const Drawing = (props) => {
-  const [tool, setTool] = React.useState("pen");
-  const [lines, setLines] = React.useState([]);
-  const [color, setColor] = React.useState([]);
-  const isDrawing = React.useRef(false);
-  const stageRef = React.useRef(null);
+  const [tool, setTool] = React.useState('pen')
+  const [lines, setLines] = React.useState([])
+  const [color, setColor] = React.useState([])
+  const isDrawing = React.useRef(false)
+  const stageRef = React.useRef(null)
   const [uriStorage, setUriStorage] = React.useState([
     [],
     [],
@@ -20,90 +19,90 @@ const Drawing = (props) => {
     [],
     [],
     [],
-  ]);
+  ])
 
   // useEffect(() => {
   //   setUriStorage(uriStorage);
   // },[uriStorage])
 
   const handleMouseDown = (e) => {
-    isDrawing.current = true;
-    const pos = e.target.getStage().getPointerPosition();
-    setLines([...lines, { tool, points: [pos.x, pos.y] }]);
-  };
+    isDrawing.current = true
+    const pos = e.target.getStage().getPointerPosition()
+    setLines([...lines, { tool, points: [pos.x, pos.y] }])
+  }
 
   const handleMouseMove = (e) => {
     // no drawing - skipping
     if (!isDrawing.current) {
-      return;
+      return
     }
-    const stage = e.target.getStage();
-    const point = stage.getPointerPosition();
-    let lastLine = lines[lines.length - 1];
+    const stage = e.target.getStage()
+    const point = stage.getPointerPosition()
+    const lastLine = lines[lines.length - 1]
 
-    //set color
-    lines[lines.length - 1].color = color;
+    // set color
+    lines[lines.length - 1].color = color
 
     // add point
-    lastLine.points = lastLine.points.concat([point.x, point.y]);
+    lastLine.points = lastLine.points.concat([point.x, point.y])
 
     // replace last
-    lines.splice(lines.length - 1, 1, lastLine);
-    setLines(lines.concat());
-  };
+    lines.splice(lines.length - 1, 1, lastLine)
+    setLines(lines.concat())
+  }
 
   const handleMouseUp = () => {
-    isDrawing.current = false;
-    //store color of last drawn lines
+    isDrawing.current = false
+    // store color of last drawn lines
 
-    console.log(lines);
-  };
+    console.log(lines)
+  }
 
   const newColor = () => {
     const newColor =
-      "rgb(" +
+      'rgb(' +
       Math.random() * 255 +
-      "," +
+      ',' +
       Math.random() * 255 +
-      "," +
+      ',' +
       Math.random() * 255 +
-      ")";
-    setColor(newColor);
-  };
+      ')'
+    setColor(newColor)
+  }
 
   const handleUndo = () => {
-    lines.pop();
-    setLines(lines.concat());
-  };
+    lines.pop()
+    setLines(lines.concat())
+  }
 
   const exportUri = () => {
-    const uri = stageRef.current.toDataURL();
-    setUriStorage([...uriStorage, uri.toString()]);
+    const uri = stageRef.current.toDataURL()
+    setUriStorage([...uriStorage, uri.toString()])
 
     setUriStorage((uriStorage) => {
       uriStorage[props.selectedImage] = [
         ...uriStorage[props.selectedImage],
         uri.toString(),
-      ];
-      return uriStorage;
-    });
+      ]
+      return uriStorage
+    })
 
-    console.log(uri);
-    console.log("uriStorage:", uriStorage);
-  };
+    console.log(uri)
+    console.log('uriStorage:', uriStorage)
+  }
 
-  let uriStorageRender = () => {
+  const uriStorageRender = () => {
     if (uriStorage[props.selectedImage]) {
-      let uriStorageRender = uriStorage[props.selectedImage].map(
+      const uriStorageRender = uriStorage[props.selectedImage].map(
         (item, index) => (
           <div className="container" key={index}>
             <img src={item} alt="" className="image"></img>
           </div>
-        )
-      );
-      return uriStorageRender;
+        ),
+      )
+      return uriStorageRender
     }
-  };
+  }
 
   return (
     <div className="border-black bg-transparent touch-none">
@@ -132,7 +131,7 @@ const Drawing = (props) => {
                 lineCap="round"
                 lineJoin="round"
                 globalCompositeOperation={
-                  line.tool === "eraser" ? "destination-out" : "source-over"
+                  line.tool === 'eraser' ? 'destination-out' : 'source-over'
                 }
               />
             ))}
@@ -142,7 +141,7 @@ const Drawing = (props) => {
       <select
         value={tool}
         onChange={(e) => {
-          setTool(e.target.value);
+          setTool(e.target.value)
         }}
       >
         <option value="pen">Pen</option>
@@ -155,7 +154,7 @@ const Drawing = (props) => {
       <div className="uriStorageRendering">{uriStorageRender()}</div>
       {/* <img src={uriStorage[1]} alt=''></img> */}
     </div>
-  );
-};
+  )
+}
 
-export default Drawing;
+export default Drawing

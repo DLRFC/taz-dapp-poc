@@ -1,72 +1,67 @@
-import { useState } from "react";
-import axios from "axios";
+import Header from './Header'
 
+// Page 4 Page List of all Questions
 const QuestionsBoard = () => {
-
-
   return (
-    <div className="bg-brand-beige flex flex-col  gap-[56px] pt-[56px] items-center w-100% h-[844px] isolate">
-      <div className="flex flex-col justify-between items-end px-[32px] w-[390px] h-[133px] pt-[32px]">
-        <div className="absolute w-[124px] h-[72px] font-[20px] -rotate-90 uppercase tracking-widest left-[32px] top-[32px]">
-        Temp_RARV
-        <div className="bg-brand-gray2 text-brand-beige2 -m-1">AN_NYMOUS</div>
-        z_ne
+    <div className="p-4 font-sans bg-brand-beige">
+      <Header />
+      <svg
+        className="absolute -left-2 top-[370px]"
+        width="69"
+        height="100"
+        viewBox="0 0 69 100"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <ellipse cx="18.8812" cy="50" rx="49.8812" ry="50" fill="#BD5141" />
+      </svg>
+      <svg
+        className="absolute right-[0px] top-[642px]"
+        width="121"
+        height="160"
+        viewBox="0 0 121 160"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <ellipse cx="80.6202" cy="80" rx="80.6202" ry="80" fill="#EFAD5F" />
+      </svg>
+
+      <div className="index-[10] relative h-[554px] divide-y overflow-y-auto rounded-md border-2 border-gray-500 bg-white">
+        <div className="border-b-1 flex items-center justify-between border-gray-700 p-3">
+          <p className="text-3xl font-bold">Q&A</p>
+          <button className="flex gap-2 border-2 border-black p-2 shadow-[-3px_3px_0px_0px_rgba(0,0,0)]">
+            <p>Ask a question</p>
+            <p>+</p>
+          </button>
         </div>
-        <div className="uppercase absolute top-[76px] text-right flex flex-col">
-          <div className="uppercase">devcon-bogota</div>
-          <div className="uppercase font-bold text-3xl font-year">2022</div>
+        <div className="border-b-1 flex w-full flex-row items-center border-gray-700 py-4 px-5">
+          <p className="w-[90%]">
+            How lorem ipsum lorem ipsu lorem ipsu lorem ipsu How lorem ipsum
+            lorem ipsu lorem ipsu lorem ipsu How lorem ipsum lorem ipsu lorem
+            ipsu lorem ipsu
+          </p>
+          <p className="-mr-3">X</p>
         </div>
-      </div>
-      <div className="flex flex-col items-start isolate gap-[36px] relative">
-        <div className="flex flex-row px-[32px] gap-[8px]">
-          <div className="flex-none text-brand-red">Icon</div>
-          <div className=" ml-1 font-xl text-brand-red" >TAZ Border Patrol</div>
+        <div className="border-b-1 flex w-full flex-row items-center py-3 px-6">
+          <p className="w-[90%]">
+            How lorem ipsum lorem ipsu lorem ipsu lorem ipsu How lorem ipsum
+            lorem ipsu lorem ipsu lorem ipsu How lorem ipsum lorem ipsu lorem
+            ipsu lorem ipsu
+          </p>
+          <p className="-mr-3">X</p>
         </div>
-          <div className="flex flex-col items-center px-[24px] isolate">
-            <div className="box-border flex  flex-col items-center p-0 border-2 border-brand-gray solid bg-brand-beige2 w-[342px] h-[494px] shadow-question">
-              <div className="flex flex-row justify-between solid w-[342px] h-[68px] items-center py-[16px] px-[32px]">
-                <div>Q&A</div>
-                <div className="bg-white py-[6px] px-3 shadow-question border-2 solid border-brand-gray w-[165px]">Add question +</div>
-              </div>
-              <div className="inline-flex flex-col flex-start p-[16px] gap-[10px] bg-white w-[342px] border-2 solid border-brand-gray" >
-                <div className="overflow-clip flex flex-row gap-[32px] items-center w-[310px] self-strech">
-                  <p className="flex flex-col justify-start w-[263px]">How do I tell my wife’s boyfriend I want to sleep in the bed I bought?</p>
-                  <p>icon</p>
-                </div>
-              </div>
-              <div className="flex flex-col flex-start p-[16px] gap-[10px] bg-white w-[342px] h-[89px] border-2 solid border-brand-gray" >
-                <div className="flex flex-row gap-[32px] items-center w-[310px] self-strech">
-                  <p className="flex flex-col justify-start w-[263px]">How do I tell my wife’s boyfriend I want to sleep in the bed I bought?</p>
-                  <p>icon</p>
-                </div>
-              </div>
-              <div className="flex flex-col flex-start p-[16px] gap-[10px] bg-white w-[342px] h-[89px] border-2 solid border-brand-gray" >
-                <div className="flex flex-row gap-[32px] items-center w-[310px] self-strech">
-                  <p className="flex flex-col justify-start w-[263px]">How do I tell my wife’s boyfriend I want to sleep in the bed I bought?</p>
-                  <p>icon</p>
-                </div>
-              </div>
-              <div className="flex flex-col flex-start p-[16px] gap-[10px] bg-white w-[342px] h-[89px] border-2 solid border-brand-gray" >
-                <div className="flex flex-row gap-[32px] items-center w-[310px] self-strech">
-                  <p className="flex flex-col justify-start w-[263px]">How do I tell my wife’s boyfriend I want to sleep in the bed I bought?</p>
-                  <p>icon</p>
-                </div>
-              </div>
-          
-       
-              
-
-            </div>
-
-          </div>
-
-        <div>
-
+        <div className="flex w-full flex-row items-center py-3 px-5">
+          <p className="w-[90%]">
+            How lorem ipsum lorem ipsu lorem ipsu lorem ipsu How lorem ipsum
+            lorem ipsu lorem ipsu lorem ipsu How lorem ipsum lorem ipsu lorem
+            ipsu lorem ipsu
+          </p>
+          <p className="-mr-3">X</p>
         </div>
       </div>
-
+      <div className="flex justify-center p-5">Who I am? - @PrivacyScaling</div>
     </div>
-  );
-};
+  )
+}
 
-export default QuestionsBoard;
+export default QuestionsBoard
