@@ -6,6 +6,7 @@ import axios from 'axios'
 const SUGBRAPH_TAZ_MESSAGE = "https://api.thegraph.com/subgraphs/name/dlrfc/taz-message-goerli";
 
 // Page 4 Page List of all Questions
+
 const QuestionsBoard = (props) => {
 
   const [questions, setQuestions] = useState([]);
@@ -34,6 +35,7 @@ const QuestionsBoard = (props) => {
     const doAsync = async () => {setQuestions(await fetchQuestions()); }
     doAsync();
   }, []);
+
 
   return (
     <div className="p-4 font-sans bg-brand-beige">
