@@ -1,10 +1,42 @@
 import Header from './Header'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+
+const SUGBRAPH_TAZ_MESSAGE = "https://api.thegraph.com/subgraphs/name/dlrfc/taz-message-goerli";
 
 // Page 4 Page List of all Questions
-// Fetch Questions from Events
-// Map them on this component
-const QuestionsBoard = () => {
+
+const QuestionsBoard = (props) => {
+
+  const [questions, setQuestions] = useState([]);
+  
+  const fetchQuestions = async () => {
+    // Construct query for subgraph
+    const postData = {
+      query: `
+      {
+        messageAddeds(orderBy: messageId, where: {parentMessageId: 0}) {
+          id
+          messageContent
+          messageId
+          parentMessageId
+        }
+      }
+      ` 
+    };
+    // Fetch data
+    const result = await axios.post(SUGBRAPH_TAZ_MESSAGE, postData);
+    const data = result.data.data.messageAddeds;
+    return data;
+  }
+
+ useEffect(() => {
+    const doAsync = async () => {setQuestions(await fetchQuestions()); }
+    doAsync();
+  }, []);
+
+
   return (
     <div className="p-4 font-sans bg-brand-beige">
       <Header />
@@ -37,33 +69,20 @@ const QuestionsBoard = () => {
             <p>+</p>
           </button>
         </div>
-        <Link href="/answers-board-page">
-          <div className="border-b-1 flex w-full flex-row items-center border-gray-700 py-4 px-5">
-            <p className="w-[90%]">
-              How lorem ipsum lorem ipsu lorem ipsu lorem ipsu How lorem ipsum
-              lorem ipsu lorem ipsu lorem ipsu How lorem ipsum lorem ipsu lorem
-              ipsu lorem ipsu
-            </p>
+        {console.log("questions:", questions)}
+        {questions.map(question => (
+        
+          <Link href={"/answers-board-page/" + question.messageId}>
+            <div className="border-b-1 flex w-full flex-row items-center border-gray-700 py-4 px-5">
+              <p className="w-[90%]">
+                {question.messageContent}
+              </p>
+              <p className="-mr-3">X</p>
+            </div>
+          </Link>   
+        
+        ))}
 
-            <p className="-mr-3">X</p>
-          </div>
-        </Link>
-        <div className="border-b-1 flex w-full flex-row items-center py-3 px-6">
-          <p className="w-[90%]">
-            How lorem ipsum lorem ipsu lorem ipsu lorem ipsu How lorem ipsum
-            lorem ipsu lorem ipsu lorem ipsu How lorem ipsum lorem ipsu lorem
-            ipsu lorem ipsu
-          </p>
-          <p className="-mr-3">X</p>
-        </div>
-        <div className="flex w-full flex-row items-center py-3 px-5">
-          <p className="w-[90%]">
-            How lorem ipsum lorem ipsu lorem ipsu lorem ipsu How lorem ipsum
-            lorem ipsu lorem ipsu lorem ipsu How lorem ipsum lorem ipsu lorem
-            ipsu lorem ipsu
-          </p>
-          <p className="-mr-3">X</p>
-        </div>
       </div>
       <div className="flex justify-center p-5">Who I am? - @PrivacyScaling</div>
     </div>
