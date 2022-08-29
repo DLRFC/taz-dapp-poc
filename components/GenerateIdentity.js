@@ -4,14 +4,17 @@ import axios from 'axios'
 import { Identity } from '@semaphore-protocol/identity'
 import Header from './Header'
 import QRCode from 'qrcode'
+import { useIdentityLogin } from './IdentityProvider'
 
 // Page 3 will Generate Identity and Join Group
 export const GenerateIdentity = () => {
+  const identityLogin = useIdentityLogin()
   const [imageUrl, setImageUrl] = useState('')
   const handleJoinButton = async () => {
-    const identity = new Identity()
+    const identity = new Identity('secret-message2')
     const identityCommitment = identity.generateCommitment().toString()
     const identityKey = identity.toString()
+    identityLogin(identityKey)
     console.log(identityCommitment)
 
     const response = await axios.post('./api/addMember', { identityCommitment })
@@ -82,6 +85,7 @@ export const GenerateIdentity = () => {
           )}
         </div>
       </div>
+
       <Link href="/ask-question-page">Go to Ask Question Page</Link>
       <div className="absolute bottom-[50px] left-0 -z-10 h-[20%] w-full bg-black"></div>
     </div>

@@ -1,4 +1,8 @@
-import { InvitationCheck } from '../components/InvitationCheck'
+import dynamic from 'next/dynamic'
+
+const InvitationCheck = dynamic(() => import('../components/InvitationCheck'), {
+  ssr: false,
+})
 
 export default function InvitationCheckPage() {
   return (

@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import Header from './Header'
-
 import Link from 'next/link'
 import axios from 'axios'
 import { Identity } from '@semaphore-protocol/identity'
 import { Group } from '@semaphore-protocol/group'
+
+import { useIdentity } from './IdentityProvider'
 const { generateProof } = require('@semaphore-protocol/proof')
 const { verifyProof } = require('@semaphore-protocol/proof')
 const { packToSolidityProof } = require('@semaphore-protocol/proof')
@@ -13,12 +14,15 @@ const { Subgraph } = require('@semaphore-protocol/subgraph')
 // 3. Ask Question Page
 const AskQuestion = () => {
   const [signal, setSignal] = useState('Select Signal')
+  const identityKey = useIdentity()
 
   const handleAskButton = async () => {
     console.log(signal)
-    const identity = new Identity('secret-message3')
+    const identity = new Identity(identityKey)
     const identityCommitment = identity.generateCommitment()
     console.log(identityCommitment)
+    console.log('Identity Key')
+    console.log(identityKey)
 
     // Generate Group
     const group = new Group(16)
@@ -78,9 +82,9 @@ const AskQuestion = () => {
     }
     console.log(body)
 
-    const response = await axios.post('/api/testVerifyProof', body)
-    console.log(response)
-    console.log(response.data)
+    // const response = await axios.post('/api/testVerifyProof', body)
+    // console.log(response)
+    // console.log(response.data)
   }
 
   return (

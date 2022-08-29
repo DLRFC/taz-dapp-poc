@@ -1,12 +1,18 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import Header from './Header'
 import axios from 'axios'
 import Link from 'next/link'
+import QrReader from 'react-qr-reader'
+
+import { useIdentityLogin } from './IdentityProvider'
 
 // Page 1 it will check Invitation
-export const InvitationCheck = () => {
+export default function InvitationCheck() {
+  const identityLogin = useIdentityLogin()
   const [invitation, setInvitation] = useState('test-code-15')
   const [response, setResponse] = useState('')
+
+  const qrRef = useRef(null)
 
   const validate = async () => {
     console.log(invitation)
@@ -17,6 +23,22 @@ export const InvitationCheck = () => {
 
     setResponse(apiResponse.data.isValid)
     console.log(response)
+  }
+
+  const handleUploadQrCode = () => {
+    qrRef.current.openImageDialog()
+  }
+
+  const handleError = (err) => {
+    console.error(err)
+  }
+
+  const handleScanQrCode = (result) => {
+    if (result) {
+      console.log(result)
+      console.log('Scanned!')
+      identityLogin(result)
+    }
   }
 
   return (
@@ -76,7 +98,19 @@ export const InvitationCheck = () => {
         <Link href="/generate-id-page">
           <button> Go To Generate Id Page (Test)</button>
         </Link>
-        <button onClick={() => setInvitation('10')}></button>
+        <button
+          className="bg-green-700 p-3 rounded-lg text-gray-200"
+          onClick={handleUploadQrCode}
+        >
+          4. Upload Qr Code
+        </button>
+        <QrReader
+          ref={qrRef}
+          delay={300}
+          onError={handleError}
+          onScan={handleScanQrCode}
+          legacyMode
+        />
       </div>
       <div className="absolute bottom-[50px] left-0 -z-10 h-[20%] w-full bg-black"></div>
     </div>
