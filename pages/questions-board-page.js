@@ -1,10 +1,10 @@
 // import React, { useState } from 'react'
-import QuestionBoard from '../components/QuestionsBoard'
+import QuestionsBoard from '../components/QuestionsBoard'
 
 export default function QuestionsBoardPage() {
   return (
     <div>
-      <QuestionBoard />
+      <QuestionsBoard />
     </div>
   )
 }
