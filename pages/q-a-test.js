@@ -104,8 +104,6 @@ export default function QandA() {
         const root = group.root;
         console.log(subgraph);
         console.log(root);
-
-
     }
     
   
