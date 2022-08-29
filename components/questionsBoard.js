@@ -23,13 +23,13 @@ const QuestionsBoard = () => {
           <div className=" ml-1 font-xl text-brand-red" >TAZ Border Patrol</div>
         </div>
           <div className="flex flex-col items-center px-[24px] isolate">
-            <div className="box-border flex flex-col items-center p-0 border-2 border-brand-gray solid bg-brand-beige2 w-[342px] h-[494px] shadow-question">
+            <div className="box-border flex  flex-col items-center p-0 border-2 border-brand-gray solid bg-brand-beige2 w-[342px] h-[494px] shadow-question">
               <div className="flex flex-row justify-between solid w-[342px] h-[68px] items-center py-[16px] px-[32px]">
                 <div>Q&A</div>
                 <div className="bg-white py-[6px] px-3 shadow-question border-2 solid border-brand-gray w-[165px]">Add question +</div>
               </div>
-              <div className="flex flex-col flex-start p-[16px] gap-[10px] bg-white w-[342px] h-[89px] border-2 solid border-brand-gray" >
-                <div className="flex flex-row gap-[32px] items-center w-[310px] self-strech">
+              <div className="inline-flex flex-col flex-start p-[16px] gap-[10px] bg-white w-[342px] border-2 solid border-brand-gray" >
+                <div className="overflow-clip flex flex-row gap-[32px] items-center w-[310px] self-strech">
                   <p className="flex flex-col justify-start w-[263px]">How do I tell my wife’s boyfriend I want to sleep in the bed I bought?</p>
                   <p>icon</p>
                 </div>

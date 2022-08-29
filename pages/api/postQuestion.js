@@ -13,13 +13,22 @@ export default function handler(req, res) {
     }
 
     if(req.method === 'POST'){
-        const { question ,var2,var3} = req.body;
-        // const result = req.body.question;
-        console.log("Backend received this input from the fontend: ", question);
-        console.log(req.body);
 
+        
+        
         const newComment = { id: comments.length+1, text: question};
         comments.push(newComment)
+
+        const test = req.body;
+        const result = "test result"
+        console.log(req.body)
+        console.log(solidityProof);
+        console.log(externalNullifier);
+        console.log(signal);
+        console.log(nullifierHash);
+        console.log(JSON.stringify(test));
+
+        res.status(201).json(nullifierHash)
 
                     
         res.status(201).json(comments);
