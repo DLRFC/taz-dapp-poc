@@ -14,16 +14,10 @@ describe("TazMessage", function () {
     let tazMessageContract;
     let signers;
     let groupId;
-    let signal;
+    let signalBytes32;
     let nullifierHash;
     let externalNullifier;
     let proof;
-
-//     uint256 groupId, 
-// bytes32 signal, 
-// uint256 nullifierHash, 
-// uint256 externalNullifier, 
-// uint256[8] calldata proof
 
     before(async () => {
         tazMessageContract = await run("deployTazMessage", { logs: true });
@@ -35,47 +29,34 @@ describe("TazMessage", function () {
         const messageContent = "What is the Name of the Dapp?";
         const messageId = 1;
 
-        // uint256 groupId, 
-        // bytes32 signal, 
-        // uint256 nullifierHash, 
-        // uint256 externalNullifier, 
-        // uint256[8] calldata proof) external {
-
-        const externalNullifier = messageId;
-        const signal = "Hello ZK"; // ethers.utils.formatBytes32String(messageContent).slice(0,3`1`);
-        console.log("signal", signal);
-        const newIdentity = new Identity('test 1');
-        const newTrapdoor = newIdentity.getTrapdoor();
-        const newNullifier = newIdentity.getNullifier();
+        const newIdentity = new Identity('secret-message');
         const newIdentityCommitment = newIdentity.generateCommitment();
-        const group = new Group();
+        const group = new Group(16);
         group.addMember(newIdentityCommitment);
-        const groupId = 999; // TODO find out how to get real groupid
-        console.log("About to generate proof");
-        const fullProof = await generateProof(
-            newIdentity,
-            group,
-            externalNullifier,
-            signal,
-            {
-                zkeyFilePath: "static/semaphore.zkey",
-                wasmFilePath: "static/semaphore.wasm",
-            },
-        )
-        console.log("Finished generating proof");
+        const externalNullifier = Math.round(Math.random() * 10000);        
+        const signal = messageContent;
+        const fullProof = await generateProof(newIdentity, group, externalNullifier, signal, {
+            zkeyFilePath: "static/semaphore.zkey",
+            wasmFilePath: "static/semaphore.wasm"
+        });
         const { nullifierHash } = fullProof.publicSignals;
         const solidityProof = packToSolidityProof(fullProof.proof);
+        const signalBytes32 = ethers.utils.formatBytes32String(signal);
+        const groupId = 42; // fixed at 42
 
-        console.log("LOG | newIdentity", newIdentity);
-        console.log("LOG | newTrapdoor", newTrapdoor);
-        console.log("LOG | newNullifier", newNullifier);
-        console.log("LOG | newIdentityCommitment", newIdentityCommitment);
+        console.log("LOG | groupId", groupId);
+        console.log("LOG | signalBytes32", signalBytes32);
+        console.log("LOG | nullifierHash", nullifierHash);
+        console.log("LOG | externalNullifier", externalNullifier);
+        console.log("LOG | solidityProof", solidityProof);        
         
-        const tx = await tazMessageContract.addMessage(messageId, messageContent, groupId, ethers.utils.formatBytes32String(signal), nullifierHash, externalNullifier, solidityProof, { gasLimit: 1500000 });
-        receipt = await tx.wait();
+        const tx = await tazMessageContract.addMessage(messageId, messageContent, groupId, signalBytes32, nullifierHash, externalNullifier, solidityProof, { gasLimit: 1500000 });
+        const receipt = await tx.wait();
+
         // console.log("LOG | Message added. Receipt: ", receipt);
         // console.log("LOG | Event emitted. Event: ", receipt.events[0].eventSignature);
-        expect(receipt.events[0].event).to.equal("MessageAdded");
+        
+        expect(receipt.events[1].event).to.equal("MessageAdded");
     })
 });
 
