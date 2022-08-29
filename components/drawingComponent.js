@@ -1,14 +1,29 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Stage, Layer, Line, Text } from 'react-konva'
 import { Random } from 'roughjs/bin/math'
 
-const Drawing = () => {
+const Drawing = (props) => {
   const [tool, setTool] = React.useState('pen')
   const [lines, setLines] = React.useState([])
   const [color, setColor] = React.useState([])
   const isDrawing = React.useRef(false)
   const stageRef = React.useRef(null)
+  const [uriStorage, setUriStorage] = React.useState([
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+  ])
+
+  // useEffect(() => {
+  //   setUriStorage(uriStorage);
+  // },[uriStorage])
 
   const handleMouseDown = (e) => {
     isDrawing.current = true
@@ -62,11 +77,36 @@ const Drawing = () => {
 
   const exportUri = () => {
     const uri = stageRef.current.toDataURL()
+    setUriStorage([...uriStorage, uri.toString()])
+
+    setUriStorage((uriStorage) => {
+      uriStorage[props.selectedImage] = [
+        ...uriStorage[props.selectedImage],
+        uri.toString(),
+      ]
+      return uriStorage
+    })
+
     console.log(uri)
+    console.log('uriStorage:', uriStorage)
+  }
+
+  const uriStorageRender = () => {
+    if (uriStorage[props.selectedImage]) {
+      const uriStorageRender = uriStorage[props.selectedImage].map(
+        (item, index) => (
+          <div className="container" key={index}>
+            <img src={item} alt="" className="image"></img>
+          </div>
+        ),
+      )
+      return uriStorageRender
+    }
   }
 
   return (
     <div className="border-black bg-transparent touch-none">
+      <h1>for testing, image #{props.selectedImage} selected</h1>
       <div className="border-black max-w-[250px] border-2 touch-none">
         <Stage
           width={250}
@@ -80,7 +120,7 @@ const Drawing = () => {
           ref={stageRef}
         >
           <Layer>
-            <Text text="Just start drawing" x={5} y={30} />
+            {/* <Text text="Just start drawing" x={5} y={30} /> */}
             {lines.map((line, i) => (
               <Line
                 key={i}
@@ -110,6 +150,9 @@ const Drawing = () => {
       <button onClick={newColor}>New Color </button>
       <button onClick={handleUndo}>Undo</button>
       <button onClick={exportUri}>Export Uri</button>
+
+      <div className="uriStorageRendering">{uriStorageRender()}</div>
+      {/* <img src={uriStorage[1]} alt=''></img> */}
     </div>
   )
 }

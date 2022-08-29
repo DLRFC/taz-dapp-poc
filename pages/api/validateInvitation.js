@@ -1,17 +1,53 @@
-import { ethers } from "ethers";
-import dotenv from "dotenv";
+import faunadb from "faunadb";
 
-dotenv.config({path: '../../.env.local'});
-const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL);
-const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
+export default async function handler(req, res) {
+  const { invitation } = req.body;
 
-export default function handler(req, res) {
-    const { invitation } = req.body;
-    console.log("Backend received this input from the fontend: ", invitation);
-    
-    // send transaction to smart contract with invitation string as argument
-    
-    // send response with any data back to the client afterwards. (just an example:)
-    res.send(`Your invitation code "${invitation}" has been validated by the backend`);
+  if (req.method === "GET") {
+    res.status(400).json({
+      error: "Ensure that you are sending a POST request to this endpoint",
+    });
+  } else if (!invitation) {
+    res
+      .status(400)
+      .json({ error: "Request needs to have an invitation string" });
+  } else if (req.method === "POST") {
+    try {
+      const secret = process.env.FAUNA_SECRET_KEY;
+      const query = faunadb.query;
+      const client = new faunadb.Client({ secret });
+
+      const dbs = await client.query(
+        query.Map(
+          query.Paginate(query.Match(query.Index("all_codes"))),
+          query.Lambda("codeRef", query.Get(query.Var("codeRef")))
+        )
+      );
+
+      const match = dbs.data.filter((code) => code.data.code === invitation);
+      console.log(match[0].data);
+
+      let isValid;
+
+      if (match[0] && !match[0].data.isUsed) {
+        isValid = true;
+
+        client
+          .query(
+            query.Update(query.Ref(match[0].ref), {
+              data: {
+                isUsed: true,
+              },
+            })
+          )
+          .then((ret) => console.log(ret));
+      } else {
+        isValid = false;
+      }
+
+      res.status(200).json({ isValid });
+    } catch (error) {
+      res.status(500).json({ Error: error.message });
+    }
   }
-  
+}
