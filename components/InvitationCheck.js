@@ -9,27 +9,54 @@ import { useIdentityLogin } from './IdentityProvider'
 
 // Page 1 it will check Invitation
 export default function InvitationCheck() {
+  const [selected, setSelected] = useState('environment')
+  const [startScan, setStartScan] = useState(false)
+  const [loadingScan, setLoadingScan] = useState(false)
+  const [data, setData] = useState('')
   const identityLogin = useIdentityLogin()
   const [invitation, setInvitation] = useState('test-code-15')
   const [response, setResponse] = useState('')
   const [isSignUp, setIsSignUp] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
   const qrRef = useRef(null)
+
+  const handleScan = async (scanData) => {
+    setLoadingScan(true)
+    console.log(`loaded data data`, scanData)
+    if (scanData && scanData !== '') {
+      console.log(`loaded >>>`, scanData)
+      setData(scanData)
+      setStartScan(false)
+      setLoadingScan(false)
+    }
+  }
 
   const handleSignUpButton = async () => {
     setIsSignUp(!isSignUp)
   }
 
   const validate = async () => {
-    const apiResponse = await axios.post('/api/validateInvitation', {
-      invitation,
-    })
-    console.log('Is code valid and not used yet? ', apiResponse.data.isValid)
+    setIsLoading(true)
+    try {
+      const apiResponse = await axios.post('/api/validateInvitation', {
+        invitation,
+      })
+      console.log('Is code valid and not used yet? ', apiResponse.data.isValid)
 
-    setResponse(apiResponse.data.isValid)
-    console.log(response)
-    router.push(`/generate-id-page?qr=${invitation}`)
+      setResponse(apiResponse.data.isValid)
+      if (apiResponse.data.isValid) {
+        console.log(response)
+        router.push(`/generate-id-page?qr=${invitation}`)
+      } else if (apiResponse.data.isValid === false) {
+        setIsLoading(false)
+        alert('Invalid Invitation code')
+      }
+    } catch {
+      setIsLoading(false)
+      alert('Invalid Invitation')
+    }
   }
 
   const handleUploadQrCode = () => {
@@ -46,7 +73,7 @@ export default function InvitationCheck() {
       console.log('Scanned!')
       identityLogin(result)
       // Add if Identity is part of the Group
-      router.push(`/generate-id-page`)
+      router.push(`/ask-question-page`)
     }
   }
 
@@ -102,32 +129,73 @@ export default function InvitationCheck() {
         </div>
       ) : (
         <div className="flex flex-col items-center overflow-hidden rounded-md px-3 text-brand-gray2">
-          <div className="h-[586px] py-3 w-full px-4 z-10">
+          <div className="h-[600px] py-3 w-full px-4 z-10">
             <p className="py-5 font-bold mb-3 px-3 text-xl">Get started?</p>
-            <button className="bg-brand-beige2 w-full p-2 border-2 border-brand-gray2 shadow-[-3px_3px_0px_0px_rgba(71,95,111)] mb-8">
-              Scan Invitation QR Code
-            </button>
-            <p className="py-5 font-bold mb-3 px-3 text-xl">
-              Paste Invitation Code
-            </p>
+            {isLoading ? (
+              <button className="bg-brand-beige2 w-full p-2 border-2 border-brand-gray2 shadow-[-3px_3px_0px_0px_rgba(71,95,111)] mb-[180px]">
+                Checking Invitation Code
+              </button>
+            ) : (
+              <div>
+                <button
+                  className="bg-brand-beige2 w-full p-2 border-2 border-brand-gray2 shadow-[-3px_3px_0px_0px_rgba(71,95,111)] mb-8"
+                  onClick={() => {
+                    setStartScan(!startScan)
+                  }}
+                >
+                  {startScan ? 'Stop Scan' : 'Scan Invitation QR Code'}
+                </button>
 
-            <input
-              className="border-2 border-black w-full mb-3 py-2 rounded-lg"
-              onChange={(e) => setInvitation(e.target.value)}
-            ></input>
-            <button
-              className="bg-brand-beige2 w-full p-2 border-2 border-brand-gray2 shadow-[-3px_3px_0px_0px_rgba(71,95,111)] mb-[180px]"
-              onClick={validate}
-            >
-              Submit
-            </button>
+                {startScan ? (
+                  <div className="flex items-center justify-center flex-col mb-10">
+                    <select
+                      className="mb-3"
+                      onChange={(e) => setSelected(e.target.value)}
+                    >
+                      <option value={'environment'}>Back Camera</option>
+                      <option value={'user'}>Front Camera</option>
+                    </select>
+                    <QrReader
+                      facingMode={selected}
+                      delay={1000}
+                      onError={handleError}
+                      onScan={handleScan}
+                      style={{ width: '300px' }}
+                    />
+                  </div>
+                ) : (
+                  <div>
+                    <p className="py-5 font-bold mb-3 px-3 text-xl">
+                      Paste Invitation Code
+                    </p>
+                    <input
+                      className="border-2 border-black w-full mb-3 py-2 rounded-lg"
+                      onChange={(e) => setInvitation(e.target.value)}
+                    ></input>
+                  </div>
+                )}
 
-            <button
-              className="bg-brand-beige2 w-full p-2 border-2 border-brand-gray2 shadow-[-3px_3px_0px_0px_rgba(71,95,111)] mb-20"
-              onClick={handleSignUpButton}
-            >
-              Back
-            </button>
+                {data ? (
+                  <div>
+                    <p className="font-bold">QrCode Key is:</p>
+                    <p>{data}</p>
+                  </div>
+                ) : null}
+                <button
+                  className="bg-brand-beige2 w-full p-2 border-2 border-brand-gray2 shadow-[-3px_3px_0px_0px_rgba(71,95,111)] mb-[180px]"
+                  onClick={validate}
+                >
+                  Submit
+                </button>
+
+                <button
+                  className="bg-brand-beige2 w-full p-2 border-2 border-brand-gray2 shadow-[-3px_3px_0px_0px_rgba(71,95,111)] mb-20"
+                  onClick={handleSignUpButton}
+                >
+                  Back
+                </button>
+              </div>
+            )}
 
             {/* {response ? (
               <div>
