@@ -7,6 +7,7 @@ import axios from 'axios';
 const SUGBRAPH_TAZ_MESSAGE = "https://api.thegraph.com/subgraphs/name/dlrfc/taz-message-goerli";
 
 // Page 4 Page List of all Questions
+
 const QuestionsBoard = (props) => {
 
   const router = useRouter();
@@ -46,6 +47,7 @@ const QuestionsBoard = (props) => {
     }
     doAsync();
   }, []);
+
 
   return (
     <div className="px-6 py-8 font-sans">

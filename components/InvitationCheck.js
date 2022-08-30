@@ -1,14 +1,21 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import Header from './Header'
 import axios from 'axios'
 import Link from 'next/link'
+import QrReader from 'react-qr-reader'
+
+import { useIdentityLogin } from './IdentityProvider'
 
 // Page 1 it will check Invitation
-export const InvitationCheck = () => {
+export default function InvitationCheck() {
+  const identityLogin = useIdentityLogin()
   const [invitation, setInvitation] = useState('test-code-15')
   const [response, setResponse] = useState('')
 
+  const qrRef = useRef(null)
+
   const validate = async () => {
+    console.log(invitation)
     const apiResponse = await axios.post('/api/validateInvitation', {
       invitation,
     })
@@ -16,6 +23,22 @@ export const InvitationCheck = () => {
 
     setResponse(apiResponse.data.isValid)
     console.log(response)
+  }
+
+  const handleUploadQrCode = () => {
+    qrRef.current.openImageDialog()
+  }
+
+  const handleError = (err) => {
+    console.error(err)
+  }
+
+  const handleScanQrCode = (result) => {
+    if (result) {
+      console.log(result)
+      console.log('Scanned!')
+      identityLogin(result)
+    }
   }
 
   return (
@@ -52,7 +75,10 @@ export const InvitationCheck = () => {
             Paste Invitation Code
           </p>
 
-          <input className="border-2 border-black w-full mb-3 py-2 rounded-lg "></input>
+          <input
+            className="border-2 border-black w-full mb-3 py-2 rounded-lg"
+            onChange={(e) => setInvitation(e.target.value)}
+          ></input>
           <button
             className="bg-gray-300 w-full p-2 rounded-lg border-2 border-brand-gray2 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]"
             onClick={validate}
@@ -61,17 +87,30 @@ export const InvitationCheck = () => {
           </button>
 
           {response ? (
-            <Link href="/generate-id-page">
-              <p className="bg-gray-100 p-2 mt-2">{response}</p>
-
-              <button> Next Page</button>
-            </Link>
+            <div>
+              <Link href="/generate-id-page">
+                <p className="bg-gray-100 p-2 mt-2">{response}</p>
+                <button> Next Page</button>
+              </Link>
+            </div>
           ) : null}
         </div>
         <Link href="/generate-id-page">
           <button> Go To Generate Id Page (Test)</button>
         </Link>
-        <button onClick={() => setInvitation('10')}></button>
+        <button
+          className="bg-green-700 p-3 rounded-lg text-gray-200"
+          onClick={handleUploadQrCode}
+        >
+          4. Upload Qr Code
+        </button>
+        <QrReader
+          ref={qrRef}
+          delay={300}
+          onError={handleError}
+          onScan={handleScanQrCode}
+          legacyMode
+        />
       </div>
       <div className="absolute bottom-[50px] left-0 -z-10 h-[20%] w-full bg-black"></div>
     </div>
