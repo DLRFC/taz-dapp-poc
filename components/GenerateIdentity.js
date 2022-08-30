@@ -7,7 +7,9 @@ import QRCode from 'qrcode'
 import { useIdentityLogin } from './IdentityProvider'
 
 // Page 3 will Generate Identity and Join Group
-export const GenerateIdentity = () => {
+export const GenerateIdentity = (props) => {
+  const { invitation } = props;
+
   const identityLogin = useIdentityLogin()
   const [imageUrl, setImageUrl] = useState('')
   const handleJoinButton = async () => {
@@ -17,7 +19,7 @@ export const GenerateIdentity = () => {
     identityLogin(identityKey)
     console.log(identityCommitment)
 
-    const response = await axios.post('./api/addMember', { identityCommitment })
+    const response = await axios.post('./api/addMember', { identityCommitment, invitation })
 
     try {
       const responseQR = await QRCode.toDataURL(identityKey)

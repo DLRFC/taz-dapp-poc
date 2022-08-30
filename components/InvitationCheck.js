@@ -21,7 +21,6 @@ export default function InvitationCheck() {
   }
 
   const validate = async () => {
-    console.log(invitation)
     const apiResponse = await axios.post('/api/validateInvitation', {
       invitation,
     })
@@ -146,6 +145,7 @@ export default function InvitationCheck() {
               Submit
             </button>
 
+
             <button
               className="bg-gray-300 w-full p-2 rounded-lg border-2 border-brand-gray2  mb-20"
               onClick={handleSignUpButton}
@@ -168,6 +168,7 @@ export default function InvitationCheck() {
       <Link href="/ask-question-page">
         <button className=" p-2 rounded-lg border-2 border-brand-gray2 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] mt-10">
           Go To Generate Id Page(Test)
+
         </button>
       </Link>
       <div className="absolute bottom-[50px] left-0 -z-10 h-[20%] w-full bg-black"></div>
