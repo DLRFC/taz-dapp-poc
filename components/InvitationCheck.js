@@ -1,81 +1,81 @@
-import { useState, useRef } from 'react'
-import Header from './Header'
-import axios from 'axios'
-import Link from 'next/link'
-import QrReader from 'react-qr-reader'
-import { useRouter } from 'next/router'
+import { useState, useRef } from "react";
+import Header from "./Header";
+import axios from "axios";
+import Link from "next/link";
+import QrReader from "react-qr-reader";
+import { useRouter } from "next/router";
 
-import { useIdentityLogin } from './IdentityProvider'
+import { useIdentityLogin } from "./IdentityProvider";
 
 // Page 1 it will check Invitation
 export default function InvitationCheck() {
-  const [selected, setSelected] = useState('environment')
-  const [startScan, setStartScan] = useState(false)
-  const [loadingScan, setLoadingScan] = useState(false)
-  const [data, setData] = useState('')
-  const identityLogin = useIdentityLogin()
-  const [invitation, setInvitation] = useState('test-code-15')
-  const [response, setResponse] = useState('')
-  const [isSignUp, setIsSignUp] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
+  const [selected, setSelected] = useState("environment");
+  const [startScan, setStartScan] = useState(false);
+  const [loadingScan, setLoadingScan] = useState(false);
+  const [data, setData] = useState("");
+  const identityLogin = useIdentityLogin();
+  const [invitation, setInvitation] = useState("test-code-15");
+  const [response, setResponse] = useState("");
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
-  const qrRef = useRef(null)
+  const qrRef = useRef(null);
 
   const handleScan = async (scanData) => {
-    setLoadingScan(true)
-    console.log(`loaded data data`, scanData)
-    if (scanData && scanData !== '') {
-      console.log(`loaded >>>`, scanData)
-      setData(scanData)
-      setStartScan(false)
-      setLoadingScan(false)
+    setLoadingScan(true);
+    console.log(`loaded data data`, scanData);
+    if (scanData && scanData !== "") {
+      console.log(`loaded >>>`, scanData);
+      setData(scanData);
+      setStartScan(false);
+      setLoadingScan(false);
     }
-  }
+  };
 
   const handleSignUpButton = async () => {
-    setIsSignUp(!isSignUp)
-  }
+    setIsSignUp(!isSignUp);
+  };
 
   const validate = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      const apiResponse = await axios.post('/api/validateInvitation', {
+      const apiResponse = await axios.post("/api/validateInvitation", {
         invitation,
-      })
-      console.log('Is code valid and not used yet? ', apiResponse.data.isValid)
+      });
+      console.log("Is code valid and not used yet? ", apiResponse.data.isValid);
 
-      setResponse(apiResponse.data.isValid)
+      setResponse(apiResponse.data.isValid);
       if (apiResponse.data.isValid) {
-        console.log(response)
-        router.push(`/generate-id-page?qr=${invitation}`)
+        console.log(response);
+        router.push({ path: "/generate-id-page", query: { invitation } });
       } else if (apiResponse.data.isValid === false) {
-        setIsLoading(false)
-        alert('Invalid Invitation code')
+        setIsLoading(false);
+        alert("Invalid Invitation code");
       }
     } catch {
-      setIsLoading(false)
-      alert('Invalid Invitation')
+      setIsLoading(false);
+      alert("Invalid Invitation");
     }
-  }
+  };
 
   const handleUploadQrCode = () => {
-    qrRef.current.openImageDialog()
-  }
+    qrRef.current.openImageDialog();
+  };
 
   const handleError = (err) => {
-    console.error(err)
-  }
+    console.error(err);
+  };
 
   const handleScanQrCode = (result) => {
     if (result) {
-      console.log(result)
-      console.log('Scanned!')
-      identityLogin(result)
+      console.log(result);
+      console.log("Scanned!");
+      identityLogin(result);
       // Add if Identity is part of the Group
-      router.push(`/ask-question-page`)
+      router.push(`/ask-question-page`);
     }
-  }
+  };
 
   return (
     <div className="p-4 font-sans bg-brand-beige">
@@ -141,10 +141,10 @@ export default function InvitationCheck() {
                 <button
                   className="bg-brand-beige2 w-full p-2 border-2 border-brand-gray2 shadow-[-3px_3px_0px_0px_rgba(71,95,111)] mb-8"
                   onClick={() => {
-                    setStartScan(!startScan)
+                    setStartScan(!startScan);
                   }}
                 >
-                  {startScan ? 'Stop Scan' : 'Scan Invitation QR Code'}
+                  {startScan ? "Stop Scan" : "Scan Invitation QR Code"}
                 </button>
 
                 {startScan ? (
@@ -153,15 +153,15 @@ export default function InvitationCheck() {
                       className="mb-3"
                       onChange={(e) => setSelected(e.target.value)}
                     >
-                      <option value={'environment'}>Back Camera</option>
-                      <option value={'user'}>Front Camera</option>
+                      <option value={"environment"}>Back Camera</option>
+                      <option value={"user"}>Front Camera</option>
                     </select>
                     <QrReader
                       facingMode={selected}
                       delay={1000}
                       onError={handleError}
                       onScan={handleScan}
-                      style={{ width: '300px' }}
+                      style={{ width: "300px" }}
                     />
                   </div>
                 ) : (
@@ -210,12 +210,12 @@ export default function InvitationCheck() {
         </div>
       )}
 
-      <Link href="/generate-id-page">
+      <Link href={{ pathname: "/generate-id-page", query: { invitation } }}>
         <button className=" p-2 rounded-lg border-2 border-brand-gray2 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] mt-10">
           Go To Generate Id Page(Test)
         </button>
       </Link>
       <div className="absolute bottom-[50px] left-0 -z-10 h-[20%] w-full bg-black"></div>
     </div>
-  )
+  );
 }

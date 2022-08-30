@@ -8,7 +8,7 @@ import { useIdentityLogin } from './IdentityProvider'
 
 // Page 3 will Generate Identity and Join Group
 export const GenerateIdentity = (props) => {
-  const { invitation } = props
+  const { invitation } = props;
 
   const identityLogin = useIdentityLogin()
   const [imageUrl, setImageUrl] = useState('')
@@ -19,7 +19,7 @@ export const GenerateIdentity = (props) => {
     identityLogin(identityKey)
     console.log(identityCommitment)
 
-    const response = await axios.post('./api/addMember', {
+    const response = await axios.post('/api/addMember', {
       identityCommitment,
       invitation,
     })
