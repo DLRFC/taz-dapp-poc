@@ -25,22 +25,11 @@ export default async function handler(req, res) {
       )
 
       const match = dbs.data.filter((code) => code.data.code === invitation)
-      console.log(match[0].data)
 
       let isValid
 
       if (match[0] && !match[0].data.isUsed) {
         isValid = true
-
-        client
-          .query(
-            query.Update(query.Ref(match[0].ref), {
-              data: {
-                isUsed: true,
-              },
-            }),
-          )
-          .then((ret) => console.log(ret))
       } else {
         isValid = false
       }

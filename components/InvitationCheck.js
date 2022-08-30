@@ -15,7 +15,6 @@ export default function InvitationCheck() {
   const qrRef = useRef(null)
 
   const validate = async () => {
-    console.log(invitation)
     const apiResponse = await axios.post('/api/validateInvitation', {
       invitation,
     })
@@ -81,21 +80,21 @@ export default function InvitationCheck() {
           ></input>
           <button
             className="bg-gray-300 w-full p-2 rounded-lg border-2 border-brand-gray2 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]"
-            onClick={validate}
+            onClick={() => validate()}
           >
             Submit
           </button>
 
-          {response ? (
+          {/* {response ? (
             <div>
               <Link href="/generate-id-page">
                 <p className="bg-gray-100 p-2 mt-2">{response}</p>
                 <button> Next Page</button>
               </Link>
             </div>
-          ) : null}
+          ) : null} */}
         </div>
-        <Link href="/generate-id-page">
+        <Link href={{ pathname: "/generate-id-page", query: { invitation }}}>
           <button> Go To Generate Id Page (Test)</button>
         </Link>
         <button
