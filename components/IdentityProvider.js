@@ -12,11 +12,16 @@ export function useIdentityLogin() {
 }
 
 export function IdentityProvider({ children }) {
-  const [identity, setIdentity] = useState()
+  const [identity, setIdentity] = useState('')
 
   function loginIdentity(value) {
     setIdentity(value)
   }
+
+  // const loginIdentity = useCallback((value) => {
+  //   setIdentity(value)
+  //   window.localStorage.setItem('identity', value)
+  // }, [])
 
   return (
     <IdentityContext.Provider value={identity}>
