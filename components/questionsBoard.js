@@ -19,7 +19,11 @@ const QuestionsBoard = (props) => {
     const postData = {
       query: `
       {
-        messageAddeds(orderBy: messageId, where: {parentMessageId: 0}) {
+        messageAddeds(
+          orderBy: messageId
+          where: {parentMessageId: 0}
+          orderDirection: desc
+        ) {
           id
           messageContent
           messageId
