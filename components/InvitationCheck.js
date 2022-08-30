@@ -11,8 +11,14 @@ export default function InvitationCheck() {
   const identityLogin = useIdentityLogin()
   const [invitation, setInvitation] = useState('test-code-15')
   const [response, setResponse] = useState('')
+  const [isSignUp, setIsSignUp] = useState(false)
+  const [isConnected, setIsConnected] = useState('')
 
   const qrRef = useRef(null)
+
+  const handleSignUpButton = async () => {
+    setIsSignUp(!isSignUp)
+  }
 
   const validate = async () => {
     const apiResponse = await axios.post('/api/validateInvitation', {
@@ -36,6 +42,7 @@ export default function InvitationCheck() {
     if (result) {
       console.log(result)
       console.log('Scanned!')
+      setIsConnected(result)
       identityLogin(result)
     }
   }
@@ -63,54 +70,107 @@ export default function InvitationCheck() {
       >
         <ellipse cx="80.6202" cy="80" rx="80.6202" ry="80" fill="#EFAD5F" />
       </svg>
+      {!isSignUp ? (
+        <div className="flex flex-col items-center overflow-hidden rounded-md px-3 text-brand-gray2">
+          <div className="h-[586px] py-3 w-full px-4 z-10">
+            {isConnected ? (
+              <div>
+                <p className="py-5 font-bold mb-3 px-3 text-xl mb-10">
+                  Welcome Back! Click bellow to go to the next Page!
+                </p>
+                <Link href="/ask-question-page">
+                  <div>
+                    {/* <p className="bg-gray-100 p-2 mt-2">{identityLogin}</p> */}
 
-      <div className="flex flex-col items-center overflow-hidden rounded-md px-3 text-brand-gray2">
-        <div className="h-[586px] py-3 w-full px-4 z-10">
-          <p className="py-5 font-bold mb-3 px-3 text-xl">Get started?</p>
-          <button className="bg-gray-300 w-full p-2 rounded-lg border-2 border-brand-gray2 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] mb-8">
-            Scan Invitation QR Code
-          </button>
-          <p className="py-5 font-bold mb-3 px-3 text-xl">
-            Paste Invitation Code
-          </p>
+                    <button className="bg-gray-300 w-full p-2 rounded-lg border-2 border-brand-gray2 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]">
+                      Main Page
+                    </button>
+                  </div>
+                </Link>
+              </div>
+            ) : (
+              <div>
+                <p className="py-5 font-bold mb-3 px-3 text-xl">Get started?</p>
+                <button
+                  className="bg-gray-300 w-full p-2 rounded-lg border-2 border-brand-gray2 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] mb-8"
+                  onClick={handleSignUpButton}
+                >
+                  Scan Invitation QR Code
+                </button>
+                <button
+                  className="bg-gray-300 w-full p-2 rounded-lg border-2 border-brand-gray2 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]"
+                  onClick={handleUploadQrCode}
+                >
+                  Sign in with QrCode
+                </button>
+                <QrReader
+                  ref={qrRef}
+                  delay={300}
+                  onError={handleError}
+                  onScan={handleScanQrCode}
+                  legacyMode
+                />
+              </div>
+            )}
 
-          <input
-            className="border-2 border-black w-full mb-3 py-2 rounded-lg"
-            onChange={(e) => setInvitation(e.target.value)}
-          ></input>
-          <button
-            className="bg-gray-300 w-full p-2 rounded-lg border-2 border-brand-gray2 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]"
-            onClick={() => validate()}
-          >
-            Submit
-          </button>
-
-          {/* {response ? (
-            <div>
-              <Link href="/generate-id-page">
-                <p className="bg-gray-100 p-2 mt-2">{response}</p>
-                <button> Next Page</button>
-              </Link>
-            </div>
-          ) : null} */}
+            {response ? (
+              <div>
+                <Link href="/ask-question-page">
+                  <p className="bg-gray-100 p-2 mt-2">{response}</p>
+                  <button> Next Page</button>
+                </Link>
+              </div>
+            ) : null}
+          </div>
         </div>
-        <Link href={{ pathname: "/generate-id-page", query: { invitation }}}>
-          <button> Go To Generate Id Page (Test)</button>
-        </Link>
-        <button
-          className="bg-green-700 p-3 rounded-lg text-gray-200"
-          onClick={handleUploadQrCode}
-        >
-          4. Upload Qr Code
+      ) : (
+        <div className="flex flex-col items-center overflow-hidden rounded-md px-3 text-brand-gray2">
+          <div className="h-[586px] py-3 w-full px-4 z-10">
+            <p className="py-5 font-bold mb-3 px-3 text-xl">Get started?</p>
+            <button className="bg-gray-300 w-full p-2 rounded-lg border-2 border-brand-gray2 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] mb-8">
+              Scan Invitation QR Code
+            </button>
+            <p className="py-5 font-bold mb-3 px-3 text-xl">
+              Paste Invitation Code
+            </p>
+
+            <input
+              className="border-2 border-black w-full mb-3 py-2 rounded-lg"
+              onChange={(e) => setInvitation(e.target.value)}
+            ></input>
+            <button
+              className="bg-gray-300 w-full p-2 rounded-lg border-2 border-brand-gray2 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] mb-[180px]"
+              onClick={validate}
+            >
+              Submit
+            </button>
+
+
+            <button
+              className="bg-gray-300 w-full p-2 rounded-lg border-2 border-brand-gray2  mb-20"
+              onClick={handleSignUpButton}
+            >
+              Back
+            </button>
+
+            {response ? (
+              <div>
+                <Link href="/ask-question-page">
+                  <p className="bg-gray-100 p-2 mt-2">{response}</p>
+                  <button> Next Page</button>
+                </Link>
+              </div>
+            ) : null}
+          </div>
+        </div>
+      )}
+
+      <Link href="/ask-question-page">
+        <button className=" p-2 rounded-lg border-2 border-brand-gray2 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] mt-10">
+          Go To Generate Id Page(Test)
+
         </button>
-        <QrReader
-          ref={qrRef}
-          delay={300}
-          onError={handleError}
-          onScan={handleScanQrCode}
-          legacyMode
-        />
-      </div>
+      </Link>
       <div className="absolute bottom-[50px] left-0 -z-10 h-[20%] w-full bg-black"></div>
     </div>
   )

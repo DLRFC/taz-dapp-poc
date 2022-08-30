@@ -4,17 +4,21 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
-const SUGBRAPH_TAZ_MESSAGE = "https://api.thegraph.com/subgraphs/name/dlrfc/taz-message-goerli";
+const SUGBRAPH_TAZ_MESSAGE =
+  'https://api.thegraph.com/subgraphs/name/dlrfc/taz-message-goerli'
 
 // Page 4 Page List of all Questions
 
 const QuestionsBoard = (props) => {
+  const [questions, setQuestions] = useState([])
+
 
   const router = useRouter();
   const { messageId } = router.query;
 
   const [questions, setQuestions] = useState([]);
   
+
   const fetchQuestions = async () => {
     // Construct query for subgraph
     const postData = {
@@ -27,9 +31,10 @@ const QuestionsBoard = (props) => {
           parentMessageId
         }
       }
-      ` 
-    };
+      `,
+    }
     // Fetch data
+
     let data = [];
     try {
       const result = await axios.post(SUGBRAPH_TAZ_MESSAGE, postData);
@@ -61,6 +66,7 @@ const QuestionsBoard = (props) => {
         <ellipse cx="80.6202" cy="80" rx="80.6202" ry="80" fill="#EFAD5F" />
         <path transform="translate(-9, 0)" d="M5.86415 0.843262L7.73372 2.72888L3.99457 6.50008L7.73372 10.2714L5.86415 12.157L0.255371 6.50008L5.86415 0.843262Z" fill="#475F6F"/>
       </svg>
+
       
       <div className="mb-[34px] flex ml-2">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -98,11 +104,10 @@ const QuestionsBoard = (props) => {
               <svg className="w-7 ml-10" width="7" height="11" viewBox="0 0 7 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M4.53446 5.50005L0.853516 1.78755L1.905 0.727051L6.63744 5.50005L1.905 10.2731L0.853516 9.21255L4.53446 5.50005Z" fill="black" fillOpacity="0.4"/>
               </svg>
-            </div>
-          </Link>   
-        
-        ))}
 
+            </div>
+          </Link>
+        ))}
       </div>
       <div className="flex justify-center m-6 text-brand-2xs text-brand-gray">&#8220;who am I?&#8221;&nbsp;&ndash;&nbsp;<a href="" className="underline">@PrivacyScaling</a></div>
     </div>
