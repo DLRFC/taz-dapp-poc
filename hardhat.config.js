@@ -2,7 +2,9 @@ require('@nomicfoundation/hardhat-toolbox')
 require('dotenv').config()
 
 // Import task definitions
-require('./tasks/deploy')
+
+require("./tasks/deployTazMessage");
+require("./tasks/createProof");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
