@@ -118,6 +118,7 @@ export default function InvitationCheck() {
                 I`ve been here before
               </button>
               <QrReader
+                className="border-0 bg-blue-700"
                 ref={qrRef}
                 delay={300}
                 onError={handleError}
