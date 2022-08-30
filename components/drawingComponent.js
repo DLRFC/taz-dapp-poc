@@ -54,9 +54,6 @@ const Drawing = (props) => {
 
   const handleMouseUp = () => {
     isDrawing.current = false;
-    //store color of last drawn lines
-
-    console.log(lines);
   };
 
   const newColor = () => {
@@ -78,18 +75,16 @@ const Drawing = (props) => {
 
   const exportUri = () => {
     const uri = stageRef.current.toDataURL();
-    setUriStorage([...uriStorage, uri.toString()]);
 
     setUriStorage((uriStorage) => {
       uriStorage[props.selectedImage] = [
         ...uriStorage[props.selectedImage],
         uri.toString(),
       ];
+      props.uriStorageCallback(uriStorage);
+      console.log(uriStorage);
       return uriStorage;
     });
-
-    console.log(uri);
-    console.log("uriStorage:", uriStorage);
   };
 
   let uriStorageRender = () => {
@@ -107,7 +102,7 @@ const Drawing = (props) => {
 
   return (
     <div className="border-black bg-transparent touch-none">
-      <h1>for testing, image #{props.selectedImage} selected</h1>
+      <h1>SKETCHING AREA</h1>
       <div className="border-black max-w-[250px] border-2 touch-none">
         <Stage
           width={250}
@@ -152,7 +147,7 @@ const Drawing = (props) => {
       <button onClick={handleUndo}>Undo</button>
       <button onClick={exportUri}>Export Uri</button>
 
-      <div className="uriStorageRendering">{uriStorageRender()}</div>
+      <div className="uriStorageRendering">{/* uriStorageRender() */}</div>
       {/* <img src={uriStorage[1]} alt=''></img> */}
     </div>
   );
