@@ -15,81 +15,89 @@ const { Subgraph } = require('@semaphore-protocol/subgraph')
 // 3. Ask Question Page
 const AskQuestion = () => {
   const [signal, setSignal] = useState('Select Signal')
+  const [isLoading, setIsLoading] = useState(false)
   const identityKey = useIdentity()
 
   const router = useRouter()
 
   const handleAskButton = async () => {
     console.log(signal)
-    const identity = new Identity(identityKey)
-    const identityCommitment = identity.generateCommitment()
-    console.log(identityCommitment)
-    console.log('Identity Key')
-    console.log(identityKey)
+    setIsLoading(true)
+    try {
+      const identity = new Identity(identityKey)
+      const identityCommitment = identity.generateCommitment()
+      console.log(identityCommitment)
+      console.log('Identity Key')
+      console.log(identityKey)
 
-    // Generate Group
-    const group = new Group(16)
-    const subgraph = new Subgraph('goerli')
+      // Generate Group
+      const group = new Group(16)
+      const subgraph = new Subgraph('goerli')
 
-    const { members } = await subgraph.getGroup('1080', { members: true })
-    console.log('Members')
-    console.log(members)
+      const { members } = await subgraph.getGroup('1080', { members: true })
+      console.log('Members')
+      console.log(members)
 
-    group.addMembers(members)
+      group.addMembers(members)
 
-    console.log(group.root)
+      console.log(group.root)
 
-    // Generate Proof
-    const externalNullifier = Math.round(Math.random() * 10000000)
+      // Generate Proof
+      const externalNullifier = Math.round(Math.random() * 10000000)
 
-    const fullProof = await generateProof(
-      identity,
-      group,
-      externalNullifier,
-      signal,
-      {
-        zkeyFilePath:
-          'https://www.trusted-setup-pse.org/semaphore/16/semaphore.zkey',
-        wasmFilePath:
-          'https://www.trusted-setup-pse.org/semaphore/16/semaphore.wasm',
-      },
-    )
+      const fullProof = await generateProof(
+        identity,
+        group,
+        externalNullifier,
+        signal,
+        {
+          zkeyFilePath:
+            'https://www.trusted-setup-pse.org/semaphore/16/semaphore.zkey',
+          wasmFilePath:
+            'https://www.trusted-setup-pse.org/semaphore/16/semaphore.wasm',
+        },
+      )
 
-    const { nullifierHash } = fullProof.publicSignals
-    const solidityProof = packToSolidityProof(fullProof.proof)
-    console.log('NullifierHash')
-    console.log(nullifierHash)
+      const { nullifierHash } = fullProof.publicSignals
+      const solidityProof = packToSolidityProof(fullProof.proof)
+      console.log('NullifierHash')
+      console.log(nullifierHash)
 
-    // Verify Proof Off Chain
-    // Fetch Verification Key
-    const verificationKey = await fetch(
-      'https://www.trusted-setup-pse.org/semaphore/16/semaphore.json',
-    ).then(function (res) {
-      return res.json()
-    })
+      // Verify Proof Off Chain
+      // Fetch Verification Key
+      const verificationKey = await fetch(
+        'https://www.trusted-setup-pse.org/semaphore/16/semaphore.json',
+      ).then(function (res) {
+        return res.json()
+      })
 
-    const res = await verifyProof(verificationKey, fullProof)
-    console.log('Verification')
-    console.log(res)
+      const res = await verifyProof(verificationKey, fullProof)
+      console.log('Verification')
+      console.log(res)
 
-    const messageId = externalNullifier
-    const messageContent = signal
+      const messageId = externalNullifier
+      const messageContent = signal
 
-    const body = {
-      messageId,
-      messageContent,
-      externalNullifier,
-      signal,
-      nullifierHash,
-      solidityProof,
+      const body = {
+        messageId,
+        messageContent,
+        externalNullifier,
+        signal,
+        nullifierHash,
+        solidityProof,
+      }
+      console.log(body)
+
+      const response = await axios.post('/api/testVerifyProof', body)
+      console.log(response)
+      console.log(response.data)
+      // go to the next page
+      router.push('/questions-page')
+    } catch {
+      setIsLoading(false)
+      // Custom error depending on points of failure
+      alert('Question is to Big')
     }
-    console.log(body)
-
-    const response = await axios.post('/api/testVerifyProof', body)
-    console.log(response)
-    console.log(response.data)
-    // go to the next page
-    router.push('/questions-page')
   }
 
   return (
@@ -135,12 +143,18 @@ const AskQuestion = () => {
               setSignal(e.target.value)
             }}
           ></input>
-          <button
-            className="bg-brand-beige2 w-full p-2 rounded-lg border-2 border-brand-gray shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]"
-            onClick={handleAskButton}
-          >
-            Ask
-          </button>
+          {isLoading ? (
+            <button className="bg-brand-beige2 w-full p-2 rounded-lg border-2 border-brand-gray shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]">
+              Loading for transaction
+            </button>
+          ) : (
+            <button
+              className="bg-brand-beige2 w-full p-2 rounded-lg border-2 border-brand-gray shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]"
+              onClick={handleAskButton}
+            >
+              Ask
+            </button>
+          )}
         </div>
       </div>
 
