@@ -7,17 +7,22 @@ import QRCode from 'qrcode'
 import { useIdentityLogin } from './IdentityProvider'
 
 // Page 3 will Generate Identity and Join Group
-export const GenerateIdentity = () => {
+export const GenerateIdentity = (props) => {
+  const { invitation } = props
+
   const identityLogin = useIdentityLogin()
   const [imageUrl, setImageUrl] = useState('')
   const handleJoinButton = async () => {
-    const identity = new Identity('secret-message2')
+    const identity = new Identity()
     const identityCommitment = identity.generateCommitment().toString()
     const identityKey = identity.toString()
     identityLogin(identityKey)
     console.log(identityCommitment)
 
-    const response = await axios.post('./api/addMember', { identityCommitment })
+    const response = await axios.post('./api/addMember', {
+      identityCommitment,
+      invitation,
+    })
 
     try {
       const responseQR = await QRCode.toDataURL(identityKey)
@@ -62,19 +67,23 @@ export const GenerateIdentity = () => {
           </p>
 
           {imageUrl ? (
-            <a
-              href={imageUrl}
-              download="semaphore.jpg"
-              className="flex items-center justify-center flex-col"
-            >
-              <img src={imageUrl} alt="img" className="mb-7 " />
-              <p className="text-xl font-bold mb-12"> Click Here to Download</p>
+            <div>
+              <a
+                href={imageUrl}
+                download="semaphore.jpg"
+                className="flex items-center justify-center flex-col"
+              >
+                <img src={imageUrl} alt="img" className="mb-7 " />
+                <button className="p-3 text-2xl font-bold bg-brand-beige2 border-brand-gray2 border-2  shadow-[-3px_3px_0px_0px_rgba(71,95,111)]">
+                  Save to photo gallery
+                </button>
+              </a>
               <Link href="/ask-question-page">
-                <button className="p-3 text-2xl font-bold bg-brand-beige2 border-brand-gray2 border-2 rounded-xl">
-                  Go to Ask Question Page(Test)
+                <button className="p-3 text-2xl font-bold bg-brand-beige2 border-brand-gray2 border-2  shadow-[-3px_3px_0px_0px_rgba(71,95,111)]">
+                  Enter the TAZ
                 </button>
               </Link>
-            </a>
+            </div>
           ) : (
             <button
               className="mb-9 w-full rounded-lg border-2 border-brand-gray2 bg-brand-beige2 p-2 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]"

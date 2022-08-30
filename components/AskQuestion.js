@@ -4,6 +4,7 @@ import Link from 'next/link'
 import axios from 'axios'
 import { Identity } from '@semaphore-protocol/identity'
 import { Group } from '@semaphore-protocol/group'
+import { useRouter } from 'next/router'
 
 import { useIdentity } from './IdentityProvider'
 const { generateProof } = require('@semaphore-protocol/proof')
@@ -15,6 +16,8 @@ const { Subgraph } = require('@semaphore-protocol/subgraph')
 const AskQuestion = () => {
   const [signal, setSignal] = useState('Select Signal')
   const identityKey = useIdentity()
+
+  const router = useRouter()
 
   const handleAskButton = async () => {
     console.log(signal)
@@ -82,9 +85,11 @@ const AskQuestion = () => {
     }
     console.log(body)
 
-    // const response = await axios.post('/api/testVerifyProof', body)
-    // console.log(response)
-    // console.log(response.data)
+    const response = await axios.post('/api/testVerifyProof', body)
+    console.log(response)
+    console.log(response.data)
+    // go to the next page
+    router.push('/questions-page')
   }
 
   return (
