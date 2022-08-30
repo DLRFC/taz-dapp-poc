@@ -2,7 +2,7 @@ import { useState } from 'react'
 import axios from 'axios'
 
 const ValidateInvitation = () => {
-  const [invitation, setInvitation] = useState('test-code-15')
+  const [invitation, setInvitation] = useState('test-code-30')
   const [response, setResponse] = useState('')
 
   const validate = async () => {

@@ -6,7 +6,7 @@ dotenv.config({ path: '../../.env.local' })
 const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL)
 const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider)
 const semaphoreAbi = Semaphore.abi
-const semaphoreAddress = '0x7E309d777161b268b87c484CD979b7361b19c39C'
+const semaphoreAddress = '0x99aAb52e60f40AAC0BFE53e003De847bBDbC9611'
 const semaphoreContract = new ethers.Contract(
   semaphoreAddress,
   semaphoreAbi,
@@ -23,7 +23,7 @@ export default async function handler(req, res) {
     console.log(semaphoreContract)
     console.log(identityCommitment)
 
-    const tx = await semaphoreContract.addMember(42, identityCommitment)
+    const tx = await semaphoreContract.addMember(1080, identityCommitment)
     const response = await tx.wait()
 
     console.log(tx)
