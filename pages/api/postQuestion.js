@@ -1,56 +1,81 @@
-import { ethers } from "ethers";
-import dotenv from "dotenv";
-import { comments } from '../../data/comments'
+import { ethers } from 'ethers'
+import dotenv from 'dotenv'
+// import Semaphore from '../utils/Semaphore.json'
+import TazMessage from '../utils/TazMessage.json'
 
-dotenv.config({path: '../../.env.local'});
-// const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL);
-// const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
+dotenv.config({ path: '../../.env.local' })
+const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL)
+const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider)
+const tazMessageAbi = TazMessage.abi
+// const semaphoreAddress = process.env.SEMAPHORE_CONTRACT_ADDRESS
+const tazMessageAddress = process.env.TAZ_MESSAGE_CONTRACT_ADDRESS
 
+// const semaphoreContract = new ethers.Contract(
+//   semaphoreAddress,
+//   tazMessageAbi,
+//   signer,
+// )
 
-export default function handler(req, res) {
-    if(req.method === 'GET'){
-        res.status(200).json(comments)
-    }
+const tazMessageContract = new ethers.Contract(
+  tazMessageAddress,
+  tazMessageAbi,
+  signer,
+)
 
-    if(req.method === 'POST'){
-        const { question ,var2,var3} = req.body;
-        // const result = req.body.question;
-        console.log("Backend received this input from the fontend: ", question);
-        console.log(req.body);
+export default async function handler(req, res) {
+  console.log('called')
 
-        const newComment = { id: comments.length+1, text: question};
-        comments.push(newComment)
+  if (res.method === 'GET') {
+    res.status(200).json('Hello World')
+  } else if (req.method === 'POST') {
+    // Need to read these data but they are giving back undefined
+    const {
+      messageContent,
+      externalNullifier,
+      solidityProof,
+      signal,
+      nullifierHash,
+    } = req.body
+    // console.log(semaphoreContract);
+    console.log('-------------Solidity Proof')
+    console.log(solidityProof)
+    console.log('-------------External Nullifier')
 
-                    
-        res.status(201).json(comments);
-    }
- 
-    
-    // send transaction to smart contract with question as argument
+    console.log(externalNullifier)
+    console.log('-------------Signal')
 
+    console.log(signal)
+    console.log('-------------NullifierHash')
+    console.log(nullifierHash)
 
-     // send transaction with member as argument to smart contract
+    const bytes32Signal = ethers.utils.formatBytes32String(signal)
 
-  
-    //  const semaphoreAddress = "";
-    //  const semaphoreAbi=""
-    //  const provider = ""
+    console.log(bytes32Signal)
 
-    //  const fullSolidityProof="req.fullProof" // from (req body)
-    //  const nullifierHash = "req.nullifierHash" // from (req body)
-    //  const signal = "parse32Bytes(req.signal)" // need to check the exact ethers parsing method
-    //  const externalNullifier = "req.externalNullifier" // (from req body)
-    //  const groupId = 42
-     
+    // function addMessage(
+    //   uint256 messageId,
+    //   string memory messageContent,
+    //   uint256 groupId,
+    //   bytes32 signal,
+    //   uint256 nullifierHash,
+    //   uint256 externalNullifier,
+    //   uint256[8] calldata proof) external {
 
-     // const signer = new ethers.Wallet("").connect(provider)
-     // const semaphoreContract = new ethers.Contract(semaphoreAddress,semaphoreAbi,provider);
- 
-     // const postQuesttion = await semaphoreContract.verifyProof(groupId,signal,nullifierHash,externalNullifier,fullSolidityProof);
-     // const finalTx = await addMemberTx.wait()
- 
-     // return finalTx;
+    const tx = await tazMessageContract.addMessage(
+      1000,
+      messageContent,
+      1080,
+      bytes32Signal,
+      nullifierHash,
+      externalNullifier,
+      solidityProof,
+      { gasLimit: 1500000 },
+    )
+    const response = await tx.wait()
 
+    // console.log(tx);
+    console.log(response)
 
+    res.status(201).json(response)
   }
-  
+}

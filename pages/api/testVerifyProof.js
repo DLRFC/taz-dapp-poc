@@ -1,44 +1,81 @@
-import { ethers } from "ethers";
-import dotenv from "dotenv";
-import Semaphore from "../utils/Semaphore.json"
+import { ethers } from 'ethers'
+import dotenv from 'dotenv'
+// import Semaphore from '../utils/Semaphore.json'
+import TazMessage from '../utils/TazMessage.json'
 
+dotenv.config({ path: '../../.env.local' })
+const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL)
+const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider)
+const tazMessageAbi = TazMessage.abi
+// const semaphoreAddress = process.env.SEMAPHORE_CONTRACT_ADDRESS
+const tazMessageAddress = process.env.TAZ_MESSAGE_CONTRACT_ADDRESS
 
-dotenv.config({path: '../../.env.local'});
-const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL);
-const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider);
-const semaphoreAbi=Semaphore.abi 
-const semaphoreAddress="0x7E309d777161b268b87c484CD979b7361b19c39C";
-const semaphoreContract = new ethers.Contract(semaphoreAddress,semaphoreAbi,signer);
+// const semaphoreContract = new ethers.Contract(
+//   semaphoreAddress,
+//   tazMessageAbi,
+//   signer,
+// )
+
+const tazMessageContract = new ethers.Contract(
+  tazMessageAddress,
+  tazMessageAbi,
+  signer,
+)
 
 export default async function handler(req, res) {
-    console.log("called")
+  console.log('called')
 
-    if(res.method === 'GET'){
+  if (res.method === 'GET') {
+    res.status(200).json('Hello World')
+  } else if (req.method === 'POST') {
+    // Need to read these data but they are giving back undefined
+    const {
+      messageContent,
+      externalNullifier,
+      solidityProof,
+      signal,
+      nullifierHash,
+    } = req.body
+    // console.log(semaphoreContract);
+    console.log('-------------Solidity Proof')
+    console.log(solidityProof)
+    console.log('-------------External Nullifier')
 
-        res.status(200).json("Hello World");
+    console.log(externalNullifier)
+    console.log('-------------Signal')
 
-    } else if( req.method === 'POST'){
-        //Need to read these data but they are giving back undefined
-        const { externalNullifier , solidityProof , signal, nullifierHash } = req.body
-        // console.log(semaphoreContract);
-        console.log(solidityProof);
-        console.log(externalNullifier);
-        console.log(signal);
-        console.log(nullifierHash);
+    console.log(signal)
+    console.log('-------------NullifierHash')
+    console.log(nullifierHash)
 
-        const bytes32Signal = ethers.utils.formatBytes32String(signal); 
-   
-        console.log(bytes32Signal);
+    const bytes32Signal = ethers.utils.formatBytes32String(signal)
 
-        const tx = await semaphoreContract.verifyProof(42,bytes32Signal,nullifierHash,externalNullifier,solidityProof,{ gasLimit: 1500000});
-        const response = await tx.wait();
+    console.log(bytes32Signal)
 
-        // console.log(tx);
-        console.log(response);
+    // function addMessage(
+    //   uint256 messageId,
+    //   string memory messageContent,
+    //   uint256 groupId,
+    //   bytes32 signal,
+    //   uint256 nullifierHash,
+    //   uint256 externalNullifier,
+    //   uint256[8] calldata proof) external {
 
-        const result = "true";
+    const tx = await tazMessageContract.addMessage(
+      1000,
+      messageContent,
+      1080,
+      bytes32Signal,
+      nullifierHash,
+      externalNullifier,
+      solidityProof,
+      { gasLimit: 1500000 },
+    )
+    const response = await tx.wait()
 
-        res.status(201).json(response);
-    }
-    
+    // console.log(tx);
+    console.log(response)
+
+    res.status(201).json(response)
+  }
 }

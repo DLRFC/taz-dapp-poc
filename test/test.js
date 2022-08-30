@@ -6,11 +6,13 @@ const { Group } = require("@semaphore-protocol/group");
 const { generateProof } = require('@semaphore-protocol/proof');
 const { verifyProof } = require('@semaphore-protocol/proof');
 const { packToSolidityProof } = require('@semaphore-protocol/proof');
+const { Subgraph } = require('@semaphore-protocol/subgraph')
 const { solidity } = require("../hardhat.config");
 
-console.log("Starting test");
+const tazMessageAbi = require("../artifacts/contracts/TazMessage.sol/TazMessage.json").abi;
+const USE_EXISTING_TAZ_MESSAGE_CONTRACT = "0xa6E078cc0AD77d69f7Ee28C0A76956C2f1fF47DD";
 
-describe("TazMessage", function () {
+describe("TazMessage tests", function () {
     let tazMessageContract;
     let signers;
     let groupId;
@@ -19,38 +21,33 @@ describe("TazMessage", function () {
     let externalNullifier;
     let proof;
 
-    before(async () => {
-        tazMessageContract = await run("deployTazMessage", { logs: true });
+    before(async () => {        
         signers = await ethers.getSigners();
+        if(USE_EXISTING_TAZ_MESSAGE_CONTRACT) {
+            tazMessageContract = await new ethers.Contract(USE_EXISTING_TAZ_MESSAGE_CONTRACT, tazMessageAbi, signers[0]);
+        }
+        else{
+            tazMessageContract = await run("deployTazMessage", { logs: true });
+        }
     })
 
     it("Should add message", async () => {
         
-        const messageContent = "What is the Name of the Dapp?";
-        const messageId = 1;
+        const messageContent = "My cat responded to their name today. Do I have a dog now?";
+        const messageId = 5;
 
-        const newIdentity = new Identity('secret-message');
-        const newIdentityCommitment = newIdentity.generateCommitment();
-        const group = new Group(16);
-        group.addMember(newIdentityCommitment);
-        const externalNullifier = Math.round(Math.random() * 10000);        
-        const signal = messageContent;
-        const fullProof = await generateProof(newIdentity, group, externalNullifier, signal, {
-            zkeyFilePath: "static/semaphore.zkey",
-            wasmFilePath: "static/semaphore.wasm"
-        });
-        const { nullifierHash } = fullProof.publicSignals;
-        const solidityProof = packToSolidityProof(fullProof.proof);
-        const signalBytes32 = ethers.utils.formatBytes32String(signal);
-        const groupId = 42; // fixed at 42
-
-        console.log("LOG | groupId", groupId);
-        console.log("LOG | signalBytes32", signalBytes32);
-        console.log("LOG | nullifierHash", nullifierHash);
-        console.log("LOG | externalNullifier", externalNullifier);
-        console.log("LOG | solidityProof", solidityProof);        
+        proofElements = await run("createProof", { logs: true });       
         
-        const tx = await tazMessageContract.addMessage(messageId, messageContent, groupId, signalBytes32, nullifierHash, externalNullifier, solidityProof, { gasLimit: 1500000 });
+        const tx = await tazMessageContract.addMessage(
+            messageId, 
+            messageContent, 
+            proofElements.groupId, 
+            proofElements.signalBytes32, 
+            proofElements.nullifierHash, 
+            proofElements.externalNullifier, 
+            proofElements.solidityProof, 
+            { gasLimit: 1500000 });
+            
         const receipt = await tx.wait();
 
         // console.log("LOG | Message added. Receipt: ", receipt);
@@ -58,6 +55,64 @@ describe("TazMessage", function () {
         
         expect(receipt.events[1].event).to.equal("MessageAdded");
     })
+
+    it("Should reply to message", async () => {
+        
+        const messageContent = "The name of the Dapp is TAZ!";
+        const messageId = 2;
+        const parentMessageId = 1;
+
+        proofElements = await run("createProof", { logs: true });           
+        
+        const tx = await tazMessageContract.replyToMessage(
+            parentMessageId, 
+            messageId, 
+            messageContent, 
+            proofElements.groupId, 
+            proofElements.signalBytes32, 
+            proofElements.nullifierHash, 
+            proofElements.externalNullifier, 
+            proofElements.solidityProof, 
+            { gasLimit: 1500000 });
+            
+        const receipt = await tx.wait();
+        
+        expect(receipt.events[1].event).to.equal("MessageAdded");
+    });
+
+    it("Should fail to reply to message", async () => {
+        
+        const messageContent = "The name of the Dapp is TAZ!";
+        const messageId = 2;
+        const parentMessageId = 0;
+
+        proofElements = await run("createProof", { logs: true });  
+
+        const tx = await tazMessageContract.replyToMessage(
+            parentMessageId, 
+            messageId, 
+            messageContent, 
+            proofElements.groupId, 
+            proofElements.signalBytes32, 
+            proofElements.nullifierHash, 
+            proofElements.externalNullifier, 
+            proofElements.solidityProof, 
+            { gasLimit: 1500000 });
+        
+        await expect(tazMessageContract.replyToMessage(
+            parentMessageId, 
+            messageId, 
+            messageContent, 
+            proofElements.groupId, 
+            proofElements.signalBytes32, 
+            proofElements.nullifierHash, 
+            proofElements.externalNullifier, 
+            proofElements.solidityProof, 
+            { gasLimit: 1500000 }
+            )).to.be.revertedWith("Invalid ID provided for parent message");
+   
+    })
+
 });
 
 
