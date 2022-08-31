@@ -163,7 +163,7 @@ const AnswerBoard = (props) => {
               />
             </svg>
           </Link>
-          <Link>
+          <Link href="answer-question-page">
             <button className="flex justify-between bg-white border-[1px] border-brand-gray py-1 px-3 shadow-[-3px_3px_0px_0px_rgba(71,95,111)]">
               <p className="text-brand-gray tracking-tighter">
                 Answer this question

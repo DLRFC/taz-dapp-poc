@@ -26,6 +26,7 @@ const Drawing = (props) => {
   // },[uriStorage])
 
   const handleMouseDown = (e) => {
+    console.log(uriStorage)
     isDrawing.current = true
     const pos = e.target.getStage().getPointerPosition()
     setLines([...lines, { tool, points: [pos.x, pos.y] }])
@@ -86,18 +87,18 @@ const Drawing = (props) => {
     })
   }
 
-  const uriStorageRender = () => {
-    if (uriStorage[props.selectedImage]) {
-      const uriStorageRender = uriStorage[props.selectedImage].map(
-        (item, index) => (
-          <div className="container" key={index}>
-            <img src={item} alt="" className="image"></img>
-          </div>
-        ),
-      )
-      return uriStorageRender
-    }
-  }
+  // const uriStorageRender = () => {
+  //   if (uriStorage[props.selectedImage]) {
+  //     const uriStorageRender = uriStorage[props.selectedImage].map(
+  //       (item, index) => (
+  //         <div className="container" key={index}>
+  //           <img src={item} alt="" className="image"></img>
+  //         </div>
+  //       ),
+  //     )
+  //     return uriStorageRender
+  //   }
+  // }
 
   return (
     <div className="border-black bg-transparent touch-none">

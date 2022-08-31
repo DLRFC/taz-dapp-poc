@@ -12,9 +12,9 @@ export const GenerateIdentity = (props) => {
 
   const identityLogin = useIdentityLogin()
   const [imageUrl, setImageUrl] = useState('')
-  const [isGeneratingIdentity, setIsGeneratingIdentity] = useState(false)
+  // const [isGeneratingIdentity, setIsGeneratingIdentity] = useState(false)
   const handleJoinButton = async () => {
-    setIsGeneratingIdentity(true)
+    // setIsGeneratingIdentity(true)
     const identity = new Identity()
     const identityCommitment = identity.generateCommitment().toString()
     const identityKey = identity.toString()
@@ -31,7 +31,7 @@ export const GenerateIdentity = (props) => {
       setImageUrl(responseQR)
     } catch (error) {
       console.log(error)
-      setIsGeneratingIdentity(false)
+      // setIsGeneratingIdentity(false)
     }
 
     console.log(response.data)

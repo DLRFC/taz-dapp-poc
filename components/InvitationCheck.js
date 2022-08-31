@@ -11,7 +11,7 @@ import { useIdentityLogin } from './IdentityProvider'
 export default function InvitationCheck() {
   const [selected, setSelected] = useState('environment')
   const [startScan, setStartScan] = useState(false)
-  const [loadingScan, setLoadingScan] = useState(false)
+  // const [loadingScan, setLoadingScan] = useState(false)
   const [data, setData] = useState('')
   const identityLogin = useIdentityLogin()
   const [invitation, setInvitation] = useState('test-code-15')
@@ -23,14 +23,14 @@ export default function InvitationCheck() {
   const qrRef = useRef(null)
 
   const handleScan = async (scanData) => {
-    setLoadingScan(true)
+    // setLoadingScan(true)
     try {
       console.log(`loaded data data`, scanData)
       if (scanData && scanData !== '') {
         console.log(`loaded >>>`, scanData)
         setData(scanData)
         setStartScan(false)
-        setLoadingScan(false)
+        // setLoadingScan(false)
       }
     } catch {
       console.log('error')
