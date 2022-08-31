@@ -82,7 +82,6 @@ export default function InvitationCheck() {
     if (result) {
       console.log(result)
       console.log('Scanned!')
-      // window.localStorage.setItem('identity', result)
       identityLogin(result)
       // Add if Identity is part of the Group
       router.push(`/ask-question-page`)
