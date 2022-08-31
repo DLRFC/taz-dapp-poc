@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Header from './Header'
 import Link from 'next/link'
 import axios from 'axios'
@@ -19,6 +19,22 @@ const AskQuestion = () => {
   const identityKey = useIdentity()
 
   const router = useRouter()
+
+  useEffect(() => {
+    // setter
+    console.log(window)
+    console.log(window.localStorage)
+    // if (identityKey === '') {
+    //   identityKey = window.localStorage.getItem('identity')
+    // }
+    // window.localStorage.setItem('identity', identityKey)
+    // getter
+    // localStorage.getItem('myData')
+    // remove
+    // localStorage.removeItem('myData')
+    // remove all
+    // localStorage.clear()
+  })
 
   const handleAskButton = async () => {
     console.log(signal)
@@ -93,10 +109,10 @@ const AskQuestion = () => {
       console.log(response.data)
       // go to the next page
       router.push('/questions-page')
-    } catch {
+    } catch (error) {
       setIsLoading(false)
       // Custom error depending on points of failure
-      alert('Question is to Big')
+      alert(error)
     }
   }
 
@@ -145,7 +161,7 @@ const AskQuestion = () => {
           ></input>
           {isLoading ? (
             <button className="bg-brand-beige2 w-full p-2 rounded-lg border-2 border-brand-gray shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]">
-              Loading for transaction
+              Waiting for transaction
             </button>
           ) : (
             <button

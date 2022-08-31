@@ -3,17 +3,31 @@ import AskQuestion from '../components/AskQuestion'
 import { useIdentity } from '../components/IdentityProvider'
 import Link from 'next/link'
 // import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 
 export default function AskQuestionPage() {
-  const identityKey = useIdentity()
+  const [localIdentity, setLocalIdentity] = useState()
+  let identityKey = useIdentity()
   console.log('Identity Found')
   console.log(identityKey)
+  // console.log(window.localStorage)
   // const router = useRouter()
   // const { invitation } = router.query
 
+  useEffect(() => {
+    // setter
+    console.log(window)
+    console.log(window.localStorage)
+    if (identityKey === '') {
+      identityKey = window.localStorage.getItem('identity')
+    }
+    setLocalIdentity(identityKey)
+    console.log(identityKey)
+  })
+
   return (
     <div>
-      {identityKey ? (
+      {localIdentity ? (
         <AskQuestion />
       ) : (
         <>
