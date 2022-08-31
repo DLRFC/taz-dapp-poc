@@ -1,4 +1,5 @@
-import React, { useState, useRef} from "react";
+import React, { useState, useRef, createRef} from "react";
+import { useScreenshot, createFileName } from "use-react-screenshot";
 import { Stage, Layer, Line } from "react-konva";
 
 export default function artBoard() {
@@ -13,6 +14,35 @@ export default function artBoard() {
   const isDrawing = React.useRef(false);
   const stageRef = React.useRef(null);
 
+  //SAVE TILES AS ONE IMAGE - @WRITERSBLOCKCHAIN
+  const ref = createRef(null);
+  const [image, takeScreenShot] = useScreenshot({
+    type: "image/png",
+    quality: 1.0
+  });
+
+
+    //COMING BACK TO THIS ON AUG 30, URI NOT WORKING YET - @WRITERSBLOCKCHAIN
+  // const ipfsURI = (image, { name = "img", extension = "png" } = {}) => {
+  // let image =  createFileName(extension, name)
+  // let canvas = document.createElement("canvas");
+	// canvas.width = image.width;
+	// canvas.height = image.height;
+	// canvas.getContext("2d").drawImage(image, 0, 0);
+  // const dataURL = canvas.toDataURL();
+  // console.log("CANVAS 9 TILES URI:", dataURL);
+  // };
+
+    const download = (image, { name = "img", extension = "jpg" } = {}) => {
+    const a = document.createElement("a");
+    a.href = image;
+    a.download = createFileName(extension, name);
+    a.click();
+  };
+
+  const downloadScreenshot = () => takeScreenShot(ref.current).then(download);
+  // const sendURI = () => takeScreenShot(ref.current).then(ipfsURI);
+
   //NO LONGER NEEDED - USER GETS RANDOM SELECTED TILE
   const onImageClick = (e) => {
     setSelectedTile(parseInt(e.target.id));
@@ -22,6 +52,7 @@ export default function artBoard() {
   let innerHTML = [];
   for (let i = 0; i < 9; i++) {
     innerHTML.push(
+        
       <div
         class={`bg-white h-flex ${
           selectedTile === i
@@ -39,6 +70,7 @@ export default function artBoard() {
           }
         />
       </div>
+     
     );
   }
 
@@ -134,7 +166,12 @@ export default function artBoard() {
   return (
     <>
       <h1 class="text-4xl">ART BOARD</h1>
-      <div class="grid grid-cols-3 p-4 bg-red-500 max-w-3xl">{innerHTML}</div>
+      <div
+      ref={ref}
+      id="ipfsURI"
+      class="grid grid-cols-3 p-4 bg-red-500 max-w-3xl">{innerHTML}</div>
+         <button onClick={downloadScreenshot}>Download screenshot</button>
+         {/* <button onClick={sendURI}>Export Image URI</button> */}
 
       <div className="border-black bg-transparent touch-none">
         <h1 class="text-4xl">SKETCHING AREA</h1>
