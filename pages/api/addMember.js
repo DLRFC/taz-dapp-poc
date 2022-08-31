@@ -34,7 +34,7 @@ export default async function handler(req, res) {
 
       const dbs = await client.query(
         query.Map(
-          query.Paginate(query.Match(query.Index('all_codes'))),
+          query.Paginate(query.Match(query.Index('all_codes')), {size: 10000}),
           query.Lambda('codeRef', query.Get(query.Var('codeRef'))),
         ),
       )
