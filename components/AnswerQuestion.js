@@ -6,6 +6,7 @@ import { Identity } from '@semaphore-protocol/identity'
 import { Group } from '@semaphore-protocol/group'
 import { useRouter } from 'next/router'
 
+
 // import { useIdentity } from './IdentityProvider'
 const { generateProof } = require('@semaphore-protocol/proof')
 const { verifyProof } = require('@semaphore-protocol/proof')
@@ -13,12 +14,15 @@ const { packToSolidityProof } = require('@semaphore-protocol/proof')
 const { Subgraph } = require('@semaphore-protocol/subgraph')
 
 // 3. Ask Answer Page
-const AnswerQuestion = () => {
+const AnswerQuestion = (props) => {
+  
   const [signal, setSignal] = useState('Select Signal')
   const [isLoading, setIsLoading] = useState(false)
   const [localIdentity, setLocalIdentity] = useState()
 
   const router = useRouter()
+
+  const messageId = props.messageId
 
   useEffect(() => {
     // setter
@@ -45,10 +49,11 @@ const AnswerQuestion = () => {
       console.log(localIdentity)
 
       // Generate Group
+      const groupId = '1080'
       const group = new Group(16)
       const subgraph = new Subgraph('goerli')
 
-      const { members } = await subgraph.getGroup('1080', { members: true })
+      const { members } = await subgraph.getGroup(groupId, { members: true })
       console.log('Members')
       console.log(members)
 
@@ -75,8 +80,7 @@ const AnswerQuestion = () => {
 
       const { nullifierHash } = fullProof.publicSignals
       const solidityProof = packToSolidityProof(fullProof.proof)
-      console.log('NullifierHash')
-      console.log(nullifierHash)
+      console.log('NullifierHash', nullifierHash)
 
       // Verify Proof Off Chain
       // Fetch Verification Key
@@ -88,29 +92,31 @@ const AnswerQuestion = () => {
       })
 
       const res = await verifyProof(verificationKey, fullProof)
-      console.log('Verification')
-      console.log(res)
-
-      const messageId = externalNullifier
-      const messageContent = signal
+      console.log('Verification', res)
 
       const body = {
-        messageId,
-        messageContent,
+        parentMessageId: messageId, // The parent of the new message will be the current message
+        messageId: externalNullifier,
+        messageContent: signal,
+        groupId: groupId,
         externalNullifier,
         signal,
         nullifierHash,
         solidityProof,
       }
-      console.log(body)
+
+      console.log("posting body:", body)
+
       // Verifying Zero Knowladge Proof on Chain and sending Answer
-      const response = await axios.post('/api/postAnswer', body)
+      const response = await axios.post('/api/postMessage', body)
       console.log(response)
       console.log(response.data)
+
       // go to the next page
       router.push('/questions-page')
     } catch (error) {
       setIsLoading(false)
+
       // Custom error depending on points of failure
       alert(error)
     }
@@ -170,7 +176,7 @@ const AnswerQuestion = () => {
               className="bg-brand-beige2 w-full p-2 rounded-lg border-2 border-brand-gray shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]"
               onClick={handleAskButton}
             >
-              Ask
+              Submit Reply
             </button>
           )}
         </div>
