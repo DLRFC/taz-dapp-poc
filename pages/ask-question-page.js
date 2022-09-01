@@ -1,15 +1,15 @@
 import AskQuestion from '../components/AskQuestion'
 // import { GenerateIdentity } from '../components/GenerateIdentity'
-import { useIdentity } from '../components/IdentityProvider'
+// import { useIdentity } from '../components/IdentityProvider'
 import Link from 'next/link'
 // import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { Identity } from '@semaphore-protocol/identity'
-import { Group } from '@semaphore-protocol/group'
-const { Subgraph } = require('@semaphore-protocol/subgraph')
+// import { Identity } from '@semaphore-protocol/identity'
+// import { Group } from '@semaphore-protocol/group'
+// const { Subgraph } = require('@semaphore-protocol/subgraph')
 
 export default function AskQuestionPage() {
-  const [localIdentity, setLocalIdentity] = useState()
+  // const [localIdentity, setLocalIdentity] = useState()
   const [isMember, setIsMember] = useState(false)
   let identityKey = ''
   // console.log('Identity Found')

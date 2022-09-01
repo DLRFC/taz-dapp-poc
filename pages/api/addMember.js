@@ -68,10 +68,10 @@ export default async function handler(req, res) {
 
         res.status(201).json(response)
       } else {
-        res.status(200).json({ Error: 'Invalid code' })
+        res.status(401).json({ Error: 'Invalid code' })
       }
     } catch (error) {
-      res.status(503).json({ Error: error.message })
+      res.status(403).json({ Error: error.message })
     }
   }
 }
