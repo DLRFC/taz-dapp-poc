@@ -6,6 +6,7 @@ import QrReader from 'react-qr-reader'
 import { useRouter } from 'next/router'
 
 import { useIdentityLogin } from './IdentityProvider'
+const { Subgraph } = require('@semaphore-protocol/subgraph')
 
 // Page 1 it will check Invitation
 export default function InvitationCheck() {
@@ -30,6 +31,15 @@ export default function InvitationCheck() {
         console.log(`loaded >>>`, scanData)
         setData(scanData)
         setStartScan(false)
+
+        // const apiResponse = await axios.post('/api/validateInvitation', {
+        //   scanData,
+        // })
+        // console.log('Is code valid and not used yet? ', apiResponse.data.isValid)
+
+        // console.log(apiResponse.data.isValid)
+        // setResponse(apiResponse.data.isValid)
+
         // setLoadingScan(false)
       }
     } catch {
@@ -78,10 +88,16 @@ export default function InvitationCheck() {
     console.error(err)
   }
 
-  const handleScanQrCode = (result) => {
+  const handleScanQrCode = async (result) => {
     if (result) {
       console.log(result)
       console.log('Scanned!')
+      const subgraph = new Subgraph('goerli')
+
+      const { members } = await subgraph.getGroup('1080', { members: true })
+      console.log('Members')
+      console.log(members)
+      // check it identity is part of members array
       identityLogin(result)
       // Add if Identity is part of the Group
       router.push(`/ask-question-page`)

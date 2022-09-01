@@ -14,15 +14,15 @@ export function useIdentityLogin() {
 export function IdentityProvider({ children }) {
   const [identity, setIdentity] = useState('')
 
-  // function loginIdentity(value) {
-  //   window.localStorage.setItem('identity', value)
-  //   setIdentity(value)
-  // }
-
-  const loginIdentity = useCallback((value) => {
-    setIdentity(value)
+  function loginIdentity(value) {
     window.localStorage.setItem('identity', value)
-  }, [])
+    setIdentity(value)
+  }
+
+  // const loginIdentity = useCallback((value) => {
+  //   setIdentity(value)
+  //   window.localStorage.setItem('identity', value)
+  // }, [])
 
   return (
     <IdentityContext.Provider value={identity}>
