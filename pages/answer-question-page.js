@@ -1,21 +1,13 @@
-import AskQuestion from '../components/AskQuestion'
-// import { GenerateIdentity } from '../components/GenerateIdentity'
-import { useIdentity } from '../components/IdentityProvider'
+import AnswerQuestion from '../components/AnswerQuestion'
 import Link from 'next/link'
-// import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
-export default function AskQuestionPage() {
+export default function AnswerQuestionPage() {
   const [localIdentity, setLocalIdentity] = useState()
-  let identityKey = useIdentity()
-  console.log('Identity Found')
-  console.log(identityKey)
-  // console.log(window.localStorage)
-  // const router = useRouter()
-  // const { invitation } = router.query
 
   useEffect(() => {
     // setter
+    let identityKey = ''
     console.log(window)
     console.log(window.localStorage)
     if (identityKey === '') {
@@ -28,7 +20,7 @@ export default function AskQuestionPage() {
   return (
     <div>
       {localIdentity ? (
-        <AskQuestion />
+        <AnswerQuestion />
       ) : (
         <>
           <h1 className="flex items-center justify-center p-10 text-2xl">

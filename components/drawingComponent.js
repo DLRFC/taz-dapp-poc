@@ -9,23 +9,14 @@ const Drawing = (props) => {
   const [color, setColor] = React.useState([])
   const isDrawing = React.useRef(false)
   const stageRef = React.useRef(null)
-  const [uriStorage, setUriStorage] = React.useState([
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-  ])
+  const [uriStorage, setUriStorage] = React.useState([,,,,,,,,])
 
   // useEffect(() => {
   //   setUriStorage(uriStorage);
   // },[uriStorage])
 
   const handleMouseDown = (e) => {
+    console.log(uriStorage)
     isDrawing.current = true
     const pos = e.target.getStage().getPointerPosition()
     setLines([...lines, { tool, points: [pos.x, pos.y] }])
@@ -74,35 +65,34 @@ const Drawing = (props) => {
 
   const exportUri = () => {
     const uri = stageRef.current.toDataURL()
-
     setUriStorage((uriStorage) => {
-      uriStorage[props.selectedImage] = [
-        ...uriStorage[props.selectedImage],
-        uri.toString(),
-      ]
-      props.uriStorageCallback(uriStorage)
-      console.log(uriStorage)
-      return uriStorage
-    })
+      let uriStorageTemp = uriStorage;
+      uriStorageTemp[props.selectedImage] = uri.toString();
+      console.log("uriStorageTemp:")
+      console.log(uriStorageTemp)
+      return uriStorageTemp
+    });
+    props.uriStorageCallback(uriStorage)
+    setLines([]);
   }
 
-  const uriStorageRender = () => {
-    if (uriStorage[props.selectedImage]) {
-      const uriStorageRender = uriStorage[props.selectedImage].map(
-        (item, index) => (
-          <div className="container" key={index}>
-            <img src={item} alt="" className="image"></img>
-          </div>
-        ),
-      )
-      return uriStorageRender
-    }
-  }
+  // const uriStorageRender = () => {
+  //   if (uriStorage[props.selectedImage]) {
+  //     const uriStorageRender = uriStorage[props.selectedImage].map(
+  //       (item, index) => (
+  //         <div className="container" key={index}>
+  //           <img src={item} alt="" className="image"></img>
+  //         </div>
+  //       ),
+  //     )
+  //     return uriStorageRender
+  //   }
+  // }
 
   return (
     <div className="border-black bg-transparent touch-none">
-      <h1>SKETCHING AREA</h1>
-      <div className="border-black max-w-[250px] border-2 touch-none">
+      <h1 class="text-4xl">SKETCHING AREA</h1>
+      <div className="border-black max-w-[250px] border-2 touch-none bg-white">
         <Stage
           width={250}
           height={250}
@@ -133,7 +123,7 @@ const Drawing = (props) => {
           </Layer>
         </Stage>
       </div>
-      <select
+      {/* <select
         value={tool}
         onChange={(e) => {
           setTool(e.target.value)
@@ -141,10 +131,10 @@ const Drawing = (props) => {
       >
         <option value="pen">Pen</option>
         <option value="eraser">Eraser</option>
-      </select>
-      <button onClick={newColor}>New Color </button>
-      <button onClick={handleUndo}>Undo</button>
-      <button onClick={exportUri}>Export Uri</button>
+      </select> */}
+      <button class="m-2 p-2 rounded-md bg-slate-500" onClick={newColor}>New Color </button>
+      <button class="m-2 p-2 rounded-md bg-slate-500" onClick={handleUndo}>Undo</button>
+      <button class="m-2 p-2 rounded-md bg-slate-500" onClick={exportUri}>Submit</button>
 
       <div className="uriStorageRendering">{/* uriStorageRender() */}</div>
       {/* <img src={uriStorage[1]} alt=''></img> */}
