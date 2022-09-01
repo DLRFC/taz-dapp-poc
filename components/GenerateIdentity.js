@@ -43,7 +43,6 @@ export const GenerateIdentity = (props) => {
         console.log(res)
         console.log('Status!')
         console.log(res.status)
-
         identityLogin(identityKey)
         try {
           const responseQR = await QRCode.toDataURL(identityKey)
