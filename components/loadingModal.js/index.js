@@ -52,9 +52,9 @@ export default function LoadingModal({
         <h1 className="font-xl text-center w-[80%] p-3 text-brand-gray text-clip overflow-clip">
           {loadingProof}
         </h1>
-        <button className="border-2 border-brand-gray" onClick={onClose}>
+        {/* <button className="border-2 border-brand-gray" onClick={onClose}>
           Close
-        </button>
+        </button> */}
       </motion.div>
     </div>
   )
