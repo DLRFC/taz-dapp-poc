@@ -79,15 +79,15 @@ const AskQuestion = () => {
 
       // Verify Proof Off Chain
       // Fetch Verification Key
-      const verificationKey = await fetch(
-        'https://www.trusted-setup-pse.org/semaphore/16/semaphore.json',
-      ).then(function (res) {
-        return res.json()
-      })
+      // const verificationKey = await fetch(
+      //   'https://www.trusted-setup-pse.org/semaphore/16/semaphore.json',
+      // ).then(function (res) {
+      //   return res.json()
+      // })
 
-      const res = await verifyProof(verificationKey, fullProof)
-      console.log('Verification')
-      console.log(res)
+      // const res = await verifyProof(verificationKey, fullProof)
+      // console.log('Verification')
+      // console.log(res)
 
       const messageId = externalNullifier
       const messageContent = signal
