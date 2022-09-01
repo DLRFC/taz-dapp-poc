@@ -18,6 +18,7 @@
     "dotenv": "^16.0.1",
     "ethers": "^5.7.0",
     "faunadb": "^4.6.0",
+    "framer-motion": "^7.2.1",
     "fs": "^0.0.1-security",
     "html2canvas": "^1.4.1",
     "konva": "^8.3.11",

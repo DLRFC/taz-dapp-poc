@@ -5,6 +5,7 @@ import axios from 'axios'
 import { Identity } from '@semaphore-protocol/identity'
 import { Group } from '@semaphore-protocol/group'
 import { useRouter } from 'next/router'
+import LoadingModal from './loadingModal.js'
 
 // import { useIdentity } from './IdentityProvider'
 const { generateProof } = require('@semaphore-protocol/proof')
@@ -17,6 +18,8 @@ const AskQuestion = () => {
   const [signal, setSignal] = useState('Select Signal')
   const [isLoading, setIsLoading] = useState(false)
   const [localIdentity, setLocalIdentity] = useState()
+  const [loadingMessage, setLoadingMessage] = useState('')
+  const [loadingProof, setLoadingProof] = useState('')
 
   const router = useRouter()
 
@@ -37,6 +40,7 @@ const AskQuestion = () => {
   const handleAskButton = async () => {
     console.log(signal)
     setIsLoading(true)
+    setLoadingMessage('1. Generating Zero Knowledge Proof')
     try {
       const identity = new Identity(localIdentity)
       const identityCommitment = identity.generateCommitment()
@@ -88,6 +92,10 @@ const AskQuestion = () => {
       console.log('Verification')
       console.log(res)
 
+      setLoadingMessage(
+        '2. Proof have been Generated, we are now submiting your Question Transaction',
+      )
+      setLoadingProof(solidityProof)
       const messageId = externalNullifier
       const messageContent = signal
 
@@ -106,6 +114,7 @@ const AskQuestion = () => {
       console.log(response)
       console.log(response.data)
       // go to the next page
+      setLoadingMessage('3. Transaction Succesfuly Submitted!')
       router.push('/questions-page')
     } catch (error) {
       setIsLoading(false)
@@ -114,8 +123,26 @@ const AskQuestion = () => {
     }
   }
 
+  const onClose = () => {
+    setIsLoading(!isLoading)
+  }
+
+  const clearIdentity = () => {
+    console.log('clear')
+    window.localStorage.removeItem('identity')
+  }
+
   return (
     <div className="p-4 font-sans bg-brand-beige">
+      {isLoading ? (
+        <div className="absolute top-[0px] left-[0px] z-20">
+          <LoadingModal
+            onClose={onClose}
+            loadingMessage={loadingMessage}
+            loadingProof={loadingProof}
+          />
+        </div>
+      ) : null}
       <Header />
       <svg
         className="absolute -left-2 top-[370px]"
@@ -140,7 +167,9 @@ const AskQuestion = () => {
 
       <div className="flex flex-col items-center overflow-hidden rounded-md border-2 border-brand-gray shadow-xl">
         <div className="flex w-full justify-between border-b-2 border-brand-gray bg-brand-beige2 p-3">
-          <div>X</div>
+          <Link href="/questions-page">
+            <div className="cursor-pointer">Back</div>
+          </Link>
           <div>Q&A</div>
           <div></div>
         </div>
@@ -170,6 +199,12 @@ const AskQuestion = () => {
             </button>
           )}
         </div>
+        {/* <button
+          className="bg-brand-beige2 w-full p-2 rounded-lg border-2 border-brand-gray shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]"
+          onClick={onClose}
+        >
+          Check Modal
+        </button> */}
       </div>
 
       <div className="flex justify-between w-[70%] py-6 text-white  z-[5]">
@@ -180,6 +215,9 @@ const AskQuestion = () => {
       <Link href="questions-page">
         <button>Go to Questions Board Page(Test)</button>
       </Link>
+      <button className="p-4" onClick={clearIdentity}>
+        Clear Cache
+      </button>
     </div>
   )
 }
