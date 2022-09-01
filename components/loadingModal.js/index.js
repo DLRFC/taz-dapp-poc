@@ -3,7 +3,11 @@ import React, { useState } from 'react'
 // import styles from './Modal.module.css'
 import { motion } from 'framer-motion'
 
-export default function LoadingModal({ onClose }) {
+export default function LoadingModal({
+  onClose,
+  loadingMessage,
+  loadingProof,
+}) {
   const handleClick = () => {
     onClose && onClose()
   }
@@ -28,10 +32,11 @@ export default function LoadingModal({ onClose }) {
       opacity: 0,
     },
   }
+
   return (
     <div
       onClick={handleClick}
-      className="absolute h-[100%] w-[100%] bg-[#00000070] flex flex-col items-center justify-center"
+      className="absolute h-[100vh] w-[100vw] bg-[#00000070] flex flex-col items-center justify-center"
     >
       <motion.div
         variants={dropIn}
@@ -39,15 +44,15 @@ export default function LoadingModal({ onClose }) {
         animate="visible"
         exit="exit"
         onClick={(e) => e.stopPropagation()}
-        className="w-[70%] h-[50%] bg-[#fff] border-[1px] flex flex-col items-center justify-center rounded-[5px]"
+        className="w-[70%] h-[50%] bg-brand-beige2 border-[1px] flex flex-col items-center justify-center rounded-[5px]"
       >
-        <h1 className="font-xl text-center">
-          Create this Modal on{' '}
-          <a className="text-[#0891b2]" href="https://algochurn.com">
-            Algochurn
-          </a>
+        <h1 className="font-xl text-center text-brand-gray">
+          {loadingMessage}
         </h1>
-        <button className="button" onClick={onClose}>
+        <h1 className="font-xl text-center w-[80%] p-3 text-brand-gray text-clip overflow-clip">
+          {loadingProof}
+        </h1>
+        <button className="border-2 border-brand-gray" onClick={onClose}>
           Close
         </button>
       </motion.div>

@@ -20,13 +20,13 @@ export default function Home() {
     setLocalIdentity(identityKey)
     console.log(identityKey)
   })
-  // return <div>{localIdentity ? <ExperiencesList /> : <InvitationCheck />}</div>
+  return <div>{localIdentity ? <ExperiencesList /> : <InvitationCheck />}</div>
 
   // current solution to check invitation
-  return (
-    <div>
-      {' '}
-      <InvitationCheck />{' '}
-    </div>
-  )
+  // return (
+  //   <div>
+  //     {' '}
+  //     <InvitationCheck />{' '}
+  //   </div>
+  // )
 }
