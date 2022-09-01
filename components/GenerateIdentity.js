@@ -26,7 +26,6 @@ export const GenerateIdentity = (props) => {
     const identity = new Identity()
     const identityCommitment = identity.generateCommitment().toString()
     const identityKey = identity.toString()
-    identityLogin(identityKey)
     console.log(identityCommitment)
 
     setLoadingMessage(
@@ -39,6 +38,8 @@ export const GenerateIdentity = (props) => {
       invitation,
     })
     // step 3
+    identityLogin(identityKey)
+
     try {
       const responseQR = await QRCode.toDataURL(identityKey)
       setImageUrl(responseQR)
