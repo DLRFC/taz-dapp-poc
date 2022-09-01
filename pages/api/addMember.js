@@ -16,7 +16,9 @@ const semaphoreContract = new ethers.Contract(
 );
 
 export default async function handler(req, res) {
+
   const { invitation, identityCommitment } = req.body;
+
 
   if (req.method === "GET") {
     res.status(400).json({
@@ -34,12 +36,14 @@ export default async function handler(req, res) {
 
       const dbs = await client.query(
         query.Map(
+
           query.Paginate(query.Match(query.Index("all_codes")), {
             size: 10000,
           }),
           query.Lambda("codeRef", query.Get(query.Var("codeRef")))
         )
       );
+
 
       const match = dbs.data.filter((code) => code.data.code === invitation);
 
@@ -57,7 +61,9 @@ export default async function handler(req, res) {
               },
             })
           )
+
         );
+
 
         res.status(201).json(response);
         console.log(response);
@@ -67,7 +73,9 @@ export default async function handler(req, res) {
         res.status(200).json({ Error: "Invalid code" });
       }
     } catch (error) {
+
       res.status(500).json({ Error: error.message });
+
     }
   }
 }
