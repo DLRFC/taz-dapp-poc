@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-  const uriStorage = [];
+  let uriStorage = [];
 
   if (req.method === "GET") {
     // return the current state of the unfinished array
