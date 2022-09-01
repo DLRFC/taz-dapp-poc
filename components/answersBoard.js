@@ -1,16 +1,14 @@
 import Header from './Header'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
 import axios from 'axios'
 
 const SUGBRAPH_TAZ_MESSAGE =
   'https://api.thegraph.com/subgraphs/name/dlrfc/taz-message-goerli'
 
-// Page 5 Page List of all Answers
 const AnswerBoard = (props) => {
-  const router = useRouter()
-  const { messageId } = router.query
+
+  const { messageId } = props
 
   const [answers, setAnswers] = useState([])
   const [question, setQuestion] = useState([])
@@ -32,7 +30,6 @@ const AnswerBoard = (props) => {
         }
         messageAddeds(
           orderBy: messageId
-          first: 100
           where: {parentMessageId: ${messageId}}
           orderDirection: desc
         ) {
@@ -63,6 +60,7 @@ const AnswerBoard = (props) => {
 
   return (
     <div className="px-6 py-8 font-sans">
+      
       <Header />
 
       <svg
@@ -140,7 +138,7 @@ const AnswerBoard = (props) => {
               />
             </svg>
           </Link>
-          <Link href="answer-question-page">
+          <Link href={"../answer-question-page/" + question.messageId}>
             <button className="flex justify-between bg-white border-[1px] border-brand-gray py-1 px-3 shadow-[-3px_3px_0px_0px_rgba(71,95,111)]">
               <p className="text-brand-gray tracking-tighter">
                 Answer this question
@@ -175,9 +173,7 @@ const AnswerBoard = (props) => {
           {question.messageContent}
         </div>
 
-        {/* <hr className="w-[80%] border-brand-black" /> */}
-
-        <div className="ml-6 mb-8 border-l-2">
+      <div className="ml-6 mb-8 border-l-2">
           {answers.map((answer) => (
             <p className="ml-4 text-xs my-4 text-brand-gray" key={answer.id}>
               {answer.messageContent}

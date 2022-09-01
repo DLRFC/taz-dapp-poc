@@ -1,18 +1,13 @@
 import Header from './Header'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-// import { useRouter } from 'next/router'
 import axios from 'axios'
 
 const SUGBRAPH_TAZ_MESSAGE =
   'https://api.thegraph.com/subgraphs/name/dlrfc/taz-message-goerli'
 
-// Page 4 Page List of all Questions
-
 const QuestionsBoard = (props) => {
   const [questions, setQuestions] = useState([])
-  // const router = useRouter()
-  // const { messageId } = router.query
 
   const fetchQuestions = async () => {
     // Construct query for subgraph
