@@ -59,23 +59,23 @@ const AskQuestion = () => {
       // Generate Proof
       const externalNullifier = Math.round(Math.random() * 10000000)
 
-      const fullProof = await generateProof(
-        identity,
-        group,
-        externalNullifier,
-        signal,
-        {
-          zkeyFilePath:
-            'https://www.trusted-setup-pse.org/semaphore/16/semaphore.zkey',
-          wasmFilePath:
-            'https://www.trusted-setup-pse.org/semaphore/16/semaphore.wasm',
-        },
-      )
+      // const fullProof = await generateProof(
+      //   identity,
+      //   group,
+      //   externalNullifier,
+      //   signal,
+      //   {
+      //     zkeyFilePath:
+      //       'https://www.trusted-setup-pse.org/semaphore/16/semaphore.zkey',
+      //     wasmFilePath:
+      //       'https://www.trusted-setup-pse.org/semaphore/16/semaphore.wasm',
+      //   },
+      // )
 
-      const { nullifierHash } = fullProof.publicSignals
-      const solidityProof = packToSolidityProof(fullProof.proof)
-      console.log('NullifierHash')
-      console.log(nullifierHash)
+      // const { nullifierHash } = fullProof.publicSignals
+      // const solidityProof = packToSolidityProof(fullProof.proof)
+      // console.log('NullifierHash')
+      // console.log(nullifierHash)
 
       // Verify Proof Off Chain
       // Fetch Verification Key
