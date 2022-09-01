@@ -11,7 +11,7 @@ import { useIdentityLogin } from './IdentityProvider'
 export default function InvitationCheck() {
   const [selected, setSelected] = useState('environment')
   const [startScan, setStartScan] = useState(false)
-  const [loadingScan, setLoadingScan] = useState(false)
+  // const [loadingScan, setLoadingScan] = useState(false)
   const [data, setData] = useState('')
   const identityLogin = useIdentityLogin()
   const [invitation, setInvitation] = useState('test-code-15')
@@ -23,13 +23,17 @@ export default function InvitationCheck() {
   const qrRef = useRef(null)
 
   const handleScan = async (scanData) => {
-    setLoadingScan(true)
-    console.log(`loaded data data`, scanData)
-    if (scanData && scanData !== '') {
-      console.log(`loaded >>>`, scanData)
-      setData(scanData)
-      setStartScan(false)
-      setLoadingScan(false)
+    // setLoadingScan(true)
+    try {
+      console.log(`loaded data data`, scanData)
+      if (scanData && scanData !== '') {
+        console.log(`loaded >>>`, scanData)
+        setData(scanData)
+        setStartScan(false)
+        // setLoadingScan(false)
+      }
+    } catch {
+      console.log('error')
     }
   }
 
@@ -39,23 +43,30 @@ export default function InvitationCheck() {
 
   const validate = async () => {
     setIsLoading(true)
-    try {
-      const apiResponse = await axios.post('/api/validateInvitation', {
-        invitation,
-      })
-      console.log('Is code valid and not used yet? ', apiResponse.data.isValid)
 
-      setResponse(apiResponse.data.isValid)
-      if (apiResponse.data.isValid) {
-        console.log(response)
-        router.push({ path: '/generate-id-page', query: { invitation } })
-      } else if (apiResponse.data.isValid === false) {
-        setIsLoading(false)
-        alert('Invalid Invitation code')
-      }
-    } catch {
+    const apiResponse = await axios.post('/api/validateInvitation', {
+      invitation,
+    })
+    console.log('Is code valid and not used yet? ', apiResponse.data.isValid)
+
+    // console.log(apiResponse.data.isValid)
+    setResponse(apiResponse.data.isValid)
+
+    if (apiResponse.data.isValid) {
+      console.log(response)
+      console.log('moving to generate Id Page')
+      router.push(`/generate-id-page?invitation=${invitation}`)
+    } else if (apiResponse.data.isValid === false) {
       setIsLoading(false)
-      alert('Invalid Invitation')
+      alert('Invalid Invitation code')
+    }
+  }
+
+  const handleStartScan = () => {
+    try {
+      setStartScan(!startScan)
+    } catch {
+      console.log('error')
     }
   }
 
@@ -140,9 +151,7 @@ export default function InvitationCheck() {
               <div>
                 <button
                   className="bg-brand-beige2 w-full p-2 border-2 border-brand-gray2 shadow-[-3px_3px_0px_0px_rgba(71,95,111)] mb-8"
-                  onClick={() => {
-                    setStartScan(!startScan)
-                  }}
+                  onClick={handleStartScan}
                 >
                   {startScan ? 'Stop Scan' : 'Scan Invitation QR Code'}
                 </button>
@@ -210,11 +219,11 @@ export default function InvitationCheck() {
         </div>
       )}
 
-      {/* <Link href={{ pathname: '/generate-id-page', query: { invitation } }}>
+      <Link href={{ pathname: '/generate-id-page', query: { invitation } }}>
         <button className=" p-2 rounded-lg border-2 border-brand-gray2 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] mt-10">
           Go To Generate Id Page(Test)
         </button>
-      </Link> */}
+      </Link>
       <div className="absolute bottom-[50px] left-0 -z-10 h-[20%] w-full bg-black"></div>
     </div>
   )

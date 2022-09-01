@@ -8,11 +8,13 @@ import { useIdentityLogin } from './IdentityProvider'
 
 // Page 3 will Generate Identity and Join Group
 export const GenerateIdentity = (props) => {
-  const { invitation } = props;
+  const { invitation } = props
 
   const identityLogin = useIdentityLogin()
   const [imageUrl, setImageUrl] = useState('')
+  // const [isGeneratingIdentity, setIsGeneratingIdentity] = useState(false)
   const handleJoinButton = async () => {
+    // setIsGeneratingIdentity(true)
     const identity = new Identity()
     const identityCommitment = identity.generateCommitment().toString()
     const identityKey = identity.toString()
@@ -29,6 +31,7 @@ export const GenerateIdentity = (props) => {
       setImageUrl(responseQR)
     } catch (error) {
       console.log(error)
+      // setIsGeneratingIdentity(false)
     }
 
     console.log(response.data)
@@ -67,11 +70,11 @@ export const GenerateIdentity = (props) => {
           </p>
 
           {imageUrl ? (
-            <div>
+            <div className="flex items-center justify-center flex-col">
               <a
                 href={imageUrl}
                 download="semaphore.jpg"
-                className="flex items-center justify-center flex-col"
+                className="flex items-center justify-center flex-col mb-5"
               >
                 <img src={imageUrl} alt="img" className="mb-7 " />
                 <button className="p-3 text-2xl font-bold bg-brand-beige2 border-brand-gray2 border-2  shadow-[-3px_3px_0px_0px_rgba(71,95,111)]">

@@ -12,8 +12,8 @@ const { verifyProof } = require('@semaphore-protocol/proof')
 const { packToSolidityProof } = require('@semaphore-protocol/proof')
 const { Subgraph } = require('@semaphore-protocol/subgraph')
 
-// 3. Ask Question Page
-const AskQuestion = () => {
+// 3. Ask Answer Page
+const AnswerQuestion = () => {
   const [signal, setSignal] = useState('Select Signal')
   const [isLoading, setIsLoading] = useState(false)
   const [localIdentity, setLocalIdentity] = useState()
@@ -24,14 +24,14 @@ const AskQuestion = () => {
     // setter
     console.log(window)
     console.log(window.localStorage)
-    let identityKey = ''
+    let key = ''
     console.log(window)
     console.log(window.localStorage)
-    if (identityKey === '') {
-      identityKey = window.localStorage.getItem('identity')
+    if (key === '') {
+      key = window.localStorage.getItem('identity')
     }
-    setLocalIdentity(identityKey)
-    console.log(identityKey)
+    setLocalIdentity(key)
+    console.log(key)
   })
 
   const handleAskButton = async () => {
@@ -57,6 +57,7 @@ const AskQuestion = () => {
       console.log(group.root)
 
       // Generate Proof
+      // 2. Generating Proof
       const externalNullifier = Math.round(Math.random() * 10000000)
 
       const fullProof = await generateProof(
@@ -79,6 +80,7 @@ const AskQuestion = () => {
 
       // Verify Proof Off Chain
       // Fetch Verification Key
+      // Verifing Zero Knwoladge proof off Chain
       const verificationKey = await fetch(
         'https://www.trusted-setup-pse.org/semaphore/16/semaphore.json',
       ).then(function (res) {
@@ -93,7 +95,6 @@ const AskQuestion = () => {
       const messageContent = signal
 
       const body = {
-        // parentMessageId,
         messageId,
         messageContent,
         externalNullifier,
@@ -102,8 +103,8 @@ const AskQuestion = () => {
         solidityProof,
       }
       console.log(body)
-
-      const response = await axios.post('/api/testVerifyProof', body)
+      // Verifying Zero Knowladge Proof on Chain and sending Answer
+      const response = await axios.post('/api/postAnswer', body)
       console.log(response)
       console.log(response.data)
       // go to the next page
@@ -147,9 +148,11 @@ const AskQuestion = () => {
         </div>
 
         <div className="h-[586px] bg-white py-3 w-full px-4 z-10">
-          <p className="py-5 font-bold">Got a question?</p>
+          <p className="py-5 font-bold">
+            Reply the question with an anonymous answer
+          </p>
           <p className="py-2 w-[80%] mb-3 text-xs">
-            Ask it anonymously below. Look for your question projected in the
+            Answer it anonymously below. Look for your answer projected in the
             TAZ
           </p>
           <input
@@ -185,4 +188,4 @@ const AskQuestion = () => {
   )
 }
 
-export default AskQuestion
+export default AnswerQuestion
