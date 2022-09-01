@@ -75,7 +75,7 @@ const ExperiencesList = (props) => {
           <p className="-mr-3">X</p>
         </div>
         <Link href="questions-page">
-          <div className="flex w-full flex-row items-center border-b-2 border-gray-700 py-3 px-2">
+          <div className="flex w-full flex-row items-center border-b-2 border-gray-700 py-3 px-2 cursor-pointer">
             <div className="w-[90%]">
               <p className="py-2 font-bold">Q&A</p>
               <p className="text-brand-brown opacity-[70%]">Anonymous Q&A</p>

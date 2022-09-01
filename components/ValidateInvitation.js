@@ -2,11 +2,10 @@ import { useState } from 'react'
 import axios from 'axios'
 
 const ValidateInvitation = () => {
-  const [invitation, setInvitation] = useState('test-code-30')
+  const [invitation, setInvitation] = useState('')
   const [response, setResponse] = useState('')
 
   const validate = async () => {
-    setInvitation('test-code-15')
     const response = await axios.post('/api/validateInvitation', {
       invitation,
     })

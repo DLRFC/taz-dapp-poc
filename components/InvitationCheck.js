@@ -6,6 +6,8 @@ import QrReader from 'react-qr-reader'
 import { useRouter } from 'next/router'
 
 import { useIdentityLogin } from './IdentityProvider'
+import { Identity } from '@semaphore-protocol/identity'
+
 const { Subgraph } = require('@semaphore-protocol/subgraph')
 
 // Page 1 it will check Invitation
@@ -19,6 +21,7 @@ export default function InvitationCheck() {
   const [response, setResponse] = useState('')
   const [isSignUp, setIsSignUp] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [checkingIdentity, setCheckingIdenty] = useState(false)
   const router = useRouter()
 
   const qrRef = useRef(null)
@@ -90,6 +93,7 @@ export default function InvitationCheck() {
 
   const handleScanQrCode = async (result) => {
     if (result) {
+      setCheckingIdenty(true)
       console.log(result)
       console.log('Scanned!')
       const subgraph = new Subgraph('goerli')
@@ -98,9 +102,21 @@ export default function InvitationCheck() {
       console.log('Members')
       console.log(members)
       // check it identity is part of members array
-      identityLogin(result)
-      // Add if Identity is part of the Group
-      router.push(`/ask-question-page`)
+      const checkIdentity = new Identity(result)
+      const checkIdentityCommitment = checkIdentity
+        .generateCommitment()
+        .toString()
+
+      const check = members.includes(checkIdentityCommitment)
+      console.log('Is Identity part of Semaphore?')
+      console.log(check)
+      if (check) {
+        identityLogin(result)
+        router.push(`/ask-question-page`)
+      } else {
+        alert('Identity is not part of the Semaphore Group')
+      }
+      setCheckingIdenty(false)
     }
   }
 
@@ -142,7 +158,9 @@ export default function InvitationCheck() {
                 className="bg-brand-beige2 w-full p-2 border-2 border-brand-gray2 shadow-[-3px_3px_0px_0px_rgba(71,95,111)] mb-8"
                 onClick={handleUploadQrCode}
               >
-                I`ve been here before
+                {checkingIdentity
+                  ? 'Checking Identity please wait'
+                  : 'I`ve been here before'}
               </button>
               <QrReader
                 className="border-0"
