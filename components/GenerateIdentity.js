@@ -5,6 +5,7 @@ import { Identity } from '@semaphore-protocol/identity'
 import Header from './Header'
 import QRCode from 'qrcode'
 import { useIdentityLogin } from './IdentityProvider'
+import LoadingModal from './loadingModal.js'
 
 // Page 3 will Generate Identity and Join Group
 export const GenerateIdentity = (props) => {
@@ -13,19 +14,23 @@ export const GenerateIdentity = (props) => {
   const identityLogin = useIdentityLogin()
   const [imageUrl, setImageUrl] = useState('')
   // const [isGeneratingIdentity, setIsGeneratingIdentity] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const handleJoinButton = async () => {
     // setIsGeneratingIdentity(true)
+    setIsLoading(true)
+    // Step 1
     const identity = new Identity()
     const identityCommitment = identity.generateCommitment().toString()
     const identityKey = identity.toString()
     identityLogin(identityKey)
     console.log(identityCommitment)
 
-    const response = await axios.post('/api/addMember', {
-      identityCommitment,
-      invitation,
-    })
-
+    // Step 2
+    // const response = await axios.post('/api/addMember', {
+    //   identityCommitment,
+    //   invitation,
+    // })
+    // step 3
     try {
       const responseQR = await QRCode.toDataURL(identityKey)
       setImageUrl(responseQR)
@@ -34,12 +39,18 @@ export const GenerateIdentity = (props) => {
       // setIsGeneratingIdentity(false)
     }
 
-    console.log(response.data)
+    // console.log(response.data)
+    setIsLoading(false)
   }
 
   return (
     <div className="p-4 font-sans bg-brand-beige">
+      <div className="z-3">
+        <LoadingModal />
+      </div>
+
       <Header />
+
       <svg
         className="absolute -left-2 top-[370px]"
         width="69"
@@ -92,13 +103,13 @@ export const GenerateIdentity = (props) => {
               className="mb-9 w-full rounded-lg border-2 border-brand-gray2 bg-brand-beige2 p-2 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]"
               onClick={handleJoinButton}
             >
-              Join
+              {isLoading ? 'Generating Identity' : 'Join'}
             </button>
           )}
         </div>
       </div>
 
-      <Link href="/ask-question-page">Go to Ask Question Page</Link>
+      <Link href="/experiences-page">Go to Ask Question Page</Link>
       <div className="absolute bottom-[50px] left-0 -z-10 h-[20%] w-full bg-black"></div>
     </div>
   )

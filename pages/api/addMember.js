@@ -17,6 +17,7 @@ const semaphoreContract = new ethers.Contract(
 
 export default async function handler(req, res) {
   const { invitation, identityCommitment } = req.body
+  // Checking invitation
 
   if (req.method === 'GET') {
     res.status(400).json({
@@ -34,7 +35,9 @@ export default async function handler(req, res) {
 
       const dbs = await client.query(
         query.Map(
-          query.Paginate(query.Match(query.Index('all_codes')), {size: 10000}),
+          query.Paginate(query.Match(query.Index('all_codes')), {
+            size: 10000,
+          }),
           query.Lambda('codeRef', query.Get(query.Var('codeRef'))),
         ),
       )
@@ -58,7 +61,7 @@ export default async function handler(req, res) {
       } else {
         isValid = false
       }
-
+      // Calling the tx
       if (isValid) {
         const tx = await semaphoreContract.addMember(1080, identityCommitment)
         const response = await tx.wait(3)
@@ -68,7 +71,7 @@ export default async function handler(req, res) {
         res.status(200).json({ Error: 'Invalid code' })
       }
     } catch (error) {
-      res.status(500).json({ Error: error.message })
+      res.status(503).json({ Error: error.message })
     }
   }
 }

@@ -25,60 +25,65 @@ const tazMessageContract = new ethers.Contract(
 export default async function handler(req, res) {
   console.log('called')
 
-  if (res.method === 'GET') {
-    res.status(200).json('Hello World')
-  } else if (req.method === 'POST') {
-    // Need to read these data but they are giving back undefined
-    const {
-      // parentMessageId,
-      messageContent,
-      externalNullifier,
-      solidityProof,
-      signal,
-      nullifierHash,
-    } = req.body
-    // console.log(semaphoreContract);
-    console.log('-------------Solidity Proof')
-    console.log(solidityProof)
-    console.log('-------------External Nullifier')
+  try {
+    if (res.method === 'GET') {
+      res.status(200).json('Hello World')
+    } else if (req.method === 'POST') {
+      // Need to read these data but they are giving back undefined
+      const {
+        // parentMessageId,
+        messageContent,
+        externalNullifier,
+        solidityProof,
+        signal,
+        nullifierHash,
+      } = req.body
+      // console.log(semaphoreContract);
+      console.log('-------------Solidity Proof')
+      console.log(solidityProof)
+      console.log('-------------External Nullifier')
 
-    console.log(externalNullifier)
-    console.log('-------------Signal')
+      console.log(externalNullifier)
+      console.log('-------------Signal')
 
-    console.log(signal)
-    console.log('-------------NullifierHash')
-    console.log(nullifierHash)
+      console.log(signal)
+      console.log('-------------NullifierHash')
+      console.log(nullifierHash)
 
-    const bytes32Signal = ethers.utils.formatBytes32String(signal)
+      const bytes32Signal = ethers.utils.formatBytes32String(signal)
 
-    console.log(bytes32Signal)
+      console.log(bytes32Signal)
 
-    // function replyToMessage(
-    //   uint256 parentMessageId,
-    //   uint256 messageId,
-    //   string memory messageContent,
-    //   uint256 groupId,
-    //   bytes32 signal,
-    //   uint256 nullifierHash,
-    //   uint256 externalNullifier,
-    //   uint256[8] calldata proof) external {
+      // function replyToMessage(
+      //   uint256 parentMessageId,
+      //   uint256 messageId,
+      //   string memory messageContent,
+      //   uint256 groupId,
+      //   bytes32 signal,
+      //   uint256 nullifierHash,
+      //   uint256 externalNullifier,
+      //   uint256[8] calldata proof) external {
 
-    const tx = await tazMessageContract.replyToMessage(
-      1000,
-      1000,
-      messageContent,
-      1080,
-      bytes32Signal,
-      nullifierHash,
-      externalNullifier,
-      solidityProof,
-      { gasLimit: 1500000 },
-    )
-    const response = await tx.wait(3)
+      const tx = await tazMessageContract.replyToMessage(
+        1000,
+        1000,
+        messageContent,
+        1080,
+        bytes32Signal,
+        nullifierHash,
+        externalNullifier,
+        solidityProof,
+        { gasLimit: 1500000 },
+      )
+      const response = await tx.wait(3)
 
-    // console.log(tx);
-    console.log(response)
+      // console.log(tx);
+      console.log(response)
 
-    res.status(201).json(response)
+      res.status(201).json(response)
+    }
+  } catch (err) {
+    console.log(err)
+    res.status(403).json({ error: err })
   }
 }
