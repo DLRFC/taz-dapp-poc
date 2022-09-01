@@ -6,9 +6,7 @@ const Drawing = dynamic(() => import('../components/drawingComponent'), {
 })
 
 export default function artBoardPage() {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [selectedImage, setSelectedImage] = useState()
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [uriStorage, setUriStorage] = useState([
     [],
     [],
