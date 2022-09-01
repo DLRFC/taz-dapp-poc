@@ -59,18 +59,18 @@ const AskQuestion = () => {
       // Generate Proof
       const externalNullifier = Math.round(Math.random() * 10000000)
 
-      const fullProof = await generateProof(
-        identity,
-        group,
-        externalNullifier,
-        signal,
-        {
-          zkeyFilePath: '/semaphore.zkey',
-          wasmFilePath: '/semaphore.wasm',
-        },
-      )
-      console.log('Proof')
-      console.log(fullProof)
+      // const fullProof = await generateProof(
+      //   identity,
+      //   group,
+      //   externalNullifier,
+      //   signal,
+      //   {
+      //     zkeyFilePath: '/semaphore.zkey',
+      //     wasmFilePath: '/semaphore.wasm',
+      //   },
+      // )
+      // console.log('Proof')
+      // console.log(fullProof)
       // const { nullifierHash } = fullProof.publicSignals
       // const solidityProof = packToSolidityProof(fullProof.proof)
       // console.log('NullifierHash')
