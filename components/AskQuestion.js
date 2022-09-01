@@ -59,19 +59,18 @@ const AskQuestion = () => {
       // Generate Proof
       const externalNullifier = Math.round(Math.random() * 10000000)
 
-      // const fullProof = await generateProof(
-      //   identity,
-      //   group,
-      //   externalNullifier,
-      //   signal,
-      //   {
-      //     zkeyFilePath:
-      //       'https://www.trusted-setup-pse.org/semaphore/16/semaphore.zkey',
-      //     wasmFilePath:
-      //       'https://www.trusted-setup-pse.org/semaphore/16/semaphore.wasm',
-      //   },
-      // )
-
+      const fullProof = await generateProof(
+        identity,
+        group,
+        externalNullifier,
+        signal,
+        {
+          zkeyFilePath: '/semaphore.zkey',
+          wasmFilePath: '/semaphore.wasm',
+        },
+      )
+      console.log('Proof')
+      console.log(fullProof)
       // const { nullifierHash } = fullProof.publicSignals
       // const solidityProof = packToSolidityProof(fullProof.proof)
       // console.log('NullifierHash')
@@ -92,16 +91,16 @@ const AskQuestion = () => {
       const messageId = externalNullifier
       const messageContent = signal
 
-      const body = {
-        // parentMessageId,
-        messageId,
-        messageContent,
-        externalNullifier,
-        signal,
-        nullifierHash,
-        solidityProof,
-      }
-      console.log(body)
+      // const body = {
+      //   // parentMessageId,
+      //   messageId,
+      //   messageContent,
+      //   externalNullifier,
+      //   signal,
+      //   nullifierHash,
+      //   solidityProof,
+      // }
+      // console.log(body)
 
       // const response = await axios.post('/api/testVerifyProof', body)
       // console.log(response)
