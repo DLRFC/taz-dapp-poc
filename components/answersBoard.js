@@ -15,12 +15,12 @@ const AnswerBoard = (props) => {
   const [answers, setAnswers] = useState([])
   const [question, setQuestion] = useState([])
 
-  const fetchQuestion = async () => {
+  const fetchAnswers = async (messageId) => {
     // Construct query for subgraph
     const postData = {
       query: `
       {
-        messageAddeds(
+        parentMessageAddeds: messageAddeds(
           orderBy: messageId
           first: 1
           where: {messageId: ${messageId}}
@@ -29,28 +29,7 @@ const AnswerBoard = (props) => {
           id
           messageContent
           messageId
-          parentMessageId
         }
-      }
-      `,
-    }
-    // Fetch data
-    let data = []
-    try {
-      const result = await axios.post(SUGBRAPH_TAZ_MESSAGE, postData)
-      console.log('result:', result)
-      data = result.data.data.messageAddeds[0]
-    } catch (err) {
-      console.log('Error fetching subgraph data: ', err)
-    }
-    return data
-  }
-
-  const fetchAnswers = async () => {
-    // Construct query for subgraph
-    const postData = {
-      query: `
-      {
         messageAddeds(
           orderBy: messageId
           first: 100
@@ -65,21 +44,19 @@ const AnswerBoard = (props) => {
       }
       `,
     }
-    // Fetch data
-    let data = []
+    // Fetch data    
     try {
       const result = await axios.post(SUGBRAPH_TAZ_MESSAGE, postData)
-      data = result.data.data.messageAddeds
+      setQuestion(result.data.data.parentMessageAddeds[0])
+      setAnswers(result.data.data.messageAddeds)
     } catch (err) {
       console.log('Error fetching subgraph data: ', err)
-    }
-    return data
+    }    
   }
 
   useEffect(() => {
     const doAsync = async () => {
-      setQuestion(await fetchQuestion())
-      setAnswers(await fetchAnswers())
+      await fetchAnswers(messageId)
     }
     doAsync()
   }, [])
