@@ -69,42 +69,42 @@ const AskQuestion = () => {
           wasmFilePath: '/semaphore.wasm',
         },
       )
-      // console.log('Proof')
-      // console.log(fullProof)
-      // const { nullifierHash } = fullProof.publicSignals
-      // const solidityProof = packToSolidityProof(fullProof.proof)
-      // console.log('NullifierHash')
-      // console.log(nullifierHash)
+      console.log('Proof')
+      console.log(fullProof)
+      const { nullifierHash } = fullProof.publicSignals
+      const solidityProof = packToSolidityProof(fullProof.proof)
+      console.log('NullifierHash')
+      console.log(nullifierHash)
 
       // Verify Proof Off Chain
       // Fetch Verification Key
-      // const verificationKey = await fetch(
-      //   'https://www.trusted-setup-pse.org/semaphore/16/semaphore.json',
-      // ).then(function (res) {
-      //   return res.json()
-      // })
+      const verificationKey = await fetch(
+        'https://www.trusted-setup-pse.org/semaphore/16/semaphore.json',
+      ).then(function (res) {
+        return res.json()
+      })
 
-      // const res = await verifyProof(verificationKey, fullProof)
-      // console.log('Verification')
-      // console.log(res)
+      const res = await verifyProof(verificationKey, fullProof)
+      console.log('Verification')
+      console.log(res)
 
       const messageId = externalNullifier
       const messageContent = signal
 
-      // const body = {
-      //   // parentMessageId,
-      //   messageId,
-      //   messageContent,
-      //   externalNullifier,
-      //   signal,
-      //   nullifierHash,
-      //   solidityProof,
-      // }
-      // console.log(body)
+      const body = {
+        // parentMessageId,
+        messageId,
+        messageContent,
+        externalNullifier,
+        signal,
+        nullifierHash,
+        solidityProof,
+      }
+      console.log(body)
 
-      // const response = await axios.post('/api/testVerifyProof', body)
-      // console.log(response)
-      // console.log(response.data)
+      const response = await axios.post('/api/testVerifyProof', body)
+      console.log(response)
+      console.log(response.data)
       // go to the next page
       router.push('/questions-page')
     } catch (error) {
