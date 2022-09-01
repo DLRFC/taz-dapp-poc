@@ -30,7 +30,7 @@ export const GenerateIdentity = (props) => {
     console.log(identityCommitment)
 
     setLoadingMessage(
-      'Waiting for adding the new Identity as a member on the Semaphore Contract',
+      `Identity Generated! Now we are adding it to our Semaphore Contract Devcon Group! Please wait for the transaction`,
     )
 
     // Step 2
@@ -120,12 +120,12 @@ export const GenerateIdentity = (props) => {
               {isLoading ? 'Generating Identity' : 'Join'}
             </button>
           )}
-          <button
+          {/* <button
             className="mb-9 w-full rounded-lg border-2 border-brand-gray2 bg-brand-beige2 p-2 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]"
             onClick={onClose}
           >
             {isLoading ? 'Generating Identity' : 'Open Modal'}
-          </button>
+          </button> */}
         </div>
       </div>
 
