@@ -103,9 +103,9 @@ const AskQuestion = () => {
       }
       console.log(body)
 
-      const response = await axios.post('/api/testVerifyProof', body)
-      console.log(response)
-      console.log(response.data)
+      // const response = await axios.post('/api/testVerifyProof', body)
+      // console.log(response)
+      // console.log(response.data)
       // go to the next page
       router.push('/questions-page')
     } catch (error) {
