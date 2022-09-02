@@ -5,7 +5,7 @@ import axios from 'axios'
 import { Identity } from '@semaphore-protocol/identity'
 import { Group } from '@semaphore-protocol/group'
 import { useRouter } from 'next/router'
-imrpot {ethers} from 'ethers'
+import { ethers } from 'ethers'
 
 // import { useIdentity } from './IdentityProvider'
 const { generateProof } = require('@semaphore-protocol/proof')
@@ -16,7 +16,7 @@ const { Subgraph } = require('@semaphore-protocol/subgraph')
 // 3. Ask Answer Page
 const AnswerQuestion = () => {
   // const [signal, setSignal] = useState('Select Signal')
-  const [message,setMessage] = useState('')
+  const [message, setMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [localIdentity, setLocalIdentity] = useState()
 
@@ -96,11 +96,11 @@ const AnswerQuestion = () => {
       console.log('Verification')
       console.log(res)
 
-      const messageId = externalNullifier
+      const messageId = signal
       const messageContent = message
 
       const body = {
-        //parentMessageId
+        parentMessageId,
         messageId,
         messageContent,
         externalNullifier,
