@@ -1,9 +1,12 @@
-import AnswerQuestion from '../components/AnswerQuestion'
+import AnswerQuestion from '../../components/AnswerQuestion'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 
 export default function AnswerQuestionPage() {
   const [localIdentity, setLocalIdentity] = useState()
+  const router = useRouter()
+  const { messageId } = router.query
 
   useEffect(() => {
     // setter
@@ -20,7 +23,7 @@ export default function AnswerQuestionPage() {
   return (
     <div>
       {localIdentity ? (
-        <AnswerQuestion />
+        <AnswerQuestion messageId={messageId} />
       ) : (
         <>
           <h1 className="flex items-center justify-center p-10 text-2xl">
