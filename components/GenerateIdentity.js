@@ -134,16 +134,9 @@ export const GenerateIdentity = (props) => {
               {isLoading ? 'Generating Identity' : 'Join'}
             </button>
           )}
-          {/* <button
-            className="mb-9 w-full rounded-lg border-2 border-brand-gray2 bg-brand-beige2 p-2 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]"
-            onClick={onClose}
-          >
-            {isLoading ? 'Generating Identity' : 'Open Modal'}
-          </button> */}
         </div>
       </div>
 
-      <Link href="/experiences-page">Go to Ask Question Page</Link>
       <div className="absolute bottom-[50px] left-0 -z-10 h-[20%] w-full bg-black"></div>
     </div>
   )
