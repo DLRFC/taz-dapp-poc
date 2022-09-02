@@ -6,6 +6,9 @@ import { Identity } from '@semaphore-protocol/identity'
 import { Group } from '@semaphore-protocol/group'
 import { useRouter } from 'next/router'
 import LoadingModal from './loadingModal.js'
+import { ethers } from 'ethers'
+const { keccak256 } = require('@ethersproject/keccak256')
+const { toUtf8Bytes } = require('@ethersproject/strings')
 
 // import { useIdentity } from './IdentityProvider'
 const { generateProof } = require('@semaphore-protocol/proof')
@@ -15,7 +18,8 @@ const { Subgraph } = require('@semaphore-protocol/subgraph')
 
 // 3. Ask Question Page
 const AskQuestion = () => {
-  const [signal, setSignal] = useState('Select Signal')
+  // const [signal, setSignal] = useState('')
+  const [message, setMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [localIdentity, setLocalIdentity] = useState()
   const [loadingMessage, setLoadingMessage] = useState('')
@@ -38,7 +42,10 @@ const AskQuestion = () => {
   })
 
   const handleAskButton = async () => {
+    const signal = parseInt(ethers.utils.id(message).toString().slice(35))
     console.log(signal)
+    console.log(message)
+
     setIsLoading(true)
     setLoadingMessage('1. Generating Zero Knowledge Proof')
     try {
@@ -96,8 +103,8 @@ const AskQuestion = () => {
         '2. Proof have been Generated, we are now submiting your Question Transaction',
       )
       setLoadingProof(solidityProof)
-      const messageId = externalNullifier
-      const messageContent = signal
+      const messageId = signal
+      const messageContent = message
 
       const body = {
         // parentMessageId,
@@ -115,7 +122,7 @@ const AskQuestion = () => {
       console.log(response.data)
       // go to the next page
       setLoadingMessage('3. Transaction Succesfuly Submitted!')
-      router.push('/questions-page')
+      // router.push('/questions-page')
     } catch (error) {
       setIsLoading(false)
       // Custom error depending on points of failure
@@ -183,7 +190,7 @@ const AskQuestion = () => {
           <input
             className="border-2 border-brand-gray w-full my-3 py-2 rounded-lg"
             onChange={(e) => {
-              setSignal(e.target.value)
+              setMessage(e.target.value)
             }}
           ></input>
           {isLoading ? (

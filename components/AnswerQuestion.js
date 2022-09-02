@@ -5,6 +5,7 @@ import axios from 'axios'
 import { Identity } from '@semaphore-protocol/identity'
 import { Group } from '@semaphore-protocol/group'
 import { useRouter } from 'next/router'
+imrpot {ethers} from 'ethers'
 
 // import { useIdentity } from './IdentityProvider'
 const { generateProof } = require('@semaphore-protocol/proof')
@@ -14,7 +15,8 @@ const { Subgraph } = require('@semaphore-protocol/subgraph')
 
 // 3. Ask Answer Page
 const AnswerQuestion = () => {
-  const [signal, setSignal] = useState('Select Signal')
+  // const [signal, setSignal] = useState('Select Signal')
+  const [message,setMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [localIdentity, setLocalIdentity] = useState()
 
@@ -35,6 +37,8 @@ const AnswerQuestion = () => {
   })
 
   const handleAskButton = async () => {
+    const signal = parseInt(ethers.utils.id(message).toString().slice(35))
+
     console.log(signal)
     setIsLoading(true)
     try {
@@ -92,9 +96,10 @@ const AnswerQuestion = () => {
       console.log(res)
 
       const messageId = externalNullifier
-      const messageContent = signal
+      const messageContent = message
 
       const body = {
+        //parentId
         messageId,
         messageContent,
         externalNullifier,
@@ -158,7 +163,7 @@ const AnswerQuestion = () => {
           <input
             className="border-2 border-brand-gray w-full my-3 py-2 rounded-lg"
             onChange={(e) => {
-              setSignal(e.target.value)
+              setMessage(e.target.value)
             }}
           ></input>
           {isLoading ? (
