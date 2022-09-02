@@ -61,7 +61,7 @@ export default async function handler(req, res) {
       } else {
         isValid = false
       }
-      // Calling the tx
+
       if (isValid) {
         const tx = await semaphoreContract.addMember(1080, identityCommitment)
         const response = await tx.wait(1)
