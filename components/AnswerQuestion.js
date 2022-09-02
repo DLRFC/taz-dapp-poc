@@ -137,7 +137,7 @@ const AnswerQuestion = (props) => {
       console.log('Verification', res)
 
       setLoadingMessage(
-        '2. Proof have been Generated, we are now submiting your Answer Transaction - This proccess can take up to 1 - 2 mins, please dont close the App during the proccess :)',
+        "2. The proof has been generated. Your message transaction is now being submitted. This can take up to 1 - 2 minutes, please don't close the App during the proccess :)",
       )
       setLoadingProof(solidityProof)
 

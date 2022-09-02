@@ -94,7 +94,7 @@ const AskQuestion = () => {
       console.log(res)
 
       setLoadingMessage(
-        '2. Proof have been Generated, we are now submiting your Question Transaction',
+        '2. A proof has been generated. Your message transaction is now being submitted.',
       )
       setLoadingProof(solidityProof)
 
