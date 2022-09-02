@@ -46,6 +46,11 @@ export default function ArtGallery() {
           <ImageCard key={idx} url={url} onClick={() => handleClick(url)} />
         ))}
       </div>
+      <div className="flex items-center justify-center mb-20">
+        <button className="bg-brand-beige2 w-full p-2 rounded-lg border-2 border-brand-gray shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] ml-20 mr-20">
+          Start CoDrawing!
+        </button>
+      </div>
     </div>
   )
 }
