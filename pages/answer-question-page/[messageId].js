@@ -23,7 +23,7 @@ export default function AnswerQuestionPage() {
   return (
     <div>
       {localIdentity ? (
-        <AnswerQuestion parentMessageId={messageId} />
+        <AnswerQuestion messageId={messageId} />
       ) : (
         <>
           <h1 className="flex items-center justify-center p-10 text-2xl">
