@@ -37,6 +37,7 @@ const AnswerQuestion = () => {
   })
 
   const handleAskButton = async () => {
+    const parentMessageId = 100
     const signal = parseInt(ethers.utils.id(message).toString().slice(35))
 
     console.log(signal)
@@ -99,7 +100,7 @@ const AnswerQuestion = () => {
       const messageContent = message
 
       const body = {
-        //parentId
+        //parentMessageId
         messageId,
         messageContent,
         externalNullifier,
