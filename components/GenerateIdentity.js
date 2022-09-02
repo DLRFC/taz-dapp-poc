@@ -29,7 +29,7 @@ export const GenerateIdentity = (props) => {
     console.log(identityCommitment)
 
     setLoadingMessage(
-      `Identity Generated! Now we are adding it to our Semaphore Contract Devcon Group! Please wait for the transaction`,
+      `Identity Generated! We are now adding it to our Semaphore Contract Devcon Group! Please wait for the transaction`,
     )
 
     // Step 2
