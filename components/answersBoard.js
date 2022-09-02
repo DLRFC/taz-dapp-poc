@@ -21,7 +21,7 @@ const AnswerBoard = (props) => {
         parentMessageAddeds: messageAddeds(
           orderBy: messageId
           first: 1
-          where: {messageId: ${messageId}}
+          where: {messageId: "${messageId}"}
           orderDirection: desc
         ) {
           id
@@ -29,8 +29,8 @@ const AnswerBoard = (props) => {
           messageId
         }
         messageAddeds(
-          orderBy: messageId
-          where: {parentMessageId: ${messageId}}
+          orderBy: timestamp
+          where: {parentMessageId: "${messageId}"}
           orderDirection: desc
         ) {
           id
