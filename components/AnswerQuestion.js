@@ -5,6 +5,7 @@ import axios from 'axios'
 import { Identity } from '@semaphore-protocol/identity'
 import { Group } from '@semaphore-protocol/group'
 import { useRouter } from 'next/router'
+import { ethers } from 'ethers'
 
 
 // import { useIdentity } from './IdentityProvider'
@@ -17,9 +18,10 @@ const SUGBRAPH_TAZ_MESSAGE =
   'https://api.thegraph.com/subgraphs/name/dlrfc/taz-message-goerli'
 
 // 3. Ask Answer Page
-const AnswerQuestion = (props) => {
-  
-  const [signal, setSignal] = useState('Select Signal')
+const AnswerQuestion = () => {
+  // const [signal, setSignal] = useState('Select Signal')
+  const [message, setMessage] = useState('')
+
   const [isLoading, setIsLoading] = useState(false)
   const [localIdentity, setLocalIdentity] = useState()
 
@@ -86,7 +88,11 @@ const AnswerQuestion = (props) => {
     doAsync()
   })
 
-  const handleSubmitButton = async () => {
+  const handleAskButton = async () => {
+    const parentMessageId = 100
+    const signal = parseInt(ethers.utils.id(message).toString().slice(35))
+
+
     console.log(signal)
     setIsLoading(true)
     try {
@@ -140,13 +146,18 @@ const AnswerQuestion = (props) => {
       })
 
       const res = await verifyProof(verificationKey, fullProof)
-      console.log('Verification', res)
+
+      console.log('Verification')
+      console.log(res)
+
+      const messageId = signal
+      const messageContent = message
 
       const body = {
-        parentMessageId: messageId, // The parent of the new message will be the current message
-        messageId: externalNullifier,
-        messageContent: signal,
-        groupId: groupId,
+        parentMessageId,
+        messageId,
+        messageContent,
+
         externalNullifier,
         signal,
         nullifierHash,
@@ -231,7 +242,7 @@ const AnswerQuestion = (props) => {
           <input
             className="border-2 border-brand-gray w-full my-3 py-2 rounded-lg"
             onChange={(e) => {
-              setSignal(e.target.value)
+              setMessage(e.target.value)
             }}
           ></input>
           {isLoading ? (

@@ -31,7 +31,8 @@ export default async function handler(req, res) {
     } else if (req.method === 'POST') {
       // Need to read these data but they are giving back undefined
       const {
-        // parentMessageId,
+        parentMessageId,
+        messageId,
         messageContent,
         externalNullifier,
         solidityProof,
@@ -65,8 +66,8 @@ export default async function handler(req, res) {
       //   uint256[8] calldata proof) external {
 
       const tx = await tazMessageContract.replyToMessage(
-        1000,
-        1000,
+        parentMessageId,
+        messageId,
         messageContent,
         1080,
         bytes32Signal,
