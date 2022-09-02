@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ethersproject/keccak256": "^5.7.0",
+    "@ethersproject/strings": "^5.7.0",
     "@semaphore-protocol/contracts": "^2.0.0",
     "@semaphore-protocol/subgraph": "0.3.0",
     "@testing-library/jest-dom": "^5.14.1",
