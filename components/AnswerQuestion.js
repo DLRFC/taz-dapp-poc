@@ -13,6 +13,9 @@ const { verifyProof } = require('@semaphore-protocol/proof')
 const { packToSolidityProof } = require('@semaphore-protocol/proof')
 const { Subgraph } = require('@semaphore-protocol/subgraph')
 
+const SUGBRAPH_TAZ_MESSAGE =
+  'https://api.thegraph.com/subgraphs/name/dlrfc/taz-message-goerli'
+
 // 3. Ask Answer Page
 const AnswerQuestion = (props) => {
   
@@ -23,6 +26,45 @@ const AnswerQuestion = (props) => {
   const router = useRouter()
 
   const messageId = props.messageId
+
+  const [question, setQuestion] = useState([])
+
+  const fetchQuestion = async (messageId) => {
+    // Construct query for subgraph
+    const postData = {
+      query: `
+      {
+        messageAddeds(
+          orderBy: messageId
+          first: 1
+          where: {messageId: ${messageId}}
+          orderDirection: desc
+        ) {
+          id
+          messageContent
+          messageId
+          parentMessageId
+        }       
+      }
+      `,
+    }
+    // Fetch data    
+    try {
+      const result = await axios.post(SUGBRAPH_TAZ_MESSAGE, postData)
+      console.log("result:", result)
+      setQuestion(result.data.data.messageAddeds[0])
+    } catch (err) {
+      console.log('Error fetching subgraph data: ', err)
+    }    
+  }
+
+  useEffect(() => {
+    const doAsync = async () => {
+      await fetchQuestion(messageId)
+    }
+    doAsync()
+  }, [])
+
 
   useEffect(() => {
     // setter
@@ -36,9 +78,15 @@ const AnswerQuestion = (props) => {
     }
     setLocalIdentity(key)
     console.log(key)
+
+    // Fetch data from subgraph
+    const doAsync = async () => {
+      await fetchQuestion(messageId)
+    }
+    doAsync()
   })
 
-  const handleAskButton = async () => {
+  const handleSubmitButton = async () => {
     console.log(signal)
     setIsLoading(true)
     try {
@@ -105,15 +153,14 @@ const AnswerQuestion = (props) => {
         solidityProof,
       }
 
-      console.log("posting body:", body)
-
       // Verifying Zero Knowladge Proof on Chain and sending Answer
       const response = await axios.post('/api/postMessage', body)
       console.log(response)
       console.log(response.data)
 
-      // go to the next page
-      router.push('/questions-page')
+      // go to the answer page to see submitted answer
+      router.push("/answers-board-page/" + messageId)
+
     } catch (error) {
       setIsLoading(false)
 
@@ -148,18 +195,38 @@ const AnswerQuestion = (props) => {
 
       <div className="flex flex-col items-center overflow-hidden rounded-md border-2 border-brand-gray shadow-xl">
         <div className="flex w-full justify-between border-b-2 border-brand-gray bg-brand-beige2 p-3">
-          <div>X</div>
-          <div>Q&A</div>
+        <Link href={"/answers-board-page/" + messageId}>
+          <svg
+            className="cursor-pointer scale-[100%]"
+            width="30"
+            height="31"
+            viewBox="0 0 30 31"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M14.8643 0.833496C22.8956 0.833496 29.4063 7.39999 29.4063 15.5002C29.4063 23.6003 22.8956 30.1668 14.8643 30.1668C6.83295 30.1668 0.322266 23.6003 0.322266 15.5002C0.322266 7.39999 6.83295 0.833496 14.8643 0.833496ZM2.96627 15.5002C2.96627 8.87275 8.29319 3.50016 14.8643 3.50016C21.4354 3.50016 26.7623 8.87275 26.7623 15.5002C26.7623 22.1276 21.4354 27.5002 14.8643 27.5002C8.29319 27.5002 2.96627 22.1276 2.96627 15.5002Z"
+              fill="#475F6F"
+            />
+            <path
+              transform="translate(9, 9)"
+              d="M5.86415 0.843262L7.73372 2.72888L3.99457 6.50008L7.73372 10.2714L5.86415 12.157L0.255371 6.50008L5.86415 0.843262Z"
+              fill="#475F6F"
+            />
+            </svg>
+          </Link>
+          <div>Q&amp;A Anonymous Reply</div>
           <div></div>
         </div>
 
         <div className="h-[586px] bg-white py-3 w-full px-4 z-10">
           <p className="py-5 font-bold">
-            Reply the question with an anonymous answer
+            {question.messageContent}
           </p>
           <p className="py-2 w-[80%] mb-3 text-xs">
-            Answer it anonymously below. Look for your answer projected in the
-            TAZ
+            Reply to the message above to see your message appear anonymously in TAZ.
           </p>
           <input
             className="border-2 border-brand-gray w-full my-3 py-2 rounded-lg"
@@ -174,7 +241,7 @@ const AnswerQuestion = (props) => {
           ) : (
             <button
               className="bg-brand-beige2 w-full p-2 rounded-lg border-2 border-brand-gray shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]"
-              onClick={handleAskButton}
+              onClick={handleSubmitButton}
             >
               Submit Reply
             </button>

@@ -76,8 +76,7 @@ export default async function handler(req, res) {
             solidityProof,
             { gasLimit: 1500000 },
           )
-    }
-    
+    }    
     
     const response = await tx.wait(3)
     
