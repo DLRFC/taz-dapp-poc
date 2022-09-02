@@ -42,10 +42,9 @@ const AskQuestion = () => {
     setIsLoading(true)
     setLoadingMessage('1. Generating Zero Knowledge Proof')
     try {
-      
       const messageId = ethers.utils.id(messageContent)
       const signal = messageId.slice(35)
-    
+
       const identity = new Identity(localIdentity)
       const identityCommitment = identity.generateCommitment()
       console.log(identityCommitment)
@@ -54,7 +53,7 @@ const AskQuestion = () => {
 
       // Generate Group
       const group = new Group(16)
-      const groupId = '1080' 
+      const groupId = '1080'
       const subgraph = new Subgraph('goerli')
 
       const { members } = await subgraph.getGroup('1080', { members: true })
@@ -98,18 +97,18 @@ const AskQuestion = () => {
         '2. Proof have been Generated, we are now submiting your Question Transaction',
       )
       setLoadingProof(solidityProof)
-      
+
       const body = {
-        parentMessageId: "0",
+        parentMessageId: '0',
         messageId,
         messageContent,
         groupId,
         signal,
         nullifierHash,
-        externalNullifier,        
+        externalNullifier,
         solidityProof,
       }
-      console.log("Body:" , body)
+      console.log('Body:', body)
 
       const response = await axios.post('/api/postMessage', body)
       console.log(response)
