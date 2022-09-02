@@ -42,7 +42,8 @@ const AskQuestion = () => {
   })
 
   const handleAskButton = async () => {
-    const signal = parseInt(ethers.utils.id(message).toString().slice(35))
+    const signal = parseInt(ethers.utils.id(message).toString().slice(4), 10)
+    console.log('Signal!!!')
     console.log(signal)
     console.log(message)
 
@@ -50,22 +51,22 @@ const AskQuestion = () => {
     setLoadingMessage('1. Generating Zero Knowledge Proof')
     try {
       const identity = new Identity(localIdentity)
-      const identityCommitment = identity.generateCommitment()
-      console.log(identityCommitment)
-      console.log('Identity Key')
-      console.log(localIdentity)
+      // const identityCommitment = identity.generateCommitment()
+      // console.log(identityCommitment)
+      // console.log('Identity Key')
+      // console.log(localIdentity)
 
       // Generate Group
       const group = new Group(16)
       const subgraph = new Subgraph('goerli')
 
       const { members } = await subgraph.getGroup('1080', { members: true })
-      console.log('Members')
-      console.log(members)
+      // console.log('Members')
+      // console.log(members)
 
       group.addMembers(members)
 
-      console.log(group.root)
+      // console.log(group.root)
 
       // Generate Proof
       const externalNullifier = Math.round(Math.random() * 1000000000)
