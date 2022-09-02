@@ -34,8 +34,8 @@ task("createProof", "create a proof")
         proofElements.group.addMembers(members);
         proofElements.members = proofElements.group.members;
         // proofElements.group.addMember(newIdentityCommitment);
-        proofElements.externalNullifier = Math.round(Math.random() * 10000);        
-        proofElements.signal = "This is a message";
+        proofElements.externalNullifier = Math.round(Math.random() * 10000000);        
+        proofElements.signal = "Select Signal";
         const fullProof = await generateProof(proofElements.newIdentity, proofElements.group, proofElements.externalNullifier, proofElements.signal, {
             zkeyFilePath: "static/semaphore.zkey",
             wasmFilePath: "static/semaphore.wasm"
