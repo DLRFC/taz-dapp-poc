@@ -213,9 +213,9 @@ const AskQuestion = () => {
         <p className="ml-10">X</p>
         <div className="bg-black absolute w-full h-[20%] bottom-[50px] left-0 -z-10"></div>
       </div>
-      <Link href="questions-page">
+      {/* <Link href="questions-page">
         <button>Go to Questions Board Page(Test)</button>
-      </Link>
+      </Link> */}
       <button className="p-4" onClick={clearIdentity}>
         Clear Cache
       </button>
