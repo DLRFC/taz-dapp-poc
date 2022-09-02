@@ -62,19 +62,27 @@ export default async function handler(req, res) {
             })
           )
 
+          .then((ret) => console.log(ret))
+      } else {
+        isValid = false
+      }
+
+      if (isValid) {
+        const tx = await semaphoreContract.addMember(1080, identityCommitment)
+        const response = await tx.wait(1)
+
+
         );
 
 
         res.status(201).json(response);
         console.log(response);
       } else {
-        isValid = false;
-        console.log("Is not valid");
-        res.status(200).json({ Error: "Invalid code" });
+
+        res.status(401).json({ Error: 'Invalid code' })
       }
     } catch (error) {
-
-      res.status(500).json({ Error: error.message });
+      res.status(403).json({ Error: error.message })
 
     }
   }

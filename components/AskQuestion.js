@@ -25,16 +25,16 @@ const AskQuestion = () => {
 
   useEffect(() => {
     // setter
-    console.log(window)
-    console.log(window.localStorage)
+    // console.log(window)
+    // console.log(window.localStorage)
     let identityKey = ''
-    console.log(window)
-    console.log(window.localStorage)
+    // console.log(window)
+    // console.log(window.localStorage)
     if (identityKey === '') {
       identityKey = window.localStorage.getItem('identity')
     }
     setLocalIdentity(identityKey)
-    console.log(identityKey)
+    // console.log(identityKey)
   })
 
   const handleAskButton = async () => {
@@ -61,7 +61,7 @@ const AskQuestion = () => {
       console.log(group.root)
 
       // Generate Proof
-      const externalNullifier = Math.round(Math.random() * 10000000)
+      const externalNullifier = Math.round(Math.random() * 1000000000)
 
       const fullProof = await generateProof(
         identity,

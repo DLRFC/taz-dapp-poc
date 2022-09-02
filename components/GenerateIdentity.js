@@ -26,7 +26,6 @@ export const GenerateIdentity = (props) => {
     const identity = new Identity()
     const identityCommitment = identity.generateCommitment().toString()
     const identityKey = identity.toString()
-    identityLogin(identityKey)
     console.log(identityCommitment)
 
     setLoadingMessage(
@@ -34,20 +33,35 @@ export const GenerateIdentity = (props) => {
     )
 
     // Step 2
-    const response = await axios.post('/api/addMember', {
-      identityCommitment,
-      invitation,
-    })
-    // step 3
-    try {
-      const responseQR = await QRCode.toDataURL(identityKey)
-      setImageUrl(responseQR)
-    } catch (error) {
-      console.log(error)
-      // setIsGeneratingIdentity(false)
-    }
+    await axios
+      .post('/api/addMember', {
+        identityCommitment,
+        invitation,
+      })
+      .then(async (res) => {
+        console.log('Success!')
+        console.log(res)
+        console.log('Status!')
+        console.log(res.status)
+        identityLogin(identityKey)
+        try {
+          const responseQR = await QRCode.toDataURL(identityKey)
+          setImageUrl(responseQR)
+        } catch (error) {
+          console.log(error)
+          // setIsGeneratingIdentity(false)
+        }
 
-    console.log(response.data)
+        console.log('Error10!')
+      })
+      .catch((err) => {
+        console.log(err)
+        console.log('Error2!')
+
+        // console.log(err.response?.status)
+      })
+    // step 3
+    // Add logic to only set Identity when Response is True
     setIsLoading(false)
   }
 
