@@ -27,9 +27,11 @@ export default function artBoard() {
     console.log("fetchUriStorage");
     try {
       const result = await axios.get("/api/storeTiles");
-      console.log(result);
-      uriStorageTemp1 = result.data.uriStorage;
-      return uriStorageTemp1;
+      console.log(result.data);
+      uriStorageTemp1 = result.data.uriStorage.filter(item => item != null).map(tile => tile.data.uriString);
+      setUriStorage(uriStorageTemp1);
+      console.log(uriStorageTemp1);
+
     } catch (err) {
       console.log("Error fetching subgraph data: ", err);
     }
@@ -37,8 +39,8 @@ export default function artBoard() {
 
   useEffect(() => {
     const doAsync = async () => {
-      setUriStorage(await fetchUriStorage());
-      setSelectedTile(uriStorageTemp1.findIndex((e) => e === null));
+      fetchUriStorage();
+      setSelectedTile(uriStorage.findIndex((e) => e === null));
     };
     doAsync();
   }, []);
@@ -127,12 +129,12 @@ export default function artBoard() {
     console.log(uriStorageTemp2);
 
     //if all tiles are full
-    if (uriStorageTemp2.findIndex((e) => e === null) === -1) {
+    if (uriStorageTemp2.findIndex((e) => !e) === -1) {
       //send full canvas image to backend
       console.log("canvas full, push tx");
     } else {
       console.log("post tile to backend");
-      await axios.post("/api/storeTiles", { array: uriStorageTemp2 });
+      await axios.post("/api/storeTiles", { uriStorage: uriStorageTemp2 });
     }
 
     setSelectedTile(-1);
@@ -284,6 +286,7 @@ export default function artBoard() {
           </button>
         </div>
         <div className="flex items-center justify-center">
+          {uriStorage ?
           <table
             ref={ref}
             id="ipfsURI"
@@ -305,6 +308,7 @@ export default function artBoard() {
               {generateTileHTML(8)}
             </tr>
           </table>
+          : "Fetching Tiles"}
 
           {/* <div
             ref={ref}
