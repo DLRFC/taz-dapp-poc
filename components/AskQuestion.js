@@ -60,6 +60,8 @@ const AskQuestion = () => {
       console.log('Members')
 
       group.addMembers(members)
+      console.log('Group Root')
+      console.log(group.root)
 
       // Generate Proof
       const externalNullifier = Math.round(Math.random() * 1000000000)
