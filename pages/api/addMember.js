@@ -49,29 +49,22 @@ export default async function handler(req, res) {
         isValid = true
 
         const tx = await semaphoreContract.addMember(1080, identityCommitment)
-        await tx.wait(3).then(
-          client
-            .query(
-              query.Update(query.Ref(match[0].ref), {
-                data: {
-                  isUsed: true,
-                },
-              }),
-            )
-
-            .then((ret) => console.log(ret)),
+        const response = await tx.wait(3).then(
+          client.query(
+            query.Update(query.Ref(match[0].ref), {
+              data: {
+                isUsed: true,
+              },
+            }),
+          ),
         )
-      } else {
-        isValid = false
-      }
-
-      if (isValid) {
-        const tx = await semaphoreContract.addMember(1080, identityCommitment)
-        const response = await tx.wait()
 
         res.status(201).json(response)
         console.log(response)
       } else {
+        isValid = false
+        console.log(isValid)
+        console.log('Is not valid')
         res.status(401).json({ Error: 'Invalid code' })
       }
     } catch (error) {
