@@ -63,7 +63,7 @@ export default async function handler(req, res) {
           )
 
           .then((ret) => console.log(ret))
-      } else {
+      )} else {
         isValid = false
       }
 
