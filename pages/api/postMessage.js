@@ -9,6 +9,9 @@ const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider)
 const tazMessageAbi = TazMessage.abi
 const tazMessageAddress = process.env.TAZ_MESSAGE_CONTRACT_ADDRESS
 
+// console.log("tazMessageAddress", tazMessageAddress)
+// console.log("tazMessageAbi", TazMessage)
+
 const tazMessageContract = new ethers.Contract(
   tazMessageAddress,
   tazMessageAbi,
@@ -16,12 +19,12 @@ const tazMessageContract = new ethers.Contract(
 )
 
 export default async function handler(req, res) {
-  console.log('called')
+  
 
   if (res.method === 'GET') {
     res.status(405).json('GET not allowed')
-  } else if (req.method === 'POST') {
 
+  } else if (req.method === 'POST') {
     const {
       parentMessageId,
       messageId,
@@ -33,26 +36,26 @@ export default async function handler(req, res) {
       solidityProof      
     } = req.body
 
-    // console.log(semaphoreContract);
-    console.log('-------------Solidity Proof')
-    console.log(solidityProof)
-    console.log('-------------External Nullifier')
-
-    console.log(externalNullifier)
-    console.log('-------------Signal')
-
-    console.log(signal)
-    console.log('-------------NullifierHash')
-    console.log(nullifierHash)
+    console.log("LOG | Body: ", req.body);
 
     const bytes32Signal = ethers.utils.formatBytes32String(signal)
 
+    console.log('-------------Solidity Proof')
+    console.log(solidityProof)
+    console.log('-------------External Nullifier')
+    console.log(externalNullifier)
+    console.log('-------------Signal')
+    console.log(signal)
+    console.log('-------------NullifierHash')
+    console.log(nullifierHash)
+    console.log('-------------Bytes32Signal')
     console.log(bytes32Signal)
 
     let tx = null
 
-    // If a parentMessageId is present, reply. Otherwise, add new question.
-    if(parentMessageId) {
+    // If a parentMessageId is not the default, reply. Otherwise, add new question.
+    if(parentMessageId !== "0") {
+        console.log("LOG | Transacting reply")
         tx = await tazMessageContract.replyToMessage(
             parentMessageId,
             messageId,

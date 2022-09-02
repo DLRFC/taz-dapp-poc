@@ -7,7 +7,7 @@ task("deployTazMessage", "Deploy a TazMessage contract")
     .addOptionalParam("logs", "Print the logs", true, types.boolean)
     .setAction(async ({ logs }, { ethers }) => {
         const TazTokenContract = await ethers.getContractFactory("TazMessage");
-        const taz = await TazTokenContract.deploy(TEST_SEMAPHORE_CONTRACT_GOERLI);
+        const taz = await TazTokenContract.deploy(SEMAPHORE_CONTRACT_GOERLI);
         await taz.deployed();
         logs && console.log(`TazMessage contract has been deployed to: ${taz.address}`);
         return taz;

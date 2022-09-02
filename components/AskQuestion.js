@@ -6,6 +6,7 @@ import { Identity } from '@semaphore-protocol/identity'
 import { Group } from '@semaphore-protocol/group'
 import { useRouter } from 'next/router'
 import LoadingModal from './loadingModal.js'
+import { ethers } from 'ethers'
 
 // import { useIdentity } from './IdentityProvider'
 const { generateProof } = require('@semaphore-protocol/proof')
@@ -15,7 +16,7 @@ const { Subgraph } = require('@semaphore-protocol/subgraph')
 
 // 3. Ask Question Page
 const AskQuestion = () => {
-  const [signal, setSignal] = useState('Select Signal')
+  const [messageContent, setMessageContent] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [localIdentity, setLocalIdentity] = useState()
   const [loadingMessage, setLoadingMessage] = useState('')
@@ -38,10 +39,13 @@ const AskQuestion = () => {
   })
 
   const handleAskButton = async () => {
-    console.log(signal)
     setIsLoading(true)
     setLoadingMessage('1. Generating Zero Knowledge Proof')
     try {
+      
+      const messageId = ethers.utils.id(messageContent)
+      const signal = messageId.slice(35)
+    
       const identity = new Identity(localIdentity)
       const identityCommitment = identity.generateCommitment()
       console.log(identityCommitment)
@@ -50,15 +54,13 @@ const AskQuestion = () => {
 
       // Generate Group
       const group = new Group(16)
+      const groupId = '1080' 
       const subgraph = new Subgraph('goerli')
 
       const { members } = await subgraph.getGroup('1080', { members: true })
       console.log('Members')
-      console.log(members)
 
       group.addMembers(members)
-
-      console.log(group.root)
 
       // Generate Proof
       const externalNullifier = Math.round(Math.random() * 1000000000)
@@ -96,23 +98,23 @@ const AskQuestion = () => {
         '2. Proof have been Generated, we are now submiting your Question Transaction',
       )
       setLoadingProof(solidityProof)
-      const messageId = externalNullifier
-      const messageContent = signal
-
+      
       const body = {
-        // parentMessageId,
+        parentMessageId: "0",
         messageId,
         messageContent,
-        externalNullifier,
+        groupId,
         signal,
         nullifierHash,
+        externalNullifier,        
         solidityProof,
       }
-      console.log(body)
+      console.log("Body:" , body)
 
-      const response = await axios.post('/api/testVerifyProof', body)
+      const response = await axios.post('/api/postMessage', body)
       console.log(response)
       console.log(response.data)
+
       // go to the next page
       setLoadingMessage('3. Transaction Succesfuly Submitted!')
       router.push('/questions-page')
@@ -183,7 +185,7 @@ const AskQuestion = () => {
           <input
             className="border-2 border-brand-gray w-full my-3 py-2 rounded-lg"
             onChange={(e) => {
-              setSignal(e.target.value)
+              setMessageContent(e.target.value)
             }}
           ></input>
           {isLoading ? (

@@ -5,6 +5,7 @@ import axios from 'axios'
 import { Identity } from '@semaphore-protocol/identity'
 import { Group } from '@semaphore-protocol/group'
 import { useRouter } from 'next/router'
+import { ethers } from 'ethers'
 
 
 // import { useIdentity } from './IdentityProvider'
@@ -19,7 +20,7 @@ const SUGBRAPH_TAZ_MESSAGE =
 // 3. Ask Answer Page
 const AnswerQuestion = (props) => {
   
-  const [signal, setSignal] = useState('Select Signal')
+  const [messageContent, setMessageContent] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [localIdentity, setLocalIdentity] = useState()
 
@@ -35,9 +36,9 @@ const AnswerQuestion = (props) => {
       query: `
       {
         messageAddeds(
-          orderBy: messageId
+          orderBy: timestamp
           first: 1
-          where: {messageId: ${messageId}}
+          where: {messageId: "${messageId}"}
           orderDirection: desc
         ) {
           id
@@ -59,14 +60,6 @@ const AnswerQuestion = (props) => {
   }
 
   useEffect(() => {
-    const doAsync = async () => {
-      await fetchQuestion(messageId)
-    }
-    doAsync()
-  }, [])
-
-
-  useEffect(() => {
     // setter
     console.log(window)
     console.log(window.localStorage)
@@ -84,12 +77,15 @@ const AnswerQuestion = (props) => {
       await fetchQuestion(messageId)
     }
     doAsync()
-  })
+  }, [])
 
   const handleSubmitButton = async () => {
-    console.log(signal)
     setIsLoading(true)
     try {
+      
+      const newMessageId = ethers.utils.id(messageContent)
+      const signal = newMessageId.slice(35)
+      
       const identity = new Identity(localIdentity)
       const identityCommitment = identity.generateCommitment()
       console.log(identityCommitment)
@@ -103,15 +99,11 @@ const AnswerQuestion = (props) => {
 
       const { members } = await subgraph.getGroup(groupId, { members: true })
       console.log('Members')
-      console.log(members)
-
+ 
       group.addMembers(members)
 
-      console.log(group.root)
-
       // Generate Proof
-      // 2. Generating Proof
-      const externalNullifier = Math.round(Math.random() * 10000000)
+       const externalNullifier = Math.round(Math.random() * 10000000)
 
       const fullProof = await generateProof(
         identity,
@@ -144,9 +136,9 @@ const AnswerQuestion = (props) => {
 
       const body = {
         parentMessageId: messageId, // The parent of the new message will be the current message
-        messageId: externalNullifier,
-        messageContent: signal,
-        groupId: groupId,
+        messageId: newMessageId,
+        messageContent,
+        groupId,
         externalNullifier,
         signal,
         nullifierHash,
@@ -231,7 +223,7 @@ const AnswerQuestion = (props) => {
           <input
             className="border-2 border-brand-gray w-full my-3 py-2 rounded-lg"
             onChange={(e) => {
-              setSignal(e.target.value)
+              setMessageContent(e.target.value)
             }}
           ></input>
           {isLoading ? (

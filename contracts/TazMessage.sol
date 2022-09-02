@@ -12,15 +12,14 @@ contract TazMessage is Ownable {
 
     ISemaphore public semaContract;
 
-    event MessageAdded(uint256 parentMessageId, uint256 messageId, string messageContent);
+    event MessageAdded(string parentMessageId, string messageId, string messageContent);
 
     constructor(ISemaphore semaContractAddr) {
         semaContract = semaContractAddr;
-        console.log("Deploying a TazMessage contract with owner:", msg.sender);
     }
 
     function addMessage(
-        uint256 messageId, 
+        string memory messageId, 
         string memory messageContent, 
         uint256 groupId, 
         bytes32 signal, 
@@ -32,12 +31,12 @@ contract TazMessage is Ownable {
         semaContract.verifyProof(groupId, signal, nullifierHash, externalNullifier, proof);
 
         // Emit event with message if verification was successful 
-        emit MessageAdded(0, messageId, messageContent);
+        emit MessageAdded("0", messageId, messageContent);
     }
 
     function replyToMessage(
-        uint256 parentMessageId, 
-        uint256 messageId, 
+        string memory parentMessageId, 
+        string memory messageId, 
         string memory messageContent,
         uint256 groupId, 
         bytes32 signal, 
@@ -46,7 +45,11 @@ contract TazMessage is Ownable {
         uint256[8] calldata proof) external {
 
         // Require a valid parentMessageId
-        require(parentMessageId > 0, "Invalid ID provided for parent message");
+        require(
+            bytes(parentMessageId).length > 0 
+            && keccak256(abi.encodePacked(parentMessageId)) != keccak256(abi.encodePacked("0")), 
+            "Invalid ID provided for parent message"
+        );
         
         // Verify proof with Sempahore contract
         semaContract.verifyProof(groupId, signal, nullifierHash, externalNullifier, proof);
