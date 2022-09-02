@@ -6,6 +6,7 @@ import { Identity } from '@semaphore-protocol/identity'
 import { Group } from '@semaphore-protocol/group'
 import { useRouter } from 'next/router'
 import { ethers } from 'ethers'
+import LoadingModal from './loadingModal.js'
 
 // import { useIdentity } from './IdentityProvider'
 const { generateProof } = require('@semaphore-protocol/proof')
@@ -17,16 +18,18 @@ const SUGBRAPH_TAZ_MESSAGE =
   'https://api.thegraph.com/subgraphs/name/dlrfc/taz-message-goerli'
 
 // 3. Ask Answer Page
-const AnswerQuestion = ({ parentMessageId }) => {
-  // const [signal, setSignal] = useState('Select Signal')
-  const [message, setMessage] = useState('')
-
+const AnswerQuestion = (props) => {
+  const [messageContent, setMessageContent] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [localIdentity, setLocalIdentity] = useState()
+  const [loadingMessage, setLoadingMessage] = useState('')
+  const [loadingProof, setLoadingProof] = useState('')
 
   const router = useRouter()
 
-  // const messageId = props.messageId
+  const messageId = props.messageId
+  console.log('Message ID!')
+  console.log(messageId)
 
   const [question, setQuestion] = useState([])
 
@@ -36,9 +39,9 @@ const AnswerQuestion = ({ parentMessageId }) => {
       query: `
       {
         messageAddeds(
-          orderBy: messageId
+          orderBy: timestamp
           first: 1
-          where: {messageId: ${messageId}}
+          where: {messageId: "${messageId}"}
           orderDirection: desc
         ) {
           id
@@ -60,19 +63,10 @@ const AnswerQuestion = ({ parentMessageId }) => {
   }
 
   useEffect(() => {
-    const doAsync = async () => {
-      await fetchQuestion(messageId)
-    }
-    doAsync()
-  }, [])
-
-  useEffect(() => {
     // setter
-    console.log(window)
-    console.log(window.localStorage)
+
     let key = ''
-    console.log(window)
-    console.log(window.localStorage)
+
     if (key === '') {
       key = window.localStorage.getItem('identity')
     }
@@ -84,15 +78,16 @@ const AnswerQuestion = ({ parentMessageId }) => {
       await fetchQuestion(messageId)
     }
     doAsync()
-  })
+  }, [])
 
   const handleSubmitButton = async () => {
-    // const parentMessageId = 100
-    const signal = parseInt(ethers.utils.id(message).toString().slice(35))
-
-    console.log(signal)
     setIsLoading(true)
+    setLoadingMessage('1. Generating Zero Knowledge Proof')
+
     try {
+      const newMessageId = ethers.utils.id(messageContent)
+      const signal = newMessageId.slice(35)
+
       const identity = new Identity(localIdentity)
       const identityCommitment = identity.generateCommitment()
       console.log(identityCommitment)
@@ -106,14 +101,10 @@ const AnswerQuestion = ({ parentMessageId }) => {
 
       const { members } = await subgraph.getGroup(groupId, { members: true })
       console.log('Members')
-      console.log(members)
 
       group.addMembers(members)
 
-      console.log(group.root)
-
       // Generate Proof
-      // 2. Generating Proof
       const externalNullifier = Math.round(Math.random() * 10000000)
 
       const fullProof = await generateProof(
@@ -143,18 +134,18 @@ const AnswerQuestion = ({ parentMessageId }) => {
       })
 
       const res = await verifyProof(verificationKey, fullProof)
+      console.log('Verification', res)
 
-      console.log('Verification')
-      console.log(res)
-
-      const messageId = signal
-      const messageContent = message
+      setLoadingMessage(
+        "2. The proof has been generated. Your message transaction is now being submitted. This can take up to 1 - 2 minutes, please don't close the App during the proccess :)",
+      )
+      setLoadingProof(solidityProof)
 
       const body = {
-        parentMessageId,
-        messageId,
+        parentMessageId: messageId, // The parent of the new message will be the current message
+        messageId: newMessageId,
         messageContent,
-        groupId: 1080,
+        groupId,
         externalNullifier,
         signal,
         nullifierHash,
@@ -175,9 +166,21 @@ const AnswerQuestion = ({ parentMessageId }) => {
       alert(error)
     }
   }
+  const onClose = () => {
+    setIsLoading(!isLoading)
+  }
 
   return (
     <div className="p-4 font-sans bg-brand-beige">
+      {isLoading ? (
+        <div className="absolute top-[0px] left-[0px] z-20">
+          <LoadingModal
+            onClose={onClose}
+            loadingMessage={loadingMessage}
+            loadingProof={loadingProof}
+          />
+        </div>
+      ) : null}
       <Header />
       <svg
         className="absolute -left-2 top-[370px]"
@@ -202,7 +205,7 @@ const AnswerQuestion = ({ parentMessageId }) => {
 
       <div className="flex flex-col items-center overflow-hidden rounded-md border-2 border-brand-gray shadow-xl">
         <div className="flex w-full justify-between border-b-2 border-brand-gray bg-brand-beige2 p-3">
-          <Link href={'/answers-board-page/' + parentMessageId}>
+          <Link href={'/answers-board-page/' + messageId}>
             <svg
               className="cursor-pointer scale-[100%]"
               width="30"
@@ -237,7 +240,7 @@ const AnswerQuestion = ({ parentMessageId }) => {
           <input
             className="border-2 border-brand-gray w-full my-3 py-2 rounded-lg"
             onChange={(e) => {
-              setMessage(e.target.value)
+              setMessageContent(e.target.value)
             }}
           ></input>
           {isLoading ? (

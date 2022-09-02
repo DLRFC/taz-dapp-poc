@@ -8,7 +8,7 @@ const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL)
 const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider)
 const tazMessageAbi = TazMessage.abi
 // const semaphoreAddress = process.env.SEMAPHORE_CONTRACT_ADDRESS
-const tazMessageAddress = '0xa6E078cc0AD77d69f7Ee28C0A76956C2f1fF47DD'
+const tazMessageAddress = '0x990343af7d844919c4403b0eBE02664f121B3692'
 
 // const semaphoreContract = new ethers.Contract(
 //   semaphoreAddress,

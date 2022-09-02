@@ -8,20 +8,16 @@ const { verifyProof } = require('@semaphore-protocol/proof')
 const { packToSolidityProof } = require('@semaphore-protocol/proof')
 const { Subgraph } = require('@semaphore-protocol/subgraph')
 const { solidity } = require('../hardhat.config')
+// const { keccak256 } = require("@ethersproject/keccak256")
+// const { toUtf8Bytes } = require("@ethersproject/strings")
 
 const tazMessageAbi =
   require('../artifacts/contracts/TazMessage.sol/TazMessage.json').abi
-const USE_EXISTING_TAZ_MESSAGE_CONTRACT =
-  '0xa6E078cc0AD77d69f7Ee28C0A76956C2f1fF47DD'
+const USE_EXISTING_TAZ_MESSAGE_CONTRACT = null //'0xa6E078cc0AD77d69f7Ee28C0A76956C2f1fF47DD'
 
 describe('TazMessage tests', function () {
   let tazMessageContract
   let signers
-  let groupId
-  let signalBytes32
-  let nullifierHash
-  let externalNullifier
-  let proof
 
   before(async () => {
     signers = await ethers.getSigners()
@@ -32,16 +28,17 @@ describe('TazMessage tests', function () {
         signers[0],
       )
     } else {
+      console.log("LOG | Deploying new contract")
       tazMessageContract = await run('deployTazMessage', { logs: true })
     }
   })
 
   it('Should add message', async () => {
-    const messageContent =
-      'My cat responded to their name today. Do I have a dog now?'
-    const messageId = 5
+    const messageContent = 'What is the name of this Dapp?'
+    const messageId = ethers.utils.id(messageContent)
+    const signal = messageId.slice(35)
 
-    proofElements = await run('createProof', { logs: true })
+    const proofElements = await run('createProof', {signal: signal, logs: false })
 
     const tx = await tazMessageContract.addMessage(
       messageId,
@@ -64,10 +61,11 @@ describe('TazMessage tests', function () {
 
   it('Should reply to message', async () => {
     const messageContent = 'The name of the Dapp is TAZ!'
-    const messageId = 2
-    const parentMessageId = 1
+    const messageId = ethers.utils.id(messageContent)
+    const parentMessageId = ethers.utils.id('What is the name of this Dapp?')
+    const signal = messageId.slice(35)
 
-    proofElements = await run('createProof', { logs: true })
+    const proofElements = await run('createProof', { signal: signal, logs: false })
 
     const tx = await tazMessageContract.replyToMessage(
       parentMessageId,
@@ -86,24 +84,13 @@ describe('TazMessage tests', function () {
     expect(receipt.events[1].event).to.equal('MessageAdded')
   })
 
-  it('Should fail to reply to message', async () => {
-    const messageContent = 'The name of the Dapp is TAZ!'
-    const messageId = 2
-    const parentMessageId = 0
+  it('Should fail to reply to message when parent message id is "0"', async () => {
+    const messageContent = 'The name of the Dapp is unknown!'
+    const messageId = ethers.utils.id(messageContent)
+    const parentMessageId = "0"
+    const signal = messageId.slice(35)
 
-    proofElements = await run('createProof', { logs: true })
-
-    const tx = await tazMessageContract.replyToMessage(
-      parentMessageId,
-      messageId,
-      messageContent,
-      proofElements.groupId,
-      proofElements.signalBytes32,
-      proofElements.nullifierHash,
-      proofElements.externalNullifier,
-      proofElements.solidityProof,
-      { gasLimit: 1500000 },
-    )
+    const proofElements = await run('createProof', { signal: signal, logs: false })
 
     await expect(
       tazMessageContract.replyToMessage(
@@ -118,7 +105,33 @@ describe('TazMessage tests', function () {
         { gasLimit: 1500000 },
       ),
     ).to.be.revertedWith('Invalid ID provided for parent message')
+
   })
+
+  it('Should fail to reply to message when parent message id is blank', async () => {
+    const messageContent = 'The name of the Dapp is unknowable!'
+    const messageId = ethers.utils.id(messageContent)
+    const parentMessageId = ""
+    const signal = messageId.slice(35)
+
+    const proofElements = await run('createProof', { signal: signal, logs: false })
+
+    await expect(
+      tazMessageContract.replyToMessage(
+        parentMessageId,
+        messageId,
+        messageContent,
+        proofElements.groupId,
+        proofElements.signalBytes32,
+        proofElements.nullifierHash,
+        proofElements.externalNullifier,
+        proofElements.solidityProof,
+        { gasLimit: 1500000 },
+      ),
+    ).to.be.revertedWith('Invalid ID provided for parent message')
+
+  })
+
 })
 
 // describe("Taz Token", function () {

@@ -13,7 +13,7 @@ module.exports = {
     hardhat: {
       forking: {
         url: process.env.GOERLI_URL,         
-        blockNumber: 7493211
+        /*blockNumber: 7493211*/
       }
 
     },

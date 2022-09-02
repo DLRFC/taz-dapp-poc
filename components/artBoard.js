@@ -1,51 +1,49 @@
-import React, { useState, useRef, createRef, useEffect } from "react";
-import { useScreenshot, createFileName } from "use-react-screenshot";
-import { Stage, Layer, Line } from "react-konva";
-import axios from "axios";
-import Header from "./Header";
+import React, { useState, useRef, createRef, useEffect } from 'react'
+import { useScreenshot, createFileName } from 'use-react-screenshot'
+import { Stage, Layer, Line } from 'react-konva'
+import axios from 'axios'
+import Header from './Header'
 
 export default function artBoard() {
-  const [selectedTile, setSelectedTile] = useState(1);
-  const [uriStorage, setUriStorage] = useState([]);
+  const [selectedTile, setSelectedTile] = useState(1)
+  const [uriStorage, setUriStorage] = useState([])
 
   // DECLARATIONS FROM OLD DRAWING COMPONENT FILE
-  const [tool, setTool] = React.useState("pen");
-  const [lines, setLines] = React.useState([]);
-  const [color, setColor] = React.useState([]);
-  const isDrawing = React.useRef(false);
-  const stageRef = React.useRef(null);
-  let uriStorageTemp1;
+  const [tool, setTool] = React.useState('pen')
+  const [lines, setLines] = React.useState([])
+  const [color, setColor] = React.useState([])
+  const isDrawing = React.useRef(false)
+  const stageRef = React.useRef(null)
+  let uriStorageTemp1
 
-  //SAVE TILES AS ONE IMAGE - @WRITERSBLOCKCHAIN
-  const ref = createRef(null);
+  // SAVE TILES AS ONE IMAGE - @WRITERSBLOCKCHAIN
+  const ref = createRef(null)
   const [image, takeScreenShot] = useScreenshot({
-    type: "image/png",
+    type: 'image/png',
     quality: 1.0,
-  });
+  })
 
   const fetchUriStorage = async () => {
-    console.log("fetchUriStorage");
+    console.log('fetchUriStorage')
     try {
-      const result = await axios.get("/api/storeTiles");
-      console.log(result.data);
-      uriStorageTemp1 = result.data.uriStorage.filter(item => item != null).map(tile => tile.data.uriString);
-      setUriStorage(uriStorageTemp1);
-      console.log(uriStorageTemp1);
-
+      const result = await axios.get('/api/storeTiles')
+      console.log(result)
+      uriStorageTemp1 = result.data.uriStorage
+      return uriStorageTemp1
     } catch (err) {
-      console.log("Error fetching subgraph data: ", err);
+      console.log('Error fetching subgraph data: ', err)
     }
-  };
+  }
 
   useEffect(() => {
     const doAsync = async () => {
-      fetchUriStorage();
-      setSelectedTile(uriStorage.findIndex((e) => e === null));
-    };
-    doAsync();
-  }, []);
+      setUriStorage(await fetchUriStorage())
+      setSelectedTile(uriStorageTemp1.findIndex((e) => e === null))
+    }
+    doAsync()
+  }, [])
 
-  //COMING BACK TO THIS ON AUG 30, URI NOT WORKING YET - @WRITERSBLOCKCHAIN
+  // COMING BACK TO THIS ON AUG 30, URI NOT WORKING YET - @WRITERSBLOCKCHAIN
   // const ipfsURI = (image, { name = "img", extension = "png" } = {}) => {
   // let image =  createFileName(extension, name)
   // let canvas = document.createElement("canvas");
@@ -56,94 +54,94 @@ export default function artBoard() {
   // console.log("CANVAS 9 TILES URI:", dataURL);
   // };
 
-  const download = (image, { name = "img", extension = "jpg" } = {}) => {
-    const a = document.createElement("a");
-    a.href = image;
-    a.download = createFileName(extension, name);
-    a.click();
-  };
+  const download = (image, { name = 'img', extension = 'jpg' } = {}) => {
+    const a = document.createElement('a')
+    a.href = image
+    a.download = createFileName(extension, name)
+    a.click()
+  }
 
-  const downloadScreenshot = () => takeScreenShot(ref.current).then(download);
+  const downloadScreenshot = () => takeScreenShot(ref.current).then(download)
   // const sendURI = () => takeScreenShot(ref.current).then(ipfsURI);
 
-  //NO LONGER NEEDED - USER GETS RANDOM SELECTED TILE
+  // NO LONGER NEEDED - USER GETS RANDOM SELECTED TILE
   const onImageClick = (e) => {
-    setSelectedTile(parseInt(e.target.id));
-  };
+    setSelectedTile(parseInt(e.target.id))
+  }
 
   // LOGIC FUNCTIONS FOR SKETCHING BELOW
   const handleMouseDown = (e) => {
-    isDrawing.current = true;
-    const pos = e.target.getStage().getPointerPosition();
-    setLines([...lines, { tool, points: [pos.x, pos.y] }]);
-  };
+    isDrawing.current = true
+    const pos = e.target.getStage().getPointerPosition()
+    setLines([...lines, { tool, points: [pos.x, pos.y] }])
+  }
 
   const handleMouseMove = (e) => {
     // no drawing - skipping
     if (!isDrawing.current) {
-      return;
+      return
     }
-    const stage = e.target.getStage();
-    const point = stage.getPointerPosition();
-    const lastLine = lines[lines.length - 1];
+    const stage = e.target.getStage()
+    const point = stage.getPointerPosition()
+    const lastLine = lines[lines.length - 1]
 
     // set color
-    lines[lines.length - 1].color = color;
+    lines[lines.length - 1].color = color
 
     // add point
-    lastLine.points = lastLine.points.concat([point.x, point.y]);
+    lastLine.points = lastLine.points.concat([point.x, point.y])
 
     // replace last
-    lines.splice(lines.length - 1, 1, lastLine);
-    setLines(lines.concat());
-  };
+    lines.splice(lines.length - 1, 1, lastLine)
+    setLines(lines.concat())
+  }
 
   const handleMouseUp = () => {
-    isDrawing.current = false;
-  };
+    isDrawing.current = false
+  }
 
   const newColor = () => {
-    const newColor = "#" + Math.floor(Math.random()*16777215).toString(16);
-      
-     /*  "rgb(" +
+    const newColor = '#' + Math.floor(Math.random() * 16777215).toString(16)
+
+    /*  "rgb(" +
       Math.round(Math.random() * 255) +
       " " +
       Math.round(Math.random() * 255) +
       " " +
       Math.round(Math.random() * 255) +
       ")"; */
-    setColor(newColor);
-    console.log(newColor);
-  };
+    setColor(newColor)
+    console.log(newColor)
+  }
 
   const handleUndo = () => {
-    lines.pop();
-    setLines(lines.concat());
-  };
+    lines.pop()
+    setLines(lines.concat())
+  }
 
   const submit = async () => {
-    const uri = stageRef.current.toDataURL();
-    let uriStorageTemp2 = uriStorage;
-    uriStorageTemp2[selectedTile] = uri.toString();
-    console.log("new uriStorage:");
-    console.log(uriStorageTemp2);
+    const uri = stageRef.current.toDataURL()
+    const uriStorageTemp2 = uriStorage
+    uriStorageTemp2[selectedTile] = uri.toString()
+    console.log('new uriStorage:')
+    console.log(uriStorageTemp2)
 
-    //if all tiles are full
-    if (uriStorageTemp2.findIndex((e) => !e) === -1) {
-      //send full canvas image to backend
-      console.log("canvas full, push tx");
+    // if all tiles are full
+    if (uriStorageTemp2.findIndex((e) => e === null) === -1) {
+      // send full canvas image to backend
+      console.log('canvas full, push tx')
     } else {
-      console.log("post tile to backend");
-      await axios.post("/api/storeTiles", { uriStorage: uriStorageTemp2 });
+      console.log('post tile to backend')
+      await axios.post('/api/storeTiles', { array: uriStorageTemp2 })
     }
 
-    setSelectedTile(-1);
-    setLines([]);
+    setSelectedTile(-1)
+    setLines([])
 
-    //redirect user to another page
-  };
+    // redirect user to another page
+  }
 
-  //DRAWING AREA HTML
+  // DRAWING AREA HTML
   const drawingHTML = [
     <div className="border-black border touch-none bg-white h-[250] w-[250]">
       <Stage
@@ -169,18 +167,18 @@ export default function artBoard() {
               lineCap="round"
               lineJoin="round"
               globalCompositeOperation={
-                line.tool === "eraser" ? "destination-out" : "source-over"
+                line.tool === 'eraser' ? 'destination-out' : 'source-over'
               }
             />
           ))}
         </Layer>
       </Stage>
     </div>,
-  ];
+  ]
 
   const generateTileHTML = (i) => {
     const html = (
-      <td class="bg-white w-20 border border-slate-200">
+      <td className="bg-white w-20 border border-slate-200">
         {selectedTile === i ? (
           drawingHTML
         ) : (
@@ -188,14 +186,14 @@ export default function artBoard() {
             id={`${i}`}
             onClick={onImageClick}
             src={
-              uriStorage[i] ? uriStorage[i] : "" //"https://media.istockphoto.com/vectors/cartoon-raven-isolated-on-white-background-vector-id597250060?k=20&m=597250060&s=612x612&w=0&h=yl0rXftvQNqXTKQyRjqumexaKiyW6Bq0OFl1Ko4zaAs="
+              uriStorage[i] ? uriStorage[i] : '' // "https://media.istockphoto.com/vectors/cartoon-raven-isolated-on-white-background-vector-id597250060?k=20&m=597250060&s=612x612&w=0&h=yl0rXftvQNqXTKQyRjqumexaKiyW6Bq0OFl1Ko4zaAs="
             }
           />
         )}
       </td>
-    );
-    return html;
-  };
+    )
+    return html
+  }
 
   return (
     <div className="px-6 py-8 font-sans">
@@ -286,29 +284,27 @@ export default function artBoard() {
           </button>
         </div>
         <div className="flex items-center justify-center">
-          {uriStorage ?
           <table
             ref={ref}
             id="ipfsURI"
-            class="p-3 justify-center rounded-md bg-gray-500 max-w-3xl"
+            className="p-3 justify-center rounded-md bg-gray-500 max-w-3xl"
           >
-            <tr class="h-20">
+            <tr className="h-20">
               {generateTileHTML(0)}
               {generateTileHTML(1)}
               {generateTileHTML(2)}
             </tr>
-            <tr class="h-20">
+            <tr className="h-20">
               {generateTileHTML(3)}
               {generateTileHTML(4)}
               {generateTileHTML(5)}
             </tr>
-            <tr class="h-20">
+            <tr className="h-20">
               {generateTileHTML(6)}
               {generateTileHTML(7)}
               {generateTileHTML(8)}
             </tr>
           </table>
-          : "Fetching Tiles"}
 
           {/* <div
             ref={ref}
@@ -320,7 +316,7 @@ export default function artBoard() {
         </div>
 
         <div className="flex items-center justify-center pt-5 pb-10">
-          <div class={`w-8 h-8 bg-red-500 rounded-full mr-3`}></div>
+          <div className={`w-8 h-8 bg-red-500 rounded-full mr-3`}></div>
           <button
             className="flex justify-between bg-white border-[1px] border-brand-gray mr-4 py-1 px-3 shadow-[-3px_3px_0px_0px_rgba(71,95,111)]"
             onClick={newColor}
@@ -407,5 +403,5 @@ export default function artBoard() {
      <option value="eraser">Eraser</option>
    </select> */}
     </div>
-  );
+  )
 }
