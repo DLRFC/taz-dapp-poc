@@ -6,12 +6,13 @@ import { useRouter } from 'next/router'
 import { useIdentityLoginContext } from '../../context/IdentityContextProvider'
 import { Identity } from '@semaphore-protocol/identity'
 // import useGetMembers from '../../hooks/useGetMembers'
-import { ValidateInvitationComponent } from '../ValidateInvitation-test/View'
+import ValidateInvitationComponent from './View'
 
 const { Subgraph } = require('@semaphore-protocol/subgraph')
 
 // Page 1 it will check Invitation
 export default function InvitationCheck() {
+  console.log('test')
   const [selected, setSelected] = useState('environment')
   const [startScan, setStartScan] = useState(false)
   // const [loadingScan, setLoadingScan] = useState(false)

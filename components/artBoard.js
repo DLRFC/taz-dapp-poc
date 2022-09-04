@@ -1,5 +1,5 @@
 import React, { useState, createRef, useEffect } from 'react'
-import { useScreenshot, createFileName } from 'use-react-screenshot'
+// import { useScreenshot } from 'use-react-screenshot'
 import { Stage, Layer, Line } from 'react-konva'
 import axios from 'axios'
 import Header from './Header'
@@ -16,24 +16,34 @@ export default function artBoard() {
     'text-purple-600': '#9333ea',
   }
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [selectedTile, setSelectedTile] = useState(1)
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [uriStorage, setUriStorage] = useState([])
 
   // DECLARATIONS FROM OLD DRAWING COMPONENT FILE
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [tool] = React.useState('pen')
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [lines, setLines] = React.useState([])
-  const [color, setColor] = React.useState('text-black')
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [color] = React.useState('text-black')
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const isDrawing = React.useRef(false)
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const stageRef = React.useRef(null)
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const uriStorageRef = React.useRef(null)
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const canvasId = React.useRef(null)
 
   // SAVE TILES AS ONE IMAGE - @WRITERSBLOCKCHAIN
   const ref = createRef(null)
-  const [image, takeScreenShot] = useScreenshot({
-    type: 'image/png',
-    quality: 1.0,
-  })
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  // const [] = useScreenshot({
+  //   type: 'image/png',
+  //   quality: 1.0,
+  // })
 
   const fetchUriStorage = async () => {
     console.log('fetchUriStorage')
@@ -52,11 +62,13 @@ export default function artBoard() {
     }
   }
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     const doAsync = async () => {
       setUriStorage(await fetchUriStorage())
       // select random tile
       const remainingIndices = []
+      // eslint-disable-next-line array-callback-return
       uriStorageRef.current.map((img, i) => {
         if (img === '') {
           remainingIndices.push(i)
@@ -83,18 +95,8 @@ export default function artBoard() {
   // console.log("CANVAS 9 TILES URI:", dataURL);
   // };
 
-  const download = (image, { name = 'img', extension = 'jpg' } = {}) => {
-    const a = document.createElement('a')
-    a.href = image
-    a.download = createFileName(extension, name)
-    a.click()
-  }
-
-  const downloadScreenshot = () => takeScreenShot(ref.current).then(download)
-  // const sendURI = () => takeScreenShot(ref.current).then(ipfsURI);
-
   // NO LONGER NEEDED - USER GETS RANDOM SELECTED TILE
-  const onImageClick = (e) => {
+  function onImageClick(e) {
     setSelectedTile(parseInt(e.target.id))
   }
 
@@ -129,20 +131,6 @@ export default function artBoard() {
     isDrawing.current = false
   }
 
-  const newColor = () => {
-    const newColor = '#' + Math.floor(Math.random() * 16777215).toString(16)
-
-    /*  "rgb(" +
-      Math.round(Math.random() * 255) +
-      " " +
-      Math.round(Math.random() * 255) +
-      " " +
-      Math.round(Math.random() * 255) +
-      ")"; */
-    setColor(newColor)
-    console.log(newColor)
-  }
-
   const handleUndo = () => {
     lines.pop()
     setLines(lines.concat())
@@ -165,9 +153,11 @@ export default function artBoard() {
     // INSERT PROOF GENERATION, MODAL AND PAGE REDIRECT HERE
   }
 
+  const newLocal = 'border-black border touch-none bg-white h-[250] w-[250]'
   // DRAWING AREA HTML
   const drawingHTML = [
-    <div className="border-black border touch-none bg-white h-[250] w-[250]">
+    // eslint-disable-next-line react/jsx-key
+    <div className={newLocal}>
       <Stage
         width={80}
         height={80}

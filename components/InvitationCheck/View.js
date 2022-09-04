@@ -19,6 +19,7 @@ const InvitationCheckComponent = ({
   data,
   validate,
 }) => {
+  console.log('change')
   return (
     <div className="p-4 font-sans bg-brand-beige">
       <svg

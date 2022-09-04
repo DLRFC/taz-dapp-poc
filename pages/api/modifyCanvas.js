@@ -49,15 +49,18 @@ export default async function handler(req, res) {
       (canvas) => canvas.data.canvasId === canvasId,
     )[0]
 
+    const newLocal = 'Canvas successfully updated!'
     // Update the canvas in the database
+    // eslint-disable-next-line no-unused-expressions
     client.query(
       query.Update(query.Ref(match.ref), {
         data: {
           tiles: updatedTiles,
         },
       }),
+      // eslint-disable-next-line no-sequences
     ),
       // Send response back to frontend
-      res.status(201).json('Canvas successfully updated!')
+      res.status(201).json(newLocal)
   }
 }
