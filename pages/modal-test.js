@@ -1,7 +1,7 @@
 import { AnimatePresence } from 'framer-motion'
 import React, { useState } from 'react'
 // import Modal from './Modal/Modal'
-import LoadingModal from '../components/loadingModal.js'
+import LoadingModal from '../components/LoadingModal/Index.js'
 import useGetMembers from '../hooks/useGetMembers.js'
 // import './style.css'
 
