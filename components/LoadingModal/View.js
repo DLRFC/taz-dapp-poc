@@ -1,17 +1,11 @@
-import React, { useState } from 'react'
-
-// import styles from './Modal.module.css'
+import React from 'react'
 import { motion } from 'framer-motion'
 
-export default function LoadingModal({
-  onClose,
+const LoadingModalComponent = ({
+  handleClick,
   loadingMessage,
   loadingProof,
-}) {
-  const handleClick = () => {
-    onClose && onClose()
-  }
-  // Special thanks to fireship.io for this beautiful code snippet to animate modal drop in.
+}) => {
   const dropIn = {
     hidden: {
       y: '-100vh',
@@ -32,7 +26,6 @@ export default function LoadingModal({
       opacity: 0,
     },
   }
-
   return (
     <div
       onClick={handleClick}
@@ -82,3 +75,4 @@ export default function LoadingModal({
     </div>
   )
 }
+export default LoadingModalComponent
