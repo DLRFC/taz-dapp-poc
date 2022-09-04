@@ -4,14 +4,14 @@ import axios from 'axios'
 import { Identity } from '@semaphore-protocol/identity'
 import Header from './Header'
 import QRCode from 'qrcode'
-import { useIdentityLogin } from './IdentityProvider'
-import LoadingModal from './loadingModal.js'
+import { useIdentityLoginContext } from '../../context/IdentityContextProvider'
+import LoadingModal from '../loadingModal.js'
 
 // Page 3 will Generate Identity and Join Group
 export const GenerateIdentity = (props) => {
   const { invitation } = props
 
-  const identityLogin = useIdentityLogin()
+  const onSetIdentity = useIdentityLoginContext()
   const [imageUrl, setImageUrl] = useState('')
   // const [isGeneratingIdentity, setIsGeneratingIdentity] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -43,7 +43,7 @@ export const GenerateIdentity = (props) => {
         console.log(res)
         console.log('Status!')
         console.log(res.status)
-        identityLogin(identityKey)
+        onSetIdentity(identityKey)
         try {
           const responseQR = await QRCode.toDataURL(identityKey)
           setImageUrl(responseQR)
