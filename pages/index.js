@@ -1,13 +1,10 @@
 import dynamic from 'next/dynamic'
 import { useState, useEffect } from 'react'
-import ExperiencesList from '../components/ExperiencesList/index.js'
+import ExperiencesList from '../components/ExperiencesList'
 
-const InvitationCheck = dynamic(
-  () => import('../components/InvitationCheck/index'),
-  {
-    ssr: false,
-  },
-)
+const InvitationCheck = dynamic(() => import('../components/InvitationCheck'), {
+  ssr: false,
+})
 
 export default function Home() {
   const [localIdentity, setLocalIdentity] = useState()
