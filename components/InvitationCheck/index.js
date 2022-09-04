@@ -106,7 +106,7 @@ export default function InvitationCheck() {
         .toString()
       const subgraph = new Subgraph('goerli')
 
-      const { members } = await subgraph.getGroup('1080', { members: true })
+      const { members } = await subgraph.getGroup('10803', { members: true })
       console.log('Checking Members')
       console.log(members)
       const check = members.includes(checkIdentityCommitment)

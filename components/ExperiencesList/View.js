@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-const ExperiencesListComponent = () => {
+const ExperiencesListComponent = ({ clearIdentity }) => {
   return (
     <div className="px-6 py-8 font-sans">
       <svg
@@ -71,6 +71,7 @@ const ExperiencesListComponent = () => {
           </div>
           <p className="-mr-3">X</p>
         </div>
+
         <Link href="questions-page">
           <div className="flex w-full flex-row items-center border-b-2 border-gray-700 py-3 px-2 cursor-pointer">
             <div className="w-[90%]">
@@ -81,9 +82,12 @@ const ExperiencesListComponent = () => {
           </div>
         </Link>
       </div>
-      <div className="flex justify-center m-6 text-brand-2xs text-brand-gray">
-        &#8220;who am I?&#8221;&nbsp;&ndash;&nbsp;
-        <a href="" className="underline">
+      <div className="flex items-center justify-center  flex-col m-6 text-brand-2xs text-brand-gray">
+        <button className="mb-3 text-lg" onClick={clearIdentity}>
+          Logout
+        </button>
+        {/* &#8220;who am I?&#8221;&nbsp;&ndash;&nbsp; */}
+        <a href="" className="underline mt-3">
           @PrivacyScaling
         </a>
       </div>
