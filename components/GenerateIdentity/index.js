@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { useState } from 'react'
 import axios from 'axios'
 import { Identity } from '@semaphore-protocol/identity'
-import Header from './Header'
 import QRCode from 'qrcode'
 import { useIdentityLoginContext } from '../../context/IdentityContextProvider'
 import LoadingModal from '../loadingModal.js'
@@ -76,8 +75,6 @@ export const GenerateIdentity = (props) => {
           <LoadingModal onClose={onClose} loadingMessage={loadingMessage} />
         </div>
       ) : null}
-
-      <Header />
 
       <svg
         className="absolute -left-2 top-[370px]"
