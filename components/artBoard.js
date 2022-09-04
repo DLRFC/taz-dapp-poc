@@ -298,6 +298,15 @@ export default function artBoard() {
           </div>
         </div>
         <div className="flex items-center justify-center">
+          <div>
+            <div className="w-4 h-4 bg-black rounded-full mr-5 mb-5 mr-2 cursor-pointer"></div>
+            <div className="w-4 h-4 bg-red-600 rounded-full mr-5 mb-5 cursor-pointer"></div>
+            <div className="w-4 h-4 bg-orange-500 rounded-full mr-5 mb-5 cursor-pointer"></div>
+            <div className="w-4 h-4 bg-yellow-300 rounded-full mr-5 mb-5 cursor-pointer"></div>
+            <div className="w-4 h-4 bg-green-600 rounded-full mr-5 mb-5 cursor-pointer"></div>
+            <div className="w-4 h-4 bg-blue-600 rounded-full mr-5 mb-5 cursor-pointer"></div>
+            <div className="w-4 h-4 bg-purple-600 rounded-full mr-5 cursor-pointer"></div>
+          </div>
           <table
             ref={ref}
             id="ipfsURI"
@@ -333,7 +342,7 @@ export default function artBoard() {
           {/* <div className={`w-8 h-8 bg-red-500 rounded-full mr-2`}></div> */}
 
           {/* NEW COLOR DROP DOWN ITEM*/}
-          <div className="mr-1">
+          {/* <div className="mr-1">
             <Button text="Color" />
           </div>
           <div>
@@ -366,7 +375,7 @@ export default function artBoard() {
                 ▇
               </option>
             </select>
-          </div>
+          </div> */}
           <div className="ml-2" onClick={handleUndo}>
             <Button text="Undo" />
           </div>
