@@ -1,9 +1,9 @@
 import Link from 'next/link'
 
-import LoadingModal from '../loadingModal.js/Index.js'
+import LoadingModal from '../LoadingModal'
 
 // 3. Ask Question Page
-const AskQuestioComponent = ({
+const AskQuestionComponent = ({
   onClose,
   loadingMessage,
   loadingProof,
@@ -93,4 +93,4 @@ const AskQuestioComponent = ({
   )
 }
 
-export default AskQuestioComponent
+export default AskQuestionComponent

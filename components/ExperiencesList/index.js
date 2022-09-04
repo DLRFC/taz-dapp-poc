@@ -1,4 +1,4 @@
-import ExperiencesListComponent from './view'
+import ExperiencesListComponent from './View'
 
 const ExperiencesList = () => {
   return <ExperiencesListComponent />
