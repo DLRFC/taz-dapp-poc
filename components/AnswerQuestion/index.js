@@ -5,7 +5,7 @@ import { Identity } from '@semaphore-protocol/identity'
 import { Group } from '@semaphore-protocol/group'
 import { useRouter } from 'next/router'
 import { ethers } from 'ethers'
-import LoadingModal from '../loadingModal.js'
+import LoadingModal from '../LoadingModal'
 
 // import { useIdentity } from './IdentityProvider'
 const { generateProof } = require('@semaphore-protocol/proof')

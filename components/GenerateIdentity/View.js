@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import LoadingModal from '../LoadingModal.js/Index.js'
+import LoadingModal from '../LoadingModal'
 
 // Page 3 will Generate Identity and Join Group
 export const GenerateIdentityComponent = ({
