@@ -38,26 +38,12 @@ export default function artBoard() {
   const fetchUriStorage = async () => {
     console.log("fetchUriStorage");
     try {
-      //404 ERROR ON BELOW CALL - WAIT FOR HELP FROM FALCO
-      /*       const result = await axios.get('/api/modifyCanvas')
-      console.log("result:" );
-      console.log(result); */
 
-      //fake data returned from backend to be replaced by backend call above
-      const canvas = {
-        tiles: [
-          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAAAXNSR0IArs4c6QAAAshJREFUeF7t2j2vDVEYxfH/LZQaoRDxBSiIqxASodIoKIgCjZdOolcg8QWIhtBIREJBo0HiRqKUW9FqRCEh8Q3kSWaSMZm5JzNrzz2z913TnrMmeX5Z+8zsmbOCD0lgRUo7jAHFEhjQgKKAGHcDDSgKiHE30ICigBh3Aw0oCohxN9CAooAYdwMNKAqIcTfQgKKAGHcDDSgKiHE30ICigBh3Aw0oCohxN9CAooAYdwMNKAqIcTewcMAT1Xxr4pyTxefcwJfAuWryV8D5yRSEE88V8AbwoDXXSWB2TZwr4GvgTAvwa9XCb0JhkkfnCngNeNwxbSAeA/4mlxh5wrkC7qyW6/6OuU4Db0fOmzw2V8AYdB8QF5I24k9gT3KJkSecM2CMdAV40jHbbC4ocwcMu8/A0Q7Eu8CdkcVJFssBMJBu90y8DhxKpjHiRDkAXgBebDBbXLG7lvkIjuGRHABjquaupD3lUpdyLoCBVv/etZfzUm+wcwKsm/cb2NGq4Tvg1PAFqCdyBIw9cuyV28dN4L5OMuwMOQIeAD4AsVtpHt+BI8CvYQTat3MEjIn79spXgacaybB0roAx5SPgese4e4EfwxjGfztnwEvAs57RY/+8KY+9cgbcDnwCDi4TMWfAcIt3Jg87ntjEZ3F/eBz4M36BLk7mDhgT7gbe9yBeBJ4vZhj/jRIA6+k/Vo1saky+zSsJMJZzIDaPyR++lgQYcHETvauF+AW4PNVVuTTAe8Ctjl+0yR44lAbY9x6lvirHy/mk94elAQbUpiKWCLgIMX4TD4+/cfk/WSrgIsSzwJsUiCUDboSY7LVo6YA1Yjx0WK0aF39QCsAkx1YArKHiz0rbgPirXLJjKwEmQ2ueyIAiqwENKAqIcTfQgKKAGHcDDSgKiHE30ICigBh3Aw0oCohxN9CAooAYdwMNKAqIcTfQgKKAGHcDRcB/vtFJUXCOPzsAAAAASUVORK5CYII=",
-          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAAAXNSR0IArs4c6QAABB9JREFUeF7tmv2xTjEQh/dWgApQASpABXSAClABKkAF6IAKUAEqQAd0YB7OzmQySU7y7smHe/fMvP/cmz1Jnvx2s9mcM/HHRODMZO3G4gCNInCADtBIwGjuCnSARgJGc1egAzQSMJq7Ah2gkYDR3BXoAI0EjOauQAdoJGA0dwU6QCMBo7kr0AEaCRjNXYEO0EjAaO4KdIBGAkZzV6ADNBIwmrsCFwV4WUQebGP7ICI/jONc1ryHAm+KyEcRASIP8G6JyK8OFK6JyD0RoU/6eTd6sXoAfC4izyJYL0SEvx/5AO979MKvInK302Ilx94D4BMReRn1hvquHzyxVD90+1REXh25UqV39QCYUoaO4e02wSPcOaV0+umh9izDHgDpDFC6icSdH6VG4t6XxMzOBUA2EIL6pczSEewfGt2MjerOeQXIvFDIpwLEKyfGRBaHTYoYmHr++xgYTorJMlF+KTW2xkTeh/JYnNTzbVPlETG2ykF6xcC481zAp11LTMztvLzn9ZYqDYNHp6MA7sVETiv3K5b8/ZY4x00/Z+JhxSttTUYBrImJ5ImlI19OfT83lx6qPMU+EiB9lmJiKfhjx6lDj4c6/t8iQt45Bd5IF66JiaVYmFPfoy3ntPmhwXq0AnWorcew1CZ0RC5pQPfPdBZAXJGD/9VoBmwSqEpdknacq1NJ99ATR470LICMhwP/48TAgEdFhQ0lFffUZGjCvCJAVPUmMzAgcorJpTbTN49Zu3DIC/cE0o3GQAQ8zsCEgOnPTBfWtAZXzlVuQkCAoy2/aWlLvGIrAAQeZ9u96swSm8ZKAEmAqefFyXHKLZeJebMB6m0dimODqIW3TMybCXCvFJXbEIZfFLXsTCNjYKnMvzfmJXK+1CBHAczdX4RjohjKk0prqPXlKtB78Lv+fwTAXCVFJxamJ/wNpXJZHj6kLZq+cAa+UGlM7sRBEZVEGmAhkNK1KFD1qHchEun4M49QdaU63l68XAZiTxcuue5eHW/vCmAZJfYEmKv51SbFe9eiS0DsCTBVBG0tBKBEYqheBaSuRqe682iAlvNsSZHTII4GGFecW3O05SCOBggwKs3ssrglyiFJbsnrloLYE2DpK4JQeaecdZeB2BNgTSqiIE+5YVsCYk+AwKlJRTQd0a9KW1x6OsTeAIGjqQhpTe57QYtLT4U4AqDCCXM6CqS3C1twa1oyDeJIgCGv3MV6qgJTm+polTvVvnVBavuc9mWCunaqdFU9+MaGLd8hVr96lgLDAVKVIcFuvR+unmTQ0HISSva3AkBVY+lT4FNgpWz2qkDN/awCUAdem/Y0T1REuDLIfVt9yvv+2qwGMEx7aq48aydO/Isr37W2xXYrAjxkYqNe4gCNpB2gAzQSMJq7Ah2gkYDR3BXoAI0EjOZ/AK421VHjR1EzAAAAAElFTkSuQmCC",
-          "",
-          "",
-          "data:image/png;base64,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",
-          "",
-          "",
-          "",
-          "",
-        ],
-        canvasId: 1,
-      };
+      const result = await axios.get('/api/modifyCanvas')
+      console.log("result:" );
+      console.log(result); 
+
+      const canvas = result.data.canvas;
 
       uriStorageRef.current = canvas.tiles;
       canvasId.current = canvas.canvasId;
@@ -168,11 +154,8 @@ export default function artBoard() {
     uriStorageRef.current[selectedTile] = uri.toString();
 
     //POST NEW DATA TO BACKEND
-    console.log("PASS BELOW DATA TO BACKEND");
-    console.log({
-      updatedTiles: uriStorageRef.current,
-      canvasId: canvasId.current,
-    });
+    const response = await axios.post('/api/modifyCanvas', { updatedTiles: uriStorageRef.current, canvasId: canvasId.current});
+    console.log(response);
 
     setSelectedTile(-1);
     setLines([]);
