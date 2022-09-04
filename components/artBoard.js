@@ -38,10 +38,9 @@ export default function artBoard() {
   const fetchUriStorage = async () => {
     console.log("fetchUriStorage");
     try {
-
-      const result = await axios.get('/api/modifyCanvas')
-      console.log("result:" );
-      console.log(result); 
+      const result = await axios.get("/api/modifyCanvas");
+      console.log("result:");
+      console.log(result);
 
       const canvas = result.data.canvas;
 
@@ -55,6 +54,7 @@ export default function artBoard() {
 
   useEffect(() => {
     const doAsync = async () => {
+      console.log("USING EFFECT");
       setUriStorage(await fetchUriStorage());
       //select random tile
       let remainingIndices = [];
@@ -130,19 +130,20 @@ export default function artBoard() {
     isDrawing.current = false;
   };
 
-  const newColor = () => {
+  /*   const newColor = () => {
     const newColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
 
-    /*  "rgb(" +
+     "rgb(" +
       Math.round(Math.random() * 255) +
       " " +
       Math.round(Math.random() * 255) +
       " " +
       Math.round(Math.random() * 255) +
-      ")"; */
+      ")";
+
     setColor(newColor);
     console.log(newColor);
-  };
+  }; */
 
   const handleUndo = () => {
     lines.pop();
@@ -154,7 +155,10 @@ export default function artBoard() {
     uriStorageRef.current[selectedTile] = uri.toString();
 
     //POST NEW DATA TO BACKEND
-    const response = await axios.post('/api/modifyCanvas', { updatedTiles: uriStorageRef.current, canvasId: canvasId.current});
+    const response = await axios.post("/api/modifyCanvas", {
+      updatedTiles: uriStorageRef.current,
+      canvasId: canvasId.current,
+    });
     console.log(response);
 
     setSelectedTile(-1);
@@ -282,13 +286,83 @@ export default function artBoard() {
         </div>
         <div className="flex items-center justify-center">
           <div>
-            <div className="w-4 h-4 bg-black rounded-full mr-5 mb-5 mr-2 cursor-pointer"></div>
-            <div className="w-4 h-4 bg-red-600 rounded-full mr-5 mb-5 cursor-pointer"></div>
-            <div className="w-4 h-4 bg-orange-500 rounded-full mr-5 mb-5 cursor-pointer"></div>
-            <div className="w-4 h-4 bg-yellow-300 rounded-full mr-5 mb-5 cursor-pointer"></div>
-            <div className="w-4 h-4 bg-green-600 rounded-full mr-5 mb-5 cursor-pointer"></div>
-            <div className="w-4 h-4 bg-blue-600 rounded-full mr-5 mb-5 cursor-pointer"></div>
-            <div className="w-4 h-4 bg-purple-600 rounded-full mr-5 cursor-pointer"></div>
+            <button
+              className="flex"
+              onClick={(e) => {
+                setColor(e.target.id);
+              }}
+            >
+              <div
+                className="w-4 h-4 bg-black rounded-full mr-5 mb-5 mr-2 cursor-pointer"
+                id="text-black"
+              ></div>
+            </button>
+            <button
+              className="flex"
+              onClick={(e) => {
+                setColor(e.target.id);
+              }}
+            >
+              <div
+                className="w-4 h-4 bg-red-600 rounded-full mr-5 mb-5 cursor-pointer"
+                id="text-red-600"
+              ></div>
+            </button>
+            <button
+              className="flex"
+              onClick={(e) => {
+                setColor(e.target.id);
+              }}
+            >
+              <div
+                className="w-4 h-4 bg-orange-500 rounded-full mr-5 mb-5 cursor-pointer"
+                id="text-orange-500"
+              ></div>
+            </button>
+            <button
+              className="flex"
+              onClick={(e) => {
+                setColor(e.target.id);
+              }}
+            >
+              <div
+                className="w-4 h-4 bg-yellow-300 rounded-full mr-5 mb-5 cursor-pointer"
+                id="text-yellow-300"
+              ></div>
+            </button>
+            <button
+              className="flex"
+              onClick={(e) => {
+                setColor(e.target.id);
+              }}
+            >
+              <div
+                className="w-4 h-4 bg-green-600 rounded-full mr-5 mb-5 cursor-pointer"
+                id="text-green-600"
+              ></div>
+            </button>
+            <button
+              className="flex"
+              onClick={(e) => {
+                setColor(e.target.id);
+              }}
+            >
+              <div
+                className="w-4 h-4 bg-blue-600 rounded-full mr-5 mb-5 cursor-pointer"
+                id="text-blue-600"
+              ></div>
+            </button>
+            <button
+              className="flex"
+              onClick={(e) => {
+                setColor(e.target.id);
+              }}
+            >
+              <div
+                className="w-4 h-4 bg-purple-600 rounded-full mr-5 cursor-pointer"
+                id="text-purple-600"
+              ></div>
+            </button>
           </div>
           <table
             ref={ref}
@@ -323,42 +397,6 @@ export default function artBoard() {
 
         <div className="flex items-center justify-center pt-5 pb-10">
           {/* <div className={`w-8 h-8 bg-red-500 rounded-full mr-2`}></div> */}
-
-          {/* NEW COLOR DROP DOWN ITEM*/}
-          {/* <div className="mr-1">
-            <Button text="Color" />
-          </div>
-          <div>
-            <select
-              className={`${color}`}
-              onChange={(e) => {
-                console.log(e.target.value);
-                setColor(e.target.value);
-              }}
-            >
-              <option className="text-black" value="text-black">
-                ▇
-              </option>
-              <option className="text-red-600" value="text-red-600">
-                ▇
-              </option>
-              <option className="text-orange-500" value="text-orange-500">
-                ▇
-              </option>
-              <option className="text-yellow-300" value="text-yellow-300">
-                ▇
-              </option>
-              <option className="text-green-600" value="text-green-600">
-                ▇
-              </option>
-              <option className="text-blue-600" value="text-blue-600">
-                ▇
-              </option>
-              <option className="text-purple-600" value="text-purple-600">
-                ▇
-              </option>
-            </select>
-          </div> */}
           <div className="ml-2" onClick={handleUndo}>
             <Button text="Undo" />
           </div>
