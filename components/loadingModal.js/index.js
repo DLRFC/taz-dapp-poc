@@ -70,7 +70,7 @@ export default function LoadingModal({
             {loadingMessage}
           </div>
           {loadingProof ? (
-            <div className="flex w-full flex-row items-center border-b-[1px] border-brand-gray p-4 truncate text-brand-gray">
+            <div className="flex w-full flex-row items-center border-b-[1px] border-brand-gray p-4 break-words text-brand-gray">
               {loadingProof}
             </div>
           ) : null}

@@ -5,3 +5,4 @@ const useCheckMembership = (identityCommitment) => {
   }
   return { check }
 }
+export default useCheckMembership

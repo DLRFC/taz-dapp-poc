@@ -1,12 +1,12 @@
 import { useState, useRef } from 'react'
-import Header from './Header'
 import axios from 'axios'
-import Link from 'next/link'
+// import Link from 'next/link'
 import QrReader from 'react-qr-reader'
 import { useRouter } from 'next/router'
 
-import { useIdentityLogin } from './IdentityProvider'
+import { useIdentityLoginContext } from '../../context/IdentityContextProvider'
 import { Identity } from '@semaphore-protocol/identity'
+// import useGetMembers from '../../hooks/useGetMembers'
 
 const { Subgraph } = require('@semaphore-protocol/subgraph')
 
@@ -16,12 +16,13 @@ export default function InvitationCheck() {
   const [startScan, setStartScan] = useState(false)
   // const [loadingScan, setLoadingScan] = useState(false)
   const [data, setData] = useState('')
-  const identityLogin = useIdentityLogin()
+  const onSetIdentity = useIdentityLoginContext()
   const [invitation, setInvitation] = useState('test-code-15')
   const [response, setResponse] = useState('')
   const [isSignUp, setIsSignUp] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [checkingIdentity, setCheckingIdenty] = useState(false)
+  // const [members, setMembers] = useState([])
   const router = useRouter()
 
   const qrRef = useRef(null)
@@ -96,23 +97,23 @@ export default function InvitationCheck() {
       setCheckingIdenty(true)
       console.log(result)
       console.log('Scanned!')
-      const subgraph = new Subgraph('goerli')
 
-      const { members } = await subgraph.getGroup('1080', { members: true })
-      console.log('Members')
-      console.log(members)
       // check it identity is part of members array
       const checkIdentity = new Identity(result)
       const checkIdentityCommitment = checkIdentity
         .generateCommitment()
         .toString()
+      const subgraph = new Subgraph('goerli')
 
+      const { members } = await subgraph.getGroup('1080', { members: true })
+      console.log('Checking Members')
+      console.log(members)
       const check = members.includes(checkIdentityCommitment)
       console.log('Is Identity part of Semaphore?')
       console.log(check)
       if (check) {
-        identityLogin(result)
-        router.push(`/ask-question-page`)
+        onSetIdentity(result)
+        router.push(`/`)
       } else {
         alert('Identity is not part of the Semaphore Group')
       }
@@ -122,7 +123,6 @@ export default function InvitationCheck() {
 
   return (
     <div className="p-4 font-sans bg-brand-beige">
-      <Header />
       <svg
         className="absolute -left-2 top-[370px]"
         width="69"
@@ -240,24 +240,10 @@ export default function InvitationCheck() {
                 </button>
               </div>
             )}
-
-            {/* {response ? (
-              <div>
-                <Link href="/generate-id-page">
-                  <p className="bg-gray-100 p-2 mt-2">{response}</p>
-                  <button> Next Page</button>
-                </Link>
-              </div>
-            ) : null} */}
           </div>
         </div>
       )}
 
-      {/* <Link href={{ pathname: '/generate-id-page', query: { invitation } }}>
-        <button className=" p-2 rounded-lg border-2 border-brand-gray2 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] mt-10">
-          Go To Generate Id Page(Test)
-        </button>
-      </Link> */}
       <div className="absolute bottom-[50px] left-0 -z-10 h-[20%] w-full bg-black"></div>
     </div>
   )

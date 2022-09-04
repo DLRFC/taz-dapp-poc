@@ -1,57 +1,32 @@
+import { useEffect, useState } from 'react'
 import { Subgraph } from '@semaphore-protocol/subgraph'
-import { Group } from '@semaphore-protocol/group'
-import axios from 'axios'
 
 const useGetMembers = async () => {
-  const SUBGRAPH_URL =
-    'https://api.thegraph.com/subgraphs/name/semaphore-protocol/goerli'
-  const postData = {
-    query: `
-            {
-              members(first: 200 
-              where: { group: "1080" } 
-              orderBy: timestamp 
-              orderDirection: asc
-              ) {
-                identityCommitment
-              }
-            }
-            `,
-  }
+  const [data, setData] = useState([])
+  const [error, setError] = useState([])
+  const [loading, setLoading] = useState([])
 
   useEffect(() => {
-    const callAxios =
-      (() => {
-        const data = await axios.post(SUBGRAPH_URL, postData)
-        const membersList = data.data.data.members
-        const newMemberList = membersList.map(
-          ({ identityCommitment }) => identityCommitment,
-    })
-    callAxios()
+    fetchData()
+  }, [])
+  const fetchData = async () => {
+    try {
+      const subgraph = new Subgraph('goerli')
 
- 
-  )
-
-  const group = new Group(16)
-  group.addMembers(newMemberList)
-
-  const testMemberList = new Set(newMemberList)
-  // console.log(list)
-
-  const subgraph = new Subgraph('goerli')
-  const { members } = await subgraph.getGroup('1080', { members: true })
-
-  const group2 = new Group(16)
-  group2.addMembers(members)
-
-  return {
-    data,
-    membersList,
-    newMemberList,
-    group,
-    testMemberList,
-    members,
-    group2,
+      const { members } = await subgraph.getGroup('1080', { members: true })
+      setData(members)
+      console.log('Members Set!!')
+    } catch (error) {
+      setError(error)
+    }
   }
+
+  // console.log('Members')
+  // console.log(members)
+
+  console.log('Hook Members from Inside Hooks')
+  console.log(data[1])
+
+  return { data }
 }
 export default useGetMembers
