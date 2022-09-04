@@ -95,7 +95,7 @@ const AskQuestion = () => {
       setLoadingProof(solidityProof)
 
       const body = {
-        parentMessageId: '0',
+        parentMessageId: "",
         messageId,
         messageContent,
         groupId,
