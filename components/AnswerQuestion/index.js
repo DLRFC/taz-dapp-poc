@@ -94,7 +94,7 @@ const AnswerQuestion = (props) => {
       console.log(localIdentity)
 
       // Generate Group
-      const groupId = '1080'
+      const groupId = '10803'
       const group = new Group(16)
       const subgraph = new Subgraph('goerli')
 
@@ -151,7 +151,7 @@ const AnswerQuestion = (props) => {
         solidityProof,
       }
 
-      // Verifying Zero Knowladge Proof on Chain and sending Answer
+      // Verifying Zero Knowledge Proof on Chain and sending Answer
       const response = await axios.post('/api/postMessage', body)
       console.log(response)
       console.log(response.data)

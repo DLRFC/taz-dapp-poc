@@ -50,7 +50,7 @@ const AskQuestion = () => {
       const groupId = '1080'
       const subgraph = new Subgraph('goerli')
 
-      const { members } = await subgraph.getGroup('1080', { members: true })
+      const { members } = await subgraph.getGroup('10803', { members: true })
       console.log('Members')
 
       group.addMembers(members)

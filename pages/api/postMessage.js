@@ -51,37 +51,66 @@ export default async function handler(req, res) {
     let tx = null
 
     // If a parentMessageId is not the default, reply. Otherwise, add new question.
+
     if(parentMessageId !== "") {
         console.log("LOG | Transacting reply")
-        tx = await tazMessageContract.replyToMessage(
-            parentMessageId,
-            messageId,
-            messageContent,
-            groupId,
-            bytes32Signal,
-            nullifierHash,
-            externalNullifier,
-            solidityProof,
-            { gasLimit: 1500000 },
-          )
+      
+        try {  tx = await tazMessageContract.replyToMessage(
+          parentMessageId,
+          messageId,
+          messageContent,
+          groupId,
+          bytes32Signal,
+          nullifierHash,
+          externalNullifier,
+          solidityProof,
+          { gasLimit: 1500000 },
+        )
+        console.log(tx)
+        const response = await tx.wait()
+        console.log(response)
+        response.status(201).json(response)
+
+        } catch(error) {
+          console.log("Reply to Message transaction failed!")
+          console.log(error)
+          res.status(403).json(error)
+
+        }
+         
+
+        }
+       
     }
     else {
-        tx = await tazMessageContract.addMessage(
-            messageId,
-            messageContent,
-            groupId,
-            bytes32Signal,
-            nullifierHash,
-            externalNullifier,
-            solidityProof,
-            { gasLimit: 1500000 },
-          )
+      console.log("LOG | Add Message")
+
+
+      try{ tx = await tazMessageContract.addMessage(
+        messageId,
+        messageContent,
+        groupId,
+        bytes32Signal,
+        nullifierHash,
+        externalNullifier,
+        solidityProof,
+        { gasLimit: 1500000 },
+      ) 
+      console.log(tx)
+
+      const response = await tx.wait()
+      console.log(response)
+      res.status(201).json(response)
+
+    } catch(error) {
+      console.log("Reply to Message transaction failed!")
+      console.log(error)
+      res.status(403).json(error)
+
+
+      }
+        
     }  
 
-    const response = await tx.wait(3)
-
-    console.log(response)
-
-    res.status(201).json(response)
   }
-}
+

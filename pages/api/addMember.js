@@ -1,19 +1,23 @@
 import { ethers } from 'ethers'
 import dotenv from 'dotenv'
-import Semaphore from '../utils/Semaphore.json'
 import faunadb from 'faunadb'
+import TazMessage from '../utils/TazMessage.json'
+
 
 dotenv.config({ path: '../../.env.local' })
 const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL)
 const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider)
+const tazMessageAbi = TazMessage.abi
+const tazMessageAddress = process.env.TAZ_MESSAGE_CONTRACT_ADDRESS
+const groupId = process.env.GROUP_ID
 
-const semaphoreAbi = Semaphore.abi
-const semaphoreAddress = '0x99aAb52e60f40AAC0BFE53e003De847bBDbC9611'
-const semaphoreContract = new ethers.Contract(
-  semaphoreAddress,
-  semaphoreAbi,
+const tazMessageContract = new ethers.Contract(
+  tazMessageAddress,
+  tazMessageAbi,
   signer,
 )
+
+
 
 export default async function handler(req, res) {
   const { invitation, identityCommitment } = req.body
@@ -47,20 +51,37 @@ export default async function handler(req, res) {
 
       if (match[0] && !match[0].data.isUsed) {
         isValid = true
+        console.log("MATCH DATA")
+        console.log(match[0])
+        console.log(match[0].data.isUsed)
+        console.log("GROUP ID!")
+        console.log(groupId)
+        // console.log(tazMessageContract)
+        console.log(identityCommitment)
 
-        const tx = await semaphoreContract.addMember(1080, identityCommitment)
-        const response = await tx.wait(3).then(
-          client.query(
-            query.Update(query.Ref(match[0].ref), {
-              data: {
-                isUsed: true,
-              },
-            }),
-          ),
-        )
-
-        res.status(201).json(response)
-        console.log(response)
+        try {
+          const tx = await tazMessageContract.addMember(groupId, identityCommitment)
+          console.log(tx)
+  
+  
+          const response = await tx.wait(1).then(
+            client.query(
+              query.Update(query.Ref(match[0].ref), {
+                data: {
+                  isUsed: true,
+                },
+              }),
+            ),
+          )
+  
+          res.status(201).json(response)
+          console.log(response)
+        } catch (error) {
+          console.log("TRANSACTION ERROR")
+          console.log(error)
+        }
+       
+     
       } else {
         isValid = false
         console.log(isValid)

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-import { LoadingModal } from '../LoadingModal/Index.js'
+import  LoadingModal  from '../LoadingModal/Index.js'
 
 // 3. Ask Question Page
 const AskQuestionComponent = ({
