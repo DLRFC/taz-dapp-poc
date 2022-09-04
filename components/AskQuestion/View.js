@@ -87,7 +87,7 @@ const AskQuestionComponent = ({
       </div>
 
       <button className="p-4" onClick={clearIdentity}>
-        Clear Cache
+        Log Out
       </button>
     </div>
   )
