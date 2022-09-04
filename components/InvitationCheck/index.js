@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import { useIdentityLoginContext } from '../../context/IdentityContextProvider'
 import { Identity } from '@semaphore-protocol/identity'
 // import useGetMembers from '../../hooks/useGetMembers'
-import ValidateInvitationComponent from '../ValidateInvitation-test/View'
+import { ValidateInvitationComponent } from '../ValidateInvitation-test/View'
 
 const { Subgraph } = require('@semaphore-protocol/subgraph')
 
