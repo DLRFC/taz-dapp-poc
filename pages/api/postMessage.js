@@ -80,11 +80,11 @@ export default async function handler(req, res) {
       }
     } else {
       console.log('LOG | Add Message')
-      console.log('External Nullifier')
-      console.log(externalNullifier)
-      console.log('NullifierHash')
+      // console.log('External Nullifier')
+      // console.log(externalNullifier)
+      // console.log('NullifierHash')
 
-      console.log(nullifierHash)
+      // console.log(nullifierHash)
 
       try {
         tx = await tazMessageContract.addMessage(
