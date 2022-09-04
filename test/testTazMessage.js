@@ -17,20 +17,13 @@ describe("TazMessage", function () {
   let contract
   let signer1, signer2
   const semaphoreAbi = [
-      "function createGroup(uint256 groupId, uint8 depth, uint256 zeroValue, address admin)"
+    "function createGroup(uint256 groupId, uint8 depth, uint256 zeroValue, address admin)"
   ]
 
   before(async () => {
-    // If on local fork, impersonate accounts used outside local so addresses match
-    const network = hre.network.name   
-    if(network === "hardhat") {
-      signer1 = await ethers.getImpersonatedSigner(process.env.PUBLIC_KEY_1)
-      signer2 = await ethers.getImpersonatedSigner(process.env.PUBLIC_KEY_2)
-    } else {
-      const signers = await ethers.getSigners()  
-      signer1 = signers[0]
-      signer2 = signers[1]
-    }    
+    const signers = await ethers.getSigners()  
+    signer1 = signers[0]
+    signer2 = signers[1]
 
     if (DEPLOY_NEW_TAZ_MESSAGE_CONTRACT) {
       // Deploy a new TazMessage contract
@@ -66,7 +59,7 @@ describe("TazMessage", function () {
       const identity = new Identity(IDENTITY_SEED)
       const identityCommitment = identity.generateCommitment()
       const tx = contract.connect(signer2).addMember(GROUP_ID, identityCommitment)
-      await expect(tx).to.be.revertedWith("Caller is not the owner")
+      await expect(tx).to.be.revertedWith("Ownable: caller is not the owner")
     })
     
     it("Should add a member", async () => {
@@ -107,7 +100,7 @@ describe("TazMessage", function () {
     })
 
     it("Should fail to add a message if proof is not verified", async () => {    
-      const messageContent = 'What is the name of this Dapp?'
+      const messageContent = 'What is the name of this Dapp again?'
       const messageId = ethers.utils.id(messageContent)
       const signal = messageId.slice(35)
 
@@ -130,7 +123,7 @@ describe("TazMessage", function () {
 
   describe("# replyToMessage", () => {
     it("Should reply to a message", async () => {
-      const messageContent = "The name of the Dapp is TAZ!"
+      const messageContent = "The name of the Dapp is TAZ"
       const messageId = ethers.utils.id(messageContent)
       const parentMessageId = ethers.utils.id("What is the name of this Dapp?")
       const signal = messageId.slice(35)

@@ -1,14 +1,15 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.13;
 
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
+
 interface ISemaphore {
     function addMember(uint256 groupId, uint256 identityCommitment) external;
     function updateGroupAdmin(uint256 groupId, address newAdmin) external;
     function verifyProof(uint256 groupId, bytes32 signal, uint256 nullifierHash, uint256 externalNullifier, uint256[8] calldata proof) external;
 }
 
-contract TazMessage { 
-    address public owner;
+contract TazMessage is Ownable { 
     
     // Stores the address of the Semaphore contract used for verifications
     ISemaphore public semaContract;
@@ -25,7 +26,6 @@ contract TazMessage {
 
     // Constructor sets the address of the Semaphore contract
     constructor(ISemaphore semaContractAddr) {
-        owner = msg.sender;
         semaContract = semaContractAddr;
     }
 
@@ -33,9 +33,7 @@ contract TazMessage {
     // This method exists to allow for the group admin to be updated on the Semaphore contract
     // when this contract is updated and deployed to a new address, so that a new Semaphore 
     // group doesn't have to be created.
-    function updateSemaphoreGroupAdmin(uint256 groupId, address newAdmin) external {
-        require(msg.sender == owner, "Caller is not the owner");
-        
+    function updateSemaphoreGroupAdmin(uint256 groupId, address newAdmin) external onlyOwner {
         semaContract.updateGroupAdmin(groupId, newAdmin);
     }
     
@@ -45,9 +43,7 @@ contract TazMessage {
     }
 
     // Adds a member to a group on the Semaphore contract, and tracks members added through this contract
-    function addMember(uint256 groupId, uint256 identityCommitment) external {        
-        require(msg.sender == owner, "Caller is not the owner");
-        
+    function addMember(uint256 groupId, uint256 identityCommitment) external onlyOwner {      
         // Check that the member has not already been added
         require(!memberExists(groupId, identityCommitment), "Member has already been added to this group");
         

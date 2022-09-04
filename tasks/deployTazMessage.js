@@ -1,13 +1,13 @@
-const { task } = require("hardhat/config");
-const { SEMAPHORE_CONTRACT_GOERLI } = require("../config/goerli.json")
+const { task, types } = require("hardhat/config")
+const { SEMAPHORE_CONTRACT } = require("../config/goerli.json")
 
 task("deployTazMessage", "Deploy a TazMessage contract")
-    .addParam("semaphoreContract", "Address of the Semaphore contract", null, types.string)
+    .addParam("semaphoreContract", "Address of the Semaphore contract", undefined, types.string)
     .addOptionalParam("logs", "Print the logs", true, types.boolean)
     .setAction(async ({ semaphoreContract, logs }, { ethers }) => {
-        const TazTokenContract = await ethers.getContractFactory("TazMessage");
-        const taz = await TazTokenContract.deploy(semaphoreContract);
+        const contract = await ethers.getContractFactory("TazMessage");
+        const taz = await contract.deploy(semaphoreContract)
         await taz.deployed();
-        logs && console.log(`TazMessage contract has been deployed to: ${taz.address}`);
+        logs && console.log(`TazMessage contract has been deployed to: ${taz.address} with owner: ${await contract.signer.getAddress()}`)
         return taz;
     });
