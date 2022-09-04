@@ -4,7 +4,6 @@ require('dotenv').config()
 // Import task definitions
 
 require("./tasks/deployTazMessage")
-require("./tasks/transferOwnerTazMessage")
 require("./tasks/createProof")
 
 /** @type import('hardhat/config').HardhatUserConfig */
@@ -18,7 +17,7 @@ module.exports = {
       ],
       forking: {
         url: process.env.GOERLI_URL,         
-        blockNumber: 7530010
+        /* blockNumber: 7530010 */
       },
     },
     goerli: {
