@@ -50,8 +50,9 @@ const AskQuestion = () => {
       const groupId = '10803'
       const subgraph = new Subgraph('goerli')
 
-      const { members } = await subgraph.getGroup('1080', { members: true })
+      const { members } = await subgraph.getGroup('10803', { members: true })
       console.log('Members')
+      console.log(members)
 
       group.addMembers(members)
       console.log('Group Root')
@@ -95,7 +96,7 @@ const AskQuestion = () => {
       setLoadingProof(solidityProof)
 
       const body = {
-        parentMessageId: "",
+        parentMessageId: '',
         messageId,
         messageContent,
         groupId,
@@ -127,6 +128,7 @@ const AskQuestion = () => {
   const clearIdentity = () => {
     console.log('clear')
     window.localStorage.removeItem('identity')
+    router.push('/')
   }
 
   return (
