@@ -54,7 +54,7 @@ export default async function handler(req, res) {
     let tx = null
 
     // If a parentMessageId is not the default, reply. Otherwise, add new question.
-    if(parentMessageId !== "0") {
+    if(parentMessageId !== "") {
         console.log("LOG | Transacting reply")
         tx = await tazMessageContract.replyToMessage(
             parentMessageId,

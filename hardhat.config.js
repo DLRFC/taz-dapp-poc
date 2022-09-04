@@ -13,13 +13,13 @@ module.exports = {
     hardhat: {
       forking: {
         url: process.env.GOERLI_URL,         
-        /*blockNumber: 7493211*/
+        blockNumber: 7527783
       }
 
     },
     goerli: {
       url: process.env.GOERLI_URL,
-      accounts: [process.env.PRIVATE_KEY],
+      accounts: [process.env.PRIVATE_KEY_1, process.env.PRIVATE_KEY_2],
     },
   },
   etherscan: {
