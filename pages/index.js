@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import ExperiencesList from '../components/ExperiencesList/index.js'
 
 const InvitationCheck = dynamic(
-  () => import('../components/InvitationCheck/Index'),
+  () => import('../components/InvitationCheck/index'),
   {
     ssr: false,
   },
