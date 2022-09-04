@@ -1,4 +1,4 @@
-import React, { useContext, useState, useCallback } from 'react'
+import React, { useContext, useState } from 'react'
 
 export const IdentityContext = React.createContext()
 export const IdentityLoginContext = React.createContext()

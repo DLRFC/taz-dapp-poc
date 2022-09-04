@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { images } from '../data'
 
 export default function Modal({ onClose, activeImage, setActiveImage }) {

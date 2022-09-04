@@ -1,56 +1,9 @@
-import Header from "./Header";
-import Button from "./Button";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import Button from '../Button'
+import Link from 'next/link'
 
-const SUGBRAPH_TAZ_MESSAGE =
-  "https://api.thegraph.com/subgraphs/name/dlrfc/taz-message-goerli";
-
-const QuestionsBoard = (props) => {
-  const [questions, setQuestions] = useState([]);
-
-  const fetchQuestions = async () => {
-    // Construct query for subgraph
-    const postData = {
-      query: `
-      {
-        messageAddeds(
-          orderBy: timestamp
-          where: {parentMessageId: "0"}
-          orderDirection: desc
-        ) {
-          id
-          messageContent
-          messageId
-          parentMessageId
-        }
-      }
-      `,
-    };
-    // Fetch data
-
-    let data = [];
-    try {
-      const result = await axios.post(SUGBRAPH_TAZ_MESSAGE, postData);
-      data = result.data.data.messageAddeds;
-    } catch (err) {
-      console.log("Error fetching subgraph data: ", err);
-    }
-    return data;
-  };
-
-  useEffect(() => {
-    const doAsync = async () => {
-      setQuestions(await fetchQuestions());
-    };
-    doAsync();
-  }, []);
-
+const QuestionsBoardComponent = ({ questions }) => {
   return (
     <div className="px-6 py-8 font-sans">
-      <Header />
-
       <svg
         className="absolute -left-2 top-[230px]"
         width="69"
@@ -116,7 +69,7 @@ const QuestionsBoard = (props) => {
 
         {questions.map((question) => (
           <Link
-            href={"/answers-board-page/" + question.messageId}
+            href={'/answers-board-page/' + question.messageId}
             key={question.id}
           >
             <div className="flex w-full flex-row items-center border-b-[1px] border-brand-gray p-3 cursor-pointer">
@@ -148,7 +101,7 @@ const QuestionsBoard = (props) => {
         </a>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default QuestionsBoard;
+export default QuestionsBoardComponent

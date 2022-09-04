@@ -1,8 +1,7 @@
-import AnswerBoard from '../../components/answersBoard'
+import AnswerBoard from '../../components/AnswersBoard'
 import { useRouter } from 'next/router'
 
 export default function AnswersBoardPage() {
-
   const router = useRouter()
   const { messageId } = router.query
 

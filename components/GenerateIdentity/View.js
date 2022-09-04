@@ -1,74 +1,14 @@
 import Link from 'next/link'
-import { useState } from 'react'
-import axios from 'axios'
-import { Identity } from '@semaphore-protocol/identity'
-import Header from './Header'
-import QRCode from 'qrcode'
-import { useIdentityLogin } from './IdentityProvider'
-import LoadingModal from './loadingModal.js'
+import { LoadingModal } from '../LoadingModal/Index.js'
 
 // Page 3 will Generate Identity and Join Group
-export const GenerateIdentity = (props) => {
-  const { invitation } = props
-
-  const identityLogin = useIdentityLogin()
-  const [imageUrl, setImageUrl] = useState('')
-  // const [isGeneratingIdentity, setIsGeneratingIdentity] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [loadingMessage, setLoadingMessage] = useState(
-    'This is a Loading Message',
-  )
-  const handleJoinButton = async () => {
-    // setIsGeneratingIdentity(true)
-    setIsLoading(true)
-    setLoadingMessage('Identity is Generating')
-    // Step 1
-    const identity = new Identity()
-    const identityCommitment = identity.generateCommitment().toString()
-    const identityKey = identity.toString()
-    console.log(identityCommitment)
-
-    setLoadingMessage(
-      `Identity Generated! We are now adding it to our Semaphore Contract Devcon Group! This proccess can take up to 1-2 mins, please dont close the App before the Transaction.`,
-    )
-
-    // Step 2
-    await axios
-      .post('/api/addMember', {
-        identityCommitment,
-        invitation,
-      })
-      .then(async (res) => {
-        console.log('Success!')
-        console.log(res)
-        console.log('Status!')
-        console.log(res.status)
-        identityLogin(identityKey)
-        try {
-          const responseQR = await QRCode.toDataURL(identityKey)
-          setImageUrl(responseQR)
-        } catch (error) {
-          console.log(error)
-          // setIsGeneratingIdentity(false)
-        }
-
-        console.log('Error10!')
-      })
-      .catch((err) => {
-        console.log(err)
-        console.log('Error2!')
-
-        // console.log(err.response?.status)
-      })
-    // step 3
-    // Add logic to only set Identity when Response is True
-    setIsLoading(false)
-  }
-
-  const onClose = () => {
-    setIsLoading(!isLoading)
-  }
-
+export const GenerateIdentityComponent = ({
+  isLoading,
+  onClose,
+  loadingMessage,
+  imageUrl,
+  handleJoinButton,
+}) => {
   return (
     <div className="p-4 font-sans bg-brand-beige">
       {isLoading ? (
@@ -76,8 +16,6 @@ export const GenerateIdentity = (props) => {
           <LoadingModal onClose={onClose} loadingMessage={loadingMessage} />
         </div>
       ) : null}
-
-      <Header />
 
       <svg
         className="absolute -left-2 top-[370px]"

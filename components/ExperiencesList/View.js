@@ -1,11 +1,8 @@
-import Header from './Header'
 import Link from 'next/link'
 
-const ExperiencesList = (props) => {
+const ExperiencesListComponent = () => {
   return (
     <div className="px-6 py-8 font-sans">
-      <Header />
-
       <svg
         className="absolute -left-2 top-[330px] -z-1"
         width="69"
@@ -94,4 +91,4 @@ const ExperiencesList = (props) => {
   )
 }
 
-export default ExperiencesList
+export default ExperiencesListComponent
