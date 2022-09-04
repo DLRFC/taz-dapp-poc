@@ -19,11 +19,8 @@ const tazMessageContract = new ethers.Contract(
 )
 
 export default async function handler(req, res) {
-  
-
   if (res.method === 'GET') {
     res.status(405).json('GET not allowed')
-
   } else if (req.method === 'POST') {
     const {
       parentMessageId,
@@ -33,10 +30,10 @@ export default async function handler(req, res) {
       signal,
       nullifierHash,
       externalNullifier,
-      solidityProof      
+      solidityProof,
     } = req.body
 
-    console.log("LOG | Body: ", req.body);
+    console.log('LOG | Body: ', req.body)
 
     const bytes32Signal = ethers.utils.formatBytes32String(signal)
 
@@ -54,35 +51,34 @@ export default async function handler(req, res) {
     let tx = null
 
     // If a parentMessageId is not the default, reply. Otherwise, add new question.
-    if(parentMessageId !== "0") {
-        console.log("LOG | Transacting reply")
-        tx = await tazMessageContract.replyToMessage(
-            parentMessageId,
-            messageId,
-            messageContent,
-            groupId,
-            bytes32Signal,
-            nullifierHash,
-            externalNullifier,
-            solidityProof,
-            { gasLimit: 1500000 },
-          )
+    if (parentMessageId !== '0') {
+      console.log('LOG | Transacting reply')
+      tx = await tazMessageContract.replyToMessage(
+        parentMessageId,
+        messageId,
+        messageContent,
+        groupId,
+        bytes32Signal,
+        nullifierHash,
+        externalNullifier,
+        solidityProof,
+        { gasLimit: 1500000 },
+      )
+    } else {
+      tx = await tazMessageContract.addMessage(
+        messageId,
+        messageContent,
+        groupId,
+        bytes32Signal,
+        nullifierHash,
+        externalNullifier,
+        solidityProof,
+        { gasLimit: 1500000 },
+      )
     }
-    else {
-        tx = await tazMessageContract.addMessage(
-            messageId,
-            messageContent,
-            groupId,
-            bytes32Signal,
-            nullifierHash,
-            externalNullifier,
-            solidityProof,
-            { gasLimit: 1500000 },
-          )
-    }    
-    
+
     const response = await tx.wait(3)
-    
+
     console.log(response)
 
     res.status(201).json(response)

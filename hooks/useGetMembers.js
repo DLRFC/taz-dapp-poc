@@ -4,7 +4,7 @@ import { Subgraph } from '@semaphore-protocol/subgraph'
 const useGetMembers = async () => {
   const [data, setData] = useState([])
   const [error, setError] = useState([])
-  const [loading, setLoading] = useState([])
+  // const [loading, setLoading] = useState([])
 
   useEffect(() => {
     fetchData()
@@ -27,6 +27,6 @@ const useGetMembers = async () => {
   console.log('Hook Members from Inside Hooks')
   console.log(data[1])
 
-  return { data }
+  return { data, error }
 }
 export default useGetMembers
