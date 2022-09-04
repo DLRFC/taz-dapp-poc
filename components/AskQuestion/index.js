@@ -47,7 +47,7 @@ const AskQuestion = () => {
 
       // Generate Group
       const group = new Group(16)
-      const groupId = '1080'
+      const groupId = '10803'
       const subgraph = new Subgraph('goerli')
 
       const { members } = await subgraph.getGroup('1080', { members: true })
