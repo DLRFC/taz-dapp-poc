@@ -60,6 +60,8 @@ const AskQuestion = () => {
       console.log('Members')
 
       group.addMembers(members)
+      console.log('Group Root')
+      console.log(group.root)
 
       // Generate Proof
       const externalNullifier = Math.round(Math.random() * 1000000000)
@@ -115,7 +117,7 @@ const AskQuestion = () => {
       console.log(response.data)
 
       // go to the next page
-      setLoadingMessage('3. Transaction Succesfuly Submitted!')
+      setLoadingMessage('3. Transaction Successfuly Submitted!')
       router.push('/questions-page')
     } catch (error) {
       setIsLoading(false)

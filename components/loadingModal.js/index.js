@@ -36,7 +36,7 @@ export default function LoadingModal({
   return (
     <div
       onClick={handleClick}
-      className="absolute h-[100vh] w-[100vw] bg-[#00000070] flex flex-col items-center justify-center px-10"
+      className="absolute h-[100vh] w-[100vw] bg-[#00000070] flex flex-col items-center justify-center px-5"
     >
       <motion.div
         variants={dropIn}
@@ -44,9 +44,9 @@ export default function LoadingModal({
         animate="visible"
         exit="exit"
         onClick={(e) => e.stopPropagation()}
-        className="w-[70%] h-[50%] bg-brand-beige2 border-[1px] flex flex-col items-center justify-center rounded-[5px]"
+        className=" w-[100%] h-[60%] sm:w-[70%] sm:h-[50%] bg-brand-beige2 border-[1px] flex flex-col items-center justify-center rounded-[5px]"
       >
-        <div className="index-[10] relative divide-y rounded-md border-2 border-gray-500 bg-white drop-shadow-lg max-w-[88%]">
+        <div className="index-[10] relative divide-y rounded-md border-2 border-gray-500 bg-white drop-shadow-lg h-[90%] w-[90%] sm:w-[70%]">
           <div className="flex items-center gap-4 py-4 px-4 bg-brand-beige">
             <svg
               aria-hidden="true"
@@ -64,15 +64,16 @@ export default function LoadingModal({
                 fill="currentFill"
               />
             </svg>
-            <h1 className="text-2xl text-brand-gray">Processing</h1>
+            <h1 className="text-md sm:text-2xl text-brand-gray">Processing</h1>
           </div>
           <div className="flex w-full flex-row items-center border-b-[1px] border-brand-gray p-4 text-brand-gray">
             {loadingMessage}
           </div>
-
-          <div className="flex w-full flex-row items-center border-b-[1px] border-brand-gray p-4 truncate text-brand-gray">
-            {loadingProof}
-          </div>
+          {loadingProof ? (
+            <div className="flex w-full flex-row items-center border-b-[1px] border-brand-gray p-4 truncate text-brand-gray">
+              {loadingProof}
+            </div>
+          ) : null}
         </div>
         {/* <button className="border-2 border-brand-gray" onClick={onClose}>
           Close
