@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react'
-import Header from './Header'
 import Link from 'next/link'
 import axios from 'axios'
 import { Identity } from '@semaphore-protocol/identity'
 import { Group } from '@semaphore-protocol/group'
 import { useRouter } from 'next/router'
 import { ethers } from 'ethers'
-import LoadingModal from './loadingModal.js'
+import LoadingModal from '../loadingModal.js'
 
 // import { useIdentity } from './IdentityProvider'
 const { generateProof } = require('@semaphore-protocol/proof')
@@ -181,7 +180,6 @@ const AnswerQuestion = (props) => {
           />
         </div>
       ) : null}
-      <Header />
       <svg
         className="absolute -left-2 top-[370px]"
         width="69"
@@ -232,7 +230,7 @@ const AnswerQuestion = (props) => {
         </div>
 
         <div className="h-[586px] bg-white py-3 w-full px-4 z-10">
-          <p className="py-5 font-bold">{question.messageContent}</p>
+          <p className="py-5 font-bold">{question?.messageContent}</p>
           <p className="py-2 w-[80%] mb-3 text-xs">
             Reply to the message above to see your message appear anonymously in
             TAZ.

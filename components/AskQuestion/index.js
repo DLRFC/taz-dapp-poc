@@ -1,14 +1,12 @@
 import { useState, useEffect } from 'react'
-import Header from './Header'
 import Link from 'next/link'
 import axios from 'axios'
 import { Identity } from '@semaphore-protocol/identity'
 import { Group } from '@semaphore-protocol/group'
 import { useRouter } from 'next/router'
-import LoadingModal from './loadingModal.js'
+import LoadingModal from '../loadingModal.js'
 import { ethers } from 'ethers'
 
-// import { useIdentity } from './IdentityProvider'
 const { generateProof } = require('@semaphore-protocol/proof')
 const { verifyProof } = require('@semaphore-protocol/proof')
 const { packToSolidityProof } = require('@semaphore-protocol/proof')
@@ -25,17 +23,13 @@ const AskQuestion = () => {
   const router = useRouter()
 
   useEffect(() => {
-    // setter
-    // console.log(window)
-    // console.log(window.localStorage)
     let identityKey = ''
-    // console.log(window)
-    // console.log(window.localStorage)
+
     if (identityKey === '') {
       identityKey = window.localStorage.getItem('identity')
     }
+    console.log(identityKey)
     setLocalIdentity(identityKey)
-    // console.log(identityKey)
   })
 
   const handleAskButton = async () => {
@@ -110,10 +104,10 @@ const AskQuestion = () => {
         externalNullifier,
         solidityProof,
       }
-      console.log('Body:', body)
+      // console.log('Body:', body)
 
       const response = await axios.post('/api/postMessage', body)
-      console.log(response)
+      // console.log(response)
       console.log(response.data)
 
       // go to the next page
@@ -146,7 +140,6 @@ const AskQuestion = () => {
           />
         </div>
       ) : null}
-      <Header />
       <svg
         className="absolute -left-2 top-[370px]"
         width="69"
@@ -202,12 +195,6 @@ const AskQuestion = () => {
             </button>
           )}
         </div>
-        {/* <button
-          className="bg-brand-beige2 w-full p-2 rounded-lg border-2 border-brand-gray shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]"
-          onClick={onClose}
-        >
-          Check Modal
-        </button> */}
       </div>
 
       <div className="flex justify-between w-[70%] py-6 text-white  z-[5]">
@@ -215,9 +202,7 @@ const AskQuestion = () => {
         <p className="ml-10">X</p>
         <div className="bg-black absolute w-full h-[20%] bottom-[50px] left-0 -z-10"></div>
       </div>
-      {/* <Link href="questions-page">
-        <button>Go to Questions Board Page(Test)</button>
-      </Link> */}
+
       <button className="p-4" onClick={clearIdentity}>
         Clear Cache
       </button>

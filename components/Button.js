@@ -25,7 +25,7 @@ const Button = (props) => {
         />
       </svg>
     </div>
-  );
-};
+  )
+}
 
-export default Button;
+export default Button
