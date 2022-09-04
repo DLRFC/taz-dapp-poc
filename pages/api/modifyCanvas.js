@@ -8,7 +8,6 @@ export default async function handler(req, res) {
   const query = faunadb.query;
 
   if (req.method === "GET") {
-    console.log("triggered GET");
 
     // Query all 5 canvases from the database
     const dbs = await client.query(
@@ -32,7 +31,6 @@ export default async function handler(req, res) {
     res.status(200).json({ canvas });
   } else if (req.method === "POST") {
 
-    console.log("triggered post");
     // To update the database the backend needs the canvasId and the updated tiles from the request body
     // For example: updatedTiles: ["newDrawingString","","","","","","","",""] canvasId: 1
 
