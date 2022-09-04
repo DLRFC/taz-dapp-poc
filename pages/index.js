@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic'
 import { useState, useEffect } from 'react'
-import ExperiencesList from '../components/ExperiencesList'
+import ExperiencesList from '../components/ExperiencesList/index.js'
 
 const InvitationCheck = dynamic(
   () => import('../components/InvitationCheck/Index'),

@@ -1,4 +1,4 @@
-import React, { useState, useRef, createRef, useEffect } from 'react'
+import React, { useState, createRef, useEffect } from 'react'
 import { useScreenshot, createFileName } from 'use-react-screenshot'
 import { Stage, Layer, Line } from 'react-konva'
 import axios from 'axios'
@@ -20,7 +20,7 @@ export default function artBoard() {
   const [uriStorage, setUriStorage] = useState([])
 
   // DECLARATIONS FROM OLD DRAWING COMPONENT FILE
-  const [tool, setTool] = React.useState('pen')
+  const [tool] = React.useState('pen')
   const [lines, setLines] = React.useState([])
   const [color, setColor] = React.useState('text-black')
   const isDrawing = React.useRef(false)
