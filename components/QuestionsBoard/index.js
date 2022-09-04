@@ -15,7 +15,7 @@ const QuestionsBoard = (props) => {
       {
         messageAddeds(
           orderBy: timestamp
-          where: {parentMessageId: "0"}
+          where: {parentMessageId: ""}
           orderDirection: desc
         ) {
           id

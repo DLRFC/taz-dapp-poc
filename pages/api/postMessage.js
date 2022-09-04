@@ -78,6 +78,11 @@ export default async function handler(req, res) {
       }
     } else {
       console.log('LOG | Add Message')
+      console.log('External Nullifier')
+      console.log(externalNullifier)
+      console.log('NullifierHash')
+
+      console.log(nullifierHash)
 
       try {
         tx = await tazMessageContract.addMessage(
@@ -88,7 +93,7 @@ export default async function handler(req, res) {
           nullifierHash,
           externalNullifier,
           solidityProof,
-          { gasLimit: 1500000 },
+          { gasLimit: 15000000 },
         )
         console.log(tx)
 

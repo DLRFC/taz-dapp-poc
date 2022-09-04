@@ -67,8 +67,10 @@ const AskQuestion = () => {
         externalNullifier,
         signal,
         {
-          zkeyFilePath: '/semaphore.zkey',
-          wasmFilePath: '/semaphore.wasm',
+          zkeyFilePath:
+            'https://www.trusted-setup-pse.org/semaphore/16/semaphore.zkey',
+          wasmFilePath:
+            'https://www.trusted-setup-pse.org/semaphore/16/semaphore.wasm',
         },
       )
       console.log('Proof')
