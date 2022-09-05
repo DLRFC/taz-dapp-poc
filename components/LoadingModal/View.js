@@ -6,9 +6,10 @@ const LoadingModalComponent = ({
   loadingMessage,
   loadingProof,
 }) => {
+  // const testProof =''
   const dropIn = {
     hidden: {
-      y: '-100vh',
+      y: '-200vh',
       opacity: 0,
     },
     visible: {
@@ -22,14 +23,14 @@ const LoadingModalComponent = ({
       },
     },
     exit: {
-      y: '-100vh',
+      y: '-200vh',
       opacity: 0,
     },
   }
   return (
     <div
       onClick={handleClick}
-      className="absolute h-[100vh] w-[100vw] bg-[#00000070] flex flex-col items-center justify-center px-5"
+      className="absolute top-0 left-0 bottom-0 right-0 h-[100%] w-[100%] m-0 bg-[#00000070] flex flex-col items-center justify-center px-5"
     >
       <motion.div
         variants={dropIn}
@@ -61,10 +62,14 @@ const LoadingModalComponent = ({
           </div>
           <div className="flex w-full flex-row items-center border-b-[1px] border-brand-gray p-4 text-brand-gray">
             {loadingMessage}
+            This is a very very long text message to test how to modal will work
+            once the text is to big
           </div>
+
           {loadingProof ? (
-            <div className="flex w-full flex-row items-center border-b-[1px] border-brand-gray p-4 truncate text-brand-gray">
-              {loadingProof}
+            <div className="flex w-full flex-col items-center border-b-[1px] border-brand-gray p-4 line-clamp-3 text-brand-gray">
+              <p>2. Generated Proof</p>
+              <p className="line-clamp-4 px-3 pr-2">{loadingProof}</p>
             </div>
           ) : null}
         </div>

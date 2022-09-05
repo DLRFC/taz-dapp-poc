@@ -27,7 +27,7 @@ export default function artBoard() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [lines, setLines] = React.useState([])
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [color] = React.useState('text-black')
+  const [color, setColor] = React.useState('text-black')
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const isDrawing = React.useRef(false)
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -48,11 +48,9 @@ export default function artBoard() {
   const fetchUriStorage = async () => {
     console.log('fetchUriStorage')
     try {
-
-      const result = await axios.get("/api/modifyCanvas");
-      console.log("result:");
-      console.log(result);
-
+      const result = await axios.get('/api/modifyCanvas')
+      console.log('result:')
+      console.log(result)
 
       const canvas = result.data.canvas
 
@@ -67,12 +65,12 @@ export default function artBoard() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     const doAsync = async () => {
+      console.log('USING EFFECT')
+      setUriStorage(await fetchUriStorage())
+      // select random tile
+      const remainingIndices = []
 
-      console.log("USING EFFECT");
-      setUriStorage(await fetchUriStorage());
-      //select random tile
-      let remainingIndices = [];
-
+      // eslint-disable-next-line array-callback-return
       uriStorageRef.current.map((img, i) => {
         if (img === '') {
           remainingIndices.push(i)
@@ -132,9 +130,8 @@ export default function artBoard() {
   }
 
   const handleMouseUp = () => {
-
-    isDrawing.current = false;
-  };
+    isDrawing.current = false
+  }
 
   /*   const newColor = () => {
     const newColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
@@ -151,7 +148,6 @@ export default function artBoard() {
     console.log(newColor);
   }; */
 
-
   const handleUndo = () => {
     lines.pop()
     setLines(lines.concat())
@@ -161,14 +157,12 @@ export default function artBoard() {
     const uri = stageRef.current.toDataURL()
     uriStorageRef.current[selectedTile] = uri.toString()
 
-
-    //POST NEW DATA TO BACKEND
-    const response = await axios.post("/api/modifyCanvas", {
+    // POST NEW DATA TO BACKEND
+    const response = await axios.post('/api/modifyCanvas', {
       updatedTiles: uriStorageRef.current,
       canvasId: canvasId.current,
-    });
-    console.log(response);
-
+    })
+    console.log(response)
 
     setSelectedTile(-1)
     setLines([])
@@ -300,7 +294,7 @@ export default function artBoard() {
             <button
               className="flex"
               onClick={(e) => {
-                setColor(e.target.id);
+                setColor(e.target.id)
               }}
             >
               <div
@@ -311,7 +305,7 @@ export default function artBoard() {
             <button
               className="flex"
               onClick={(e) => {
-                setColor(e.target.id);
+                setColor(e.target.id)
               }}
             >
               <div
@@ -322,7 +316,7 @@ export default function artBoard() {
             <button
               className="flex"
               onClick={(e) => {
-                setColor(e.target.id);
+                setColor(e.target.id)
               }}
             >
               <div
@@ -333,7 +327,7 @@ export default function artBoard() {
             <button
               className="flex"
               onClick={(e) => {
-                setColor(e.target.id);
+                setColor(e.target.id)
               }}
             >
               <div
@@ -344,7 +338,7 @@ export default function artBoard() {
             <button
               className="flex"
               onClick={(e) => {
-                setColor(e.target.id);
+                setColor(e.target.id)
               }}
             >
               <div
@@ -355,7 +349,7 @@ export default function artBoard() {
             <button
               className="flex"
               onClick={(e) => {
-                setColor(e.target.id);
+                setColor(e.target.id)
               }}
             >
               <div
@@ -366,7 +360,7 @@ export default function artBoard() {
             <button
               className="flex"
               onClick={(e) => {
-                setColor(e.target.id);
+                setColor(e.target.id)
               }}
             >
               <div
