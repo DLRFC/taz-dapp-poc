@@ -1,4 +1,4 @@
-import QuestionsBoard from '../components/QuestionsBoard'
+import QuestionsBoard from '../components/QuestionsBoard/Index'
 
 export default function AskQuestionPage() {
   return (
