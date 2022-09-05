@@ -12,7 +12,7 @@ const tazMessageAbi =
   require('../artifacts/contracts/TazMessage.sol/TazMessage.json').abi
 const DEPLOY_NEW_TAZ_MESSAGE_CONTRACT = false
 
-/* Initial teps required when deploying the contract:
+/* Initial steps required when deploying the contract:
 - Deploy a new TazMessage contract
 - Add a group to the local-forked-Goerli Semaphore contract with the new TazMessage contract address as the group admin
 - Add a member to that group on the Semaphore contract (the local signer) so that membership can be verified

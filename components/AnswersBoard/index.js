@@ -2,9 +2,7 @@ import Button from '../Button'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-
-const SUGBRAPH_TAZ_MESSAGE =
-  'https://api.thegraph.com/subgraphs/name/dlrfc/taz-message-goerli'
+import { TAZMESSAGE_SUBGRAPH } from '../../config/goerli.json'
 
 const AnswerBoard = (props) => {
   const { messageId } = props
@@ -42,7 +40,7 @@ const AnswerBoard = (props) => {
     }
     // Fetch data
     try {
-      const result = await axios.post(SUGBRAPH_TAZ_MESSAGE, postData)
+      const result = await axios.post(TAZMESSAGE_SUBGRAPH, postData)
       setQuestion(result.data.data.parentMessageAddeds[0])
       setAnswers(result.data.data.messageAddeds)
     } catch (err) {

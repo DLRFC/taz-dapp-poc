@@ -65,9 +65,9 @@ const LoadingModalComponent = ({
           </div>
 
           {loadingProof ? (
-            <div className="flex w-full flex-col items-center border-b-[1px] border-brand-gray p-4 line-clamp-2 text-brand-gray">
-              <p>2. Generated Proof</p>
-              <p className="px-3 pr-2">{loadingProof}</p>
+            <div className="flex w-full flex-col items-center border-b-[1px] border-brand-gray p-4 line-clamp-6 break-words text-brand-gray">
+              <p>2. Generated Zero Knowledge Proof</p>
+              <p className="px-3 pr-2 text-xs">{loadingProof}</p>
             </div>
           ) : null}
         </div>
