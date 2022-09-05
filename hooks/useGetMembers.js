@@ -9,6 +9,7 @@ const useGetMembers = async () => {
   useEffect(() => {
     fetchData()
   }, [])
+
   const fetchData = async () => {
     try {
       const subgraph = new Subgraph('goerli')
