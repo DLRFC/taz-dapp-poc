@@ -1,5 +1,4 @@
 const { task, types } = require("hardhat/config")
-const { SEMAPHORE_CONTRACT } = require("../config/goerli.json")
 
 task("deployTazMessage", "Deploy a TazMessage contract")
     .addParam("semaphoreContract", "Address of the Semaphore contract", undefined, types.string)
