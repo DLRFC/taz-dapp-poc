@@ -4,6 +4,7 @@ import { Identity } from '@semaphore-protocol/identity'
 import { Group } from '@semaphore-protocol/group'
 import { useRouter } from 'next/router'
 import { ethers } from 'ethers'
+import { API_REQUEST_TIMEOUT } from '../../config/goerli.json'
 
 import AskQuestionComponent from './View.js'
 
@@ -109,7 +110,7 @@ const AskQuestion = () => {
       }
       // console.log('Body:', body)
 
-      const response = await axios.post('/api/postMessage', body)
+      const response = await axios.post('/api/postMessage', body, {timeout: API_REQUEST_TIMEOUT})
       // console.log(response)
       console.log(response.data)
 
