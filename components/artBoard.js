@@ -57,8 +57,9 @@ export default function artBoard(props) {
   // console.log("CANVAS 9 TILES URI:", dataURL);
   // };
 
+  ////SEAN TO COMPLETE - FUNCTION SHOULD RETURN THE canvasURI
   function generateCanvasURI() {
-    //SEAN TO COMPLETE
+    
   }
 
   // NO LONGER NEEDED - USER GETS RANDOM SELECTED TILE
