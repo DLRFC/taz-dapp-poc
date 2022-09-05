@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 import LoadingModal from '../LoadingModal/Index.js'
+import { AnimatePresence } from 'framer-motion'
 
 // 3. Ask Question Page
 const AskQuestionComponent = ({
@@ -15,13 +16,18 @@ const AskQuestionComponent = ({
   return (
     <div className="p-4 font-sans bg-brand-beige">
       {isLoading ? (
-        <div className="absolute top-[0px] left-[0px] z-20">
+        <AnimatePresence
+          initial={false}
+          exitBeforeEnter
+          onExitComplete={() => null}
+          className="z-20"
+        >
           <LoadingModal
             onClose={onClose}
             loadingMessage={loadingMessage}
             loadingProof={loadingProof}
           />
-        </div>
+        </AnimatePresence>
       ) : null}
       <svg
         className="absolute -left-2 top-[370px]"

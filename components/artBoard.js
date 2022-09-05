@@ -250,7 +250,7 @@ export default function artBoard(props) {
             <button
               className="flex"
               onClick={(e) => {
-                setColor(e.target.id);
+                setColor(e.target.id)
               }}
             >
               <div
@@ -261,7 +261,7 @@ export default function artBoard(props) {
             <button
               className="flex"
               onClick={(e) => {
-                setColor(e.target.id);
+                setColor(e.target.id)
               }}
             >
               <div
@@ -272,7 +272,7 @@ export default function artBoard(props) {
             <button
               className="flex"
               onClick={(e) => {
-                setColor(e.target.id);
+                setColor(e.target.id)
               }}
             >
               <div
@@ -283,7 +283,7 @@ export default function artBoard(props) {
             <button
               className="flex"
               onClick={(e) => {
-                setColor(e.target.id);
+                setColor(e.target.id)
               }}
             >
               <div
@@ -294,7 +294,7 @@ export default function artBoard(props) {
             <button
               className="flex"
               onClick={(e) => {
-                setColor(e.target.id);
+                setColor(e.target.id)
               }}
             >
               <div
@@ -305,7 +305,7 @@ export default function artBoard(props) {
             <button
               className="flex"
               onClick={(e) => {
-                setColor(e.target.id);
+                setColor(e.target.id)
               }}
             >
               <div
@@ -316,7 +316,7 @@ export default function artBoard(props) {
             <button
               className="flex"
               onClick={(e) => {
-                setColor(e.target.id);
+                setColor(e.target.id)
               }}
             >
               <div

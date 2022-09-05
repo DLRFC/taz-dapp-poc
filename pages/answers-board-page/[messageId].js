@@ -10,11 +10,10 @@ export default function AnswersBoardPage() {
       <AnswerBoard messageId={messageId} />
     </div>
   )
-    
 }
 
 export async function getServerSideProps(context) {
   return {
-      props: {},
-  };
+    props: {},
+  }
 }

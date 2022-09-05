@@ -2,9 +2,7 @@ import QuestionsBoardComponent from './View'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
-
-const SUGBRAPH_TAZ_MESSAGE =
-  'https://api.thegraph.com/subgraphs/name/dlrfc/taz-message-goerli'
+import { TAZMESSAGE_SUBGRAPH } from '../../config/goerli.json'
 
 const QuestionsBoard = (props) => {
   const [questions, setQuestions] = useState([])
@@ -32,7 +30,7 @@ const QuestionsBoard = (props) => {
 
     let data = []
     try {
-      const result = await axios.post(SUGBRAPH_TAZ_MESSAGE, postData)
+      const result = await axios.post(TAZMESSAGE_SUBGRAPH, postData)
       data = result.data.data.messageAddeds
     } catch (err) {
       console.log('Error fetching subgraph data: ', err)

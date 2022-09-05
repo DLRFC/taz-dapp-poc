@@ -6,15 +6,14 @@ import { Group } from '@semaphore-protocol/group'
 import { useRouter } from 'next/router'
 import { ethers } from 'ethers'
 import LoadingModal from '../LoadingModal/Index.js'
+import { AnimatePresence } from 'framer-motion'
+import { API_REQUEST_TIMEOUT, TAZMESSAGE_SUBGRAPH } from '../../config/goerli.json'
 
 // import { useIdentity } from './IdentityProvider'
 const { generateProof } = require('@semaphore-protocol/proof')
 const { verifyProof } = require('@semaphore-protocol/proof')
 const { packToSolidityProof } = require('@semaphore-protocol/proof')
 const { Subgraph } = require('@semaphore-protocol/subgraph')
-
-const SUGBRAPH_TAZ_MESSAGE =
-  'https://api.thegraph.com/subgraphs/name/dlrfc/taz-message-goerli'
 
 // 3. Ask Answer Page
 const AnswerQuestion = (props) => {
@@ -27,8 +26,6 @@ const AnswerQuestion = (props) => {
   const router = useRouter()
 
   const messageId = props.messageId
-  console.log('Message ID!')
-  console.log(messageId)
 
   const [question, setQuestion] = useState([])
 
@@ -53,7 +50,7 @@ const AnswerQuestion = (props) => {
     }
     // Fetch data
     try {
-      const result = await axios.post(SUGBRAPH_TAZ_MESSAGE, postData)
+      const result = await axios.post(TAZMESSAGE_SUBGRAPH, postData)
       console.log('result:', result)
       setQuestion(result.data.data.messageAddeds[0])
     } catch (err) {
@@ -152,7 +149,7 @@ const AnswerQuestion = (props) => {
       }
 
       // Verifying Zero Knowledge Proof on Chain and sending Answer
-      const response = await axios.post('/api/postMessage', body)
+      const response = await axios.post('/api/postMessage', body, {timeout: API_REQUEST_TIMEOUT})
       console.log(response)
       console.log(response.data)
 
@@ -172,13 +169,14 @@ const AnswerQuestion = (props) => {
   return (
     <div className="p-4 font-sans bg-brand-beige">
       {isLoading ? (
-        <div className="absolute top-[0px] left-[0px] z-20">
-          <LoadingModal
-            onClose={onClose}
-            loadingMessage={loadingMessage}
-            loadingProof={loadingProof}
-          />
-        </div>
+        <AnimatePresence
+          initial={false}
+          exitBeforeEnter
+          onExitComplete={() => null}
+          className="z-20"
+        >
+          <LoadingModal onClose={onClose} loadingMessage={loadingMessage} />
+        </AnimatePresence>
       ) : null}
       <svg
         className="absolute -left-2 top-[370px]"
