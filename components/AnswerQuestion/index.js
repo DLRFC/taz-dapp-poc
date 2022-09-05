@@ -6,6 +6,7 @@ import { Group } from '@semaphore-protocol/group'
 import { useRouter } from 'next/router'
 import { ethers } from 'ethers'
 import LoadingModal from '../LoadingModal/Index.js'
+import { AnimatePresence } from 'framer-motion'
 
 // import { useIdentity } from './IdentityProvider'
 const { generateProof } = require('@semaphore-protocol/proof')
@@ -172,13 +173,14 @@ const AnswerQuestion = (props) => {
   return (
     <div className="p-4 font-sans bg-brand-beige">
       {isLoading ? (
-        <div className="absolute top-[0px] left-[0px] z-20">
-          <LoadingModal
-            onClose={onClose}
-            loadingMessage={loadingMessage}
-            loadingProof={loadingProof}
-          />
-        </div>
+        <AnimatePresence
+          initial={false}
+          exitBeforeEnter
+          onExitComplete={() => null}
+          className="z-20"
+        >
+          <LoadingModal onClose={onClose} loadingMessage={loadingMessage} />
+        </AnimatePresence>
       ) : null}
       <svg
         className="absolute -left-2 top-[370px]"
