@@ -5,7 +5,7 @@ import { Identity } from '@semaphore-protocol/identity'
 import { Group } from '@semaphore-protocol/group'
 import { useRouter } from 'next/router'
 import { ethers } from 'ethers'
-import LoadingModal from '../LoadingModal'
+import LoadingModal from '../LoadingModal/Index.js'
 import { AnimatePresence } from 'framer-motion'
 import {
   API_REQUEST_TIMEOUT,
