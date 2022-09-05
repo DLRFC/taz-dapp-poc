@@ -5,7 +5,8 @@ import axios from 'axios'
 import Header from './Header'
 import Button from './Button'
 
-export default function artBoard() {
+export default function artBoard(props) {
+
   const COLORCONVERT = {
     'text-black': '#171717',
     'text-red-600': '#dc2626',
@@ -17,76 +18,33 @@ export default function artBoard() {
   }
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [selectedTile, setSelectedTile] = useState(1)
+  const [selectedTile, setSelectedTile] = useState(props.selectedTile)
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [uriStorage, setUriStorage] = useState([])
-
-  // DECLARATIONS FROM OLD DRAWING COMPONENT FILE
+  const [tiles, setTiles] = useState(props.tiles)
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [tool] = React.useState('pen')
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [lines, setLines] = React.useState([])
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [color] = React.useState('text-black')
+  const [color, setColor] = React.useState('text-black')
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const isDrawing = React.useRef(false)
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const stageRef = React.useRef(null)
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const uriStorageRef = React.useRef(null)
+  const tilesRef = React.useRef(props.tiles)
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const canvasId = React.useRef(null)
+  const canvasId = React.useRef(props.canvasId)
 
   // SAVE TILES AS ONE IMAGE - @WRITERSBLOCKCHAIN
   const ref = createRef(null)
+  
+
   // eslint-disable-next-line react-hooks/rules-of-hooks
   // const [] = useScreenshot({
   //   type: 'image/png',
   //   quality: 1.0,
   // })
-
-  const fetchUriStorage = async () => {
-    console.log('fetchUriStorage')
-    try {
-
-      const result = await axios.get("/api/modifyCanvas");
-      console.log("result:");
-      console.log(result);
-
-
-      const canvas = result.data.canvas
-
-      uriStorageRef.current = canvas.tiles
-      canvasId.current = canvas.canvasId
-      return uriStorageRef.current
-    } catch (err) {
-      console.log("Error with axios.get('/api/modifyCanvas')", err)
-    }
-  }
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  useEffect(() => {
-    const doAsync = async () => {
-
-      console.log("USING EFFECT");
-      setUriStorage(await fetchUriStorage());
-      //select random tile
-      let remainingIndices = [];
-
-      uriStorageRef.current.map((img, i) => {
-        if (img === '') {
-          remainingIndices.push(i)
-        }
-      })
-
-      setSelectedTile(
-        remainingIndices[
-          Math.floor(Math.random() * (remainingIndices.length - 1))
-        ],
-      )
-    }
-    doAsync()
-  }, [])
 
   // COMING BACK TO THIS ON AUG 30, URI NOT WORKING YET - @WRITERSBLOCKCHAIN
   // const ipfsURI = (image, { name = "img", extension = "png" } = {}) => {
@@ -98,6 +56,10 @@ export default function artBoard() {
   // const dataURL = canvas.toDataURL();
   // console.log("CANVAS 9 TILES URI:", dataURL);
   // };
+
+  function generateCanvasURI() {
+    //SEAN TO COMPLETE
+  }
 
   // NO LONGER NEEDED - USER GETS RANDOM SELECTED TILE
   function onImageClick(e) {
@@ -136,22 +98,6 @@ export default function artBoard() {
     isDrawing.current = false;
   };
 
-  /*   const newColor = () => {
-    const newColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
-
-     "rgb(" +
-      Math.round(Math.random() * 255) +
-      " " +
-      Math.round(Math.random() * 255) +
-      " " +
-      Math.round(Math.random() * 255) +
-      ")";
-
-    setColor(newColor);
-    console.log(newColor);
-  }; */
-
-
   const handleUndo = () => {
     lines.pop()
     setLines(lines.concat())
@@ -159,21 +105,21 @@ export default function artBoard() {
 
   const submit = async () => {
     const uri = stageRef.current.toDataURL()
-    uriStorageRef.current[selectedTile] = uri.toString()
-
+    tilesRef.current[selectedTile] = uri.toString()
 
     //POST NEW DATA TO BACKEND
     const response = await axios.post("/api/modifyCanvas", {
-      updatedTiles: uriStorageRef.current,
+      updatedTiles: tilesRef.current,
       canvasId: canvasId.current,
+      //GENERATE PROOF FOR EVERY TILE IMAGE?
     });
-    console.log(response);
 
+    const tilesRemaining = tilesRef.current.filter((v) => v === "");
+    if(tilesRemaining.length === 0) {
+      const canvasURI = generateCanvasURI();
 
-    setSelectedTile(-1)
-    setLines([])
-
-    // INSERT PROOF GENERATION, MODAL AND PAGE REDIRECT HERE
+      //post canvasURI to backend
+    }
   }
 
   const newLocal = 'border-black border touch-none bg-white h-[250] w-[250]'
@@ -223,7 +169,7 @@ export default function artBoard() {
             id={`${i}`}
             onClick={onImageClick}
             src={
-              uriStorage[i] ? uriStorage[i] : '' // "https://media.istockphoto.com/vectors/cartoon-raven-isolated-on-white-background-vector-id597250060?k=20&m=597250060&s=612x612&w=0&h=yl0rXftvQNqXTKQyRjqumexaKiyW6Bq0OFl1Ko4zaAs="
+              tiles[i] ? tiles[i] : '' // "https://media.istockphoto.com/vectors/cartoon-raven-isolated-on-white-background-vector-id597250060?k=20&m=597250060&s=612x612&w=0&h=yl0rXftvQNqXTKQyRjqumexaKiyW6Bq0OFl1Ko4zaAs="
             }
           />
         )}
