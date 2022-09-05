@@ -4,8 +4,13 @@ import { Stage, Layer, Line } from 'react-konva'
 import axios from 'axios'
 import Header from './Header'
 import Button from './Button'
+import { useGenerateProof } from '../hooks/useGenerateProof'
+import { Identity } from '@semaphore-protocol/identity'
 
 export default function artBoard() {
+  const [generateFullProof] = useGenerateProof()
+  const [identityKey, setIdentityKey] = useState('')
+
   const COLORCONVERT = {
     'text-black': '#171717',
     'text-red-600': '#dc2626',
@@ -83,6 +88,9 @@ export default function artBoard() {
         ],
       )
     }
+    const identityKeyTemp = window.localStorage.getItem('identity')
+
+    setIdentityKey(identityKeyTemp)
     doAsync()
   }, [])
 
@@ -172,6 +180,8 @@ export default function artBoard() {
 
   const newLocal = 'border-black border touch-none bg-white h-[250] w-[250]'
   // DRAWING AREA HTML
+
+  // This should be a component
   const drawingHTML = [
     // eslint-disable-next-line react/jsx-key
     <div className={newLocal}>
@@ -206,7 +216,7 @@ export default function artBoard() {
       </Stage>
     </div>,
   ]
-
+  // This should be another Component
   const generateTileHTML = (i) => {
     const html = (
       <td className="bg-white w-20 border border-slate-200">
@@ -224,6 +234,21 @@ export default function artBoard() {
       </td>
     )
     return html
+  }
+
+  const handleGenerateProof = async () => {
+    const {
+      fullProofTemp,
+      solidityProof,
+      nullifierHashTemp,
+      externalNullifier,
+      signal,
+    } = await generateFullProof(identityKey)
+    console.log('fullProof', fullProofTemp)
+    console.log('solidityProof', solidityProof)
+    console.log('nullifierHashTemp', nullifierHashTemp)
+    console.log('externalNullifier', externalNullifier)
+    console.log('signal', signal)
   }
 
   return (
@@ -405,6 +430,9 @@ export default function artBoard() {
 
           <div className="ml-2" onClick={handleUndo}>
             <Button text="Undo" />
+          </div>
+          <div className="ml-2" onClick={handleGenerateProof}>
+            <Button text="Generate Proof" />
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import AskQuestion from '../components/AskQuestion'
+import AskQuestion from '../components/AskQuestion/Index'
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'

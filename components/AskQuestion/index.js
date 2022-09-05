@@ -110,7 +110,9 @@ const AskQuestion = () => {
       }
       // console.log('Body:', body)
 
-      const response = await axios.post('/api/postMessage', body, {timeout: API_REQUEST_TIMEOUT})
+      const response = await axios.post('/api/postMessage', body, {
+        timeout: API_REQUEST_TIMEOUT,
+      })
       // console.log(response)
       console.log(response.data)
 
