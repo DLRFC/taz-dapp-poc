@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import LoadingModal from '../LoadingModal/Index.js'
+import { AnimatePresence } from 'framer-motion'
 
 // Page 3 will Generate Identity and Join Group
 export const GenerateIdentityComponent = ({
@@ -11,10 +12,20 @@ export const GenerateIdentityComponent = ({
 }) => {
   return (
     <div className="p-4 font-sans bg-brand-beige">
-      {isLoading ? (
+      {/* {isLoading ? (
         <div className="absolute top-[0px] left-[0px] z-20">
           <LoadingModal onClose={onClose} loadingMessage={loadingMessage} />
         </div>
+      ) : null} */}
+      {isLoading ? (
+        <AnimatePresence
+          initial={false}
+          exitBeforeEnter
+          onExitComplete={() => null}
+          className="z-20"
+        >
+          <LoadingModal onClose={onClose} loadingMessage={loadingMessage} />
+        </AnimatePresence>
       ) : null}
 
       <svg
@@ -42,9 +53,17 @@ export const GenerateIdentityComponent = ({
           <p className="px-3 font-bold text-xl text-brand-gray2">
             To use the app you will need to join the Devcon VI group
           </p>
-          <p className="mb-3 py-5 px-3 text-[#513E2E] text-sm">
-            This is a Semaphore group...
-          </p>
+          {!imageUrl ? (
+            <p className="mb-3 py-5 px-3 text-[#513E2E] text-sm">
+              Click the <span className="underline">Join Button</span> to
+              generate an Identity and join the Semaphore Devcon Group`
+            </p>
+          ) : (
+            <p className="mb-3 py-5 px-3 text-[#513E2E] text-sm">
+              Identity Generated! Please save or take a print screen of your QR
+              code
+            </p>
+          )}
 
           {imageUrl ? (
             <div className="flex items-center justify-center flex-col">

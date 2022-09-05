@@ -1,4 +1,6 @@
 import QrReader from 'react-qr-reader'
+import { AnimatePresence } from 'framer-motion'
+import LoadingModal from '../LoadingModal/Index'
 
 // Page 1 it will check Invitation
 const InvitationCheckComponent = ({
@@ -18,10 +20,22 @@ const InvitationCheckComponent = ({
   setInvitation,
   data,
   validate,
+  onClose,
+  loadingMessage,
 }) => {
   console.log('change')
   return (
     <div className="p-4 font-sans bg-brand-beige">
+      {isLoading ? (
+        <AnimatePresence
+          initial={false}
+          exitBeforeEnter
+          onExitComplete={() => null}
+          className="z-20"
+        >
+          <LoadingModal onClose={onClose} loadingMessage={loadingMessage} />
+        </AnimatePresence>
+      ) : null}
       <svg
         className="absolute -left-2 top-[370px]"
         width="69"
@@ -76,69 +90,64 @@ const InvitationCheckComponent = ({
         <div className="flex flex-col items-center overflow-hidden rounded-md px-3 text-brand-gray2">
           <div className="h-[600px] py-3 w-full px-4 z-10">
             <p className="py-5 font-bold mb-3 px-3 text-xl">Get started?</p>
-            {isLoading ? (
-              <button className="bg-brand-beige2 w-full p-2 border-2 border-brand-gray2 shadow-[-3px_3px_0px_0px_rgba(71,95,111)] mb-[180px]">
-                Checking Invitation Code
+
+            <div>
+              <button
+                className="bg-brand-beige2 w-full p-2 border-2 border-brand-gray2 shadow-[-3px_3px_0px_0px_rgba(71,95,111)] mb-8"
+                onClick={handleStartScan}
+              >
+                {startScan ? 'Stop Scan' : 'Scan Invitation QR Code'}
               </button>
-            ) : (
-              <div>
-                <button
-                  className="bg-brand-beige2 w-full p-2 border-2 border-brand-gray2 shadow-[-3px_3px_0px_0px_rgba(71,95,111)] mb-8"
-                  onClick={handleStartScan}
-                >
-                  {startScan ? 'Stop Scan' : 'Scan Invitation QR Code'}
-                </button>
 
-                {startScan ? (
-                  <div className="flex items-center justify-center flex-col mb-10">
-                    <select
-                      className="mb-3"
-                      onChange={(e) => setSelected(e.target.value)}
-                    >
-                      <option value={'environment'}>Back Camera</option>
-                      <option value={'user'}>Front Camera</option>
-                    </select>
-                    <QrReader
-                      facingMode={selected}
-                      delay={1000}
-                      onError={handleError}
-                      onScan={handleScan}
-                      style={{ width: '300px' }}
-                    />
-                  </div>
-                ) : (
-                  <div>
-                    <p className="py-5 font-bold mb-3 px-3 text-xl">
-                      Paste Invitation Code
-                    </p>
-                    <input
-                      className="border-2 border-black w-full mb-3 py-2 rounded-lg"
-                      onChange={(e) => setInvitation(e.target.value)}
-                    ></input>
-                  </div>
-                )}
+              {startScan ? (
+                <div className="flex items-center justify-center flex-col mb-10">
+                  <select
+                    className="mb-3"
+                    onChange={(e) => setSelected(e.target.value)}
+                  >
+                    <option value={'environment'}>Back Camera</option>
+                    <option value={'user'}>Front Camera</option>
+                  </select>
+                  <QrReader
+                    facingMode={selected}
+                    delay={1000}
+                    onError={handleError}
+                    onScan={handleScan}
+                    style={{ width: '300px' }}
+                  />
+                </div>
+              ) : (
+                <div>
+                  <p className="py-5 font-bold mb-3 px-3 text-xl">
+                    Paste Invitation Code
+                  </p>
+                  <input
+                    className="border-2 border-black w-full mb-3 py-2 rounded-lg"
+                    onChange={(e) => setInvitation(e.target.value)}
+                  ></input>
+                </div>
+              )}
 
-                {data ? (
-                  <div>
-                    <p className="font-bold">QrCode Key is:</p>
-                    <p>{data}</p>
-                  </div>
-                ) : null}
-                <button
-                  className="bg-brand-beige2 w-full p-2 border-2 border-brand-gray2 shadow-[-3px_3px_0px_0px_rgba(71,95,111)] mb-[180px]"
-                  onClick={validate}
-                >
-                  Submit
-                </button>
+              {data ? (
+                <div>
+                  <p className="font-bold">QrCode Key is:</p>
+                  <p>{data}</p>
+                </div>
+              ) : null}
+              <button
+                className="bg-brand-beige2 w-full p-2 border-2 border-brand-gray2 shadow-[-3px_3px_0px_0px_rgba(71,95,111)] mb-[180px]"
+                onClick={validate}
+              >
+                Submit
+              </button>
 
-                <button
-                  className="bg-brand-beige2 w-full p-2 border-2 border-brand-gray2 shadow-[-3px_3px_0px_0px_rgba(71,95,111)] mb-20"
-                  onClick={handleSignUpButton}
-                >
-                  Back
-                </button>
-              </div>
-            )}
+              <button
+                className="bg-brand-beige2 w-full p-2 border-2 border-brand-gray2 shadow-[-3px_3px_0px_0px_rgba(71,95,111)] mb-20"
+                onClick={handleSignUpButton}
+              >
+                Back
+              </button>
+            </div>
           </div>
         </div>
       )}

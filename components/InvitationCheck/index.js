@@ -23,6 +23,9 @@ export default function InvitationCheck() {
   const [isSignUp, setIsSignUp] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [checkingIdentity, setCheckingIdenty] = useState(false)
+  const [loadingMessage, setLoadingMessage] = useState(
+    'This is a Loading Message',
+  )
   // const [members, setMembers] = useState([])
   const router = useRouter()
 
@@ -58,6 +61,7 @@ export default function InvitationCheck() {
 
   const validate = async () => {
     setIsLoading(true)
+    setLoadingMessage('Verifying your Invitation-Code')
 
     const apiResponse = await axios.post('/api/validateInvitation', {
       invitation,
@@ -122,6 +126,10 @@ export default function InvitationCheck() {
     }
   }
 
+  const onClose = () => {
+    setIsLoading(!isLoading)
+  }
+
   return (
     <ValidateInvitationComponent
       isSignUp={isSignUp}
@@ -140,6 +148,8 @@ export default function InvitationCheck() {
       setInvitation={setInvitation}
       data={data}
       validate={validate}
+      onClose={onClose}
+      loadingMessage={loadingMessage}
     />
   )
 }
