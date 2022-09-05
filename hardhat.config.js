@@ -4,6 +4,7 @@ require('dotenv').config()
 // Import task definitions
 
 require("./tasks/deployTazMessage")
+require("./tasks/deployTazToken")
 require("./tasks/createProof")
 
 /** @type import('hardhat/config').HardhatUserConfig */
