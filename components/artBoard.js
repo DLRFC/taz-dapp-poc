@@ -70,6 +70,7 @@ export default function artBoard() {
       // select random tile
       const remainingIndices = []
 
+      // eslint-disable-next-line array-callback-return
       uriStorageRef.current.map((img, i) => {
         if (img === '') {
           remainingIndices.push(i)
