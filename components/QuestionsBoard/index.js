@@ -1,5 +1,6 @@
 import QuestionsBoardComponent from './View'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import axios from 'axios'
 
 const SUGBRAPH_TAZ_MESSAGE =
@@ -7,6 +8,7 @@ const SUGBRAPH_TAZ_MESSAGE =
 
 const QuestionsBoard = (props) => {
   const [questions, setQuestions] = useState([])
+  const router = useRouter()
 
   const fetchQuestions = async () => {
     // Construct query for subgraph
@@ -15,7 +17,7 @@ const QuestionsBoard = (props) => {
       {
         messageAddeds(
           orderBy: timestamp
-          where: {parentMessageId: "0"}
+          where: {parentMessageId: ""}
           orderDirection: desc
         ) {
           id
@@ -45,7 +47,18 @@ const QuestionsBoard = (props) => {
     doAsync()
   }, [])
 
-  return <QuestionsBoardComponent questions={questions} />
+  const clearIdentity = () => {
+    console.log('clear')
+    window.localStorage.removeItem('identity')
+    router.push('/')
+  }
+
+  return (
+    <QuestionsBoardComponent
+      questions={questions}
+      clearIdentity={clearIdentity}
+    />
+  )
 }
 
 export default QuestionsBoard

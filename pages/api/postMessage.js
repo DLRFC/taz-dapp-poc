@@ -65,12 +65,14 @@ export default async function handler(req, res) {
           nullifierHash,
           externalNullifier,
           solidityProof,
-          { gasLimit: 1500000 },
+          { gasLimit: 15000000 },
         )
-        console.log(tx)
-        const response = await tx.wait()
+        console.log('Transaction Finished!')
+        const response = await tx.wait(3)
         console.log(response)
-        response.status(201).json(response)
+        console.log('Reply Message Success!')
+
+        res.status(201).json(response)
       } catch (error) {
         console.log('Reply to Message transaction failed!')
         console.log(error)
@@ -78,6 +80,11 @@ export default async function handler(req, res) {
       }
     } else {
       console.log('LOG | Add Message')
+      // console.log('External Nullifier')
+      // console.log(externalNullifier)
+      // console.log('NullifierHash')
+
+      // console.log(nullifierHash)
 
       try {
         tx = await tazMessageContract.addMessage(
@@ -88,11 +95,11 @@ export default async function handler(req, res) {
           nullifierHash,
           externalNullifier,
           solidityProof,
-          { gasLimit: 1500000 },
+          { gasLimit: 15000000 },
         )
         console.log(tx)
 
-        const response = await tx.wait()
+        const response = await tx.wait(3)
         console.log(response)
         res.status(201).json(response)
       } catch (error) {

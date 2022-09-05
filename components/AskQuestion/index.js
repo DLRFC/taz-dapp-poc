@@ -50,7 +50,7 @@ const AskQuestion = () => {
       const groupId = '10803'
       const subgraph = new Subgraph('goerli')
 
-      const { members } = await subgraph.getGroup('10803', { members: true })
+      const { members } = await subgraph.getGroup(groupId, { members: true })
       console.log('Members')
       console.log(members)
 
@@ -67,8 +67,10 @@ const AskQuestion = () => {
         externalNullifier,
         signal,
         {
-          zkeyFilePath: '/semaphore.zkey',
-          wasmFilePath: '/semaphore.wasm',
+          zkeyFilePath:
+            'https://www.trusted-setup-pse.org/semaphore/16/semaphore.zkey',
+          wasmFilePath:
+            'https://www.trusted-setup-pse.org/semaphore/16/semaphore.wasm',
         },
       )
       console.log('Proof')

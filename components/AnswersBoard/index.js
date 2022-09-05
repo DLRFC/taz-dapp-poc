@@ -105,9 +105,11 @@ const AnswerBoard = (props) => {
             </clipPath>
           </defs>
         </svg>
-        <span className="ml-2 text-brand-orange text-sm font-bold">
-          Back to apps
-        </span>
+        <Link href="/">
+          <span className="ml-2 text-brand-orange text-sm font-bold cursor-pointer">
+            Back to apps
+          </span>
+        </Link>
       </div>
 
       <div className="index-[10] relative divide-y overflow-y-auto rounded-md border-2 border-gray-500 bg-white drop-shadow-lg">

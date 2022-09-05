@@ -42,6 +42,6 @@ export default function AnswerQuestionPage() {
 
 export async function getServerSideProps(context) {
   return {
-      props: {},
-  };
+    props: {},
+  }
 }
