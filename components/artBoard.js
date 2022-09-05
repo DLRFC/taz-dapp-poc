@@ -5,10 +5,12 @@ import axios from 'axios'
 import Header from './Header'
 import Button from './Button'
 import { useGenerateProof } from '../hooks/useGenerateProof'
-import { Identity } from '@semaphore-protocol/identity'
+// import { Identity } from '@semaphore-protocol/identity'
 
 export default function artBoard() {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [generateFullProof] = useGenerateProof()
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [identityKey, setIdentityKey] = useState('')
 
   const COLORCONVERT = {
