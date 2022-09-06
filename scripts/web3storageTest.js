@@ -1,12 +1,12 @@
 const { Web3Storage, File } = require("web3.storage")
 const { Blob } = require ("@web-std/blob")
 
-// This function converts a Basea64 string into a Blob (which is what web3.storage needs to create a file).
+// This helper function converts a Basea64 string into a Blob (which is what web3.storage needs to create a file).
 const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
     // First, it decode the Base64-encoded string into a new string with a character for each byte of the binary data.
     // Each character's code point (charCode) will be the value of the byte. 
     const byteCharacters =  Buffer.from(b64Data, 'base64').toString('binary') // atob(b64Data) is showing as deprecated
-    // Then, can create an array of byte values by applying this using the .charCodeAt method for each character in the string.
+    // Then, we can create an array of byte values by applying this using the .charCodeAt method for each character in the string.
     const byteArrays = [];  
     for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
       const slice = byteCharacters.slice(offset, offset + sliceSize);  
