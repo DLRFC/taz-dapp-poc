@@ -43,16 +43,17 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
           <div>TAZ App</div>
           <div></div>
         </div>
-
-        <div className="flex w-full flex-row items-center border-b-2 border-gray-700 py-3 px-2">
-          <div className="w-[90%]">
-            <p className="py-2 font-bold">Art Wall</p>
-            <p className="text-brand-brown opacity-[70%]">
-              Protect yourself from prying eyes
-            </p>
+        <Link href="artGallery-page">
+          <div className="flex w-full flex-row items-center border-b-2 border-gray-700 py-3 px-2 cursor-pointer">
+            <div className="w-[90%]">
+              <p className="py-2 font-bold">Art Wall</p>
+              <p className="text-brand-brown opacity-[70%]">
+                Protect yourself from prying eyes
+              </p>
+            </div>
+            <p className="-mr-3">X</p>
           </div>
-          <p className="-mr-3">X</p>
-        </div>
+        </Link>
         <div className="flex w-full flex-row items-center border-b-2 border-gray-700 py-3 px-2">
           <div className="w-[90%]">
             <p className="py-2 font-bold">The Reputation</p>
