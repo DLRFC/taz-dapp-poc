@@ -1,5 +1,5 @@
 import React, { useState, createRef, useEffect } from 'react'
-// import { useScreenshot } from 'use-react-screenshot'
+import { useScreenshot, createFileName } from 'use-react-screenshot'
 import { Stage, Layer, Line } from 'react-konva'
 import axios from 'axios'
 import Button from './Button'
@@ -47,30 +47,16 @@ export default function artBoard(props) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const canvasId = React.useRef(props.canvasId)
 
-  // SAVE TILES AS ONE IMAGE - @WRITERSBLOCKCHAIN
-  const ref = createRef(null)
+  const ref = createRef(null);
+  const [image, takeScreenShot] = useScreenshot({
+  });
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  // const [] = useScreenshot({
-  //   type: 'image/png',
-  //   quality: 1.0,
-  // })
+  const logImageURI = (image) => {
+    console.log(image);
+  };
 
-  // COMING BACK TO THIS ON AUG 30, URI NOT WORKING YET - @WRITERSBLOCKCHAIN
-  // const ipfsURI = (image, { name = "img", extension = "png" } = {}) => {
-  // let image =  createFileName(extension, name)
-  // let canvas = document.createElement("canvas");
-  // canvas.width = image.width;
-  // canvas.height = image.height;
-  // canvas.getContext("2d").drawImage(image, 0, 0);
-  // const dataURL = canvas.toDataURL();
-  // console.log("CANVAS 9 TILES URI:", dataURL);
-  // };
+  const generateCanvasUri = () => takeScreenShot(ref.current).then(logImageURI);
 
-  // SEAN TO COMPLETE - FUNCTION SHOULD RETURN THE canvasURI
-  function generateCanvasUri() {
-    return "iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAAAXNSR0IArs4c6QAAAydJREFUeF7t27+L1EAcBfD3XWwUERQ2M+gVVtrYnIIgXGFtcaWd4A/QRkX9B9xrbAWtFFEQbBQsbIRrLKwEUQsVrrJRyESQA8FiV/YrgazIkqzLvU0yOb5b3u27nXzykkwmewJ7UQJCpS0MAyRLYIAGSAqQcWugAZICZNwaaICkABm3BhogKUDGrYEGSAqQcWugAZICZNwaaICkABm3BhogKUDGrYExAnrvTxbjytI0/UyOMer4whvY7/dXer3eOoCdAL4AWA0hfIxagRjcwgG9969VdWVqTDdCCLeJcUYbXTigc+4rgANTW/w9hJBEq0AMbOGA3vsNVT00PSZVXcuybECMNcpoHYDnVPVhydZ+CiEciVKBGNTCAfOxJElyRkQel4zriYjc2k5X5loAC8SBiNws27mqeinLsvvEjo8mWhtgvoXOuZ8AdpdtrYicTtP0WTQSWxxIrYBJklwUkXsVY/sQQlje4rijidUKWBzKJ0TkOQA/vdUhhNo/v27pRjbAOXcFwJ2SqU3nz4WNABbnw1cAJvfIE8vOT22aBKxqYacn2I0BFi18A+D4drpLaRQwSZLKuSGATi44NApYtPAugMslV8dOLjg0DpjDVS04iMipNE1f1j31WOTfbwuwasEBXbtDaQWwOJS1qgldmmC3CfgNwP4yRAOc4yQzY8kLXVp8ba2BufHS0tK+4XB4tWzZS0TOp2n6aI590epbWgWcII5Go/zp3Z4piU7c5rUOWKzYlE6wu3AoRwFYIL4VkWOzbvOcc6uquiwi70MIL1o9dosPjwlw1iOANQAqIn+f6qnqIMuy/OetvqIBLOaGDwBcqBD5BWDXP7/bDCHsbVUPiO+/NZ1z+TcYrpXA/AawwwDnqEzZqo2qbojI4UncDuH/QE4hborIdVX9oapHReSdXUTmaKL3/uB4PD7b6/WexvowPqqLyBym0b3FAMldYoAGSAqQcWugAZICZNwaaICkABm3BhogKUDGrYEGSAqQcWugAZICZNwaaICkABm3BhogKUDGrYEGSAqQcWugAZICZNwaaICkABm3BhogKUDGrYEGSAqQ8T8D1vFRK5/bPQAAAABJRU5ErkJggg==";
-  }
 
   // NO LONGER NEEDED - USER GETS RANDOM SELECTED TILE
   function onImageClick(e) {
@@ -383,9 +369,11 @@ export default function artBoard(props) {
               ></div>
             </button>
           </div>
+
+          <div
+          ref={ref}
+          id="ipfsURI">
           <table
-            ref={ref}
-            id="ipfsURI"
             className="p-3 justify-center rounded-md bg-gray-500 max-w-3xl"
           >
             <tbody>
@@ -406,6 +394,7 @@ export default function artBoard(props) {
               </tr>
             </tbody>
           </table>
+          </div>
         </div>
 
         <div className="flex items-center justify-center pt-5 pb-10">
@@ -414,6 +403,9 @@ export default function artBoard(props) {
           </div>
           <div className="ml-2" onClick={handleGenerateProof}>
             <Button text="Generate Proof" />
+          </div>
+          <div className="ml-2" onClick={generateCanvasUri}>
+            <Button text="Generate Canvas URI" />
           </div>
         </div>
       </div>
