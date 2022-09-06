@@ -1,145 +1,145 @@
-import React, { useState, createRef, useEffect } from "react";
-import { useScreenshot, createFileName } from "use-react-screenshot";
-import { Stage, Layer, Line } from "react-konva";
-import axios from "axios";
-import Button from "./Button";
-import { useGenerateProof } from "../hooks/useGenerateProof";
-import LoadingModal from "./LoadingModal/Index";
-import { AnimatePresence } from "framer-motion";
-import { useRouter } from "next/router";
+import React, { useState, createRef, useEffect } from 'react'
+import { useScreenshot, createFileName } from 'use-react-screenshot'
+import { Stage, Layer, Line } from 'react-konva'
+import axios from 'axios'
+import Button from './Button'
+import { useGenerateProof } from '../hooks/useGenerateProof'
+import LoadingModal from './LoadingModal/Index'
+import { AnimatePresence } from 'framer-motion'
+import { useRouter } from 'next/router'
 // import { Identity } from '@semaphore-protocol/identity'
 
 export default function artBoard(props) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [generateFullProof] = useGenerateProof();
+  const [generateFullProof] = useGenerateProof()
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [identityKey, setIdentityKey] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState("Loading Message");
+  const [identityKey, setIdentityKey] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [loadingMessage, setLoadingMessage] = useState('Loading Message')
 
-  const router = useRouter();
+  const router = useRouter()
   const COLORCONVERT = {
-    "text-black": "#171717",
-    "text-red-600": "#dc2626",
-    "text-orange-500": "#f97316",
-    "text-yellow-300": "#fde047",
-    "text-green-600": "#16a34a",
-    "text-blue-600": "#2563eb",
-    "text-purple-600": "#9333ea",
-  };
+    'text-black': '#171717',
+    'text-red-600': '#dc2626',
+    'text-orange-500': '#f97316',
+    'text-yellow-300': '#fde047',
+    'text-green-600': '#16a34a',
+    'text-blue-600': '#2563eb',
+    'text-purple-600': '#9333ea',
+  }
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [selectedTile, setSelectedTile] = useState(props.selectedTile);
+  const [selectedTile, setSelectedTile] = useState(props.selectedTile)
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [tiles, setTiles] = useState(props.tiles);
+  const [tiles, setTiles] = useState(props.tiles)
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [tool] = React.useState("pen");
+  const [tool] = React.useState('pen')
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [lines, setLines] = React.useState([]);
+  const [lines, setLines] = React.useState([])
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [color, setColor] = React.useState("text-black");
+  const [color, setColor] = React.useState('text-black')
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const isDrawing = React.useRef(false);
+  const isDrawing = React.useRef(false)
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const stageRef = React.useRef(null);
+  const stageRef = React.useRef(null)
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const tilesRef = React.useRef(props.tiles);
+  const tilesRef = React.useRef(props.tiles)
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const canvasId = React.useRef(props.canvasId);
+  const canvasId = React.useRef(props.canvasId)
 
-  const ref = createRef(null);
-  const [image, takeScreenShot] = useScreenshot({});
+  const ref = createRef(null)
+  const [image, takeScreenShot] = useScreenshot({})
 
   const generateCanvasUri = async () => {
-    setSelectedTile(-1);
-    return await takeScreenShot(ref.current);
-  };
+    setSelectedTile(-1)
+    return await takeScreenShot(ref.current)
+  }
 
   // NO LONGER NEEDED - USER GETS RANDOM SELECTED TILE
   function onImageClick(e) {
-    setSelectedTile(parseInt(e.target.id));
+    setSelectedTile(parseInt(e.target.id))
   }
 
   // LOGIC FUNCTIONS FOR SKETCHING BELOW
   const handleMouseDown = (e) => {
-    isDrawing.current = true;
-    const pos = e.target.getStage().getPointerPosition();
-    setLines([...lines, { tool, points: [pos.x, pos.y] }]);
-  };
+    isDrawing.current = true
+    const pos = e.target.getStage().getPointerPosition()
+    setLines([...lines, { tool, points: [pos.x, pos.y] }])
+  }
 
   const handleMouseMove = (e) => {
     // no drawing - skipping
     if (!isDrawing.current) {
-      return;
+      return
     }
-    const stage = e.target.getStage();
-    const point = stage.getPointerPosition();
-    const lastLine = lines[lines.length - 1];
+    const stage = e.target.getStage()
+    const point = stage.getPointerPosition()
+    const lastLine = lines[lines.length - 1]
 
     // set color
-    lines[lines.length - 1].color = COLORCONVERT[color];
+    lines[lines.length - 1].color = COLORCONVERT[color]
 
     // add point
-    lastLine.points = lastLine.points.concat([point.x, point.y]);
+    lastLine.points = lastLine.points.concat([point.x, point.y])
 
     // replace last
-    lines.splice(lines.length - 1, 1, lastLine);
-    setLines(lines.concat());
-  };
+    lines.splice(lines.length - 1, 1, lastLine)
+    setLines(lines.concat())
+  }
 
   const handleMouseUp = () => {
-    isDrawing.current = false;
-  };
+    isDrawing.current = false
+  }
 
   const handleUndo = () => {
-    lines.pop();
-    setLines(lines.concat());
-  };
+    lines.pop()
+    setLines(lines.concat())
+  }
 
   const submit = async () => {
-    const uri = stageRef.current.toDataURL();
-    tilesRef.current[selectedTile] = uri.toString();
+    const uri = stageRef.current.toDataURL()
+    tilesRef.current[selectedTile] = uri.toString()
 
-    const tilesRemaining = tilesRef.current.filter((v) => v === "");
+    const tilesRemaining = tilesRef.current.filter((v) => v === '')
 
-    let canvasUri;
+    let canvasUri
     if (tilesRemaining.length === 0) {
-      canvasUri = await generateCanvasUri();
+      canvasUri = await generateCanvasUri()
     }
-    
-    setIsLoading(true);
-    setLoadingMessage("Art being Submitted, please wait");
 
-    //generate proof
+    setIsLoading(true)
+    setLoadingMessage('Art being Submitted, please wait')
 
-    //axios POSTs
-    console.log("POSTING to /api/modifyCanvas:");
-      console.log("tilesRef.current: ", tilesRef.current);
-      console.log("canvasId.current: ", canvasId.current);
-    const response = await axios.post("/api/modifyCanvas", {
+    // generate proof
+
+    // axios POSTs
+    console.log('POSTING to /api/modifyCanvas:')
+    console.log('tilesRef.current: ', tilesRef.current)
+    console.log('canvasId.current: ', canvasId.current)
+    const response = await axios.post('/api/modifyCanvas', {
       updatedTiles: tilesRef.current,
       canvasId: canvasId.current,
-    });
-    console.log("RESPONSE FROM /api/mintFullCanvas:");
-    console.log(response);
+    })
+    console.log('RESPONSE FROM /api/mintFullCanvas:')
+    console.log(response)
 
     if (tilesRemaining.length === 0) {
-      console.log("POSTING to /api/mintFullCanvas");
-      console.log("canvasUri: ", canvasUri);
-      console.log("canvasId.current: ", canvasId.current);
-      const response = await axios.post("/api/mintFullCanvas", {
+      console.log('POSTING to /api/mintFullCanvas')
+      console.log('canvasUri: ', canvasUri)
+      console.log('canvasId.current: ', canvasId.current)
+      const response = await axios.post('/api/mintFullCanvas', {
         imageUri: canvasUri,
         canvasId: canvasId.current,
-      });
-      console.log("RESPONSE FROM /api/mintFullCanvas:");
-      console.log(response);
+      })
+      console.log('RESPONSE FROM /api/mintFullCanvas:')
+      console.log(response)
     }
 
-    setIsLoading(true);
-    router.push("/artGallery-page");
-  };
+    setIsLoading(true)
+    router.push('/artGallery-page')
+  }
 
-  const newLocal = "border-black border touch-none bg-white h-[250] w-[250]";
+  const newLocal = 'border-black border touch-none bg-white h-[250] w-[250]'
   // DRAWING AREA HTML
 
   // This should be a component
@@ -169,14 +169,14 @@ export default function artBoard(props) {
               lineCap="round"
               lineJoin="round"
               globalCompositeOperation={
-                line.tool === "eraser" ? "destination-out" : "source-over"
+                line.tool === 'eraser' ? 'destination-out' : 'source-over'
               }
             />
           ))}
         </Layer>
       </Stage>
     </div>,
-  ];
+  ]
   // This should be another Component
 
   const generateTileHTML = (i) => {
@@ -189,14 +189,14 @@ export default function artBoard(props) {
             id={`${i}`}
             onClick={onImageClick}
             src={
-              tiles[i] ? tiles[i] : "" // "https://media.istockphoto.com/vectors/cartoon-raven-isolated-on-white-background-vector-id597250060?k=20&m=597250060&s=612x612&w=0&h=yl0rXftvQNqXTKQyRjqumexaKiyW6Bq0OFl1Ko4zaAs="
+              tiles[i] ? tiles[i] : '' // "https://media.istockphoto.com/vectors/cartoon-raven-isolated-on-white-background-vector-id597250060?k=20&m=597250060&s=612x612&w=0&h=yl0rXftvQNqXTKQyRjqumexaKiyW6Bq0OFl1Ko4zaAs="
             }
           />
         )}
       </td>
-    );
-    return html;
-  };
+    )
+    return html
+  }
 
   const handleGenerateProof = async () => {
     const {
@@ -205,17 +205,17 @@ export default function artBoard(props) {
       nullifierHashTemp,
       externalNullifier,
       signal,
-    } = await generateFullProof(identityKey);
-    console.log("fullProof", fullProofTemp);
-    console.log("solidityProof", solidityProof);
-    console.log("nullifierHashTemp", nullifierHashTemp);
-    console.log("externalNullifier", externalNullifier);
-    console.log("signal", signal);
-  };
+    } = await generateFullProof(identityKey)
+    console.log('fullProof', fullProofTemp)
+    console.log('solidityProof', solidityProof)
+    console.log('nullifierHashTemp', nullifierHashTemp)
+    console.log('externalNullifier', externalNullifier)
+    console.log('signal', signal)
+  }
 
   const onClose = () => {
-    setIsLoading(!isLoading);
-  };
+    setIsLoading(!isLoading)
+  }
   return (
     <div className="px-6 py-8 font-sans">
       {isLoading ? (
@@ -295,7 +295,7 @@ export default function artBoard(props) {
             <button
               className="flex"
               onClick={(e) => {
-                setColor(e.target.id);
+                setColor(e.target.id)
               }}
             >
               <div
@@ -306,7 +306,7 @@ export default function artBoard(props) {
             <button
               className="flex"
               onClick={(e) => {
-                setColor(e.target.id);
+                setColor(e.target.id)
               }}
             >
               <div
@@ -317,7 +317,7 @@ export default function artBoard(props) {
             <button
               className="flex"
               onClick={(e) => {
-                setColor(e.target.id);
+                setColor(e.target.id)
               }}
             >
               <div
@@ -328,7 +328,7 @@ export default function artBoard(props) {
             <button
               className="flex"
               onClick={(e) => {
-                setColor(e.target.id);
+                setColor(e.target.id)
               }}
             >
               <div
@@ -339,7 +339,7 @@ export default function artBoard(props) {
             <button
               className="flex"
               onClick={(e) => {
-                setColor(e.target.id);
+                setColor(e.target.id)
               }}
             >
               <div
@@ -350,7 +350,7 @@ export default function artBoard(props) {
             <button
               className="flex"
               onClick={(e) => {
-                setColor(e.target.id);
+                setColor(e.target.id)
               }}
             >
               <div
@@ -361,7 +361,7 @@ export default function artBoard(props) {
             <button
               className="flex"
               onClick={(e) => {
-                setColor(e.target.id);
+                setColor(e.target.id)
               }}
             >
               <div
@@ -401,11 +401,11 @@ export default function artBoard(props) {
           <div className="ml-2" onClick={handleGenerateProof}>
             <Button text="Generate Proof" />
           </div>
-         {/*  <div className="ml-2" onClick={generateCanvasUri}>
+          {/*  <div className="ml-2" onClick={generateCanvasUri}>
             <Button text="Generate Canvas URI" />
           </div> */}
         </div>
       </div>
     </div>
-  );
+  )
 }

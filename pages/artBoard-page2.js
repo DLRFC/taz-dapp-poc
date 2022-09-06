@@ -8,7 +8,7 @@ const ArtBoard = dynamic(() => import('../components/artBoard'), {
 export async function getServerSideProps(context) {
   let tiles, canvasId, selectedTile
   try {
-    const result = await axios.get('http://localhost:3000/api/modifyCanvas')
+    const result = await axios.get('/api/modifyCanvas')
     console.log('result:')
     console.log(result)
 
@@ -29,10 +29,7 @@ export async function getServerSideProps(context) {
         Math.floor(Math.random() * (remainingIndices.length - 1))
       ] || 0
   } catch (err) {
-    console.log(
-      "Error with axios.get('http://localhost:3000/api/modifyCanvas')",
-      err,
-    )
+    console.log("Error with axios.get('api/modifyCanvas')", err)
   }
   return {
     props: {
