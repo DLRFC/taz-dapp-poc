@@ -1,17 +1,13 @@
 import React, { useState, createRef, useEffect, useRef } from 'react'
 import { useScreenshot } from 'use-react-screenshot'
 import axios from 'axios'
-// import Button from '../Button'
 import { useGenerateProof } from '../../hooks/useGenerateProof'
-// import LoadingModal from '../LoadingModal/Index'
-// import { AnimatePresence } from 'framer-motion'
+
 import { useRouter } from 'next/router'
 import ArtBoardComponent from './View'
-// import { Identity } from '@semaphore-protocol/identity'
 
 export default function artBoard() {
   const [generateFullProof] = useGenerateProof()
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [identityKey, setIdentityKey] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [loadingMessage, setLoadingMessage] = useState('Loading Message')
@@ -28,19 +24,11 @@ export default function artBoard() {
     'purple-600',
   ]
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [selectedTile, setSelectedTile] = useState()
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [tiles, setTiles] = useState([''])
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+
   const stageRef = React.useRef(null)
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const tilesRef = React.useRef()
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const canvasId = React.useRef(null)
   const runFetch = useRef(false)
 
@@ -79,11 +67,6 @@ export default function artBoard() {
               Math.floor(Math.random() * (remainingIndices.length - 1))
             ] || 0
 
-          console.log('UseEffect Called')
-          console.log(tilesTemp)
-          console.log(canvasIdTemp)
-          console.log(selectedTileTemp)
-
           setTiles(tilesTemp)
           tilesRef.current = tilesTemp
           canvasId.current = canvasIdTemp
@@ -105,10 +88,6 @@ export default function artBoard() {
     return await takeScreenShot(ref.current)
   }
 
-  // NO LONGER NEEDED - USER GETS RANDOM SELECTED TILE
-
-  // LOGIC FUNCTIONS FOR SKETCHING BELOW
-
   const submit = async () => {
     const uri = stageRef.current.toDataURL()
     tilesRef.current[selectedTile] = uri.toString()
@@ -122,8 +101,6 @@ export default function artBoard() {
 
     setIsLoading(true)
     setLoadingMessage('Art being Submitted, please wait')
-
-    // generate proof
 
     // axios POSTs
     console.log('POSTING to /api/modifyCanvas:')
