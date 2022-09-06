@@ -69,11 +69,16 @@ export default function artBoard() {
           const remainingIndices = []
 
           // Why not change to a for loop?
-          tiles.map((img, i) => {
-            if (img === '') {
+          // tiles.map((img, i) => {
+          //   if (img === '') {
+          //     remainingIndices.push(i)
+          //   }
+          // })
+          for (let i = 0; i < tiles.length; i++) {
+            if (tiles[i].img === '') {
               remainingIndices.push(i)
             }
-          })
+          }
 
           selectedTileTemp =
             remainingIndices[
@@ -90,10 +95,7 @@ export default function artBoard() {
           canvasId.current = canvasIdTemp
           setSelectedTile(selectedTileTemp)
         } catch (err) {
-          console.log(
-            "Error with axios.get('http://localhost:3000/api/modifyCanvas')",
-            err,
-          )
+          console.log("Error with axios.get('/api/modifyCanvas')", err)
         }
       }
     }
@@ -189,7 +191,7 @@ export default function artBoard() {
       console.log(response)
     }
 
-    setIsLoading(true)
+    setIsLoading(false)
     router.push('/artGallery-page')
   }
 
