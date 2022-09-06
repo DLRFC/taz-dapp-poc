@@ -1,7 +1,7 @@
 import React from 'react'
-import { images } from '../data'
+// import { images } from '../data'
 
-export default function Modal({ onClose, activeImage, setActiveImage }) {
+export default function Modal({ images, onClose, activeImage, setActiveImage }) {
   const handleClick = () => {
     onClose && onClose()
   }
@@ -32,18 +32,18 @@ export default function Modal({ onClose, activeImage, setActiveImage }) {
         ></button>
       </div>
       <div className="absolute z-20 bottom-5 w-[100%] h-[70px] overflow-x-auto flex justify-center">
-        {images.map((url, idx) => (
+        {images.map( image => (
           <button
             style={{
-              backgroundImage: `url(${url})`,
+              backgroundImage: `url(${image.uri})`,
               backgroundSize: 'cover',
               border: `1px solid ${
-                activeImage === url ? '#06b6d4' : 'transparent'
+                activeImage === image.uri ? '#06b6d4' : 'transparent'
               }`,
             }}
             className="h-[100%] w-[50px] cursor-pointer mx-1"
-            key={idx}
-            onClick={(e) => handleControlTabClick(e, url)}
+            key={image.id}
+            onClick={(e) => handleControlTabClick(e, image.uri)}
           ></button>
         ))}
       </div>
