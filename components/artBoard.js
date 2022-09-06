@@ -4,6 +4,9 @@ import { Stage, Layer, Line } from 'react-konva'
 import axios from 'axios'
 import Button from './Button'
 import { useGenerateProof } from '../hooks/useGenerateProof'
+import LoadingModal from './LoadingModal/Index'
+import { AnimatePresence } from 'framer-motion'
+import { useRouter } from 'next/router'
 // import { Identity } from '@semaphore-protocol/identity'
 
 export default function artBoard(props) {
@@ -11,7 +14,10 @@ export default function artBoard(props) {
   const [generateFullProof] = useGenerateProof()
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [identityKey, setIdentityKey] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [loadingMessage, setLoadingMessage] = useState('Loading Message')
 
+  const router = useRouter()
   const COLORCONVERT = {
     'text-black': '#171717',
     'text-red-600': '#dc2626',
@@ -108,6 +114,8 @@ export default function artBoard(props) {
   }
 
   const submit = async () => {
+    setIsLoading(true)
+    setLoadingMessage('Art being Submitted, please wait')
     const uri = stageRef.current.toDataURL()
     tilesRef.current[selectedTile] = uri.toString()
 
@@ -139,6 +147,8 @@ export default function artBoard(props) {
       });
       console.log(response); */
     }
+    setIsLoading(true)
+    router.push('/artGallery-page')
   }
 
   const newLocal = 'border-black border touch-none bg-white h-[250] w-[250]'
@@ -215,8 +225,24 @@ export default function artBoard(props) {
     console.log('signal', signal)
   }
 
+  const onClose = () => {
+    setIsLoading(!isLoading)
+  }
   return (
     <div className="px-6 py-8 font-sans">
+      {isLoading ? (
+        <AnimatePresence
+          initial={false}
+          exitBeforeEnter
+          onExitComplete={() => null}
+          className="z-20"
+        >
+          <LoadingModal
+            onClose={onClose}
+            loadingMessage={loadingMessage}
+          ></LoadingModal>
+        </AnimatePresence>
+      ) : null}
       <svg
         className="absolute -left-2 top-[230px]"
         width="69"
