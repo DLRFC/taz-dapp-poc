@@ -1,4 +1,3 @@
-import { create as ipfsHttpClient } from "ipfs-http-client";
 import { ethers } from "ethers";
 import dotenv from "dotenv";
 import faunadb from "faunadb";
@@ -6,7 +5,7 @@ import { Web3Storage, File } from "web3.storage";
 import { Blob } from "@web-std/blob";
 import { TAZTOKEN_CONTRACT } from "../../config/goerli.json";
 
-import TazToken from '../utils/TazToken.json'
+import TazToken from "../utils/TazToken.json";
 
 dotenv.config({ path: "../../.env.local" });
 const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL);
@@ -55,14 +54,11 @@ export default async function handler(req, res) {
       } else {
         console.log("canvas is full");
 
-        // This helper function converts a Basea64 string into a Blob (which is what web3.storage needs to create a file).
+        // Convert base64 string to Blob
         const b64toBlob = (b64Data, contentType = "", sliceSize = 512) => {
-          // First, it decode the Base64-encoded string into a new string with a character for each byte of the binary data.
-          // Each character's code point (charCode) will be the value of the byte.
           const byteCharacters = Buffer.from(b64Data, "base64").toString(
             "binary"
-          ); // atob(b64Data) is showing as deprecated
-          // Then, we can create an array of byte values by applying this using the .charCodeAt method for each character in the string.
+          ); 
           const byteArrays = [];
           for (
             let offset = 0;
@@ -74,11 +70,9 @@ export default async function handler(req, res) {
             for (let i = 0; i < slice.length; i++) {
               byteNumbers[i] = slice.charCodeAt(i);
             }
-            // We can convert this array of byte values into a real typed byte array by passing it to the Uint8Array constructor.
             const byteArray = new Uint8Array(byteNumbers);
             byteArrays.push(byteArray);
           }
-          // The byte array can then be converted to a BLOB by wrapping it in an array and passing it to the Blob constructor.
           const blob = new Blob(byteArrays, { type: contentType });
           return blob;
         };
@@ -88,7 +82,6 @@ export default async function handler(req, res) {
         // Image data
         const contentType = "image/png";
         const b64Data = imageUri;
-
         const blobForServingImage = b64toBlob(b64Data, contentType); // Use for serving an image
 
         const web3StorageClient = new Web3Storage({
@@ -112,23 +105,25 @@ export default async function handler(req, res) {
         // Send transaction to TazToken contract
 
         try {
-        const tx = await nftContract.safeMint(signerAddress, ipfsUrl, { gasLimit: 15000000 });
-        console.log(tx);
+          const tx = await nftContract.safeMint(signerAddress, ipfsUrl, {
+            gasLimit: 15000000,
+          });
+          console.log(tx);
 
-        const response = await tx.wait(3);
-        console.log(response);
-        
-        // Reset canvas in database
-        await client.query(
-          query.Update(query.Ref(match.ref), {
-            data: {
-              tiles: ["", "", "", "", "", "", "", "", ""],
-            },
-          })
-        );
+          const response = await tx.wait(3);
+          console.log(response);
 
-        // Send response to frontend
-        res.status(201).json("Canvas NFT minted");
+          // Reset canvas in database
+          await client.query(
+            query.Update(query.Ref(match.ref), {
+              data: {
+                tiles: ["", "", "", "", "", "", "", "", ""],
+              },
+            })
+          );
+
+          // Send response to frontend
+          res.status(201).json("Canvas NFT minted");
         } catch (e) {
           console.log(e);
           res.status(500).json("Error: ", error);
