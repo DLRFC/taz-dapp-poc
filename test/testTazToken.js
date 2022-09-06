@@ -12,12 +12,12 @@ describe("TazToken", function () {
     })
 
     it("Should mint", async () => {
-        const uri = "https://gateway.pinata.cloud/ipfs/QmcRvcCSyJUpdw9U9rncRaGmkB183BDLiYDmwb468yebH3";
-        console.log("LOG | Minting to address: " + signers[0].address);
+        const uri = "https://bafkreickoepvzub4bh6xtlrpdg5s64iwrzy4dc3vmjrgugxi3gplymqs74.ipfs.dweb.link/";
+        console.log("TEST LOG | Minting to address: " + signers[0].address);
         const tx = await contract.safeMint(signers[0].address, uri);
         console.log("LOG | Transaction: ", tx);
         tokenId = await tx.wait();
-        console.log("LOG | Token ID: ", tokenId);
-        assert.notEqual(tokenId, null);
+        console.log("TEST LOG | Token ID: ", tokenId);
+        await expect(tx).to.emit(contract, 'NewToken')//.withArgs(tokenId, uri)
     })
 });
