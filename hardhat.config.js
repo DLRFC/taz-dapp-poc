@@ -14,7 +14,7 @@ module.exports = {
     hardhat: {
       accounts: [
         { privateKey: process.env.PRIVATE_KEY, balance: "10000000000000000000000" }, 
-        { privateKey: process.env.PRIVATE_KEY, balance: "10000000000000000000000" }
+        { privateKey: process.env.PRIVATE_KEY_2, balance: "10000000000000000000000" }
       ],
       forking: {
         url: process.env.GOERLI_URL,         
@@ -23,6 +23,10 @@ module.exports = {
     },
     goerli: {
       url: process.env.GOERLI_URL,
+      accounts: [process.env.PRIVATE_KEY],
+    },
+    rinkeby: {
+      url: process.env.RINKEBY_URL,
       accounts: [process.env.PRIVATE_KEY],
     },
   },

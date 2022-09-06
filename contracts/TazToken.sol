@@ -11,23 +11,22 @@ contract TazToken is ERC721, ERC721URIStorage, Ownable {
 
     Counters.Counter private _tokenIdCounter;
 
-    constructor() ERC721("TazToken", "TAZ") {}
+    event NewToken(uint256 tokenId, string uri);
 
-    // We're not using dynamically assigned URIs
-    // function _baseURI() internal pure override returns (string memory) {
-    //     return "base URI";
-    // }
+    constructor() ERC721("TazToken", "TAZ") {}
 
     function safeMint(address to, string memory uri) public onlyOwner returns (uint256){
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
+
+        emit NewToken(tokenId, uri);
+
         return tokenId;
     }
 
     // The following functions are overrides required by Solidity.
-
     function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
         super._burn(tokenId);
     }
