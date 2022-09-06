@@ -7,7 +7,10 @@ import { useRouter } from 'next/router'
 import { ethers } from 'ethers'
 import LoadingModal from '../LoadingModal/Index.js'
 import { AnimatePresence } from 'framer-motion'
-import { API_REQUEST_TIMEOUT, TAZMESSAGE_SUBGRAPH } from '../../config/goerli.json'
+import {
+  API_REQUEST_TIMEOUT,
+  TAZMESSAGE_SUBGRAPH,
+} from '../../config/goerli.json'
 
 // import { useIdentity } from './IdentityProvider'
 const { generateProof } = require('@semaphore-protocol/proof')
@@ -149,7 +152,9 @@ const AnswerQuestion = (props) => {
       }
 
       // Verifying Zero Knowledge Proof on Chain and sending Answer
-      const response = await axios.post('/api/postMessage', body, {timeout: API_REQUEST_TIMEOUT})
+      const response = await axios.post('/api/postMessage', body, {
+        timeout: API_REQUEST_TIMEOUT,
+      })
       console.log(response)
       console.log(response.data)
 
@@ -175,7 +180,11 @@ const AnswerQuestion = (props) => {
           onExitComplete={() => null}
           className="z-20"
         >
-          <LoadingModal onClose={onClose} loadingMessage={loadingMessage} />
+          <LoadingModal
+            onClose={onClose}
+            loadingMessage={loadingMessage}
+            loadingProof={loadingProof}
+          />
         </AnimatePresence>
       ) : null}
       <svg
