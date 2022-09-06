@@ -28,6 +28,16 @@ export default function artBoard() {
     'text-purple-600': '#9333ea',
   }
 
+  const colors = [
+    'black',
+    'red-600',
+    'orange-500',
+    'yellow-300',
+    'green-600',
+    'blue-600',
+    'purple-600',
+  ]
+
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [selectedTile, setSelectedTile] = useState()
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -348,83 +358,20 @@ export default function artBoard() {
         </div>
         <div className="flex items-center justify-center">
           <div>
-            <button
-              className="flex"
-              onClick={(e) => {
-                setColor(e.target.id)
-              }}
-            >
-              <div
-                className="w-4 h-4 bg-black rounded-full mr-5 mb-5 mr-2 cursor-pointer"
-                id="text-black"
-              ></div>
-            </button>
-            <button
-              className="flex"
-              onClick={(e) => {
-                setColor(e.target.id)
-              }}
-            >
-              <div
-                className="w-4 h-4 bg-red-600 rounded-full mr-5 mb-5 cursor-pointer"
-                id="text-red-600"
-              ></div>
-            </button>
-            <button
-              className="flex"
-              onClick={(e) => {
-                setColor(e.target.id)
-              }}
-            >
-              <div
-                className="w-4 h-4 bg-orange-500 rounded-full mr-5 mb-5 cursor-pointer"
-                id="text-orange-500"
-              ></div>
-            </button>
-            <button
-              className="flex"
-              onClick={(e) => {
-                setColor(e.target.id)
-              }}
-            >
-              <div
-                className="w-4 h-4 bg-yellow-300 rounded-full mr-5 mb-5 cursor-pointer"
-                id="text-yellow-300"
-              ></div>
-            </button>
-            <button
-              className="flex"
-              onClick={(e) => {
-                setColor(e.target.id)
-              }}
-            >
-              <div
-                className="w-4 h-4 bg-green-600 rounded-full mr-5 mb-5 cursor-pointer"
-                id="text-green-600"
-              ></div>
-            </button>
-            <button
-              className="flex"
-              onClick={(e) => {
-                setColor(e.target.id)
-              }}
-            >
-              <div
-                className="w-4 h-4 bg-blue-600 rounded-full mr-5 mb-5 cursor-pointer"
-                id="text-blue-600"
-              ></div>
-            </button>
-            <button
-              className="flex"
-              onClick={(e) => {
-                setColor(e.target.id)
-              }}
-            >
-              <div
-                className="w-4 h-4 bg-purple-600 rounded-full mr-5 cursor-pointer"
-                id="text-purple-600"
-              ></div>
-            </button>
+            {colors.map((color) => (
+              <button
+                key={color}
+                className="flex"
+                onClick={(e) => {
+                  setColor(e.target.id)
+                }}
+              >
+                <div
+                  className={`w-4 h-4 bg-${color} rounded-full mr-5 mb-5 mr-2 cursor-pointer`}
+                  id={`text-${color}`}
+                ></div>
+              </button>
+            ))}
           </div>
 
           <div ref={ref} id="ipfsURI">
@@ -457,9 +404,6 @@ export default function artBoard() {
           <div className="ml-2" onClick={handleGenerateProof}>
             <Button text="Generate Proof" />
           </div>
-          {/*  <div className="ml-2" onClick={generateCanvasUri}>
-            <Button text="Generate Canvas URI" />
-          </div> */}
         </div>
       </div>
     </div>
