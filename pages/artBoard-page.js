@@ -26,7 +26,7 @@ export async function getServerSideProps(context) {
 
     selectedTile = remainingIndices[
       Math.floor(Math.random() * (remainingIndices.length - 1))
-    ];
+    ] || 0;
 
   } catch (err) {
     console.log(
