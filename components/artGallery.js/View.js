@@ -1,5 +1,5 @@
 // import React, { useEffect, useState } from 'react'
-import { images } from './data'
+// import { images } from './data'
 import Button from '../Button'
 import Modal from './Modal'
 import Link from 'next/link'
@@ -10,6 +10,7 @@ export default function ArtGalleryComponent({
   activeImage,
   setActiveImage,
   handleClick,
+  images,
 }) {
   return (
     <div>
@@ -18,6 +19,7 @@ export default function ArtGalleryComponent({
           onClose={handleClose}
           activeImage={activeImage}
           setActiveImage={setActiveImage}
+          images={images}
         />
       )}
       <div className="flex flex-col items-center rounded-md px-3">
@@ -33,9 +35,9 @@ export default function ArtGalleryComponent({
       </div>
 
       <div className="flex flex-row flex-wrap justify-center py-10 rounded-xl">
-        {images.map((url, idx) => (
-          <ImageCard key={idx} url={url} onClick={() => handleClick(url)} />
-        ))}
+        { images.map( image => (
+          <ImageCard key={image.id} url={image.uri} onClick={() => handleClick(image.uri)} />
+        )) }
       </div>
       <div className="flex items-center justify-center mb-20">
         <Link href="/artBoard-page">

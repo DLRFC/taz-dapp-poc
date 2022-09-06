@@ -1,14 +1,26 @@
 const assert = require('assert')
 const { expect } = require('chai')
 const { run, ethers } = require('hardhat')
+const tazTokenAbi = require('../artifacts/contracts/TazToken.sol/TazToken.json').abi
+const {  TAZTOKEN_CONTRACT } = require('../config/goerli.json')
+const DEPLOY_NEW_TAZ_TOKEN_CONTRACT = false
 
 describe("TazToken", function () {
-    let tazContract;
+    let contract;
     let signers
 
     before(async () => {
-        contract = await run("deployTazToken", { logs: true });
-        signers = await ethers.getSigners();
+        signers = await ethers.getSigners()
+
+        if(DEPLOY_NEW_TAZ_TOKEN_CONTRACT) {
+            contract = await run("deployTazToken", { logs: true })
+        } else {
+            contract = new ethers.Contract(
+                TAZTOKEN_CONTRACT,
+                tazTokenAbi,
+                signers[0],
+                )
+        }
     })
 
     it("Should mint", async () => {
