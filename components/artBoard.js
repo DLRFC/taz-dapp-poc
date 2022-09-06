@@ -1,4 +1,4 @@
-import React, { useState, createRef, useEffect } from 'react'
+import React, { useState, createRef, useEffect, useRef } from 'react'
 import { useScreenshot, createFileName } from 'use-react-screenshot'
 import { Stage, Layer, Line } from 'react-konva'
 import axios from 'axios'
@@ -46,6 +46,7 @@ export default function artBoard() {
   const tilesRef = React.useRef()
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const canvasId = React.useRef(null)
+  const runFetch = useRef(false)
 
   const ref = createRef(null)
   const [image, takeScreenShot] = useScreenshot({})
@@ -55,46 +56,53 @@ export default function artBoard() {
   useEffect(() => {
     let tilesTemp, canvasIdTemp, selectedTileTemp
     const fetchData = async () => {
-      try {
-        const result = await axios.get('/api/modifyCanvas')
-        console.log('result:')
-        console.log(result)
+      if (runFetch.current === false) {
+        try {
+          const result = await axios.get('/api/modifyCanvas')
+          console.log('result:')
+          console.log(result)
 
-        tilesTemp = result.data.canvas.tiles
-        canvasIdTemp = result.data.canvas.canvasId
+          tilesTemp = result.data.canvas.tiles
+          canvasIdTemp = result.data.canvas.canvasId
 
-        // select random tile
-        const remainingIndices = []
+          // select random tile
+          const remainingIndices = []
 
-        tiles.map((img, i) => {
-          if (img === '') {
-            remainingIndices.push(i)
-          }
-        })
+          // Why not change to a for loop?
+          tiles.map((img, i) => {
+            if (img === '') {
+              remainingIndices.push(i)
+            }
+          })
 
-        selectedTileTemp =
-          remainingIndices[
-            Math.floor(Math.random() * (remainingIndices.length - 1))
-          ] || 0
+          selectedTileTemp =
+            remainingIndices[
+              Math.floor(Math.random() * (remainingIndices.length - 1))
+            ] || 0
 
-        console.log('UseEffect Called')
-        console.log(tilesTemp)
-        console.log(canvasIdTemp)
-        console.log(selectedTileTemp)
+          console.log('UseEffect Called')
+          console.log(tilesTemp)
+          console.log(canvasIdTemp)
+          console.log(selectedTileTemp)
 
-        setTiles(tilesTemp)
-        tilesRef.current = tilesTemp
-        canvasId.current = canvasIdTemp
-        setSelectedTile(selectedTileTemp)
-      } catch (err) {
-        console.log(
-          "Error with axios.get('http://localhost:3000/api/modifyCanvas')",
-          err,
-        )
+          setTiles(tilesTemp)
+          tilesRef.current = tilesTemp
+          canvasId.current = canvasIdTemp
+          setSelectedTile(selectedTileTemp)
+        } catch (err) {
+          console.log(
+            "Error with axios.get('http://localhost:3000/api/modifyCanvas')",
+            err,
+          )
+        }
       }
     }
     fetchData()
-  }, [])
+    return () => {
+      console.log('Use Effect Finished')
+      runFetch.current = true
+    }
+  }, [identityKey])
 
   const generateCanvasUri = async () => {
     setSelectedTile(-1)
