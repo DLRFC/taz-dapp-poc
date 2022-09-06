@@ -15,7 +15,7 @@ export default function Modal({ onClose, activeImage, setActiveImage }) {
     // <div onClick={handleClick} className={styles.backdrop}>
     <div
       onClick={handleClick}
-      className="absolute left-0 top-0 bottom-0 right-0 h-[100vh] w-[100vw] overflow-scroll bg-[#00000070] flex flex-col items-center justify-center z-10"
+      className="absolute left-0 top-0 bottom-0 right-0 h-[100%] w-[100%] overflow-scroll bg-[#00000070] flex flex-col items-center justify-center z-20"
     >
       <div
         onClick={(e) => e.stopPropagation()}
