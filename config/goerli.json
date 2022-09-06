@@ -2,7 +2,7 @@
     "TAZMESSAGE_CONTRACT": "0xe1A073dD58AAB0e111b3033A21d442C61a157BF1",
     "TAZTOKEN_CONTRACT": "0x3579A71e0dac0d99793100eE8BAFbBF59194Ed7f",
     "TAZMESSAGE_SUBGRAPH": "https://api.thegraph.com/subgraphs/name/dlrfc/taz-message-goerli",
-    "TAZTOKEN_SUBGRAPH": "https://api.thegraph.com/subgraphs/name/dlrfc/taz-message-goerli",
+    "TAZTOKEN_SUBGRAPH": "https://api.thegraph.com/subgraphs/name/dlrfc/taz-token-goerli",
     "SEMAPHORE_CONTRACT": "0x99aAb52e60f40AAC0BFE53e003De847bBDbC9611",
     "SEMAPHORE_SUBGRAPH": "https://api.thegraph.com/subgraphs/name/semaphore-protocol/goerli",
     "GROUP_ID": 10803,

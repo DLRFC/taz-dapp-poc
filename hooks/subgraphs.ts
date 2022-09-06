@@ -67,5 +67,30 @@ export class Subgraphs {
 
         return members.length > 0
     }
+
+    async getMintedTokens() {
+        const config: AxiosRequestConfig = {
+            method: "post",
+            data: JSON.stringify({
+                query: `{
+                    newTokens(orderBy: timestamp, orderDirection: desc) {
+                      id
+                      timestamp
+                      tokenId
+                      uri
+                    }
+                  }`
+            })
+        } 
+
+        let newTokens: { data: any[] }[] = []
+        try {
+            ({ newTokens } = await this.request(this._tazTokenSubgraphApi, config))
+        } catch(err: any) {
+            console.log("Error fetching data from subgraph", err)
+        }
+
+        return newTokens        
+    }
 }
 
