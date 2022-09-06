@@ -9,7 +9,7 @@ import { AnimatePresence } from 'framer-motion'
 import { useRouter } from 'next/router'
 // import { Identity } from '@semaphore-protocol/identity'
 
-export default function artBoard(props) {
+export default function artBoard() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [generateFullProof] = useGenerateProof()
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -29,9 +29,9 @@ export default function artBoard(props) {
   }
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [selectedTile, setSelectedTile] = useState(props.selectedTile)
+  const [selectedTile, setSelectedTile] = useState()
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [tiles, setTiles] = useState(props.tiles)
+  const [tiles, setTiles] = useState([''])
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [tool] = React.useState('pen')
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -43,12 +43,58 @@ export default function artBoard(props) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const stageRef = React.useRef(null)
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const tilesRef = React.useRef(props.tiles)
+  const tilesRef = React.useRef()
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const canvasId = React.useRef(props.canvasId)
+  const canvasId = React.useRef(null)
 
   const ref = createRef(null)
   const [image, takeScreenShot] = useScreenshot({})
+  // const [canvasId, setCanvasId] = useState()
+  // const [selectedTile, setSelectedTile] = useState()
+
+  useEffect(() => {
+    let tilesTemp, canvasIdTemp, selectedTileTemp
+    const fetchData = async () => {
+      try {
+        const result = await axios.get('/api/modifyCanvas')
+        console.log('result:')
+        console.log(result)
+
+        tilesTemp = result.data.canvas.tiles
+        canvasIdTemp = result.data.canvas.canvasId
+
+        // select random tile
+        const remainingIndices = []
+
+        tiles.map((img, i) => {
+          if (img === '') {
+            remainingIndices.push(i)
+          }
+        })
+
+        selectedTileTemp =
+          remainingIndices[
+            Math.floor(Math.random() * (remainingIndices.length - 1))
+          ] || 0
+
+        console.log('UseEffect Called')
+        console.log(tilesTemp)
+        console.log(canvasIdTemp)
+        console.log(selectedTileTemp)
+
+        setTiles(tilesTemp)
+        tilesRef.current = tilesTemp
+        canvasId.current = canvasIdTemp
+        setSelectedTile(selectedTileTemp)
+      } catch (err) {
+        console.log(
+          "Error with axios.get('http://localhost:3000/api/modifyCanvas')",
+          err,
+        )
+      }
+    }
+    fetchData()
+  }, [])
 
   const generateCanvasUri = async () => {
     setSelectedTile(-1)
