@@ -4,33 +4,31 @@ import Button from '../Button'
 import LoadingModal from '../LoadingModal/Index'
 import { AnimatePresence } from 'framer-motion'
 import GenerateTile from './generateTile'
+import { forwardRef } from 'react'
 
 // import { Identity } from '@semaphore-protocol/identity'
 
-export default function ArtBoardComponent({
+const ArtBoardComponent = forwardRef(({
   isLoading,
   onClose,
   loadingMessage,
   submit,
   colors,
   //   setColor,
-  ref,
   handleGenerateProof,
   setSelectedTile,
   selectedTile,
-  //   onImageClick,
   tiles,
   stageRef,
-}) {
+}, ref) => {
   const [color, setColor] = React.useState('text-black')
-  function onImageClick(e) {
-    setSelectedTile(parseInt(e.target.id))
-  }
+
   const tileCounter = [
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
   ]
+
 
   return (
     <div className="px-6 py-8 font-sans">
@@ -135,7 +133,6 @@ export default function ArtBoardComponent({
                         key={id}
                         selectedTile={selectedTile}
                         i={id}
-                        onImageClick={onImageClick}
                         tiles={tiles}
                         color={color}
                         stageRef={stageRef}
@@ -159,4 +156,6 @@ export default function ArtBoardComponent({
       </div>
     </div>
   )
-}
+});
+
+export default ArtBoardComponent;

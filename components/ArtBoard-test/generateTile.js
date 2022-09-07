@@ -15,7 +15,6 @@ export default function GenerateTile({
         <DrawingHtml stageRef={stageRef} color={color} />
       ) : (
         <img
-          alt="art"
           id={`${i}`}
           onClick={onImageClick}
           src={
