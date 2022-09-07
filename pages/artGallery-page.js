@@ -16,8 +16,8 @@ export default function ArtGalleryPage(props) {
 export async function getServerSideProps(context) {
   const subgraphs = new Subgraphs()
   const images = await subgraphs.getMintedTokens()
-  
+
   return {
-    props: {images},
+    props: { images },
   }
 }

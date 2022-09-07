@@ -39,7 +39,7 @@ export default function artBoard() {
   ]
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [selectedTile, setSelectedTile] = useState()
+  const [selectedTile, setSelectedTile] = useState(3)
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [tiles, setTiles] = useState([''])
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -84,12 +84,17 @@ export default function artBoard() {
           //     remainingIndices.push(i)
           //   }
           // })
-          for (let i = 0; i < tiles.length; i++) {
-            if (tiles[i].img === '') {
+          for (let i = 0; i < tilesTemp.length; i++) {
+            console.log('tiles lenght', tilesTemp.length)
+            if (tilesTemp[i] == '') {
+              console.log('tile is empty')
+              console.log(i)
               remainingIndices.push(i)
             }
+            console.log('tile is not empty', i)
           }
-
+          console.log('Remaning Indexes')
+          console.log(remainingIndices)
           selectedTileTemp =
             remainingIndices[
               Math.floor(Math.random() * (remainingIndices.length - 1))
