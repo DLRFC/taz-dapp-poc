@@ -166,7 +166,7 @@ export default function artBoard() {
     const uri = stageRef.current.toDataURL()
     tilesRef.current[selectedTile] = uri.toString()
 
-    const tilesRemaining = tilesRef.current.filter((v) => v === '')
+    let tilesRemaining = tilesRef.current.filter((v) => v === '')
 
     let canvasUri
     if (tilesRemaining.length === 0) {
@@ -186,8 +186,10 @@ export default function artBoard() {
       updatedTiles: tilesRef.current,
       canvasId: canvasId.current,
     })
-    console.log('RESPONSE FROM /api/mintFullCanvas:')
+    console.log('RESPONSE FROM /api/modifyCanvas:')
     console.log(response)
+
+    tilesRemaining = tilesRef.current.filter((v) => v === '')
 
     if (tilesRemaining.length === 0) {
       console.log('POSTING to /api/mintFullCanvas')
