@@ -81,7 +81,7 @@ export default async function handler(req, res) {
 
         // Image data
         const contentType = "image/png";
-        const b64Data = imageUri;
+        const b64Data = imageUri.slice(22); // Slice out 'data:image/png;base64,'
         const blobForServingImage = b64toBlob(b64Data, contentType); // Use for serving an image
 
         const web3StorageClient = new Web3Storage({
