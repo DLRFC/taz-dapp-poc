@@ -1,123 +1,122 @@
-import React, { useState, createRef, useEffect, useRef } from 'react'
-import { useScreenshot } from 'use-react-screenshot'
-import axios from 'axios'
-import { useGenerateProof } from '../../hooks/useGenerateProof'
-
-import { useRouter } from 'next/router'
-import ArtBoardComponent from './View'
+import React, { useState, createRef, useEffect, useRef } from "react";
+import { useScreenshot } from "use-react-screenshot";
+import axios from "axios";
+import { useGenerateProof } from "../../hooks/useGenerateProof";
+import Button from '../Button'
+import { useRouter } from "next/router";
+import ArtBoardComponent from "./View";
 
 export default function artBoard() {
-  const [generateFullProof] = useGenerateProof()
-  const [identityKey, setIdentityKey] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [loadingMessage, setLoadingMessage] = useState('Loading Message')
+  const [generateFullProof] = useGenerateProof();
+  const [identityKey, setIdentityKey] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState("Loading Message");
 
-  const router = useRouter()
+  const router = useRouter();
 
   const colors = [
-    'black',
-    'red-600',
-    'orange-500',
-    'yellow-300',
-    'green-600',
-    'blue-600',
-    'purple-600',
-  ]
+    "black",
+    "red-600",
+    "orange-500",
+    "yellow-300",
+    "green-600",
+    "blue-600",
+    "purple-600",
+  ];
 
-  const [selectedTile, setSelectedTile] = useState()
-  const [tiles, setTiles] = useState([''])
+  const [selectedTile, setSelectedTile] = useState();
+  const [tiles, setTiles] = useState([""]);
 
-  const stageRef = React.useRef(null)
-  const tilesRef = React.useRef()
-  const canvasId = React.useRef(null)
-  const runFetch = useRef(false)
+  const stageRef = useRef(null);
+  const tilesRef = useRef();
+  const canvasId = useRef(null);
+  const runFetch = useRef(false);
 
-  const ref = createRef(null)
-  const [image, takeScreenShot] = useScreenshot({})
+  const ref = useRef(null);
+  const [image, takeScreenShot] = useScreenshot({});
 
   useEffect(() => {
-    let tilesTemp, canvasIdTemp, selectedTileTemp
+    let tilesTemp, selectedTileTemp;
     const fetchData = async () => {
       if (runFetch.current === false) {
         try {
-          const result = await axios.get('/api/modifyCanvas')
-          console.log('result:')
-          console.log(result)
+          const result = await axios.get("/api/modifyCanvas");
+          console.log("result:");
+          console.log(result);
 
-          tilesTemp = result.data.canvas.tiles
-          canvasIdTemp = result.data.canvas.canvasId
+          tilesTemp = result.data.canvas.tiles;
+          canvasId.current = result.data.canvas.canvasId;
+          console.log("tilesTemp: ", tilesTemp);
+          console.log("canvasId.current: ", canvasId.current);
 
-          // select random tile
-          const remainingIndices = []
+          const remainingIndices = [];
 
-          // Why not change to a for loop?
-          // tiles.map((img, i) => {
-          //   if (img === '') {
-          //     remainingIndices.push(i)
-          //   }
-          // })
-          for (let i = 0; i < tiles.length; i++) {
-            if (tiles[i].img === '') {
-              remainingIndices.push(i)
+          for (let i = 0; i < tilesTemp.length; i++) {
+            if (tilesTemp[i] === "") {
+              remainingIndices.push(i);
             }
           }
 
           selectedTileTemp =
             remainingIndices[
               Math.floor(Math.random() * (remainingIndices.length - 1))
-            ] || 0
+            ] || 0;
 
-          setTiles(tilesTemp)
-          tilesRef.current = tilesTemp
-          canvasId.current = canvasIdTemp
-          setSelectedTile(selectedTileTemp)
+          console.log("selectedTileTemp: ", selectedTileTemp);
+          setTiles(tilesTemp);
+          tilesRef.current = tilesTemp;
+          setSelectedTile(selectedTileTemp);
         } catch (err) {
-          console.log("Error with axios.get('/api/modifyCanvas')", err)
+          console.log("Error with axios.get('/api/modifyCanvas')", err);
         }
       }
-    }
-    fetchData()
+    };
+    fetchData();
     return () => {
-      console.log('Use Effect Finished')
-      runFetch.current = true
-    }
-  }, [identityKey])
+      console.log("Use Effect Finished");
+      console.log("ref.current: ", ref.current);
+      console.log("stageRef.current: ", stageRef.current);
+      runFetch.current = true;
+    };
+  }, [identityKey]);
 
   const generateCanvasUri = async () => {
-    setSelectedTile(-1)
-    return await takeScreenShot(ref.current)
-  }
+    setSelectedTile(-1);
+    console.log("ref.current: ", ref.current);
+    return await takeScreenShot(ref.current);
+  };
 
   const submit = async () => {
-    const uri = stageRef.current.toDataURL()
-    tilesRef.current[selectedTile] = uri.toString()
+    console.log("stageRef.current: ", stageRef.current);
+    const uri = stageRef.current.toDataURL();
+    tilesRef.current[selectedTile] = uri.toString();
 
-    const tilesRemaining = tilesRef.current.filter((v) => v === '')
+    const tilesRemaining = tilesRef.current.filter((x) => x === "");
 
-    let canvasUri
+    let canvasUri;
     if (tilesRemaining.length === 0) {
-      canvasUri = await generateCanvasUri()
+      canvasUri = await generateCanvasUri();
     }
 
-    setIsLoading(true)
-    setLoadingMessage('Art being Submitted, please wait')
+    setIsLoading(true);
+    setLoadingMessage("Art being Submitted, please wait");
 
     // axios POSTs
-    console.log('POSTING to /api/modifyCanvas:')
-    console.log('tilesRef.current: ', tilesRef.current)
-    console.log('canvasId.current: ', canvasId.current)
-    const response = await axios.post('/api/modifyCanvas', {
+    console.log("POSTING to /api/modifyCanvas:");
+    console.log("tilesRef.current: ", tilesRef.current);
+    console.log("canvasId.current: ", canvasId.current);
+    const response = await axios.post("/api/modifyCanvas", {
       updatedTiles: tilesRef.current,
       canvasId: canvasId.current,
-    })
-    console.log('RESPONSE FROM /api/mintFullCanvas:')
-    console.log(response)
+    });
+    console.log("RESPONSE FROM /api/modifyCanvas:");
+    console.log(response);
 
     if (tilesRemaining.length === 0) {
-      console.log('POSTING to /api/mintFullCanvas')
-      console.log('canvasUri: ', canvasUri)
-      console.log('canvasId.current: ', canvasId.current)
-      const response = await axios.post('/api/mintFullCanvas', {
+      console.log("POSTING to /api/mintFullCanvas");
+      console.log("canvasUri: ", canvasUri);
+      console.log("canvasId.current: ", canvasId.current);
+            const response = await axios.post('/api/mintFullCanvas', {
         imageUri: canvasUri,
         canvasId: canvasId.current,
       })
@@ -125,9 +124,9 @@ export default function artBoard() {
       console.log(response)
     }
 
-    setIsLoading(false)
-    router.push('/artGallery-page')
-  }
+    setIsLoading(false);
+    router.push("/artBoard-test");
+  };
 
   const handleGenerateProof = async () => {
     const {
@@ -136,30 +135,31 @@ export default function artBoard() {
       nullifierHashTemp,
       externalNullifier,
       signal,
-    } = await generateFullProof(identityKey)
-    console.log('fullProof', fullProofTemp)
-    console.log('solidityProof', solidityProof)
-    console.log('nullifierHashTemp', nullifierHashTemp)
-    console.log('externalNullifier', externalNullifier)
-    console.log('signal', signal)
-  }
+    } = await generateFullProof(identityKey);
+    console.log("fullProof", fullProofTemp);
+    console.log("solidityProof", solidityProof);
+    console.log("nullifierHashTemp", nullifierHashTemp);
+    console.log("externalNullifier", externalNullifier);
+    console.log("signal", signal);
+  };
 
   const onClose = () => {
-    setIsLoading(!isLoading)
-  }
+    setIsLoading(!isLoading);
+  };
   return (
-    <ArtBoardComponent
-      isLoading={isLoading}
-      onClose={onClose}
-      loadingMessage={loadingMessage}
-      submit={submit}
-      colors={colors}
-      ref={ref}
-      handleGenerateProof={handleGenerateProof}
-      setSelectedTile={setSelectedTile}
-      selectedTile={selectedTile}
-      tiles={tiles}
-      stageRef={stageRef}
-    />
+    <>
+      <ArtBoardComponent
+        isLoading={isLoading}
+        onClose={onClose}
+        loadingMessage={loadingMessage}
+        submit={submit}
+        colors={colors}
+        ref={ref}
+        handleGenerateProof={handleGenerateProof}
+        selectedTile={selectedTile}
+        tiles={tiles}
+        stageRef={stageRef}
+      />
+    </>
   )
 }

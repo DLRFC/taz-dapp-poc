@@ -126,11 +126,11 @@ export default async function handler(req, res) {
           res.status(201).json("Canvas NFT minted");
         } catch (error) {
           console.log(error);
-          res.status(500).json("Error: ", error);
+          res.status(500).json("Error in catch 1: ", error);
         }
       }
     } catch (error) {
-      res.status(500).json("Error: ", error);
+      res.status(500).json("Error in catch 2: ", error);
     }
   }
 }
