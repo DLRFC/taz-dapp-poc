@@ -2,7 +2,7 @@ import React, { useState, createRef, useEffect, useRef } from "react";
 import { useScreenshot } from "use-react-screenshot";
 import axios from "axios";
 import { useGenerateProof } from "../../hooks/useGenerateProof";
-import Button from '../Button'
+import Button from "../Button";
 import { useRouter } from "next/router";
 import ArtBoardComponent from "./View";
 
@@ -11,6 +11,7 @@ export default function artBoard() {
   const [identityKey, setIdentityKey] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("Loading Message");
+  const [lines, setLines] = useState([]);
 
   const router = useRouter();
 
@@ -32,7 +33,8 @@ export default function artBoard() {
   const canvasId = useRef(null);
   const runFetch = useRef(false);
 
-  const ref = useRef(null);
+  const canvasRef = useRef(null);
+  const borderRef = useRef(null);
   const [image, takeScreenShot] = useScreenshot({});
 
   useEffect(() => {
@@ -74,19 +76,24 @@ export default function artBoard() {
     fetchData();
     return () => {
       console.log("Use Effect Finished");
-      console.log("ref.current: ", ref.current);
-      console.log("stageRef.current: ", stageRef.current);
       runFetch.current = true;
     };
   }, [identityKey]);
 
+  const handleUndo = () => {
+    lines.pop();
+    setLines(lines.concat());
+  };
+
   const generateCanvasUri = async () => {
-    setSelectedTile(-1);
-    console.log("ref.current: ", ref.current);
-    return await takeScreenShot(ref.current);
+    console.log("canvasRef.current: ", canvasRef.current);
+    return await takeScreenShot(canvasRef.current);
   };
 
   const submit = async () => {
+    //removeBorder
+    borderRef.current.className = "touch-none bg-white h-[250] w-[250]";
+
     console.log("stageRef.current: ", stageRef.current);
     const uri = stageRef.current.toDataURL();
     tilesRef.current[selectedTile] = uri.toString();
@@ -95,11 +102,12 @@ export default function artBoard() {
 
     let canvasUri;
     if (tilesRemaining.length === 0) {
+      setSelectedTile(-1);
       canvasUri = await generateCanvasUri();
     }
 
     setIsLoading(true);
-    setLoadingMessage("Art being Submitted, please wait");
+    setLoadingMessage("Your drawing is being submitted, please wait");
 
     // axios POSTs
     console.log("POSTING to /api/modifyCanvas:");
@@ -113,19 +121,22 @@ export default function artBoard() {
     console.log(response);
 
     if (tilesRemaining.length === 0) {
+      setLoadingMessage(
+        "The canvas is now full and being submitted, please wait"
+      );
       console.log("POSTING to /api/mintFullCanvas");
       console.log("canvasUri: ", canvasUri);
       console.log("canvasId.current: ", canvasId.current);
-            const response = await axios.post('/api/mintFullCanvas', {
+      const response = await axios.post("/api/mintFullCanvas", {
         imageUri: canvasUri,
         canvasId: canvasId.current,
-      })
-      console.log('RESPONSE FROM /api/mintFullCanvas:')
-      console.log(response)
+      });
+      console.log("RESPONSE FROM /api/mintFullCanvas:");
+      console.log(response);
     }
 
     setIsLoading(false);
-    router.push("/artBoard-test");
+    router.push("/artGallery-page");
   };
 
   const handleGenerateProof = async () => {
@@ -154,12 +165,16 @@ export default function artBoard() {
         loadingMessage={loadingMessage}
         submit={submit}
         colors={colors}
-        ref={ref}
+        canvasRef={canvasRef}
+        borderRef={borderRef}
         handleGenerateProof={handleGenerateProof}
         selectedTile={selectedTile}
         tiles={tiles}
+        lines={lines}
+        setLines={setLines}
         stageRef={stageRef}
+        handleUndo={handleUndo}
       />
     </>
-  )
+  );
 }
