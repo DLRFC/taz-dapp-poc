@@ -35,9 +35,13 @@ export default function ArtGalleryComponent({
       </div>
 
       <div className="flex flex-row flex-wrap justify-center py-10 rounded-xl">
-        { images.map( image => (
-          <ImageCard key={image.id} url={image.uri} onClick={() => handleClick(image.uri)} />
-        )) }
+        {images.map((image) => (
+          <ImageCard
+            key={image.id}
+            url={image.uri}
+            onClick={() => handleClick(image.uri)}
+          />
+        ))}
       </div>
       <div className="flex items-center justify-center mb-20">
         <Link href="/artBoard-page">
@@ -54,7 +58,7 @@ const ImageCard = ({ url, onClick }) => {
   return (
     <button
       onClick={onClick}
-      className="mr-[10px] mb-[10px] relative border-none hover:bg-red-700 cursor-pointer h-[150px] w-[120px] sm:h-[250px] sm:w-[200px] "
+      className="mr-[10px] mb-[10px] relative border-none hover:bg-red-700 cursor-pointer h-[120px] w-[120px] sm:h-[250px] sm:w-[250px] "
       style={{
         backgroundImage: `url(${url})`,
         backgroundSize: 'cover',
