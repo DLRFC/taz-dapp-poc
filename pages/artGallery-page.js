@@ -1,6 +1,6 @@
 // import dynamic from 'next/dynamic'
 import ArtGallery from '../components/artGallery.js/index.js'
-import { Subgraphs } from '../hooks/subgraphs.ts'
+import { Subgraphs } from '../hooks/subgraphs'
 // const ArtBoard = dynamic(() => import('../components/artBoard'), {
 //   ssr: false,
 // })

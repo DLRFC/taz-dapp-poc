@@ -11,13 +11,12 @@ const {
 const tazMessageAbi =
   require('../artifacts/contracts/TazMessage.sol/TazMessage.json').abi
 const DEPLOY_NEW_TAZ_MESSAGE_CONTRACT = false
+const CREATE_NEW_GROUP_WHEN_DEPLOYING = false
 
-/* Initial steps required when deploying the contract:
-- Deploy a new TazMessage contract
-- Add a group to the local-forked-Goerli Semaphore contract with the new TazMessage contract address as the group admin
-- Add a member to that group on the Semaphore contract (the local signer) so that membership can be verified
-- Call addMember on TazMessage, which should be allowed to add members to that group on the Semaphore contract (but only members who haven't already been added)
-*/
+/* Initial steps required when deploying the contract locally:
+   - Deploy a new TazMessage contract
+   - Add a group to the local-forked-Goerli Semaphore contract with the new TazMessage contract address as the group admin
+   - Add a member to that group on the Semaphore contract so that membership can be verified */
 
 describe('TazMessage', function () {
   let contract
@@ -42,23 +41,25 @@ describe('TazMessage', function () {
         logs: true,
       })
 
-      // Add a new group on the Semaphore contract with the new TazMessage contract as group admin
-      const semaphoreContract = new ethers.Contract(
-        SEMAPHORE_CONTRACT,
-        semaphoreAbi,
-        signer1,
-      )
-      const txCreateGroup = await semaphoreContract.createGroup(
-        GROUP_ID,
-        16,
-        0,
-        contract.address,
-      )
-      await txCreateGroup.wait()
-      console.log('TEST LOG | Group ' + GROUP_ID + ' created')
-      console.log(
-        '--------------------------------------------------------------------',
-      )
+      if(CREATE_NEW_GROUP_WHEN_DEPLOYING) {
+        // Add a new group on the Semaphore contract with the new TazMessage contract as group admin
+        const semaphoreContract = new ethers.Contract(
+            SEMAPHORE_CONTRACT,
+            semaphoreAbi,
+            signer1,
+        )
+        const txCreateGroup = await semaphoreContract.createGroup(
+            GROUP_ID,
+            16,
+            0,
+            contract.address,
+        )
+        await txCreateGroup.wait()
+        console.log('TEST LOG | Group ' + GROUP_ID + ' created')
+        console.log(
+            '--------------------------------------------------------------------',
+        )
+      }
     } else {
       // Use already-deployed TazMessage contract
       console.log('TEST LOG | Using existing TazMessage contract')
@@ -70,7 +71,7 @@ describe('TazMessage', function () {
     }
   })
 
-  // // If a new TazMessage contract is deployed, it may be useful to update the group admin
+  // // If a new TazMessage contract is deployed, it may be necessary to update the group admin
   // // on the Semaphore contract to be the address of the new TazMessage contract.
   // describe("# updateSemaphoreGroupAdmin", () => {
   //   it("Should update the Semaphore group admin", async () => {
@@ -107,7 +108,7 @@ describe('TazMessage', function () {
         .connect(signer1)
         .addMember(GROUP_ID, identityCommitment)
       await expect(tx).to.be.revertedWith(
-        'Member has already been added to this group',
+        'Member already added to group',
       )
     })
   })
@@ -124,6 +125,14 @@ describe('TazMessage', function () {
         signal,
         logs: false,
       })
+
+      console.log("messageId:", messageId)
+      console.log("messageContent:", messageContent)
+      console.log("proofElements.groupId:", proofElements.groupId)
+      console.log("proofElements.signalBytes32:", proofElements.signalBytes32)
+      console.log("proofElements.nullifierHash:", proofElements.nullifierHash)
+      console.log("proofElements.externalNullifier:", proofElements.externalNullifier)
+      console.log("proofElements.solidityProof:", proofElements.solidityProof)
 
       const tx = contract
         .connect(signer1)
@@ -231,7 +240,7 @@ describe('TazMessage', function () {
         )
 
       await expect(tx).to.be.revertedWith(
-        'Invalid ID provided for parent message',
+        'Invalid ID for parent message',
       )
     })
   })

@@ -13,21 +13,21 @@ module.exports = {
   networks: {
     hardhat: {
       accounts: [
-        { privateKey: process.env.PRIVATE_KEY, balance: "10000000000000000000000" }, 
-        { privateKey: process.env.PRIVATE_KEY_2, balance: "10000000000000000000000" }
+        { privateKey: process.env.PRIVATE_KEY, balance: "10000000000000000000000" },
+        { privateKey: process.env.PRIVATE_KEY_1, balance: "10000000000000000000000" }
       ],
       forking: {
-        url: process.env.GOERLI_URL,         
+        url: process.env.GOERLI_URL,
         /* blockNumber: 7530010 */
       },
     },
     goerli: {
       url: process.env.GOERLI_URL,
-      accounts: [process.env.PRIVATE_KEY],
+      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY_1],
     },
     rinkeby: {
       url: process.env.RINKEBY_URL,
-      accounts: [process.env.PRIVATE_KEY],
+      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY_1],
     },
   },
   etherscan: {

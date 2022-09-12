@@ -7,7 +7,9 @@ import { useRouter } from 'next/router'
 import { ethers } from 'ethers'
 import LoadingModal from '../LoadingModal/Index.js'
 import { AnimatePresence } from 'framer-motion'
+import { Subgraphs } from '../../hooks/subgraphs'
 import {
+  GROUP_ID,
   API_REQUEST_TIMEOUT,
   TAZMESSAGE_SUBGRAPH,
 } from '../../config/goerli.json'
@@ -16,7 +18,8 @@ import {
 const { generateProof } = require('@semaphore-protocol/proof')
 const { verifyProof } = require('@semaphore-protocol/proof')
 const { packToSolidityProof } = require('@semaphore-protocol/proof')
-const { Subgraph } = require('@semaphore-protocol/subgraph')
+// const { Subgraph } = require('@semaphore-protocol/subgraph')
+
 
 // 3. Ask Answer Page
 const AnswerQuestion = (props) => {
@@ -47,7 +50,7 @@ const AnswerQuestion = (props) => {
           messageContent
           messageId
           parentMessageId
-        }       
+        }
       }
       `,
     }
@@ -93,15 +96,16 @@ const AnswerQuestion = (props) => {
       console.log('Identity Key')
       console.log(localIdentity)
 
-      // Generate Group
-      const groupId = '10803'
+      // Generate group
+      //    Since the Semaphore Subgraph class returns at max 100 members, use
+      //    this app-specific subgraph class
       const group = new Group(16)
-      const subgraph = new Subgraph('goerli')
-
-      const { members } = await subgraph.getGroup(groupId, { members: true })
-      console.log('Members')
-
+      const groupId = GROUP_ID.toString()
+      const subgraphs = new Subgraphs()
+      const members = await subgraphs.getGroupIdentities(groupId)
+      console.log('Members:', members)
       group.addMembers(members)
+      console.log('Group Root:', group.root)
 
       // Generate Proof
       const externalNullifier = Math.round(Math.random() * 10000000)
