@@ -25,10 +25,10 @@ export default async function handler(req, res) {
       const client = new faunadb.Client({ secret })
       const query = faunadb.query
       // get fileUrl and canvasId from frontend
-      const { imageUri, canvasId } = req.body
+      const { imageUri, canvasId, groupId, signal, nullifierHash, externalNullifier, solidityProof } = req.body
 
-      if (!imageUri || !canvasId) {
-        res.status(400).json('Needs to have fileUrl and canvas Id')
+      if (!imageUri || !canvasId || !groupId || !signal || !nullifierHash || !externalNullifier || !solidityProof) {
+        res.status(400).json('Needs to have imageUri, canvasId, groupId, signal, nullifierHash, externalNullifier, solidityProof')
       }
 
       // Check DB if canvas with canvasId is full
@@ -106,7 +106,8 @@ export default async function handler(req, res) {
         // Send transaction to TazToken contract
 
         try {
-          const tx = await nftContract.safeMint(signerAddress, ipfsUrl, {
+          const signalBytes32 = ethers.utils.formatBytes32String(signal);
+          const tx = await nftContract.safeMint(signerAddress, ipfsUrl, groupId, signalBytes32, nullifierHash, externalNullifier, solidityProof, {
             gasLimit: 15000000,
           })
           console.log(tx)
