@@ -3,5 +3,6 @@
       "source.fixAll.eslint": true
     },
     "eslint.validate": ["javascript", "typescript", "javascriptreact", "html", "typescriptreact", "solidity"],
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "solidity.compileUsingRemoteVersion": "v0.8.13+commit.abaa5c0e"
 }
