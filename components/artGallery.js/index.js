@@ -15,6 +15,7 @@ export default function ArtGallery(props) {
       // open modal
       setOpen(true)
     }
+    console.log('image', props.images)
   }, [activeImage])
 
   const handleClose = () => {

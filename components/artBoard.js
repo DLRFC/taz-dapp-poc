@@ -7,6 +7,7 @@ import { useGenerateProof } from '../hooks/useGenerateProof'
 import LoadingModal from './LoadingModal/Index'
 import { AnimatePresence } from 'framer-motion'
 import { useRouter } from 'next/router'
+const { verifyProof } = require('@semaphore-protocol/proof')
 // import { Identity } from '@semaphore-protocol/identity'
 
 export default function artBoard() {
@@ -39,7 +40,7 @@ export default function artBoard() {
   ]
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [selectedTile, setSelectedTile] = useState()
+  const [selectedTile, setSelectedTile] = useState(3)
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [tiles, setTiles] = useState([''])
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -65,6 +66,9 @@ export default function artBoard() {
 
   useEffect(() => {
     let tilesTemp, canvasIdTemp, selectedTileTemp
+    const identityKeyTemp = window.localStorage.getItem('identity')
+    console.log('localStorage Identity', identityKeyTemp)
+    setIdentityKey(identityKeyTemp)
     const fetchData = async () => {
       if (runFetch.current === false) {
         try {
@@ -84,12 +88,17 @@ export default function artBoard() {
           //     remainingIndices.push(i)
           //   }
           // })
-          for (let i = 0; i < tiles.length; i++) {
-            if (tiles[i].img === '') {
+          for (let i = 0; i < tilesTemp.length; i++) {
+            console.log('tiles lenght', tilesTemp.length)
+            if (tilesTemp[i] === '') {
+              console.log('tile is empty')
+              console.log(i)
               remainingIndices.push(i)
             }
+            console.log('tile is not empty', i)
           }
-
+          console.log('Remaning Indexes')
+          console.log(remainingIndices)
           selectedTileTemp =
             remainingIndices[
               Math.floor(Math.random() * (remainingIndices.length - 1))
@@ -114,7 +123,7 @@ export default function artBoard() {
       console.log('Use Effect Finished')
       runFetch.current = true
     }
-  }, [identityKey])
+  }, [])
 
   const generateCanvasUri = async () => {
     setSelectedTile(-1)
@@ -163,6 +172,30 @@ export default function artBoard() {
   }
 
   const submit = async () => {
+    console.log('identityKey', identityKey)
+    const {
+      fullProofTemp,
+      solidityProof,
+      nullifierHashTemp,
+      externalNullifier,
+      signal,
+    } = await generateFullProof(identityKey)
+    console.log('fullProof', fullProofTemp)
+    console.log('solidityProof', solidityProof)
+    console.log('nullifierHashTemp', nullifierHashTemp)
+    console.log('externalNullifier', externalNullifier)
+    console.log('signal', signal)
+
+    const verificationKey = await fetch(
+      'https://www.trusted-setup-pse.org/semaphore/16/semaphore.json',
+    ).then(function (res) {
+      return res.json()
+    })
+
+    const res = await verifyProof(verificationKey, fullProofTemp)
+    console.log('Verification')
+    console.log(res)
+
     const uri = stageRef.current.toDataURL()
     tilesRef.current[selectedTile] = uri.toString()
 
@@ -195,10 +228,19 @@ export default function artBoard() {
       console.log('POSTING to /api/mintFullCanvas')
       console.log('canvasUri: ', canvasUri)
       console.log('canvasId.current: ', canvasId.current)
-      const response = await axios.post('/api/mintFullCanvas', {
+      // setLoadingMessage('Minting Full alla')
+
+      const body = {
         imageUri: canvasUri,
         canvasId: canvasId.current,
-      })
+        groupId: 10803,
+        signal,
+        nullifierHash: nullifierHashTemp,
+        externalNullifier,
+        solidityProof,
+      }
+
+      const response = await axios.post('/api/mintFullCanvas', body)
       console.log('RESPONSE FROM /api/mintFullCanvas:')
       console.log(response)
     }
@@ -266,20 +308,20 @@ export default function artBoard() {
     return html
   }
 
-  const handleGenerateProof = async () => {
-    const {
-      fullProofTemp,
-      solidityProof,
-      nullifierHashTemp,
-      externalNullifier,
-      signal,
-    } = await generateFullProof(identityKey)
-    console.log('fullProof', fullProofTemp)
-    console.log('solidityProof', solidityProof)
-    console.log('nullifierHashTemp', nullifierHashTemp)
-    console.log('externalNullifier', externalNullifier)
-    console.log('signal', signal)
-  }
+  // const handleGenerateProof = async () => {
+  //   const {
+  //     fullProofTemp,
+  //     solidityProof,
+  //     nullifierHashTemp,
+  //     externalNullifier,
+  //     signal,
+  //   } = await generateFullProof(identityKey)
+  //   console.log('fullProof', fullProofTemp)
+  //   console.log('solidityProof', solidityProof)
+  //   console.log('nullifierHashTemp', nullifierHashTemp)
+  //   console.log('externalNullifier', externalNullifier)
+  //   console.log('signal', signal)
+  // }
 
   const onClose = () => {
     setIsLoading(!isLoading)
@@ -403,9 +445,9 @@ export default function artBoard() {
           <div className="ml-2" onClick={handleUndo}>
             <Button text="Undo" />
           </div>
-          <div className="ml-2" onClick={handleGenerateProof}>
+          {/* <div className="ml-2" onClick={handleGenerateProof}>
             <Button text="Generate Proof" />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
