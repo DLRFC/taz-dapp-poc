@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import { Stage, Layer, Line } from 'react-konva'
 
-export default function DrawingHtml({ stageRef, color }) {
-  const [lines, setLines] = React.useState([])
+const DrawingHtml = forwardRef(({ color, stageRef, borderRef, lines, setLines }, ) => {
   const isDrawing = React.useRef(false)
   const [tool] = React.useState('pen')
   const COLORCONVERT = {
@@ -45,7 +44,7 @@ export default function DrawingHtml({ stageRef, color }) {
   }
 
   return (
-    <div className="border-black border touch-none bg-white h-[250] w-[250]">
+    <div ref={borderRef} className="border-black border touch-none bg-white h-[250] w-[250]">
       <Stage
         width={80}
         height={80}
@@ -77,4 +76,6 @@ export default function DrawingHtml({ stageRef, color }) {
       </Stage>
     </div>
   )
-}
+})
+
+export default DrawingHtml
