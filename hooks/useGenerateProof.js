@@ -1,7 +1,10 @@
 import { Identity } from '@semaphore-protocol/identity'
 import { Group } from '@semaphore-protocol/group'
 import { useEffect, useState } from 'react'
-import { Subgraph } from '@semaphore-protocol/subgraph'
+// import { Subgraph } from '@semaphore-protocol/subgraph'
+import { Subgraphs } from '../hooks/subgraphs'
+
+const { GROUP_ID } = require('../config/goerli.json')
 
 const {
   generateProof,
@@ -21,9 +24,11 @@ export const useGenerateProof = (identityKey) => {
   const generateFullProof = async (identityKey) => {
     const identity = new Identity(identityKey)
     const group = new Group(16)
-    const groupId = '10803'
-    const subgraph = new Subgraph('goerli')
-    const { members } = await subgraph.getGroup(groupId, { members: true })
+    const groupId = GROUP_ID.toString()
+    // const subgraph = new Subgraph('goerli')
+    // const { members } = await subgraph.getGroup(groupId, { members: true })
+    const subgraphs = new Subgraphs()
+    const members = await subgraphs.getGroupIdentities(groupId)
     console.log('IdentityCommitment', identity.generateCommitment().toString())
     console.log(members)
     group.addMembers(members)

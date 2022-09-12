@@ -37,23 +37,20 @@ export default async function handler(req, res) {
 
     const bytes32Signal = ethers.utils.formatBytes32String(signal)
 
-    console.log('-------------Solidity Proof')
-    console.log(solidityProof)
-    console.log('-------------External Nullifier')
-    console.log(externalNullifier)
-    console.log('-------------Signal')
-    console.log(signal)
-    console.log('-------------NullifierHash')
-    console.log(nullifierHash)
-    console.log('-------------Bytes32Signal')
-    console.log(bytes32Signal)
+    //   console.log("messageId", messageId)
+    //   console.log("messageContent", messageContent)
+    //   console.log("groupId", groupId)
+    //   console.log("bytes32Signal", bytes32Signal)
+    //   console.log("nullifierHash", nullifierHash)
+    //   console.log("externalNullifier", externalNullifier)
+    //   console.log("solidityProof", solidityProof)
 
     let tx = null
 
     // If a parentMessageId is not the default, reply. Otherwise, add new question.
 
     if (parentMessageId !== '') {
-      console.log('LOG | Transacting reply')
+      console.log('BACKEND LOG | Transacting reply')
 
       try {
         tx = await tazMessageContract.replyToMessage(
@@ -79,12 +76,7 @@ export default async function handler(req, res) {
         res.status(403).json(error)
       }
     } else {
-      console.log('LOG | Add Message')
-      // console.log('External Nullifier')
-      // console.log(externalNullifier)
-      // console.log('NullifierHash')
-
-      // console.log(nullifierHash)
+      console.log('BACKEND LOG | Add Message')
 
       try {
         tx = await tazMessageContract.addMessage(
@@ -103,7 +95,7 @@ export default async function handler(req, res) {
         console.log(response)
         res.status(201).json(response)
       } catch (error) {
-        console.log('Reply to Message transaction failed!')
+        console.log('Add Message transaction failed!')
         console.log(error)
         res.status(403).json(error)
       }

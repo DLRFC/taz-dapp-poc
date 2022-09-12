@@ -1,6 +1,6 @@
 {
     "TAZMESSAGE_CONTRACT": "0xe1A073dD58AAB0e111b3033A21d442C61a157BF1",
-    "TAZTOKEN_CONTRACT": "0x3579A71e0dac0d99793100eE8BAFbBF59194Ed7f",
+    "TAZTOKEN_CONTRACT": "0x0162120958727BcD76A7Ee1D8f3a2cdAE89Bf2B8",
     "TAZMESSAGE_SUBGRAPH": "https://api.thegraph.com/subgraphs/name/dlrfc/taz-message-goerli",
     "TAZTOKEN_SUBGRAPH": "https://api.thegraph.com/subgraphs/name/dlrfc/taz-token-goerli",
     "SEMAPHORE_CONTRACT": "0x99aAb52e60f40AAC0BFE53e003De847bBDbC9611",
