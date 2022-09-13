@@ -42,6 +42,6 @@ cache/
 artifacts/
 
 # developers
-.vscode
+#.vscode
 notes/
-.solhint.json
+#.solhint.json
