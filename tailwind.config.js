@@ -11,7 +11,12 @@ module.exports = {
                 'brand-sm': '.9rem',
                 'brand-4xl': ['2.75rem', '2.6rem'],
                 'brand-2xs': ['.75rem', '.75rem'],
-                'brand-button': '14px'
+                'brand-h1': '32px',
+                'brand-h2': '20px',
+                'brand-h3': '16px',
+                'brand-button': '14px',
+                'brand-body': '14px',
+                'brand-info': '12px'
             },
             colors: {
                 brand: {

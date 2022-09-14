@@ -56,29 +56,31 @@ const InvitationCheckComponent = ({
                     <div className="h-[586px] py-3 w-full px-4 z-10">
                         <div className="divide-y">
                             <div>
-                                <p className="py-5 font-bold mb-3 px-3 text-xl text-brand-beige">
+                                <p className="py-5 font-bold mb-1 px-3 text-brand-h2 text-brand-beige">
                                     Where you invited to join a group?
                                 </p>
-                                <p className="py-5 mb-3 px-3 text-xl text-brand-beige opacity-70">
+                                <p className="py-2 mb-3 px-3 text-brand-h3 text-brand-beige opacity-70">
                                     This is an anonymous, members-only experience
                                 </p>
                                 <button
-                                    className="bg-brand-yellow w-full p-2 border-2 border-brand-gray2 shadow-[-3px_3px_0px_0px_rgba(30,30,30)] mb-8"
+                                    className="text-brand-button bg-brand-yellow w-full py-4 border-2 border-brand-gray2 shadow-[-5px_5px_0px_0px_rgba(30,30,30)] text-brand-button"
                                     onClick={handleSignUpButton}
                                 >
                                     Yes, I was invited
                                 </button>
-                                <p className="py-5 mb-3 px-3 text-md text-brand-beige opacity-70">
+                                <p className="py-5 px-3 text-brand-info text-brand-beige opacity-70">
                                     If not, visit a TAZ location to grab an invitation card.
                                 </p>
                             </div>
                             <div>
-                                <p className="py-5 font-bold mb-3 px-3 text-xl text-brand-beige">Already a member?</p>
+                                <p className="py-5 font-bold mb-3 px-3 text-brand-info text-brand-beige outline-2 border-brand-black">
+                                    Already a member?
+                                </p>
                                 <button
-                                    className="bg-brand-yellow w-full p-2 border-2 border-brand-gray2 shadow-[-3px_3px_0px_0px_rgba(30,30,30)] mb-8"
+                                    className="text-brand-button bg-brand-beige bg-opacity-10 w-full py-4 border-2 border-brand-beige text-brand-beige mb-8"
                                     onClick={handleUploadQrCode}
                                 >
-                                    {checkingIdentity ? 'Checking Identity please wait' : 'I`ve been here before'}
+                                    {checkingIdentity ? 'Checking Identity please wait' : 'Upload Semaphore ID'}
                                 </button>
                                 <QrReader
                                     className="border-0"
@@ -95,7 +97,7 @@ const InvitationCheckComponent = ({
             ) : (
                 <div className="flex flex-col items-center overflow-hidden rounded-md px-3 text-brand-gray2">
                     <div className="h-[600px] py-3 w-full px-4 z-10">
-                        <p className="py-5 font-bold mb-3 px-3 text-xl text-brand-beige">
+                        <p className="py-5 font-bold mb-3 px-3 text-brand-button text-brand-beige">
                             Scan the QR code on the invitation card
                         </p>
 
