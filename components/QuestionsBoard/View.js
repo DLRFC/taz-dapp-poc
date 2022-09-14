@@ -4,7 +4,7 @@ import Link from 'next/link'
 const QuestionsBoardComponent = ({ questions, clearIdentity }) => {
   return (
     <div className="px-6 py-8">
-      <div className="index-[10] relative divide-y overflow-y-auto rounded-md border-2 border-gray-500 bg-white drop-shadow-lg">
+      <div className="z-0  min-w-[200px] relative divide-y overflow-y-auto rounded-md border-2 border-gray-500 bg-white drop-shadow-lg">
         {questions.map((question) => (
           <Link href={'/answers-board-page/' + question.messageId} key={question.id}>
             <div className="flex w-full flex-row items-center border-brand-gray p-4 cursor-pointer">
