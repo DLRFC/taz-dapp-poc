@@ -31,15 +31,19 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
                 </svg>
 
                 <div classname="flex w-full flex-row items-left">
-                    <h1 className="bg-brand-black mx-20 ml-30 mb-2 px-1 text-4xl text-brand-beige2">BEING ANONYMOUS</h1>
+                    <h1 className="bg-brand-black mx-20 mt-10 mb-12 px-1 text-xl text-brand-beige2">TAZ</h1>
+                </div>
+
+                <div classname="flex w-full flex-row items-left">
+                    <h1 className="bg-brand-black mx-20 mb-2 px-1 text-4xl text-brand-beige2">BEING ANONYMOUS</h1>
                     <h1 className="bg-brand-black mx-20 mb-2 px-1 text-4xl text-brand-beige2">LETS US BE</h1>
                     <h1 className="bg-brand-black mx-20 mb-16 px-1 text-4xl text-brand-beige2">OURSELVES</h1>
                 </div>
 
-                <div className="relative flex flex-col items-center overflow-hidden rounded-md border-2 border-gray-700 shadow-xl bg-white mb-8">
+                <div className="relative flex flex-col items-center overflow-hidden rounded-md border-2 border-brand-blue shadow-xl bg-white mb-8">
                     <div className="flex w-full justify-between border-b-2 border-brand-gray bg-brand-beige2 p-3">
                         <div>📂</div>
-                        <div>use your Semaphore ID here </div>
+                        <div className="text-brand-blue">Use your Semaphore ID here </div>
                         <div></div>
                     </div>
                     <Link href="questions-page">
@@ -62,10 +66,10 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
                     </Link>
                 </div>
 
-                <div className=" relative flex flex-col items-center overflow-hidden rounded-md border-2 border-gray-700 shadow-xl bg-white mb-16">
+                <div className=" relative flex flex-col items-center overflow-hidden rounded-md border-2 border-brand-blue shadow-xl bg-white mb-16">
                     <div className="flex w-full justify-between border-b-2 border-brand-gray bg-brand-beige2 p-3">
                         <div>🌍</div>
-                        <div>take your ID with you </div>
+                        <div className="text-brand-blue">Take your ID with you </div>
                         <div></div>
                     </div>
                     <Link href="">
@@ -79,7 +83,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
                     </Link>
                 </div>
 
-                <div className=" relative flex flex-col items-center overflow-hidden rounded-md border-2 border-gray-700 shadow-xl bg-white mb-16">
+                <div className=" relative flex flex-col items-center overflow-hidden rounded-md border-2 border-brand-blue shadow-xl bg-white mb-16">
                     <div className="flex w-full justify-between border-b-2 border-brand-gray bg-black text-brand-beige p-3">
                         <div>🧑‍🏫</div>
                         <div>FAQ</div>
@@ -114,6 +118,13 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
             </div>
 
             <div className="flex items-left flex-col p-12 bg-black text-brand-yellow">
+                <div className="py-10 px-5 flex items-end justify-between bg-black">
+                    <div className="transform -ml-6 text-xl tracking-wide text-brand-beige">
+                        <h1>TEMP_RARY</h1>
+                        <h1 className="bg-brand-beige px-1 text-brand-black">AN_NYMOUS</h1>
+                        <h1>Z_NE</h1>
+                    </div>
+                </div>
                 <a href="" className="pb-10 underline">
                     About this app
                 </a>
