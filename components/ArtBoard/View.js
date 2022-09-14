@@ -13,21 +13,21 @@ const ArtBoardComponent = forwardRef(
         isLoading,
         loadingMessage,
         submit,
-        colors,
-        //   setColor,
-        handleGenerateProof,
         setSelectedTile,
         selectedTile,
         tiles,
         lines,
         setLines,
         handleUndo,
+        handleFill,
+        handleColorSelect,
+        isFilling,
         stageRef,
         borderRef,
-        canvasRef
+        canvasRef,
+        color,
+        fillColor
     }) => {
-        const [color, setColor] = React.useState('text-black')
-
         const tileCounter = [
             [0, 1, 2],
             [3, 4, 5],
@@ -78,71 +78,81 @@ const ArtBoardComponent = forwardRef(
                         </p>
                     </div>
                     <div className="flex">
-                        <div>
+                        <div className="w-8 items-center">
                             <div>
                                 <button
-                                    id="text-black"
-                                    className="w-4 h-4 m-2 bg-black rounded-full"
+                                    id="black"
+                                    className="w-4 h-4 m-1 bg-black rounded-full"
                                     type="submit"
-                                    onClick={(e) => {
-                                        console.log(e.target)
-                                        setColor(e.target.id)
-                                    }}
+                                    onClick={(e) => handleColorSelect(e)}
                                 />
                             </div>
                             <div>
                                 <button
-                                    id="text-red-600"
-                                    className="w-4 h-4 m-2 bg-red-600 rounded-full"
+                                    id="red-600"
+                                    className="w-4 h-4 m-1 bg-red-600 rounded-full"
                                     type="submit"
-                                    onClick={(e) => {
-                                        console.log(e.target)
-                                        setColor(e.target.id)
-                                    }}
+                                    onClick={(e) => handleColorSelect(e)}
                                 />
                             </div>
                             <div>
                                 <button
-                                    id="text-orange-500"
-                                    className="w-4 h-4 m-2 bg-orange-500 rounded-full"
+                                    id="orange-500"
+                                    className="w-4 h-4 m-1 bg-orange-500 rounded-full"
                                     type="submit"
-                                    onClick={(e) => {
-                                        console.log(e.target)
-                                        setColor(e.target.id)
-                                    }}
+                                    onClick={(e) => handleColorSelect(e)}
                                 />
                             </div>
                             <div>
                                 <button
-                                    id="text-green-600"
-                                    className="w-4 h-4 m-2 bg-green-600 rounded-full"
+                                    id="yellow-300"
+                                    className="w-4 h-4 m-1 bg-yellow-300 rounded-full"
                                     type="submit"
-                                    onClick={(e) => {
-                                        console.log(e.target)
-                                        setColor(e.target.id)
-                                    }}
+                                    onClick={(e) => handleColorSelect(e)}
                                 />
                             </div>
                             <div>
                                 <button
-                                    id="text-blue-600"
-                                    className="w-4 h-4 m-2 bg-blue-600 rounded-full"
+                                    id="green-600"
+                                    className="w-4 h-4 m-1 bg-green-600 rounded-full"
                                     type="submit"
-                                    onClick={(e) => {
-                                        console.log(e.target)
-                                        setColor(e.target.id)
-                                    }}
+                                    onClick={(e) => handleColorSelect(e)}
                                 />
                             </div>
                             <div>
                                 <button
-                                    id="text-purple-600"
-                                    className="w-4 h-4 m-2 bg-purple-600 rounded-full"
+                                    id="blue-600"
+                                    className="w-4 h-4 m-1 bg-blue-600 rounded-full"
                                     type="submit"
-                                    onClick={(e) => {
-                                        console.log(e.target)
-                                        setColor(e.target.id)
-                                    }}
+                                    onClick={(e) => handleColorSelect(e)}
+                                />
+                            </div>
+                            <div>
+                                <button
+                                    id="purple-600"
+                                    className="w-4 h-4 m-1 bg-purple-600 rounded-full"
+                                    type="submit"
+                                    onClick={(e) => handleColorSelect(e)}
+                                />
+                            </div>
+                            <div>
+                                <button
+                                    id="white"
+                                    className="w-4 h-4 m-1 bg-white border border-black rounded-full"
+                                    type="submit"
+                                    onClick={(e) => handleColorSelect(e)}
+                                />
+                            </div>
+                            <div
+                                className={isFilling ? 'm-1 border border-black flex' : 'm-1 flex'}
+                                onClick={handleFill}
+                            >
+                                <Image
+                                    className="cursor-pointer"
+                                    src="/paint_bucket.png"
+                                    alt="fill"
+                                    width="20"
+                                    height="20"
                                 />
                             </div>
                             <div className="m-2" onClick={handleUndo}>
@@ -157,7 +167,7 @@ const ArtBoardComponent = forwardRef(
                         </div>
 
                         <div ref={canvasRef} id="ipfsURI">
-                            <table className="">
+                            <table className="mr-3">
                                 <tbody>
                                     {tileCounter.map((counter) => (
                                         <tr className="h-20" key={counter}>
@@ -168,6 +178,7 @@ const ArtBoardComponent = forwardRef(
                                                     i={id}
                                                     tiles={tiles}
                                                     color={color}
+                                                    fillColor={fillColor}
                                                     stageRef={stageRef}
                                                     borderRef={borderRef}
                                                     lines={lines}
