@@ -40,16 +40,7 @@ export default function InvitationCheck() {
                 console.log(`loaded >>>`, scanData)
                 setData(scanData)
                 setStartScan(false)
-
-                // const apiResponse = await axios.post('/api/validateInvitation', {
-                //   scanData,
-                // })
-                // console.log('Is code valid and not used yet? ', apiResponse.data.isValid)
-
-                // console.log(apiResponse.data.isValid)
-                // setResponse(apiResponse.data.isValid)
-
-                // setLoadingScan(false)
+                setInvitation(scanData)
             }
         } catch {
             console.log('error')
@@ -153,6 +144,7 @@ export default function InvitationCheck() {
             validate={validate}
             onClose={onClose}
             loadingMessage={loadingMessage}
+            invitation={invitation}
         />
     )
 }
