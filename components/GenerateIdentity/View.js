@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { AnimatePresence } from 'framer-motion'
 import LoadingModal from '../LoadingModal/Index.js'
+import Header from '../Header/index.js'
 
 // Page 3 will Generate Identity and Join Group
 export const GenerateIdentityComponent = ({ isLoading, onClose, loadingMessage, imageUrl, handleJoinButton }) => (
@@ -15,6 +16,7 @@ export const GenerateIdentityComponent = ({ isLoading, onClose, loadingMessage, 
                 <LoadingModal onClose={onClose} loadingMessage={loadingMessage} />
             </AnimatePresence>
         ) : null}
+        <Header />
 
         <svg
             className="absolute -left-2 top-[370px]"
