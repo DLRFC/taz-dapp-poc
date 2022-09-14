@@ -7,9 +7,9 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
     <div>
       <div className="px-6 py-8 font-sans text-brand-brown">
         <svg
-          className="absolute -left-2 top-[330px] -z-1"
+          className="absolute -left-2 top-[320px] -z-1"
           width="69"
-          height="100"
+          height="120"
           viewBox="0 0 69 100"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
