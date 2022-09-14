@@ -1,64 +1,30 @@
 {
-    "root": true,
-    "env": {
-        "browser": true,
-        "es6": true
-    },
-    "extends": ["airbnb", "prettier"], // Using airbnb rather than airbnb-base for its inclusion of React rules
-    "rules": {
-        "react/react-in-jsx-scope": "off", // suppress errors for missing 'import React' in files
-        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }], // allow jsx syntax in js files (for next.js project)
-        "react/function-component-definition": ["error", {
-            "namedComponents": ["arrow-function", "function-declaration"],
-            "unnamedComponents": ["arrow-function", "function-expression"]
-          }],
-          "react/jsx-no-bind": "allowFunctions",
-          "no-underscore-dangle": "off",
-          "no-alert": "off",
-          "no-nested-ternary": "off",
-          "import/no-extraneous-dependencies": "off",
-          "import/extensions": "off",
-          "import/no-relative-packages": "off",
-          "no-bitwise": "off",
-          "no-restricted-syntax": "off",
-          "no-console": ["warn", { "allow": ["info", "warn", "error"] }]
-    },
-    "overrides": [ // Overrides for Typescript
-        {
-            "files": ["**/*.ts", "**/*.tsx"],
-            "env": {
-                "browser": true,
-                "es6": true
-            },
-            "extends": ["airbnb-base", "airbnb-typescript/base", "prettier"],
-            "parser": "@typescript-eslint/parser",
-            "parserOptions": {
-                "ecmaVersion": 6,
-                "sourceType": "module",
-                "project": ["./tsconfig.json"]
-            },
-            "plugins": ["@typescript-eslint"],
-            "rules": {
-                "no-underscore-dangle": "off",
-                "no-alert": "off",
-                "no-nested-ternary": "off",
-                "import/no-extraneous-dependencies": "off",
-                "import/extensions": "off",
-                "import/no-relative-packages": "off",
-                "no-bitwise": "off",
-                "no-restricted-syntax": "off",
-                "no-console": ["warn", { "allow": ["info", "warn", "error"] }],
-                "@typescript-eslint/lines-between-class-members": "off",
-                "no-param-reassign": "off",
-                "@typescript-eslint/naming-convention": [
-                    "error",
-                    {
-                        "selector": "variable",
-                        "format": ["camelCase", "PascalCase", "UPPER_CASE", "snake_case"],
-                        "leadingUnderscore": "allow"
-                    }
-                ]
-            }
-        }
-    ]
+  "root": true,
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended", "prettier", "airbnb", "prettier"], // Using airbnb rather than airbnb-base for its inclusion of React rules
+  "rules": {
+    "react/jsx-props-no-spreading": "off",
+    "react/react-in-jsx-scope": "off", // Remove need to import React in files
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }], // allow jsx syntax in js files (for next.js project)
+    "react/function-component-definition": [
+      "error",
+      {
+        "namedComponents": ["arrow-function", "function-declaration"],
+        "unnamedComponents": ["arrow-function", "function-expression"]
+      }
+    ],
+    "react/jsx-no-bind": 1,
+    "no-underscore-dangle": "off",
+    "no-alert": "off",
+    "no-nested-ternary": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/extensions": "off",
+    "import/no-relative-packages": "off",
+    "no-bitwise": "off",
+    "no-restricted-syntax": "off",
+    "no-console": ["warn", { "allow": ["info", "warn", "error"] }]
+  }
 }

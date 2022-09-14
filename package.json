@@ -51,6 +51,7 @@
     "web3.storage": "^4.4.0"
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "^12.3.0",
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.0",
     "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
     "@nomicfoundation/hardhat-toolbox": "^1.0.2",
@@ -60,6 +61,7 @@
     "@typechain/ethers-v5": "^10.1.0",
     "@typechain/hardhat": "^6.1.2",
     "@types/chai": "^4.2.0",
+    "@typescript-eslint/eslint-plugin": "^5.37.0",
     "assert": "^2.0.0",
     "autoprefixer": "^10.4.8",
     "chai": "^4.2.0",
