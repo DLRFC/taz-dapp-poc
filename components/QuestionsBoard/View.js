@@ -1,4 +1,5 @@
-import Button from '../Button'
+// import Button from '../Button'
+import SelectorArrow from '../ArrowNavigators/SelectorArrow'
 import Link from 'next/link'
 
 const QuestionsBoardComponent = ({ questions, clearIdentity }) => {
@@ -9,20 +10,7 @@ const QuestionsBoardComponent = ({ questions, clearIdentity }) => {
           <Link href={'/answers-board-page/' + question.messageId} key={question.id}>
             <div className="flex w-full flex-row items-center border-brand-gray p-4 cursor-pointer">
               <p className="text-brand-brown text-sm leading-5 w-[100%]">{question.messageContent}</p>
-              <svg
-                className="w-7 ml-10"
-                width="7"
-                height="11"
-                viewBox="0 0 7 11"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4.53446 5.50005L0.853516 1.78755L1.905 0.727051L6.63744 5.50005L1.905 10.2731L0.853516 9.21255L4.53446 5.50005Z"
-                  fill="black"
-                  fillOpacity="0.4"
-                />
-              </svg>
+              <SelectorArrow />
             </div>
           </Link>
         ))}
