@@ -11,22 +11,13 @@ const AskQuestionComponent = ({
   isLoading,
   setMessageContent,
   handleAskButton,
-  clearIdentity,
+  clearIdentity
 }) => {
   return (
     <div className="p-4 font-sans bg-brand-beige">
       {isLoading ? (
-        <AnimatePresence
-          initial={false}
-          exitBeforeEnter
-          onExitComplete={() => null}
-          className="z-20"
-        >
-          <LoadingModal
-            onClose={onClose}
-            loadingMessage={loadingMessage}
-            loadingProof={loadingProof}
-          />
+        <AnimatePresence initial={false} exitBeforeEnter onExitComplete={() => null} className="z-20">
+          <LoadingModal onClose={onClose} loadingMessage={loadingMessage} loadingProof={loadingProof} />
         </AnimatePresence>
       ) : null}
       <svg
@@ -52,7 +43,7 @@ const AskQuestionComponent = ({
 
       <div className="flex flex-col items-center overflow-hidden rounded-md border-2 border-brand-gray shadow-xl">
         <div className="flex w-full justify-between border-b-2 border-brand-gray bg-brand-beige2 p-3">
-          <Link href="/questions-page">
+          <Link href="/questions">
             <div className="cursor-pointer">Back</div>
           </Link>
           <div>Q&A</div>
@@ -62,8 +53,7 @@ const AskQuestionComponent = ({
         <div className="h-[586px] bg-white py-3 w-full px-4 z-10">
           <p className="py-5 font-bold">Got a question?</p>
           <p className="py-2 w-[80%] mb-3 text-xs">
-            Ask it anonymously below. Look for your question projected in the
-            TAZ
+            Ask it anonymously below. Look for your question projected in the TAZ
           </p>
           <input
             className="border-2 border-brand-gray w-full my-3 py-2 rounded-lg"

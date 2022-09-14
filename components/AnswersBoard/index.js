@@ -36,7 +36,7 @@ const AnswerBoard = (props) => {
           parentMessageId
         }
       }
-      `,
+      `
     }
     // Fetch data
     try {
@@ -84,13 +84,7 @@ const AnswerBoard = (props) => {
       </svg>
 
       <div className="mb-[34px] flex ml-2">
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g clipPath="url(#clip0_114_381)">
             <path
               d="M7.828 10.9999H20V12.9999H7.828L13.192 18.3639L11.778 19.7779L4 11.9999L11.778 4.22192L13.192 5.63592L7.828 10.9999Z"
@@ -104,15 +98,13 @@ const AnswerBoard = (props) => {
           </defs>
         </svg>
         <Link href="/">
-          <span className="ml-2 text-brand-orange text-sm font-bold cursor-pointer">
-            Back to apps
-          </span>
+          <span className="ml-2 text-brand-orange text-sm font-bold cursor-pointer">Back to apps</span>
         </Link>
       </div>
 
       <div className="index-[10] relative divide-y overflow-y-auto rounded-md border-2 border-gray-500 bg-white drop-shadow-lg">
         <div className="flex items-center justify-between py-4 px-8 bg-brand-beige">
-          <Link href="/questions-page">
+          <Link href="/questions">
             <svg
               className="cursor-pointer scale-[100%]"
               width="30"
