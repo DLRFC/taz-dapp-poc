@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react'
 import DrawingHtml from './drawingHtml'
 
 const GenerateTile = forwardRef(
-    ({ selectedTile, i, onImageClick, tiles, color, lines, setLines, stageRef, borderRef }) => (
+    ({ selectedTile, i, onImageClick, tiles, color, lines, setLines, stageRef, borderRef, fillColor }) => (
         <td className="bg-white w-20 border border-slate-200">
             {selectedTile === i ? (
                 <DrawingHtml
@@ -11,6 +11,7 @@ const GenerateTile = forwardRef(
                     color={color}
                     lines={lines}
                     setLines={setLines}
+                    fillColor={fillColor}
                 />
             ) : (
                 <img

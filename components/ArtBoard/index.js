@@ -10,12 +10,13 @@ export default function artBoard() {
     const [generateFullProof] = useGenerateProof()
     const [identityKey, setIdentityKey] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+    const [isFilling, setIsFilling] = useState(false)
     const [loadingMessage, setLoadingMessage] = useState('Loading Message')
     const [lines, setLines] = useState([])
+    const [color, setColor] = React.useState('black')
+    const [fillColor, setFillColor] = React.useState()
 
     const router = useRouter()
-
-    const colors = ['black', 'red-600', 'orange-500', 'yellow-300', 'green-600', 'blue-600', 'purple-600']
 
     const [selectedTile, setSelectedTile] = useState()
     const [tiles, setTiles] = useState([''])
@@ -73,6 +74,25 @@ export default function artBoard() {
     const handleUndo = () => {
         lines.pop()
         setLines(lines.concat())
+    }
+    const handleFill = () => {
+        setIsFilling(!isFilling)
+
+        // set isFilling to true, which should:
+        // highlight fill button
+        // on color palette clock with isFilling = true, change background change color palette click to change fill not pen colour & set isFilling=false
+
+        // adjust stage background color
+    }
+
+    const handleColorSelect = (e) => {
+        console.log('handleColorSelect: ', e.target)
+        if (isFilling) {
+            setFillColor(e.target.id)
+            setIsFilling(!isFilling)
+        } else {
+            setColor(e.target.id)
+        }
     }
 
     const generateCanvasUri = async () => {
@@ -141,16 +161,21 @@ export default function artBoard() {
             isLoading={isLoading}
             loadingMessage={loadingMessage}
             submit={submit}
-            colors={colors}
             canvasRef={canvasRef}
             borderRef={borderRef}
-            handleGenerateProof={handleGenerateProof}
             selectedTile={selectedTile}
             tiles={tiles}
             lines={lines}
             setLines={setLines}
             stageRef={stageRef}
             handleUndo={handleUndo}
+            handleFill={handleFill}
+            handleColorSelect={handleColorSelect}
+            isFilling={isFilling}
+            color={color}
+            fillColor={fillColor}
+            setColor={setColor}
+            setFillColor={setFillColor}
         />
     )
 }
