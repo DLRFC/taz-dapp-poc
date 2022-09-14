@@ -11,7 +11,7 @@ export const GenerateIdentity = (props) => {
     const { invitation } = props
 
     const onSetIdentity = useIdentityLoginContext()
-    const [imageUrl, setImageUrl] = useState('10')
+    const [imageUrl, setImageUrl] = useState('')
     // const [isGeneratingIdentity, setIsGeneratingIdentity] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [loadingMessage, setLoadingMessage] = useState('This is a Loading Message')

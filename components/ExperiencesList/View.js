@@ -31,6 +31,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
         </svg>
 
         <div classname="flex w-full flex-row items-left">
+
           <h1 className="bg-brand-black mx-20 mt-10 mb-12 px-1 text-xl text-brand-beige2">TAZ</h1>
         </div>
 
@@ -60,6 +61,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
               <div className="w-[90%]">
                 <p className="py-2 font-bold">Gallery</p>
                 <p className="opacity-[70%]">Create on collaborative canvases</p>
+
               </div>
               <p className="-mr-3">X</p>
             </div>
@@ -99,6 +101,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
           <div className="flex w-full flex-row items-center border-b-2 border-gray-700 py-3 px-2 cursor-pointer">
             <div className="w-[90%]">
               <p className="py-2 font-brand-sm">What is a Semaphore ID?</p>
+
             </div>
             <p className="-mr-3">X</p>
           </div>
@@ -114,10 +117,12 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
             </div>
             <p className="-mr-3">X</p>
           </div>
+
         </div>
       </div>
 
       <div className="flex items-left flex-col p-12 bg-black text-brand-yellow">
+
         <div className="py-10 px-5 flex items-end justify-between bg-black">
           <div className="transform -ml-6 text-xl tracking-wide text-brand-beige">
             <h1>TEMP_RARY</h1>
@@ -125,6 +130,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
             <h1>Z_NE</h1>
           </div>
         </div>
+
         <a href="" className="pb-10 underline">
           About this app
         </a>
