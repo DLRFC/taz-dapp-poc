@@ -145,8 +145,17 @@ const InvitationCheckComponent = ({
                             </div>
 
                             {invitation ? (
-                                <button className="w-full border-2 border-brand-gray2 bg-brand-yellow p-2 py-4 shadow-[-3px_3px_0px_0px_rgba(30,30,30)] text-sm">
-                                    Next
+                                <button
+                                    className="w-full border-2 border-brand-gray2 bg-brand-yellow p-2 py-4 shadow-[-3px_3px_0px_0px_rgba(30,30,30)] text-sm"
+                                    onClick={validate}
+                                >
+                                    <span>Next</span>
+                                        <svg className="left-[16.67%] right-[16.67%] top-[17.59%] bottom-[17.59%]" width="16px" height="15.56px" fill="#BD5141" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M 12.172 6.99968 L 6.808 1.63568 L 8.222 0.22168 L 16 7.99968 L 8.222 15.7777 L 6.808 14.3637 L 12.172 8.99968 H 0 V 6.99968 H 12.172 Z"
+                                                fill="rgb(189, 81, 65)"
+                                            ></path>
+                                        </svg>
                                 </button>
                             ) : null}
                             {/* <button
