@@ -72,7 +72,7 @@ export default function QuestionModalView({ isOpen, closeModal, handleQuestionCh
                       className="w-full p-4 border-2 mb-1 border-brand-blue text-brand-black rounded-lg"
                       defaultValue={''}
                     />
-                    <p className="mb-7 flex justify-center text-sm text-brand-red">Must be less than 280 characters</p>
+                    <p className="mb-7 flex justify-center text-xs text-brand-red">Must be less than 280 characters</p>
                     <div className="flex justify-center mb-3">
                       <button
                         type="button"
