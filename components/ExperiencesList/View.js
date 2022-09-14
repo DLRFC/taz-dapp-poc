@@ -90,6 +90,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
             <div className="w-[90%]">
               <p className="py-2 font-brand-sm">What is a Semaphore ID?</p>
             </div>
+
             <p className="-mr-3">X</p>
           </div>
           <div className="flex w-full flex-row items-center border-b-2 border-gray-700 py-3 px-2 cursor-pointer">
@@ -107,6 +108,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
           <div className="flex w-full flex-row items-center border-b-2 border-gray-700 py-3 px-2 cursor-pointer">
             <div className="w-[90%]">
               <p className="py-2 font-brand-sm">What is a Semaphore ID?</p>
+
             </div>
             <p className="-mr-3">X</p>
           </div>

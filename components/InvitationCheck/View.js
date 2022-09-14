@@ -66,10 +66,20 @@ const InvitationCheckComponent = ({
                                     This is an anonymous, members-only experience
                                 </p>
                                 <button
-                                    className="text-brand-button bg-brand-yellow w-full py-4 border-2 border-brand-gray2 shadow-[-5px_5px_0px_0px_rgba(30,30,30)] text-brand-button"
+                                    className="text-brand-button bg-brand-yellow w-full py-4 border-2 border-brand-gray2 shadow-[-5px_5px_0px_0px_rgba(30,30,30)] text-brand-button flex items-center justify-center"
                                     onClick={handleSignUpButton}
                                 >
-                                    Yes, I was invited
+                                    <span className="mr-4">Yes, I was invited</span>
+                                    <svg
+                                        className="left-[16.67%] right-[16.67%] top-[17.59%] bottom-[17.59%]"
+                                        width="16px"
+                                        height="16px"
+                                        viewBox="0 0 16 16"
+                                        fill="#BD5141"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path d="M12.172 6.99968L6.808 1.63568L8.222 0.22168L16 7.99968L8.222 15.7777L6.808 14.3637L12.172 8.99968H0V6.99968H12.172Z"></path>
+                                    </svg>
                                 </button>
                                 <p className="py-5 px-3 text-brand-info text-brand-beige opacity-70">
                                     If not, visit a TAZ location to grab an invitation card.
@@ -83,7 +93,23 @@ const InvitationCheckComponent = ({
                                     className="text-brand-button bg-brand-beige bg-opacity-10 w-full py-4 border-2 border-brand-beige text-brand-beige mb-8"
                                     onClick={handleUploadQrCode}
                                 >
-                                    {checkingIdentity ? 'Checking Identity please wait' : 'Upload Semaphore ID'}
+                                    {checkingIdentity ? (
+                                        'Checking Identity please wait'
+                                    ) : (
+                                        <div className="flex items-center justify-center">
+                                            <span className="mr-4">Upload Sempahore ID</span>
+                                            <svg
+                                                className="left-[16.67%] right-[16.67%] top-[17.59%] bottom-[17.59%]"
+                                                width="18px"
+                                                height="19px"
+                                                viewBox="0 0 18 19"
+                                                fill="#EAE1DA"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path d="M0 17H18V19H0V17ZM10 3.828V15H8V3.828L1.929 9.9L0.515 8.486L9 0L17.485 8.485L16.071 9.899L10 3.83V3.828Z"></path>
+                                            </svg>
+                                        </div>
+                                    )}
                                 </button>
                                 <QrReader
                                     className="border-0"
@@ -145,8 +171,21 @@ const InvitationCheckComponent = ({
                             </div>
 
                             {invitation ? (
-                                <button className="w-full border-2 border-brand-gray2 bg-brand-yellow p-2 py-4 shadow-[-3px_3px_0px_0px_rgba(30,30,30)] text-sm">
-                                    Next
+                                <button
+                                    className="w-full border-2 border-brand-gray2 bg-brand-yellow p-2 py-4 shadow-[-3px_3px_0px_0px_rgba(30,30,30)] text-sm flex items-center justify-center"
+                                    onClick={validate}
+                                >
+                                    <span className="mr-4">Next</span>
+                                    <svg
+                                        className="left-[16.67%] right-[16.67%] top-[17.59%] bottom-[17.59%]"
+                                        width="16px"
+                                        height="16px"
+                                        viewBox="0 0 16 16"
+                                        fill="#BD5141"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path d="M12.172 6.99968L6.808 1.63568L8.222 0.22168L16 7.99968L8.222 15.7777L6.808 14.3637L12.172 8.99968H0V6.99968H12.172Z"></path>
+                                    </svg>
                                 </button>
                             ) : null}
                             {/* <button
