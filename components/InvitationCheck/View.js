@@ -1,6 +1,7 @@
 import QrReader from 'react-qr-reader'
 import { AnimatePresence } from 'framer-motion'
 import LoadingModal from '../LoadingModal/Index'
+import Header from '../Header'
 
 // Page 1 it will check Invitation
 const InvitationCheckComponent = ({
@@ -32,6 +33,7 @@ const InvitationCheckComponent = ({
                     <LoadingModal onClose={onClose} loadingMessage={loadingMessage} />
                 </AnimatePresence>
             ) : null}
+            <Header />
             <svg
                 className="absolute -left-2 top-[370px]"
                 width="69"
