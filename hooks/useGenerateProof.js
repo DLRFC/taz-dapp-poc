@@ -10,12 +10,6 @@ const { GROUP_ID } = require('../config/goerli.json')
 // eslint-disable-next-line import/prefer-default-export
 export const useGenerateProof = (identityKey) => {
   const [externalNullifier] = useState(Math.round(Math.random() * 1000000000))
-  // Define signal based on message
-  const [signal] = useState('proposal_1')
-  // const [fullProof, setFullProof] = useState(null)
-  // const [solidityProof, setSolidityProof] = useState(null)
-  // const [nullifierHash, setNullifierHash] = useState(null)
-  // const [identity, setIdentity] = useState(new Identity(identityKey))
 
   const generateFullProof = async (identityKey) => {
     const identity = new Identity(identityKey)
@@ -32,6 +26,9 @@ export const useGenerateProof = (identityKey) => {
 
     const merkleTreeRoot = group.root
     console.log('group root', merkleTreeRoot)
+
+    // Adapt Signal
+    const signal = 'proposal_1'
 
     const fullProofTemp = await generateProof(identity, group, externalNullifier, signal, {
       zkeyFilePath: 'https://www.trusted-setup-pse.org/semaphore/16/semaphore.zkey',
