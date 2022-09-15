@@ -4,6 +4,7 @@ import { ethers } from 'ethers'
 import QuestionsBoard from '../../components/QuestionsBoard'
 import QuestionModal from '../../components/QuestionModal'
 import { useGenerateProof } from '../../hooks/useGenerateProof'
+import LoadingModal from '../../components/LoadingModal/Index.js'
 
 const { API_REQUEST_TIMEOUT, GROUP_ID } = require('../../config/goerli.json')
 
@@ -11,7 +12,7 @@ const Questions = () => {
   const [generateFullProof] = useGenerateProof()
   const [isOpen, setIsOpen] = useState(false)
   const [question, setQuestion] = useState()
-  const [isMember, setIsMember] = useState(false)
+  // const [isMember, setIsMember] = useState(false)
   const [identityKey, setIdentityKey] = useState('')
 
   useEffect(() => {
@@ -19,7 +20,7 @@ const Questions = () => {
     if (identityKeyTemp === '') {
       identityKeyTemp = window.localStorage.getItem('identity')
       setIdentityKey(identityKeyTemp)
-      setIsMember(true)
+      // setIsMember(true)
     }
   })
 
