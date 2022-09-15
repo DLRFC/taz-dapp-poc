@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-undef */
+
 const assert = require('assert')
 const { expect } = require('chai')
 const { run, ethers } = require('hardhat')

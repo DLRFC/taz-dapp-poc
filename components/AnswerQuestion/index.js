@@ -8,18 +8,13 @@ import { ethers } from 'ethers'
 import LoadingModal from '../LoadingModal/Index.js'
 import { AnimatePresence } from 'framer-motion'
 import { Subgraphs } from '../../hooks/subgraphs'
-import {
-  GROUP_ID,
-  API_REQUEST_TIMEOUT,
-  TAZMESSAGE_SUBGRAPH,
-} from '../../config/goerli.json'
+import { GROUP_ID, API_REQUEST_TIMEOUT, TAZMESSAGE_SUBGRAPH } from '../../config/goerli.json'
 
 // import { useIdentity } from './IdentityProvider'
 const { generateProof } = require('@semaphore-protocol/proof')
 const { verifyProof } = require('@semaphore-protocol/proof')
 const { packToSolidityProof } = require('@semaphore-protocol/proof')
 // const { Subgraph } = require('@semaphore-protocol/subgraph')
-
 
 // 3. Ask Answer Page
 const AnswerQuestion = (props) => {
@@ -52,7 +47,7 @@ const AnswerQuestion = (props) => {
           parentMessageId
         }
       }
-      `,
+      `
     }
     // Fetch data
     try {
@@ -110,18 +105,10 @@ const AnswerQuestion = (props) => {
       // Generate Proof
       const externalNullifier = Math.round(Math.random() * 10000000)
 
-      const fullProof = await generateProof(
-        identity,
-        group,
-        externalNullifier,
-        signal,
-        {
-          zkeyFilePath:
-            'https://www.trusted-setup-pse.org/semaphore/16/semaphore.zkey',
-          wasmFilePath:
-            'https://www.trusted-setup-pse.org/semaphore/16/semaphore.wasm',
-        },
-      )
+      const fullProof = await generateProof(identity, group, externalNullifier, signal, {
+        zkeyFilePath: 'https://www.trusted-setup-pse.org/semaphore/16/semaphore.zkey',
+        wasmFilePath: 'https://www.trusted-setup-pse.org/semaphore/16/semaphore.wasm'
+      })
 
       const { nullifierHash } = fullProof.publicSignals
       const solidityProof = packToSolidityProof(fullProof.proof)
@@ -130,17 +117,17 @@ const AnswerQuestion = (props) => {
       // Verify Proof Off Chain
       // Fetch Verification Key
       // Verifing Zero Knwoladge proof off Chain
-      const verificationKey = await fetch(
-        'https://www.trusted-setup-pse.org/semaphore/16/semaphore.json',
-      ).then(function (res) {
-        return res.json()
-      })
+      const verificationKey = await fetch('https://www.trusted-setup-pse.org/semaphore/16/semaphore.json').then(
+        function (res) {
+          return res.json()
+        }
+      )
 
       const res = await verifyProof(verificationKey, fullProof)
       console.log('Verification', res)
 
       setLoadingMessage(
-        "2. The proof has been generated. Your message transaction is now being submitted. This can take up to 1 - 2 minutes, please don't close the App during the proccess :)",
+        "2. The proof has been generated. Your message transaction is now being submitted. This can take up to 1 - 2 minutes, please don't close the App during the proccess :)"
       )
       setLoadingProof(solidityProof)
 
@@ -152,12 +139,12 @@ const AnswerQuestion = (props) => {
         externalNullifier,
         signal,
         nullifierHash,
-        solidityProof,
+        solidityProof
       }
 
       // Verifying Zero Knowledge Proof on Chain and sending Answer
       const response = await axios.post('/api/postMessage', body, {
-        timeout: API_REQUEST_TIMEOUT,
+        timeout: API_REQUEST_TIMEOUT
       })
       console.log(response)
       console.log(response.data)
@@ -178,17 +165,8 @@ const AnswerQuestion = (props) => {
   return (
     <div className="p-4 font-sans bg-brand-beige">
       {isLoading ? (
-        <AnimatePresence
-          initial={false}
-          exitBeforeEnter
-          onExitComplete={() => null}
-          className="z-20"
-        >
-          <LoadingModal
-            onClose={onClose}
-            loadingMessage={loadingMessage}
-            loadingProof={loadingProof}
-          />
+        <AnimatePresence initial={false} exitBeforeEnter onExitComplete={() => null} className="z-20">
+          <LoadingModal onClose={onClose} loadingMessage={loadingMessage} loadingProof={loadingProof} />
         </AnimatePresence>
       ) : null}
       <svg
@@ -243,8 +221,7 @@ const AnswerQuestion = (props) => {
         <div className="h-[586px] bg-white py-3 w-full px-4 z-10">
           <p className="py-5 font-bold">{question?.messageContent}</p>
           <p className="py-2 w-[80%] mb-3 text-xs">
-            Reply to the message above to see your message appear anonymously in
-            TAZ.
+            Reply to the message above to see your message appear anonymously in TAZ.
           </p>
           <input
             className="border-2 border-brand-gray w-full my-3 py-2 rounded-lg"
@@ -272,7 +249,7 @@ const AnswerQuestion = (props) => {
         <p className="ml-10">X</p>
         <div className="bg-black absolute w-full h-[20%] bottom-[50px] left-0 -z-10"></div>
       </div>
-      <Link href="questions-page">
+      <Link href="questions">
         <button>Go to Questions Board Page(Test)</button>
       </Link>
     </div>

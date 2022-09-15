@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-undef */
+
 const assert = require('assert')
 const { expect } = require('chai')
 const { run, ethers } = require('hardhat')
@@ -25,10 +28,10 @@ describe('TazMessage', () => {
     'function createGroup(uint256 groupId, uint256 merkleTreeDepth, uint256 zeroValue, address admin)'
   ]
 
-  before(async () => {
-    const signers = await ethers.getSigners()
-    signer1 = signers[0]
-    signer2 = signers[1]
+    before(async () => {
+        const signers = await ethers.getSigners()
+        signer1 = signers[0]
+        signer2 = signers[1]
 
     if (DEPLOY_NEW_TAZ_MESSAGE_CONTRACT) {
       // Deploy a new TazMessage contract
@@ -93,11 +96,12 @@ describe('TazMessage', () => {
     })
   }
 
-  describe('# addMessage', () => {
-    it('Should add a message', async () => {
-      const messageContent = 'What is the name of this Dapp?'
-      const messageId = ethers.utils.id(messageContent)
-      const signal = messageId.slice(35)
+            const proofElements = await run('createProof', {
+                identitySeed: IDENTITY_SEED,
+                groupId: GROUP_ID,
+                signal,
+                logs: false
+            })
 
       const proofElements = await run('createProof', {
         identitySeed,
@@ -132,10 +136,12 @@ describe('TazMessage', () => {
       await expect(tx).to.emit(contract, 'MessageAdded').withArgs('', messageId, messageContent)
     })
 
-    it('Should fail to add a message if proof is not verified', async () => {
-      const messageContent = 'What is the name of this Dapp again?'
-      const messageId = ethers.utils.id(messageContent)
-      const signal = messageId.slice(35)
+    describe('# replyToMessage', () => {
+        it('Should reply to a message', async () => {
+            const messageContent = 'The name of the Dapp is TAZ'
+            const messageId = ethers.utils.id(messageContent)
+            const parentMessageId = ethers.utils.id('What is the name of this Dapp?')
+            const signal = messageId.slice(35)
 
       const proofElements = await run('createProof', {
         identitySeed,
@@ -156,7 +162,38 @@ describe('TazMessage', () => {
         { gasLimit: 1500000 }
       )
 
-      await expect(tx).to.be.reverted
+            await expect(tx).to.emit(contract, 'MessageAdded').withArgs(parentMessageId, messageId, messageContent)
+        })
+
+        it('Should fail to reply to message when parentMessageId is empty', async () => {
+            const messageContent = 'The name of the Dapp is unknowable'
+            const messageId = ethers.utils.id(messageContent)
+            const parentMessageId = ''
+            const signal = messageId.slice(35)
+
+            const proofElements = await run('createProof', {
+                identitySeed: IDENTITY_SEED,
+                groupId: GROUP_ID,
+                signal,
+                logs: false
+            })
+
+            const tx = contract
+                .connect(signer1)
+                .replyToMessage(
+                    parentMessageId,
+                    messageId,
+                    messageContent,
+                    proofElements.groupId,
+                    proofElements.signalBytes32,
+                    proofElements.nullifierHash,
+                    proofElements.externalNullifier,
+                    proofElements.solidityProof,
+                    { gasLimit: 1500000 }
+                )
+
+            await expect(tx).to.be.revertedWith('Invalid ID for parent message')
+        })
     })
   })
 

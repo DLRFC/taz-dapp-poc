@@ -1,24 +1,28 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    './pages/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
-  ],
+  content: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       fontFamily: {
         sans: ['JetBrains Mono'],
-        year: ['Poppins'],
+        year: ['Poppins']
       },
       fontSize: {
         'brand-sm': '.9rem',
         'brand-4xl': ['2.75rem', '2.6rem'],
         'brand-2xs': ['.75rem', '.75rem'],
+        'brand-h1': '32px',
+        'brand-h2': '20px',
+        'brand-h3': '16px',
+        'brand-button': '14px',
+        'brand-body': '14px',
+        'brand-info': '12px'
       },
       colors: {
         brand: {
           beige: '#EAE1DA',
           beige2: '#F0EBE8',
+          blue: '#435C6C',
           gray: '#475F6F',
           gray2: '#000000',
           gray60: '#333333',
@@ -27,13 +31,13 @@ module.exports = {
           yellow: '#EFAD5F',
           orange: '#BD5141',
           brown: '#402917',
-          brown2: '#513E2E',
-        },
+          brown2: '#513E2E'
+        }
       },
       boxShadow: {
-        question: '4px 4px 25px rgba(0, 0, 0, 0.25)',
-      },
-    },
+        question: '4px 4px 25px rgba(0, 0, 0, 0.25)'
+      }
+    }
   },
-  plugins: [require('@tailwindcss/line-clamp')],
+  plugins: [require('@tailwindcss/line-clamp')]
 }
