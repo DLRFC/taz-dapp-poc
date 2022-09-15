@@ -11,7 +11,7 @@ const Questions = () => {
   const [generateFullProof] = useGenerateProof()
   const [isOpen, setIsOpen] = useState(false)
   const [question, setQuestion] = useState()
-  const [isMember, setIsMember] = useState(false)
+  // const [isMember, setIsMember] = useState(false)
   const [identityKey, setIdentityKey] = useState('')
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const Questions = () => {
     if (identityKeyTemp === '') {
       identityKeyTemp = window.localStorage.getItem('identity')
       setIdentityKey(identityKeyTemp)
-      setIsMember(true)
+      // setIsMember(true)
     }
   })
 
