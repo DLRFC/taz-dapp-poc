@@ -11,7 +11,9 @@ export default function artBoard() {
   const [identityKey, setIdentityKey] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isFilling, setIsFilling] = useState(false)
+
   const [isDrawing, setIsDrawing] = useState(false)
+
   const [loadingMessage, setLoadingMessage] = useState('Loading Message')
   const [lines, setLines] = useState([])
   const [color, setColor] = React.useState('black')
@@ -78,6 +80,7 @@ export default function artBoard() {
   }
   const handleFill = () => {
     setIsFilling(!isFilling)
+
   }
 
   const startDrawing = () => {
@@ -90,6 +93,7 @@ export default function artBoard() {
     console.log('tiles', tiles)
     tiles[selectedTile] = uri
     setIsDrawing(false)
+
   }
 
   const handleColorSelect = (e) => {
@@ -107,11 +111,13 @@ export default function artBoard() {
     return await takeScreenShot(canvasRef.current)
   }
 
+
   const submit = async () => {
     // removeBorder
     borderRef.current.className = 'touch-none bg-white h-[250] w-[250]'
 
     handleGenerateProof()
+
 
     const uri = stageRef.current.toDataURL()
     tilesRef.current[selectedTile] = uri.toString()
@@ -127,6 +133,8 @@ export default function artBoard() {
     setIsLoading(true)
     setLoadingMessage(`1. Generating zero knowledge proof \n 
         2. Submitting message transaction`)
+
+
 
     // axios POSTs
     console.log('POSTING to /api/modifyCanvas:')
@@ -167,14 +175,18 @@ export default function artBoard() {
   return (
     <ArtBoardComponent
       isLoading={isLoading}
+
       startDrawing={startDrawing}
       isDrawing={isDrawing}
+
       loadingMessage={loadingMessage}
       submit={submit}
       canvasRef={canvasRef}
       borderRef={borderRef}
       selectedTile={selectedTile}
+
       setSelectedTile={setSelectedTile}
+
       tiles={tiles}
       lines={lines}
       setLines={setLines}
@@ -187,7 +199,9 @@ export default function artBoard() {
       fillColor={fillColor}
       setColor={setColor}
       setFillColor={setFillColor}
+
       minimize={minimize}
+
     />
   )
 }
