@@ -84,6 +84,11 @@ export default function artBoard() {
     setIsDrawing(true)
   }
   const minimize = () => {
+    const uri = stageRef.current.toDataURL()
+    console.log('uri', uri)
+    console.log('selectedTile', selectedTile)
+    console.log('tiles', tiles)
+    tiles[selectedTile] = uri
     setIsDrawing(false)
   }
 

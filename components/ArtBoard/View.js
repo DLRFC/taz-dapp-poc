@@ -59,6 +59,7 @@ const ArtBoardComponent = forwardRef(
               handleUndo={handleUndo}
               handleColorSelect={handleColorSelect}
               minimize={minimize}
+              tiles={tiles}
             />
           </AnimatePresence>
         ) : null}
