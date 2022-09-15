@@ -95,6 +95,7 @@ const AskQuestion = () => {
       router.push('/questions-page')
     } catch (error) {
       setIsLoading(false)
+      console.log('error', error)
 
       // Custom error depending on points of failure
       alert(error)

@@ -8,10 +8,10 @@ const { generateProof, verifyProof, packToSolidityProof } = require('@semaphore-
 const { GROUP_ID } = require('../config/goerli.json')
 
 // eslint-disable-next-line import/prefer-default-export
-export const useGenerateProof = (identityKey) => {
+export const useGenerateProof = () => {
   const [externalNullifier] = useState(Math.round(Math.random() * 1000000000))
 
-  const generateFullProof = async (identityKey) => {
+  const generateFullProof = async (identityKey, signal) => {
     const identity = new Identity(identityKey)
     const group = new Group(16)
     const groupId = GROUP_ID.toString()
@@ -22,13 +22,15 @@ export const useGenerateProof = (identityKey) => {
     const members = await subgraphs.getGroupIdentities(groupId)
     console.log('IdentityCommitment', identity.generateCommitment().toString())
     console.log(members)
-    group.addMembers(members)
+    // -----Changed for testing
+    // group.addMembers(members)
+    group.addMember(identity.generateCommitment().toString())
 
     const merkleTreeRoot = group.root
     console.log('group root', merkleTreeRoot)
 
     // Adapt Signal
-    const signal = 'proposal_1'
+    // const signal = 'proposal_1'
 
     const fullProofTemp = await generateProof(identity, group, externalNullifier, signal, {
       zkeyFilePath: 'https://www.trusted-setup-pse.org/semaphore/16/semaphore.zkey',
@@ -44,7 +46,6 @@ export const useGenerateProof = (identityKey) => {
       nullifierHash,
       externalNullifier,
       merkleTreeRoot,
-      signal,
       groupId
     }
   }

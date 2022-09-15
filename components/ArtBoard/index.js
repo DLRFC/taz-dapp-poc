@@ -113,8 +113,9 @@ export default function artBoard() {
     // removeBorder
     borderRef.current.className = 'touch-none bg-white h-[250] w-[250]'
 
-    const { fullProofTemp, solidityProof, nullifierHash, externalNullifier, merkleTreeRoot, signal, groupId } =
-      await generateFullProof(identityKey)
+    const signal = 'proposal_1'
+    const { fullProofTemp, solidityProof, nullifierHash, externalNullifier, merkleTreeRoot, groupId } =
+      await generateFullProof(identityKey, signal)
 
     const uri = stageRef.current.toDataURL()
     tilesRef.current[selectedTile] = uri.toString()
@@ -164,17 +165,17 @@ export default function artBoard() {
     router.push('/artGallery-page')
   }
 
-  const handleGenerateProof = async () => {
-    const { fullProofTemp, solidityProof, nullifierHashTemp, externalNullifier, signal, merkleTreeRoot, groupId } =
-      await generateFullProof(identityKey)
-    console.log('fullProof', fullProofTemp)
-    console.log('solidityProof', solidityProof)
-    console.log('nullifierHashTemp', nullifierHashTemp)
-    console.log('externalNullifier', externalNullifier)
-    console.log('merkleTreeRoot', merkleTreeRoot)
-    console.log('groupId', groupId)
-    console.log('signal', signal)
-  }
+  // const handleGenerateProof = async () => {
+  //   const { fullProofTemp, solidityProof, nullifierHashTemp, externalNullifier, signal, merkleTreeRoot, groupId } =
+  //     await generateFullProof(identityKey)
+  //   console.log('fullProof', fullProofTemp)
+  //   console.log('solidityProof', solidityProof)
+  //   console.log('nullifierHashTemp', nullifierHashTemp)
+  //   console.log('externalNullifier', externalNullifier)
+  //   console.log('merkleTreeRoot', merkleTreeRoot)
+  //   console.log('groupId', groupId)
+  //   console.log('signal', signal)
+  // }
 
   return (
     <ArtBoardComponent

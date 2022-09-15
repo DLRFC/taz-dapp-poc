@@ -1,15 +1,13 @@
 import { useRef } from 'react'
 import QuestionModalView from './View'
 
-const QuestionModal = ({ isOpen, closeModal, handleQuestionChange, handleSubmit }) => {
-  return (
-    <QuestionModalView
-      isOpen={isOpen}
-      closeModal={closeModal}
-      handleQuestionChange={handleQuestionChange}
-      handleSubmit={handleSubmit}
-    />
-  )
-}
+const QuestionModal = ({ isOpen, closeModal, handleQuestionChange, handleSubmit }) => (
+  <QuestionModalView
+    isOpen={isOpen}
+    closeModal={closeModal}
+    handleQuestionChange={handleQuestionChange}
+    handleSubmit={handleSubmit}
+  />
+)
 
 export default QuestionModal
