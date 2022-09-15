@@ -17,7 +17,7 @@ const GenerateTile = forwardRef(
     startDrawing
   }) => {
     return (
-      <td className="bg-white w-20 border border-slate-200">
+      <td className="bg-white w-20 p-0">
         {selectedTile === i ? (
           <div onClick={startDrawing} className="cursor-pointer">
             <img

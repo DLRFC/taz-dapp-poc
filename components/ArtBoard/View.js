@@ -101,7 +101,7 @@ const ArtBoardComponent = forwardRef(
           </div>
           <div className="flex">
             <div ref={canvasRef} id="ipfsURI">
-              <table className="mr-3">
+              <table className="mr-3 ml-5">
                 <tbody>
                   {tileCounter.map((counter) => (
                     <tr className="h-20" key={counter}>
@@ -130,7 +130,7 @@ const ArtBoardComponent = forwardRef(
 
           <div className="flex p-2">
             <div>
-              <button className="bg-brand-yellow font-bold text-xs p-2 rounded-full" type="submit" onClick={submit}>
+              <button className="bg-brand-yellow font-bold text-xs p-2 rounded-full ml-2" type="submit" onClick={submit}>
                 Submit tile
               </button>
             </div>
