@@ -12,7 +12,7 @@
             "namedComponents": ["arrow-function", "function-declaration"],
             "unnamedComponents": ["arrow-function", "function-expression"]
           }],
-          "react/jsx-no-bind": "allowFunctions",
+          "react/jsx-no-bind": "off",
           "no-underscore-dangle": "off",
           "no-alert": "off",
           "no-nested-ternary": "off",
