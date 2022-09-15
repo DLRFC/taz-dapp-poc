@@ -11,6 +11,9 @@ export default function artBoard() {
   const [identityKey, setIdentityKey] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isFilling, setIsFilling] = useState(false)
+
+  const [isDrawing, setIsDrawing] = useState(false)
+
   const [loadingMessage, setLoadingMessage] = useState('Loading Message')
   const [lines, setLines] = useState([])
   const [color, setColor] = React.useState('black')
@@ -78,11 +81,19 @@ export default function artBoard() {
   const handleFill = () => {
     setIsFilling(!isFilling)
 
-    // set isFilling to true, which should:
-    // highlight fill button
-    // on color palette clock with isFilling = true, change background change color palette click to change fill not pen colour & set isFilling=false
+  }
 
-    // adjust stage background color
+  const startDrawing = () => {
+    setIsDrawing(true)
+  }
+  const minimize = () => {
+    const uri = stageRef.current.toDataURL()
+    console.log('uri', uri)
+    console.log('selectedTile', selectedTile)
+    console.log('tiles', tiles)
+    tiles[selectedTile] = uri
+    setIsDrawing(false)
+
   }
 
   const handleColorSelect = (e) => {
@@ -100,11 +111,14 @@ export default function artBoard() {
     return await takeScreenShot(canvasRef.current)
   }
 
+
   const submit = async () => {
     // removeBorder
     borderRef.current.className = 'touch-none bg-white h-[250] w-[250]'
 
-    console.log('stageRef.current: ', stageRef.current)
+    handleGenerateProof()
+
+
     const uri = stageRef.current.toDataURL()
     tilesRef.current[selectedTile] = uri.toString()
 
@@ -120,7 +134,7 @@ export default function artBoard() {
     setLoadingMessage(`1. Generating zero knowledge proof \n 
         2. Submitting message transaction`)
 
-    handleGenerateProof()
+
 
     // axios POSTs
     console.log('POSTING to /api/modifyCanvas:')
@@ -161,11 +175,18 @@ export default function artBoard() {
   return (
     <ArtBoardComponent
       isLoading={isLoading}
+
+      startDrawing={startDrawing}
+      isDrawing={isDrawing}
+
       loadingMessage={loadingMessage}
       submit={submit}
       canvasRef={canvasRef}
       borderRef={borderRef}
       selectedTile={selectedTile}
+
+      setSelectedTile={setSelectedTile}
+
       tiles={tiles}
       lines={lines}
       setLines={setLines}
@@ -178,6 +199,9 @@ export default function artBoard() {
       fillColor={fillColor}
       setColor={setColor}
       setFillColor={setFillColor}
+
+      minimize={minimize}
+
     />
   )
 }
