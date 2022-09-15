@@ -4,6 +4,7 @@ import { ethers } from 'ethers'
 import QuestionsBoard from '../../components/QuestionsBoard'
 import QuestionModal from '../../components/QuestionModal'
 import { useGenerateProof } from '../../hooks/useGenerateProof'
+import LoadingModal from '../../components/LoadingModal/Index.js'
 
 const { API_REQUEST_TIMEOUT, GROUP_ID } = require('../../config/goerli.json')
 
