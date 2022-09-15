@@ -2,16 +2,12 @@ import { Identity } from '@semaphore-protocol/identity'
 import { Group } from '@semaphore-protocol/group'
 import { useEffect, useState } from 'react'
 // import { Subgraph } from '@semaphore-protocol/subgraph'
-import { Subgraphs } from '../hooks/subgraphs'
+import { Subgraphs } from './subgraphs'
 
+const { generateProof, verifyProof, packToSolidityProof } = require('@semaphore-protocol/proof')
 const { GROUP_ID } = require('../config/goerli.json')
 
-const {
-  generateProof,
-  verifyProof,
-  packToSolidityProof,
-} = require('@semaphore-protocol/proof')
-
+// eslint-disable-next-line import/prefer-default-export
 export const useGenerateProof = (identityKey) => {
   const [externalNullifier] = useState(Math.round(Math.random() * 1000000000))
   // Define signal based on message
@@ -25,6 +21,7 @@ export const useGenerateProof = (identityKey) => {
     const identity = new Identity(identityKey)
     const group = new Group(16)
     const groupId = GROUP_ID.toString()
+
     // const subgraph = new Subgraph('goerli')
     // const { members } = await subgraph.getGroup(groupId, { members: true })
     const subgraphs = new Subgraphs()
@@ -32,30 +29,26 @@ export const useGenerateProof = (identityKey) => {
     console.log('IdentityCommitment', identity.generateCommitment().toString())
     console.log(members)
     group.addMembers(members)
-    console.log('group...', group)
 
-    const fullProofTemp = await generateProof(
-      identity,
-      group,
-      externalNullifier,
-      signal,
-      {
-        zkeyFilePath:
-          'https://www.trusted-setup-pse.org/semaphore/16/semaphore.zkey',
-        wasmFilePath:
-          'https://www.trusted-setup-pse.org/semaphore/16/semaphore.wasm',
-      },
-    )
+    const merkleTreeRoot = group.root
+    console.log('group root', merkleTreeRoot)
+
+    const fullProofTemp = await generateProof(identity, group, externalNullifier, signal, {
+      zkeyFilePath: 'https://www.trusted-setup-pse.org/semaphore/16/semaphore.zkey',
+      wasmFilePath: 'https://www.trusted-setup-pse.org/semaphore/16/semaphore.wasm'
+    })
     // console.log('fullProofTemp...', fullProofTemp)
-    const { nullifierHash: nullifierHashTemp } = fullProofTemp.publicSignals
+    const { nullifierHash } = fullProofTemp.publicSignals
     const solidityProof = packToSolidityProof(fullProofTemp.proof)
     console.log('fullProof on useHook', fullProofTemp)
     return {
       fullProofTemp,
       solidityProof,
-      nullifierHashTemp,
+      nullifierHash,
       externalNullifier,
+      merkleTreeRoot,
       signal,
+      groupId
     }
   }
 
