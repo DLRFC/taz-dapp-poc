@@ -4,7 +4,7 @@
     "browser": true,
     "es6": true
   },
-  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended", "prettier", "airbnb", "prettier"], // Using airbnb rather than airbnb-base for its inclusion of React rules
+  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended", "airbnb", "prettier"], // Using airbnb rather than airbnb-base for its inclusion of React rules Use "" when converted to TS
   "rules": {
     "react/jsx-props-no-spreading": "off",
     "react/react-in-jsx-scope": "off", // Remove need to import React in files
@@ -25,6 +25,18 @@
     "import/no-relative-packages": "off",
     "no-bitwise": "off",
     "no-restricted-syntax": "off",
-    "no-console": ["warn", { "allow": ["info", "warn", "error"] }]
+    "no-param-reassign": "off",
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+    "no-console": ["warn", { "allow": ["info", "warn", "error"] }],
+    "@typescript-eslint/lines-between-class-members": "off",
+    "@typescript-eslint/no-unused-vars": "off", // Warn once conversion to TS
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "variable",
+        "format": ["camelCase", "PascalCase", "UPPER_CASE", "snake_case"],
+        "leadingUnderscore": "allow"
+      }
+    ]
   }
 }

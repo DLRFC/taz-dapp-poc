@@ -39,3 +39,10 @@ export default function AnswerQuestionPage() {
     </div>
   )
 }
+
+// eslint-disable-next-line no-unused-vars
+export async function getServerSideProps(context) {
+  return {
+    props: {}
+  }
+}

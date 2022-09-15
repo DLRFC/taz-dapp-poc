@@ -11,7 +11,7 @@ dotenv.config({ path: '../../.env.local' })
 const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL)
 const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider)
 const signerAddress = signer.getAddress()
-const abi = TazToken.abi
+const { abi } = TazToken
 const contractAddress = TAZTOKEN_CONTRACT
 const nftContract = new ethers.Contract(contractAddress, abi, signer)
 
@@ -23,12 +23,14 @@ export default async function handler(req, res) {
       // make connection to DB
       const secret = process.env.FAUNA_SECRET_KEY
       const client = new faunadb.Client({ secret })
-      const query = faunadb.query
+      const { query } = faunadb
       // get fileUrl and canvasId from frontend
       const { imageUri, canvasId, groupId, signal, nullifierHash, externalNullifier, solidityProof } = req.body
 
       if (!imageUri || !canvasId || !groupId || !signal || !nullifierHash || !externalNullifier || !solidityProof) {
-        res.status(400).json('Needs to have imageUri, canvasId, groupId, signal, nullifierHash, externalNullifier, solidityProof')
+        res
+          .status(400)
+          .json('Needs to have imageUri, canvasId, groupId, signal, nullifierHash, externalNullifier, solidityProof')
       }
 
       // Check DB if canvas with canvasId is full
@@ -37,16 +39,14 @@ export default async function handler(req, res) {
       const dbs = await client.query(
         query.Map(
           query.Paginate(query.Match(query.Index('all_canvases')), {
-            size: 10000,
+            size: 10000
           }),
-          query.Lambda('canvasRef', query.Get(query.Var('canvasRef'))),
-        ),
+          query.Lambda('canvasRef', query.Get(query.Var('canvasRef')))
+        )
       )
 
       // Find the matching canvas based on the canvasId
-      const match = dbs.data.filter(
-        (canvas) => canvas.data.canvasId === canvasId,
-      )[0]
+      const match = dbs.data.filter((canvas) => canvas.data.canvasId === canvasId)[0]
 
       // Check if canvas array does not have empty tiles
       if (match.data.tiles.includes('')) {
@@ -56,15 +56,9 @@ export default async function handler(req, res) {
 
         // Convert base64 string to Blob
         const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
-          const byteCharacters = Buffer.from(b64Data, 'base64').toString(
-            'binary',
-          )
+          const byteCharacters = Buffer.from(b64Data, 'base64').toString('binary')
           const byteArrays = []
-          for (
-            let offset = 0;
-            offset < byteCharacters.length;
-            offset += sliceSize
-          ) {
+          for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
             const slice = byteCharacters.slice(offset, offset + sliceSize)
             const byteNumbers = new Array(slice.length)
             for (let i = 0; i < slice.length; i++) {
@@ -87,29 +81,34 @@ export default async function handler(req, res) {
 
         const web3StorageClient = new Web3Storage({
           token: web3StorageApiToken,
-          endpoint: new URL('https://api.web3.storage'),
+          endpoint: new URL('https://api.web3.storage')
         })
 
-        const dataFileArrayForServingImage = [
-          new File([blobForServingImage], 'image.png'),
-        ]
+        const dataFileArrayForServingImage = [new File([blobForServingImage], 'image.png')]
 
         let ipfsUrl
 
-        await web3StorageClient
-          .put(dataFileArrayForServingImage, { wrapWithDirectory: false })
-          .then((dataCid) => {
-            ipfsUrl = 'https://' + dataCid + '.ipfs.dweb.link'
-            console.log('IPFS url created: ', ipfsUrl)
-          })
+        await web3StorageClient.put(dataFileArrayForServingImage, { wrapWithDirectory: false }).then((dataCid) => {
+          ipfsUrl = `https://${dataCid}.ipfs.dweb.link`
+          console.log('IPFS url created: ', ipfsUrl)
+        })
 
         // Send transaction to TazToken contract
 
         try {
-          const signalBytes32 = ethers.utils.formatBytes32String(signal);
-          const tx = await nftContract.safeMint(signerAddress, ipfsUrl, groupId, signalBytes32, nullifierHash, externalNullifier, solidityProof, {
-            gasLimit: 15000000,
-          })
+          const signalBytes32 = ethers.utils.formatBytes32String(signal)
+          const tx = await nftContract.safeMint(
+            signerAddress,
+            ipfsUrl,
+            groupId,
+            signalBytes32,
+            nullifierHash,
+            externalNullifier,
+            solidityProof,
+            {
+              gasLimit: 15000000
+            }
+          )
           console.log(tx)
 
           const response = await tx.wait(3)
@@ -119,9 +118,9 @@ export default async function handler(req, res) {
           await client.query(
             query.Update(query.Ref(match.ref), {
               data: {
-                tiles: ['', '', '', '', '', '', '', '', ''],
-              },
-            }),
+                tiles: ['', '', '', '', '', '', '', '', '']
+              }
+            })
           )
 
           // Send response to frontend
