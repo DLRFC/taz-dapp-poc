@@ -6,7 +6,7 @@ import BackArrow from '../ArrowNavigators/BackArrow'
 const QuestionsBoardComponent = ({ questions, clearIdentity }) => (
   <div className="px-6 py-8">
     <Link href="/experiences-page">
-      <div className="flex max-w-[76px] max-h-[32px] bg-black ml-1 mt-1 mb-12 px-1 text-xl text-brand-beige2 cursor-pointer">
+      <div className="flex max-w-[76px] max-h-[32px] bg-black ml-1 mt-1 mb-12 px-1 text-xl text-brand-beige2 cursor-pointer shadow-[2.0px_3.0px_3.0px_rgba(0,0,0,0.38)]">
         <BackArrow />
         <h1>TAZ</h1>
       </div>
