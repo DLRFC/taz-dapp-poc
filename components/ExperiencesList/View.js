@@ -1,13 +1,15 @@
 import Link from 'next/link'
+import SelectorArrow from '../ArrowNavigators/SelectorArrow'
+import DropDownArrow from '../ArrowNavigators/DropDownArrow'
 
 const ExperiencesListComponent = ({ clearIdentity }) => {
   return (
     <div>
       <div className="px-6 py-8 font-sans text-brand-brown">
         <svg
-          className="absolute -left-2 top-[330px] -z-1"
+          className="absolute -left-2 top-[320px] -z-1"
           width="69"
-          height="100"
+          height="120"
           viewBox="0 0 69 100"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -30,92 +32,105 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
           />
         </svg>
 
-        <div classname="flex w-full flex-row items-left">
-          <h1 className="bg-brand-black mx-20 ml-30 mb-2 px-1 text-4xl text-brand-beige2">BEING ANONYMOUS</h1>
-          <h1 className="bg-brand-black mx-20 mb-2 px-1 text-4xl text-brand-beige2">LETS US BE</h1>
-          <h1 className="bg-brand-black mx-20 mb-16 px-1 text-4xl text-brand-beige2">OURSELVES</h1>
+        <div>
+          <h1 className="inline-block bg-black ml-1 mt-1 mb-12 px-1 text-xl text-brand-beige2">TAZ</h1>
+        </div>
+        <div>
+          <h2 className="inline-block bg-black ml-1 mb-2 px-1 text-4xl text-brand-beige2">BEING ANONYMOUS</h2>
+        </div>
+        <div>
+          <h2 className="inline-block bg-black ml-1 mb-2 px-1 text-4xl text-brand-beige2">LETS US BE</h2>
+        </div>
+        <div>
+          <h2 className="inline-block bg-black ml-1 mb-16 px-1 text-4xl text-brand-beige2">OURSELVES</h2>
         </div>
 
-        <div className="relative flex flex-col items-center overflow-hidden rounded-md border-2 border-gray-700 shadow-xl bg-white mb-8">
-          <div className="flex w-full justify-between border-b-2 border-brand-gray bg-brand-beige2 p-3">
+        <div className="relative flex flex-col items-center overflow-hidden rounded-md border-2 border-brand-blue shadow-xl bg-white mb-8">
+          <div className="flex w-full justify-between border-b-2 border-brand-blue bg-brand-beige2 p-3">
             <div>📂</div>
-            <div>use your Semaphore ID here </div>
+            <div className="text-brand-blue">Use your Semaphore ID here </div>
             <div></div>
           </div>
           <Link href="questions">
-            <div className="flex w-full flex-row items-center border-b-2 border-gray-700 py-3 px-2 cursor-pointer">
+            <div className="flex w-full flex-row items-center border-b-2 border-brand-blue py-3 px-2 cursor-pointer">
               <div className="w-[90%]">
                 <p className="py-2 font-bold">Q&A</p>
                 <p className="opacity-[70%]">Anonymously ask & answer questions</p>
               </div>
-              <p className="-mr-3">X</p>
+              <SelectorArrow />
             </div>
           </Link>
           <Link href="artGallery-page">
-            <div className="flex w-full flex-row items-center border-b-2 border-gray-700 py-3 px-2 cursor-pointer">
+            <div className="flex w-full flex-row items-center border-b-2 border-brand-blue py-3 px-2 cursor-pointer">
               <div className="w-[90%]">
                 <p className="py-2 font-bold">Gallery</p>
                 <p className="opacity-[70%]">Create on collaborative canvases</p>
               </div>
-              <p className="-mr-3">X</p>
+              <SelectorArrow />
             </div>
           </Link>
         </div>
 
-        <div className=" relative flex flex-col items-center overflow-hidden rounded-md border-2 border-gray-700 shadow-xl bg-white mb-16">
-          <div className="flex w-full justify-between border-b-2 border-brand-gray bg-brand-beige2 p-3">
+        <div className=" relative flex flex-col items-center overflow-hidden rounded-md border-2 border-brand-blue shadow-xl bg-white mb-16">
+          <div className="flex w-full justify-between border-b-2 border-brand-blue bg-brand-beige2 p-3">
             <div>🌍</div>
-            <div>take your ID with you </div>
+            <div className="text-brand-blue">Take your ID with you </div>
             <div></div>
           </div>
           <Link href="">
-            <div className="flex w-full flex-row items-center border-b-2 border-gray-700 py-3 px-2 cursor-pointer">
+            <div className="flex w-full flex-row items-center border-b-2 border-brand-blue py-3 px-2 cursor-pointer">
               <div className="w-[90%]">
                 <p className="py-2 font-bold">Zkitter</p>
                 <p className="opacity-[70%]">Social media but make it anon</p>
               </div>
-              <p className="-mr-3">X</p>
+              <SelectorArrow />
             </div>
           </Link>
         </div>
 
-        <div className=" relative flex flex-col items-center overflow-hidden rounded-md border-2 border-gray-700 shadow-xl bg-white mb-16">
-          <div className="flex w-full justify-between border-b-2 border-brand-gray bg-black text-brand-beige p-3">
+        <div className=" relative flex flex-col items-center overflow-hidden rounded-md border-2 border-brand-blue shadow-xl bg-white mb-16">
+          <div className="flex w-full justify-between border-b-2 border-brand-blue bg-black text-brand-beige p-3">
             <div>🧑‍🏫</div>
             <div>FAQ</div>
             <div></div>
           </div>
 
-          <div className="flex w-full flex-row items-center border-b-2 border-gray-700 py-3 px-2 cursor-pointer">
+          <div className="flex w-full flex-row items-center border-b-2 border-brand-blue py-3 px-2 cursor-pointer">
             <div className="w-[90%]">
               <p className="py-2 font-brand-sm">What is a Semaphore ID?</p>
             </div>
-
-            <p className="-mr-3">X</p>
+            <DropDownArrow />
           </div>
-          <div className="flex w-full flex-row items-center border-b-2 border-gray-700 py-3 px-2 cursor-pointer">
+          <div className="flex w-full flex-row items-center border-b-2 border-brand-blue py-3 px-2 cursor-pointer">
             <div className="w-[90%]">
               <p className="py-2 font-brand-sm">What is a Semaphore ID?</p>
             </div>
-            <p className="-mr-3">X</p>
+            <DropDownArrow />
           </div>
-          <div className="flex w-full flex-row items-center border-b-2 border-gray-700 py-3 px-2 cursor-pointer">
+          <div className="flex w-full flex-row items-center border-b-2 border-brand-blue py-3 px-2 cursor-pointer">
             <div className="w-[90%]">
               <p className="py-2 font-brand-sm">What is a Semaphore ID?</p>
             </div>
-            <p className="-mr-3">X</p>
+            <DropDownArrow />
           </div>
-          <div className="flex w-full flex-row items-center border-b-2 border-gray-700 py-3 px-2 cursor-pointer">
+          <div className="flex w-full flex-row items-center border-b-2 border-brand-blue py-3 px-2 cursor-pointer">
             <div className="w-[90%]">
               <p className="py-2 font-brand-sm">What is a Semaphore ID?</p>
-
             </div>
-            <p className="-mr-3">X</p>
+            <DropDownArrow />
           </div>
         </div>
       </div>
 
       <div className="flex items-left flex-col p-12 bg-black text-brand-yellow">
+        <div className="py-10 px-5 flex items-end justify-between bg-black">
+          <div className="transform -ml-6 text-xl tracking-wide text-brand-beige">
+            <h1>TEMP_RARY</h1>
+            <h1 className="bg-brand-beige px-1 text-brand-black">AN_NYMOUS</h1>
+            <h1>Z_NE</h1>
+          </div>
+        </div>
+
         <a href="" className="pb-10 underline">
           About this app
         </a>
