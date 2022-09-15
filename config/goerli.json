@@ -1,11 +1,10 @@
 {
-    "TAZMESSAGE_CONTRACT": "0xe1A073dD58AAB0e111b3033A21d442C61a157BF1",
-    "TAZTOKEN_CONTRACT": "0x0162120958727BcD76A7Ee1D8f3a2cdAE89Bf2B8",
-    "TAZMESSAGE_SUBGRAPH": "https://api.thegraph.com/subgraphs/name/dlrfc/taz-message-goerli",
-    "TAZTOKEN_SUBGRAPH": "https://api.thegraph.com/subgraphs/name/dlrfc/taz-token-goerli",
-    "SEMAPHORE_CONTRACT": "0x99aAb52e60f40AAC0BFE53e003De847bBDbC9611",
-    "SEMAPHORE_SUBGRAPH": "https://api.thegraph.com/subgraphs/name/semaphore-protocol/goerli",
-    "GROUP_ID": 10803,
-    "IDENTITY_SEED": "secret-message2",
-    "API_REQUEST_TIMEOUT": 300000
+  "TAZMESSAGE_CONTRACT": "0x31Eb74C6740254509CEB0496fF868e3938A7ACaD",
+  "TAZTOKEN_CONTRACT": "0xDa55C4F33E762d8C3F8863759127c06e911e8334",
+  "TAZMESSAGE_SUBGRAPH": "https://api.thegraph.com/subgraphs/name/dlrfc/taz-message-goerli",
+  "TAZTOKEN_SUBGRAPH": "https://api.thegraph.com/subgraphs/name/dlrfc/taz-token-goerli",
+  "SEMAPHORE_CONTRACT": "0x590CB053A5F429719E6858CeeC56e6bedD4e9cfA",
+  "SEMAPHORE_SUBGRAPH": "https://api.thegraph.com/subgraphs/name/semaphore-protocol/goerli",
+  "GROUP_ID": 10800,
+  "API_REQUEST_TIMEOUT": 300000
 }

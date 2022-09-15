@@ -6,9 +6,12 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
+import "hardhat/console.sol";
+
 interface ISemaphore {
     function verifyProof(
         uint256 groupId,
+        uint256 merkleTreeRoot,
         bytes32 signal,
         uint256 nullifierHash,
         uint256 externalNullifier,
@@ -30,11 +33,12 @@ contract TazToken is ERC721, ERC721URIStorage, Ownable {
          semaContract = semaContractAddr;
     }
 
-    // Verifies a proof and mints a non-fungible token
+    // Verifies a proof, and on success mints a non-fungible token
     function safeMint(
         address to,
         string memory uri,
         uint256 groupId,
+        uint256 merkleTreeRoot,
         bytes32 signal,
         uint256 nullifierHash,
         uint256 externalNullifier,
@@ -42,7 +46,7 @@ contract TazToken is ERC721, ERC721URIStorage, Ownable {
         uint256 tokenId = _tokenIdCounter.current();
 
         // Verify proof with Sempahore contract
-        semaContract.verifyProof(groupId, signal, nullifierHash, externalNullifier, proof);
+        semaContract.verifyProof(groupId, merkleTreeRoot, signal, nullifierHash, externalNullifier, proof);
 
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);

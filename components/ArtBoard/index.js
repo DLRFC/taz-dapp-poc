@@ -80,7 +80,6 @@ export default function artBoard() {
   }
   const handleFill = () => {
     setIsFilling(!isFilling)
-
   }
 
   const startDrawing = () => {
@@ -93,7 +92,6 @@ export default function artBoard() {
     console.log('tiles', tiles)
     tiles[selectedTile] = uri
     setIsDrawing(false)
-
   }
 
   const handleColorSelect = (e) => {
@@ -111,13 +109,13 @@ export default function artBoard() {
     return await takeScreenShot(canvasRef.current)
   }
 
-
   const submit = async () => {
     // removeBorder
     borderRef.current.className = 'touch-none bg-white h-[250] w-[250]'
 
-    handleGenerateProof()
-
+    const signal = 'proposal_1'
+    const { fullProofTemp, solidityProof, nullifierHash, externalNullifier, merkleTreeRoot, groupId } =
+      await generateFullProof(identityKey, signal)
 
     const uri = stageRef.current.toDataURL()
     tilesRef.current[selectedTile] = uri.toString()
@@ -134,12 +132,11 @@ export default function artBoard() {
     setLoadingMessage(`1. Generating zero knowledge proof \n 
         2. Submitting message transaction`)
 
-
-
     // axios POSTs
     console.log('POSTING to /api/modifyCanvas:')
     console.log('tilesRef.current: ', tilesRef.current)
     console.log('canvasId.current: ', canvasId.current)
+
     const response = await axios.post('/api/modifyCanvas', {
       updatedTiles: tilesRef.current,
       canvasId: canvasId.current
@@ -148,45 +145,49 @@ export default function artBoard() {
     console.log(response)
 
     if (tilesRemaining.length === 0) {
+      const body = {
+        imageUri: canvasUri,
+        canvasId: canvasId.current,
+        groupId,
+        signal,
+        nullifierHash,
+        externalNullifier,
+        solidityProof,
+        merkleTreeRoot
+      }
       console.log('POSTING to /api/mintFullCanvas')
       console.log('canvasUri: ', canvasUri)
       console.log('canvasId.current: ', canvasId.current)
-      const response = await axios.post('/api/mintFullCanvas', {
-        imageUri: canvasUri,
-        canvasId: canvasId.current
-      })
+      const mintResponse = await axios.post('/api/mintFullCanvas', body)
       console.log('RESPONSE FROM /api/mintFullCanvas:')
-      console.log(response)
+      console.log(mintResponse)
     }
     router.push('/artGallery-page')
   }
 
-  const handleGenerateProof = async () => {
-    const { fullProofTemp, solidityProof, nullifierHashTemp, externalNullifier, signal } = await generateFullProof(
-      identityKey
-    )
-    console.log('fullProof', fullProofTemp)
-    console.log('solidityProof', solidityProof)
-    console.log('nullifierHashTemp', nullifierHashTemp)
-    console.log('externalNullifier', externalNullifier)
-    console.log('signal', signal)
-  }
+  // const handleGenerateProof = async () => {
+  //   const { fullProofTemp, solidityProof, nullifierHashTemp, externalNullifier, signal, merkleTreeRoot, groupId } =
+  //     await generateFullProof(identityKey)
+  //   console.log('fullProof', fullProofTemp)
+  //   console.log('solidityProof', solidityProof)
+  //   console.log('nullifierHashTemp', nullifierHashTemp)
+  //   console.log('externalNullifier', externalNullifier)
+  //   console.log('merkleTreeRoot', merkleTreeRoot)
+  //   console.log('groupId', groupId)
+  //   console.log('signal', signal)
+  // }
 
   return (
     <ArtBoardComponent
       isLoading={isLoading}
-
       startDrawing={startDrawing}
       isDrawing={isDrawing}
-
       loadingMessage={loadingMessage}
       submit={submit}
       canvasRef={canvasRef}
       borderRef={borderRef}
       selectedTile={selectedTile}
-
       setSelectedTile={setSelectedTile}
-
       tiles={tiles}
       lines={lines}
       setLines={setLines}
@@ -199,9 +200,7 @@ export default function artBoard() {
       fillColor={fillColor}
       setColor={setColor}
       setFillColor={setFillColor}
-
       minimize={minimize}
-
     />
   )
 }

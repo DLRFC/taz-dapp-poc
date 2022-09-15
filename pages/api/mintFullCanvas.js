@@ -25,7 +25,8 @@ export default async function handler(req, res) {
       const client = new faunadb.Client({ secret })
       const { query } = faunadb
       // get fileUrl and canvasId from frontend
-      const { imageUri, canvasId, groupId, signal, nullifierHash, externalNullifier, solidityProof } = req.body
+      const { imageUri, canvasId, groupId, signal, nullifierHash, externalNullifier, merkleTreeRoot, solidityProof } =
+        req.body
 
       if (!imageUri || !canvasId || !groupId || !signal || !nullifierHash || !externalNullifier || !solidityProof) {
         res
@@ -93,14 +94,13 @@ export default async function handler(req, res) {
           console.log('IPFS url created: ', ipfsUrl)
         })
 
-        // Send transaction to TazToken contract
-
         try {
           const signalBytes32 = ethers.utils.formatBytes32String(signal)
           const tx = await nftContract.safeMint(
             signerAddress,
             ipfsUrl,
             groupId,
+            merkleTreeRoot,
             signalBytes32,
             nullifierHash,
             externalNullifier,

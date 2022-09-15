@@ -1,10 +1,28 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+import { ethers } from 'ethers'
 import QuestionsBoard from '../../components/QuestionsBoard'
 import QuestionModal from '../../components/QuestionModal'
+import { useGenerateProof } from '../../hooks/useGenerateProof'
+import LoadingModal from '../../components/LoadingModal/Index.js'
+
+const { API_REQUEST_TIMEOUT, GROUP_ID } = require('../../config/goerli.json')
 
 const Questions = () => {
+  const [generateFullProof] = useGenerateProof()
   const [isOpen, setIsOpen] = useState(false)
   const [question, setQuestion] = useState()
+  // const [isMember, setIsMember] = useState(false)
+  const [identityKey, setIdentityKey] = useState('')
+
+  useEffect(() => {
+    let identityKeyTemp = ''
+    if (identityKeyTemp === '') {
+      identityKeyTemp = window.localStorage.getItem('identity')
+      setIdentityKey(identityKeyTemp)
+      // setIsMember(true)
+    }
+  })
 
   function closeModal() {
     setIsOpen(false)
@@ -18,10 +36,32 @@ const Questions = () => {
     setQuestion(event.target.value)
   }
 
-  const handleSubmit = (event) => {
-    // TO DO handle
-    alert(`Submit question: ${question}`)
+  const handleSubmit = async (event) => {
     event.preventDefault()
+    // TO DO handle
+    const messageContent = question
+    const messageId = ethers.utils.id(messageContent)
+    const signal = messageId
+    const { fullProofTemp, solidityProof, nullifierHash, externalNullifier, merkleTreeRoot, groupId } =
+      await generateFullProof(identityKey, signal)
+
+    const body = {
+      parentMessageId: '',
+      messageId,
+      messageContent,
+      merkleTreeRoot,
+      groupId,
+      signal,
+      nullifierHash,
+      externalNullifier,
+      solidityProof
+    }
+    console.log('body', body)
+    alert(`Submit question: ${question}`)
+
+    await axios.post('/api/postMessage', body, {
+      timeout: API_REQUEST_TIMEOUT
+    })
   }
 
   const scrollToTop = () => {

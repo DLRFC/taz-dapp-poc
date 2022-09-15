@@ -12,11 +12,7 @@ const tazMessageAddress = process.env.TAZ_MESSAGE_CONTRACT_ADDRESS
 // console.log("tazMessageAddress", tazMessageAddress)
 // console.log("tazMessageAbi", TazMessage)
 
-const tazMessageContract = new ethers.Contract(
-  tazMessageAddress,
-  tazMessageAbi,
-  signer,
-)
+const tazMessageContract = new ethers.Contract(tazMessageAddress, tazMessageAbi, signer)
 
 export default async function handler(req, res) {
   if (res.method === 'GET') {
@@ -27,10 +23,11 @@ export default async function handler(req, res) {
       messageId,
       messageContent,
       groupId,
+      merkleTreeRoot,
       signal,
       nullifierHash,
       externalNullifier,
-      solidityProof,
+      solidityProof
     } = req.body
 
     console.log('LOG | Body: ', req.body)
@@ -58,11 +55,12 @@ export default async function handler(req, res) {
           messageId,
           messageContent,
           groupId,
+          merkleTreeRoot,
           bytes32Signal,
           nullifierHash,
           externalNullifier,
           solidityProof,
-          { gasLimit: 15000000 },
+          { gasLimit: 15000000 }
         )
         console.log('Transaction Finished!')
         const response = await tx.wait(3)
@@ -78,16 +76,27 @@ export default async function handler(req, res) {
     } else {
       console.log('BACKEND LOG | Add Message')
 
+      // function addMessage(
+      //   string memory messageId,
+      //   string memory messageContent,
+      //   uint256 groupId,
+      //   uint256 merkleTreeRoot,
+      //   bytes32 signal,
+      //   uint256 nullifierHash,
+      //   uint256 externalNullifier,
+      //   uint256[8] calldata proof) external {
+
       try {
         tx = await tazMessageContract.addMessage(
           messageId,
           messageContent,
           groupId,
+          merkleTreeRoot,
           bytes32Signal,
           nullifierHash,
           externalNullifier,
           solidityProof,
-          { gasLimit: 15000000 },
+          { gasLimit: 15000000 }
         )
         console.log(tx)
 

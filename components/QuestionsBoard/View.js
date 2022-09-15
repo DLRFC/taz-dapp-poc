@@ -1,13 +1,12 @@
 // import Button from '../Button'
 import Link from 'next/link'
-
 import SelectorArrow from '../ArrowNavigators/SelectorArrow'
 import BackArrow from '../ArrowNavigators/BackArrow'
 
 const QuestionsBoardComponent = ({ questions, clearIdentity }) => (
   <div className="px-6 py-8">
     <Link href="/experiences-page">
-      <div className="inline-block bg-black ml-1 mt-1 mb-12 px-1 text-xl text-brand-beige2 cursor-pointer">
+      <div className="flex max-w-[76px] max-h-[32px] bg-black ml-1 mt-1 mb-12 px-1 text-xl text-brand-beige2 cursor-pointer shadow-[2.0px_3.0px_3.0px_rgba(0,0,0,0.38)]">
         <BackArrow />
         <h1>TAZ</h1>
       </div>
@@ -55,16 +54,16 @@ const QuestionsBoardComponent = ({ questions, clearIdentity }) => (
       {questions.map((question) => (
         <Link href={`/answers-board-page/${question.messageId}`} key={question.id}>
           <div className="flex w-full flex-row items-center border-brand-blue p-4 cursor-pointer">
-            <p className="text-brand-brown text-sm leading-5 w-[100%]">{question.messageContent}</p>
+            <p className="text-brand-brown  text-sm leading-5 w-[100%]">{question.messageContent}</p>
             <SelectorArrow />
           </div>
         </Link>
       ))}
     </div>
     <div className="flex items-center justify-center  flex-col m-6 text-brand-2xs text-brand-gray">
-      <button type="button" className="mb-3 text-lg" onClick={clearIdentity}>
+      {/* <button className="mb-3 text-lg" onClick={clearIdentity}>
         Logout
-      </button>
+      </button> */}
       {/* &#8220;who am I?&#8221;&nbsp;&ndash;&nbsp; */}
       <a href="" className="underline mt-3">
         @PrivacyScaling

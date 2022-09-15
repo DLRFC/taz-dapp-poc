@@ -30,3 +30,4 @@ yarn-error.log*
 
 # other
 snark-artifacts
+*.sol
