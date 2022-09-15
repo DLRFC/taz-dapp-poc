@@ -8,6 +8,7 @@ interface ISemaphore {
     function updateGroupAdmin(uint256 groupId, address newAdmin) external;
     function verifyProof(
         uint256 groupId,
+        uint256 merkleTreeRoot,
         bytes32 signal,
         uint256 nullifierHash,
         uint256 externalNullifier,
@@ -63,13 +64,14 @@ contract TazMessage is Ownable {
         string memory messageId,
         string memory messageContent,
         uint256 groupId,
+        uint256 merkleTreeRoot,
         bytes32 signal,
         uint256 nullifierHash,
         uint256 externalNullifier,
         uint256[8] calldata proof) external {
 
         // Verify proof with Sempahore contract
-        semaContract.verifyProof(groupId, signal, nullifierHash, externalNullifier, proof);
+        semaContract.verifyProof(groupId, merkleTreeRoot, signal, nullifierHash, externalNullifier, proof);
 
         emit MessageAdded("", messageId, messageContent);
     }
@@ -80,6 +82,7 @@ contract TazMessage is Ownable {
         string memory messageId,
         string memory messageContent,
         uint256 groupId,
+        uint256 merkleTreeRoot,
         bytes32 signal,
         uint256 nullifierHash,
         uint256 externalNullifier,
@@ -89,7 +92,7 @@ contract TazMessage is Ownable {
         require(bytes(parentMessageId).length > 0, "Invalid ID for parent message");
 
         // Verify proof with Sempahore contract
-        semaContract.verifyProof(groupId, signal, nullifierHash, externalNullifier, proof);
+        semaContract.verifyProof(groupId, merkleTreeRoot, signal, nullifierHash, externalNullifier, proof);
 
         emit MessageAdded(parentMessageId, messageId, messageContent);
     }

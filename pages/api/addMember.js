@@ -2,44 +2,39 @@ import { ethers } from 'ethers'
 import dotenv from 'dotenv'
 import faunadb from 'faunadb'
 import TazMessage from '../utils/TazMessage.json'
+import { GROUP_ID } from '../../config/goerli.json'
 
 dotenv.config({ path: '../../.env.local' })
 const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL)
 const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider)
 const tazMessageAbi = TazMessage.abi
 const tazMessageAddress = process.env.TAZ_MESSAGE_CONTRACT_ADDRESS
-const groupId = 10803
+const groupId = GROUP_ID
 
-const tazMessageContract = new ethers.Contract(
-  tazMessageAddress,
-  tazMessageAbi,
-  signer,
-)
+const tazMessageContract = new ethers.Contract(tazMessageAddress, tazMessageAbi, signer)
 
 export default async function handler(req, res) {
   const { invitation, identityCommitment } = req.body
 
   if (req.method === 'GET') {
     res.status(400).json({
-      error: 'Ensure that you are sending a POST request to this endpoint',
+      error: 'Ensure that you are sending a POST request to this endpoint'
     })
   } else if (!invitation) {
-    res
-      .status(400)
-      .json({ error: 'Request needs to have an invitation string' })
+    res.status(400).json({ error: 'Request needs to have an invitation string' })
   } else if (req.method === 'POST') {
     try {
       const secret = process.env.FAUNA_SECRET_KEY
-      const query = faunadb.query
+      const { query } = faunadb
       const client = new faunadb.Client({ secret })
 
       const dbs = await client.query(
         query.Map(
           query.Paginate(query.Match(query.Index('all_codes')), {
-            size: 10000,
+            size: 10000
           }),
-          query.Lambda('codeRef', query.Get(query.Var('codeRef'))),
-        ),
+          query.Lambda('codeRef', query.Get(query.Var('codeRef')))
+        )
       )
 
       const match = dbs.data.filter((code) => code.data.code === invitation)
@@ -58,20 +53,17 @@ export default async function handler(req, res) {
 
         try {
           console.log('Add Member Function called')
-          const tx = await tazMessageContract.addMember(
-            groupId,
-            identityCommitment,
-          )
+          const tx = await tazMessageContract.addMember(groupId, identityCommitment)
           // console.log(tx)
 
           const response = await tx.wait(1).then(
             client.query(
               query.Update(query.Ref(match[0].ref), {
                 data: {
-                  isUsed: true,
-                },
-              }),
-            ),
+                  isUsed: true
+                }
+              })
+            )
           )
 
           res.status(201).json(response)
