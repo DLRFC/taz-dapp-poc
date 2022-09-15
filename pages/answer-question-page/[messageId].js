@@ -11,6 +11,7 @@ export default function AnswerQuestionPage() {
 
   useEffect(() => {
     // setter
+    // Can use localIdentity as value? instead of identityKey?
     let identityKey = ''
     if (identityKey === '') {
       identityKey = window.localStorage.getItem('identity')
