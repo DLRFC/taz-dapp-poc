@@ -132,7 +132,10 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
           About this app
         </a>
         <a href="" className="pb-10 underline">
-          Build with Semaphore
+          About Semaphore
+        </a>
+        <a href="" className="pb-10 underline">
+          Semaphore Grants Round
         </a>
         <a href="" className="pb-10 underline">
           Privacy & Scaling Explorations
