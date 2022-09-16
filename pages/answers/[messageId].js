@@ -7,7 +7,6 @@ const Answers = (props) => {
   const [generateFullProof] = useGenerateProof()
   const [isOpen, setIsOpen] = useState(false)
   const [answer, setAnswer] = useState()
-  // const [isMember, setIsMember] = useState(false)
   const [identityKey, setIdentityKey] = useState('')
 
   const { messageId: parentMessageId } = props
