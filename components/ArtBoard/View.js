@@ -101,7 +101,7 @@ const ArtBoardComponent = forwardRef(
           </div>
           <div className="flex items-center justify-center">
             <div ref={canvasRef} id="ipfsURI">
-              <table className="mr-3 ml-5">
+              <table className="mr-3 ml-3">
                 <tbody>
                   {tileCounter.map((counter) => (
                     <tr className="w-full h-full" key={counter}>

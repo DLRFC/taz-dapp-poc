@@ -2,13 +2,13 @@ import { ethers } from 'ethers'
 import dotenv from 'dotenv'
 import faunadb from 'faunadb'
 import TazMessage from '../utils/TazMessage.json'
-import { GROUP_ID } from '../../config/goerli.json'
+import { GROUP_ID, TAZMESSAGE_CONTRACT } from '../../config/goerli.json'
 
 dotenv.config({ path: '../../.env.local' })
 const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL)
 const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider)
 const tazMessageAbi = TazMessage.abi
-const tazMessageAddress = process.env.TAZ_MESSAGE_CONTRACT_ADDRESS
+const tazMessageAddress = TAZMESSAGE_CONTRACT
 const groupId = GROUP_ID
 
 const tazMessageContract = new ethers.Contract(tazMessageAddress, tazMessageAbi, signer)
