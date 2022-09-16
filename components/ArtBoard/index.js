@@ -119,10 +119,6 @@ export default function artBoard() {
     // removeBorder
     // borderRef.current.className = 'touch-none bg-white h-[250] w-[250]'
 
-    const signal = 'proposal_1'
-    const { fullProofTemp, solidityProof, nullifierHash, externalNullifier, merkleTreeRoot, groupId } =
-      await generateFullProof(identityKey, signal)
-
     // const uri = stageRef.current.toDataURL()
     // tilesRef.current[selectedTile] = uri.toString()
 
@@ -137,7 +133,9 @@ export default function artBoard() {
     setIsLoading(true)
     setLoadingMessage(`1. Generating zero knowledge proof \n 
         2. Submitting message transaction`)
-
+    const signal = 'proposal_1'
+    const { fullProofTemp, solidityProof, nullifierHash, externalNullifier, merkleTreeRoot, groupId } =
+      await generateFullProof(identityKey, signal)
     // axios POSTs
     console.log('POSTING to /api/modifyCanvas:')
     console.log('tilesRef.current: ', tilesRef.current)
