@@ -1,66 +1,21 @@
-import Button from '../Button'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import axios from 'axios'
-import { TAZMESSAGE_SUBGRAPH } from '../../config/goerli.json'
+import Button from '../Button'
+import SelectorArrow from '../ArrowNavigators/SelectorArrow'
+import BackArrow from '../ArrowNavigators/BackArrow'
 
-const AnswerBoard = (props) => {
+const AnswersBoard = (props) => {
   const { messageId } = props
 
-  const [answers, setAnswers] = useState([])
-  const [question, setQuestion] = useState([])
-
-  const fetchAnswers = async (messageId) => {
-    // Construct query for subgraph
-    const postData = {
-      query: `
-      {
-        parentMessageAddeds: messageAddeds(
-          orderBy: messageId
-          first: 1
-          where: {messageId: "${messageId}"}
-          orderDirection: desc
-        ) {
-          id
-          messageContent
-          messageId
-        }
-        messageAddeds(
-          orderBy: timestamp
-          where: {parentMessageId: "${messageId}"}
-          orderDirection: desc
-        ) {
-          id
-          messageContent
-          messageId
-          parentMessageId
-        }
-      }
-      `
-    }
-    // Fetch data
-    try {
-      const result = await axios.post(TAZMESSAGE_SUBGRAPH, postData)
-      setQuestion(result.data.data.parentMessageAddeds[0])
-      setAnswers(result.data.data.messageAddeds)
-    } catch (err) {
-      console.log('Error fetching subgraph data: ', err)
-    }
-  }
-
-  useEffect(() => {
-    const doAsync = async () => {
-      await fetchAnswers(messageId)
-    }
-    doAsync()
-  }, [])
+  const [answers, setAnswers] = useState(props.answers)
+  const [question, setQuestion] = useState(props.question)
 
   return (
-    <div className="px-6 py-8 font-sans">
+    <div className="px-6 py-8">
       <svg
-        className="absolute -left-2 top-[230px]"
+        className="absolute -left-2 top-[320px] -z-1"
         width="69"
-        height="100"
+        height="120"
         viewBox="0 0 69 100"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -83,71 +38,47 @@ const AnswerBoard = (props) => {
         />
       </svg>
 
-      <div className="mb-[34px] flex ml-2">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <g clipPath="url(#clip0_114_381)">
-            <path
-              d="M7.828 10.9999H20V12.9999H7.828L13.192 18.3639L11.778 19.7779L4 11.9999L11.778 4.22192L13.192 5.63592L7.828 10.9999Z"
-              fill="#BD5141"
-            />
-          </g>
-          <defs>
-            <clipPath id="clip0_114_381">
-              <rect width="24" height="24" fill="white" />
-            </clipPath>
-          </defs>
-        </svg>
-        <Link href="/">
-          <span className="ml-2 text-brand-orange text-sm font-bold cursor-pointer">Back to apps</span>
-        </Link>
-      </div>
-
-      <div className="index-[10] relative divide-y overflow-y-auto rounded-md border-2 border-gray-500 bg-white drop-shadow-lg">
-        <div className="flex items-center justify-between py-4 px-8 bg-brand-beige">
-          <Link href="/questions">
-            <svg
-              className="cursor-pointer scale-[100%]"
-              width="30"
-              height="31"
-              viewBox="0 0 30 31"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+      <div className="z-0 p-4 min-w-[200px] relative divide-y overflow-y-auto border-2 border-brand-blue rounded-md bg-white drop-shadow-lg">
+        <div className="mb-4 border-0">
+          <Link href="/questions" className="cursor-pointer">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M14.8643 0.833496C22.8956 0.833496 29.4063 7.39999 29.4063 15.5002C29.4063 23.6003 22.8956 30.1668 14.8643 30.1668C6.83295 30.1668 0.322266 23.6003 0.322266 15.5002C0.322266 7.39999 6.83295 0.833496 14.8643 0.833496ZM2.96627 15.5002C2.96627 8.87275 8.29319 3.50016 14.8643 3.50016C21.4354 3.50016 26.7623 8.87275 26.7623 15.5002C26.7623 22.1276 21.4354 27.5002 14.8643 27.5002C8.29319 27.5002 2.96627 22.1276 2.96627 15.5002Z"
-                fill="#475F6F"
-              />
-              <path
-                transform="translate(9, 9)"
-                d="M5.86415 0.843262L7.73372 2.72888L3.99457 6.50008L7.73372 10.2714L5.86415 12.157L0.255371 6.50008L5.86415 0.843262Z"
-                fill="#475F6F"
+                d="M2.871 5.24952H12V6.74952H2.871L6.894 10.7725L5.8335 11.833L0 5.99952L5.8335 0.166016L6.894 1.22652L2.871 5.24952Z"
+                fill="black"
+                fillOpacity="0.4"
               />
             </svg>
           </Link>
-          <Link href={'../answer-question-page/' + question?.messageId}>
-            <div>
-              <Button text="Answer this question" />
+        </div>
+        <p className="border-t-0">{question.messageContent}</p>
+        <div className="flex justify-end border-0">
+          <button
+            type="button"
+            onClick={props.openAnswerModal}
+            className="rounded-full bg-brand-yellow mt-2 px-3 py-1 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
+          >
+            Answer this question
+          </button>
+        </div>
+        {answers.map((answer) => (
+          <div className="flex flex-row align-top" key={answer.id}>
+            <div className="flex-col m-4">
+              <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M4.455 13L0 16.5V1C0 0.734784 0.105357 0.48043 0.292893 0.292893C0.48043 0.105357 0.734784 0 1 0H16C16.2652 0 16.5196 0.105357 16.7071 0.292893C16.8946 0.48043 17 0.734784 17 1V13H4.455ZM3.763 11H15V2H2V12.385L3.763 11ZM7 15H17.237L19 16.385V6H20C20.2652 6 20.5196 6.10536 20.7071 6.29289C20.8946 6.48043 21 6.73478 21 7V20.5L16.545 17H8C7.73478 17 7.48043 16.8946 7.29289 16.7071C7.10536 16.5196 7 16.2652 7 16V15Z"
+                  fill="#D9D4D1"
+                />
+              </svg>
             </div>
-          </Link>
-        </div>
-
-        <div className="flex w-full flex-row border-b-4 border-brand-gray p-3 text-brand-gray leading-5">
-          {question.messageContent}
-        </div>
-
-        <div className="ml-6 mb-8 border-l-2">
-          {answers.map((answer) => (
-            <p className="ml-4 text-xs my-4 text-brand-gray" key={answer.id}>
+            <div className="flex-col ml-4 text-xs my-4 text-brand-gray border-bottom-2 border-brand-beige">
               {answer.messageContent}
-            </p>
-          ))}
-        </div>
+            </div>
+          </div>
+        ))}
       </div>
-      <div className="flex justify-center m-6 text-brand-2xs text-brand-gray">
-        &#8220;who am I?&#8221;&nbsp;&ndash;&nbsp;
-        <a href="" className="underline">
+
+      <div className="flex items-center justify-center  flex-col m-6 text-brand-2xs text-brand-gray">
+        <a href="" className="underline mt-3">
           @PrivacyScaling
         </a>
       </div>
@@ -155,4 +86,4 @@ const AnswerBoard = (props) => {
   )
 }
 
-export default AnswerBoard
+export default AnswersBoard

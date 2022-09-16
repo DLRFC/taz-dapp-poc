@@ -52,7 +52,7 @@ const QuestionsBoardComponent = ({ questions, clearIdentity }) => (
 
     <div className="z-0  min-w-[200px] relative divide-y overflow-y-auto rounded-md border-2 border-brand-blue bg-white drop-shadow-lg">
       {questions.map((question) => (
-        <Link href={`/answers-board-page/${question.messageId}`} key={question.id}>
+        <Link href={`/answers/${question.messageId}`} key={question.id}>
           <div className="flex w-full flex-row items-center border-brand-blue p-4 cursor-pointer">
             <p className="text-brand-brown  text-sm leading-5 w-[100%]">{question.messageContent}</p>
             <SelectorArrow />
