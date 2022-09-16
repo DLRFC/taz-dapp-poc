@@ -6,5 +6,5 @@
   "SEMAPHORE_CONTRACT": "0x590CB053A5F429719E6858CeeC56e6bedD4e9cfA",
   "SEMAPHORE_SUBGRAPH": "https://api.thegraph.com/subgraphs/name/semaphore-protocol/goerli",
   "GROUP_ID": 10800,
-  "API_REQUEST_TIMEOUT": 300000
+  "API_REQUEST_TIMEOUT": 400000
 }

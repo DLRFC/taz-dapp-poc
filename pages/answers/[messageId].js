@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { router } from 'next'
 import axios from 'axios'
 import { ethers } from 'ethers'
 import AnswersBoard from '../../components/AnswersBoard'
@@ -87,19 +88,20 @@ export default function Answers(props) {
 
     setSteps(['Generated zero knowledge proof', 'Submitted message transaction', 'Question successfully added'])
 
-    const updatedAnswers = [
-      {
-        id: Math.round(Math.random() * 100000000000).toString(),
-        messageId,
-        messageContent
-      }
-    ].concat(answers)
+    // Solution below adds the new record to state, as opposed to refreshing.
+    // const updatedAnswers = [
+    //   {
+    //     id: Math.round(Math.random() * 100000000000).toString(),
+    //     messageId,
+    //     messageContent
+    //   }
+    // ].concat(answers)
+    // console.log('ANSWERS PAGE | updatedAnswers', updatedAnswers)
+    // setAnswers(updatedAnswers)
 
-    console.log('ANSWERS PAGE | updatedAnswers', updatedAnswers)
+    router.reload(window.location.pathname)
 
-    setAnswers(updatedAnswers)
-
-    setTimeout(closeProcessingModal, 1000)
+    setTimeout(closeProcessingModal, 2000)
   }
 
   const scrollToTop = () => {
