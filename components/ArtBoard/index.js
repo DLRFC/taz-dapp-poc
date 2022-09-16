@@ -36,6 +36,12 @@ export default function artBoard() {
   useEffect(() => {
     let tilesTemp
     let selectedTileTemp
+    let identityKeyTemp = ''
+    if (identityKeyTemp === '') {
+      identityKeyTemp = window.localStorage.getItem('identity')
+      setIdentityKey(identityKeyTemp)
+      // setIsMember(true)
+    }
     const fetchData = async () => {
       if (runFetch.current === false) {
         try {
@@ -72,7 +78,7 @@ export default function artBoard() {
       console.log('Use Effect Finished')
       runFetch.current = true
     }
-  }, [identityKey])
+  }, [])
 
   const handleUndo = () => {
     lines.pop()
@@ -111,14 +117,14 @@ export default function artBoard() {
 
   const submit = async () => {
     // removeBorder
-    borderRef.current.className = 'touch-none bg-white h-[250] w-[250]'
+    // borderRef.current.className = 'touch-none bg-white h-[250] w-[250]'
 
     const signal = 'proposal_1'
     const { fullProofTemp, solidityProof, nullifierHash, externalNullifier, merkleTreeRoot, groupId } =
       await generateFullProof(identityKey, signal)
 
-    const uri = stageRef.current.toDataURL()
-    tilesRef.current[selectedTile] = uri.toString()
+    // const uri = stageRef.current.toDataURL()
+    // tilesRef.current[selectedTile] = uri.toString()
 
     const tilesRemaining = tilesRef.current.filter((x) => x === '')
 
