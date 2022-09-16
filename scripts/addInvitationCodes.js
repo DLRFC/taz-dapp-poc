@@ -3,7 +3,7 @@ require('dotenv').config({ path: '../.env.local' })
 const fs = require('fs');
 
 try {
-  const secret = "fnAEvFcKVTACS4C4wTx9Onll1EfhX8dE9mc5xvzk"
+  const secret = process.env.FAUNA_SECRET_KEY;
   const query = faunadb.query;
   const client = new faunadb.Client({ secret });
   
