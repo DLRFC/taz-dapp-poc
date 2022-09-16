@@ -50,8 +50,10 @@ const AnswersBoard = (props) => {
             </svg>
           </Link>
         </div>
-        <p className="border-t-0">{question.messageContent}</p>
-        <div className="flex justify-end border-0">
+        <p className="border-0" style={{ borderTopWidth: '0px' }}>
+          {question.messageContent}
+        </p>
+        <div className="flex justify-end border-0 mb-4" style={{ borderTopWidth: '0px' }}>
           <button
             type="button"
             onClick={props.openAnswerModal}
@@ -61,7 +63,11 @@ const AnswersBoard = (props) => {
           </button>
         </div>
         {answers.map((answer) => (
-          <div className="flex flex-row align-top" key={answer.id}>
+          <div
+            className="flex flex-row align-top"
+            key={answer.id}
+            style={{ borderTopWidth: '0px', borderBottomWidth: '1px' }}
+          >
             <div className="flex-col m-4">
               <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -70,9 +76,7 @@ const AnswersBoard = (props) => {
                 />
               </svg>
             </div>
-            <div className="flex-col ml-4 text-xs my-4 text-brand-gray border-bottom-2 border-brand-beige">
-              {answer.messageContent}
-            </div>
+            <div className="flex-col ml-4 text-xs my-4 text-brand-gray">{answer.messageContent}</div>
           </div>
         ))}
       </div>
