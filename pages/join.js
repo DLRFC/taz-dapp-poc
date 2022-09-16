@@ -3,11 +3,11 @@ import { GenerateIdentity } from '../components/GenerateIdentity'
 
 export default function JoinPage() {
   const router = useRouter()
-  const { invitation } = router.query
+  const { code } = router.query
 
   return (
     <div>
-      <GenerateIdentity invitation={invitation} />
+      <GenerateIdentity invitation={code} />
     </div>
   )
 }
