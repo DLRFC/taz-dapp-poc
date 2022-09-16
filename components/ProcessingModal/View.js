@@ -1,7 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useRef } from 'react'
 
-export default function QuestionModalView({ isOpen, closeModal, handleQuestionChange, handleSubmit }) {
+export default function LoadingModalView({ isOpen, closeModal, steps }) {
   const questionTextRef = useRef(null)
 
   return (
@@ -31,7 +31,7 @@ export default function QuestionModalView({ isOpen, closeModal, handleQuestionCh
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel className="w-10/12 max-w-md transform overflow-hidden rounded-lg border-brand-blue border-2 bg-white text-left align-middle shadow-xl transition-all">
-                <div className="p-4 mb-1 bg-brand-beige border-b-2 border-brand-blue">
+                <Dialog.Title as="div" className="p-4 mb-1 bg-brand-beige border-b-2 border-brand-blue">
                   <button
                     type="button"
                     className="flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-beige2"
@@ -57,31 +57,15 @@ export default function QuestionModalView({ isOpen, closeModal, handleQuestionCh
                         fill="#435C6C"
                       />
                     </svg>
-                    cancel
+                    Processing
                   </button>
-                </div>
-                <div className="p-4">
-                  <Dialog.Title as="h3" className="text-brand-brown mb-8">
-                    Type your question
-                  </Dialog.Title>
-                  <textarea
-                    ref={questionTextRef}
-                    onChange={handleQuestionChange}
-                    rows={8}
-                    maxLength={280}
-                    className="w-full p-4 border-2 mb-1 border-brand-blue text-brand-black rounded-lg"
-                    defaultValue=""
-                  />
-                  <p className="mb-7 flex justify-center text-xs text-brand-red">Must be less than 280 characters</p>
-                  <div className="flex justify-center mb-3">
-                    <button
-                      type="button"
-                      className="inline-flex justify-center rounded-full border border-transparent bg-brand-black px-12 py-1 text-sm font-medium text-brand-beige hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-beige focus-visible:ring-offset-2"
-                      onClick={handleSubmit}
-                    >
-                      Ask anonymously
-                    </button>
-                  </div>
+                </Dialog.Title>
+                <div>
+                  <ol className="mb-3 list-decimal">
+                    {steps.map((step) => (
+                      <li className="mx-12 py-4 border-b-[1px] border-brand-beige last:border-b-0">{step}</li>
+                    ))}
+                  </ol>
                 </div>
               </Dialog.Panel>
             </Transition.Child>
