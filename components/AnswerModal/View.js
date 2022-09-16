@@ -69,10 +69,10 @@ export default function AnswerModalView({ isOpen, closeModal, handleAnswerChange
                     onChange={handleAnswerChange}
                     rows={8}
                     maxLength={280}
-                    className="w-full p-4 border-2 mb-1 border-brand-blue text-brand-black rounded-lg"
+                    className="mb-7 w-full p-4 border-2 border-brand-blue text-brand-black rounded-lg"
                     defaultValue=""
                   />
-                  <p className="mb-7 flex justify-center text-xs text-brand-red">Must be less than 280 characters</p>
+                  {/* <p className="mb-7 flex justify-center text-xs text-brand-red">Must be less than 280 characters</p> */}
                   <div className="flex justify-center mb-3">
                     <button
                       type="button"
