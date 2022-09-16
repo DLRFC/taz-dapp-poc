@@ -127,7 +127,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
             <h1>Z_NE</h1>
           </div>
         </div>
-
+        
         <a href="" className="pb-10 underline">
           About this app
         </a>

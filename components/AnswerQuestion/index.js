@@ -100,7 +100,8 @@ const AnswerQuestion = (props) => {
       const members = await subgraphs.getGroupIdentities(groupId)
       console.log('Members:', members)
       group.addMembers(members)
-      console.log('Group Root:', group.root)
+      const merkleTreeRoot = group.root
+      console.log('Group Root:', merkleTreeRoot)
 
       // Generate Proof
       const externalNullifier = Math.round(Math.random() * 10000000)
@@ -136,6 +137,7 @@ const AnswerQuestion = (props) => {
         messageId: newMessageId,
         messageContent,
         groupId,
+        merkleTreeRoot,
         externalNullifier,
         signal,
         nullifierHash,

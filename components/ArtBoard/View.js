@@ -90,7 +90,7 @@ const ArtBoardComponent = forwardRef(
           />
         </svg>
 
-        <div className="w-72 rounded-md border-2 border-gray-500 bg-white drop-shadow-lg">
+        <div className="w-full rounded-md border-2 border-gray-500 bg-white drop-shadow-lg">
           <div className=" p-3">
             <p className="text-sm text-black w-full font-bold">Select a tile to start drawing</p>
           </div>
@@ -99,12 +99,12 @@ const ArtBoardComponent = forwardRef(
               Your drawing will appear alongside other's. Select 1 tile at a time.
             </p>
           </div>
-          <div className="flex">
+          <div className="flex items-center justify-center">
             <div ref={canvasRef} id="ipfsURI">
-              <table className="mr-3 ml-5">
+              <table className="mr-3 ml-3">
                 <tbody>
                   {tileCounter.map((counter) => (
-                    <tr className="h-20" key={counter}>
+                    <tr className="w-full h-full" key={counter}>
                       {counter.map((id) => (
                         <GenerateTile
                           startDrawing={startDrawing}
@@ -130,7 +130,11 @@ const ArtBoardComponent = forwardRef(
 
           <div className="flex p-2">
             <div>
-              <button className="bg-brand-yellow font-bold text-xs p-2 rounded-full ml-2" type="submit" onClick={submit}>
+              <button
+                className="bg-brand-yellow font-bold text-xs p-2 rounded-full ml-2"
+                type="submit"
+                onClick={submit}
+              >
                 Submit tile
               </button>
             </div>

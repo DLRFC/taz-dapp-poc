@@ -22,6 +22,14 @@ export default function ArtGallery(props) {
     setOpen(false)
     setActiveImage(null)
   }
+
+  // const scrollToTop = () => {
+  //   window.scrollTo(0, 0)
+  // }
+
+  const scrollTop = () => {
+    window.scrollTo(0, 0)
+  }
   return (
     <ArtGalleryComponent
       open={open}
@@ -30,6 +38,7 @@ export default function ArtGallery(props) {
       setActiveImage={setActiveImage}
       handleClick={handleClick}
       images={images}
+      scrollTop={scrollTop}
     />
   )
 }
