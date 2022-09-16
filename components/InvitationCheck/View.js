@@ -139,10 +139,10 @@ const InvitationCheckComponent = ({
                             </button> */}
 
               <div className="flex items-center justify-center flex-col mb-5">
-                <select className="mb-3" onChange={(e) => setSelected(e.target.value)}>
+                {/* <select className="mb-3" onChange={(e) => setSelected(e.target.value)}>
                   <option value="environment">Back Camera</option>
                   <option value="user">Front Camera</option>
-                </select>
+                </select> */}
                 <QrReader
                   facingMode={selected}
                   delay={1000}
