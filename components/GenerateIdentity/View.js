@@ -42,11 +42,58 @@ export const GenerateIdentityComponent = ({ isLoading, onClose, loadingMessage, 
       <div className="z-10 mt-3 h-[586px] w-full py-3 px-4">
         {!imageUrl ? (
           <div>
-            <p className="px-3 font-bold text-xl text-brand-beige">You’ve been invited to an anonymous experience</p>
+            <p className="px-3 font-bold text-xl text-brand-beige">You've been invited to Join a Semaphore Group</p>
             <p className="mb-3 py-5 px-3 text-brand-beige opacity-70 text-sm">
-              Joining the Devcon VI semaphore group gives you access to an anonymous identity you can use in different
-              apps.
+              Accepting this invitation will generate a Semaphore ID that will be added to the following group.
             </p>
+            <div className="bg-brand-beige rounded-2xl mb-5 relative shadow-[rgba(0,_0,_0,_0.38)_0px_4px_10px] mb-14">
+              <div className="p-5 pb-20">
+                <p className="text-brand-red text-brand-h3">SEMAPHORE GROUP</p>
+                <p className="text-brand-gray2 text-brand-h1">DEVCON VI</p>
+                <div className="absolute right-0 bottom-0">
+                  <svg width="106" height="86" viewBox="0 0 106 86" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M13.5201 91.225C13.5201 91.225 20.8306 67.7076 21.5801 62.3652C21.713 61.4005 21.6043 58.5579 22.4293 57.7709C23.898 56.372 30.6703 57.8723 32.3535 58.0411C34.7137 58.2781 46.1702 58.1488 47.379 60.7437C48.8054 63.8003 49.162 67.7805 49.6455 71.0131C49.8359 72.2743 50.0595 73.5311 50.2137 74.7966C51.3274 100.123 50.9995 87.6003 52.3943 112.975"
+                      stroke="#BD5141"
+                      strokeWidth="2.79259"
+                      strokeMiterlimit="10"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M62.8325 97.0878C61.249 103.431 60.6278 106.844 59.3646 113.27C72.9421 113.663 81.0689 108.335 94.0762 100.775C93.922 99.5096 93.0738 90.7821 92.8834 89.5209C92.3999 86.2883 92.0433 82.3081 90.6169 79.2515C89.4081 76.6566 77.9517 76.786 75.5915 76.5489C73.9082 76.3801 67.1359 74.8798 65.6672 76.2787C64.8422 77.0657 64.951 79.9083 64.818 80.873C64.0685 86.2154 64.1441 91.8341 62.8325 97.0878Z"
+                      fill="#BD5141"
+                      stroke="#BD5141"
+                      strokeWidth="2.79259"
+                      strokeMiterlimit="10"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M22.6328 57.133C24.0652 54.4016 22.654 49.6517 22.9169 46.6388C23.6422 38.3247 25.1653 30.5346 26.8666 22.4219C27.1265 21.1922 30.5475 16.777 32.2307 17.8475C33.7115 18.7871 33.2461 23.5566 33.0769 24.8437C32.7566 27.2913 32.2307 29.8534 32.2307 32.3777C32.2307 35.727 31.3846 38.9092 31.3846 42.3337C31.3846 42.5132 31.3846 41.9748 31.3846 41.7956C31.3846 40.9882 31.2637 40.173 31.3846 39.3739C31.6294 37.7506 31.9104 35.9384 32.2307 34.2613C33.098 29.7113 35.2739 26.0414 37.3138 22.1529C37.7671 21.2855 40.0125 18.9352 41.2636 19.7311C43.1674 20.9407 41.5507 30.753 40.9825 32.9158C40.0699 36.3924 39.0514 39.918 38.441 43.4099C38.3654 43.8524 38.0511 44.5066 38.441 44.7555C39.9731 45.7288 43.1916 43.4448 43.8051 46.3698C44.343 48.9379 44.343 52.1475 43.8051 54.7112C43.5089 56.1213 42.3938 57.57 42.3938 59.0166"
+                      stroke="#BD5141"
+                      strokeWidth="2.79259"
+                      strokeMiterlimit="10"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M67.5581 75.6369C68.9905 72.9055 67.5793 68.1556 67.8422 65.1427C68.5675 56.8286 70.0905 49.0385 71.7919 40.9258C72.0518 39.6961 75.4728 35.2809 77.156 36.3514C78.6368 37.291 78.1714 42.0605 78.0022 43.3476C77.6819 45.7952 77.156 48.3573 77.156 50.8816C77.156 54.2309 76.3099 57.4131 76.3099 60.8376C76.3099 61.0171 76.3099 60.4787 76.3099 60.2995C76.3099 59.4921 76.189 58.6769 76.3099 57.8778C76.5547 56.2545 76.8357 54.4423 77.156 52.7652C78.0233 48.2153 80.1992 44.5453 82.2391 40.6568C82.6924 39.7894 84.9377 37.4391 86.1889 38.235C88.0927 39.4446 86.476 49.2569 85.9078 51.4197C84.9952 54.8963 83.9767 58.4219 83.3663 61.9138C83.2907 62.3563 82.9764 63.0105 83.3663 63.2594C84.8984 64.2327 88.1169 61.9487 88.7304 64.8737C89.2683 67.4418 89.2683 70.6514 88.7304 73.2151C88.4342 74.6252 87.3191 76.0739 87.3191 77.5205"
+                      fill="#BD5141"
+                    />
+                    <path
+                      d="M67.5581 75.6369C68.9905 72.9055 67.5793 68.1556 67.8422 65.1427C68.5675 56.8286 70.0905 49.0385 71.7919 40.9258C72.0518 39.6961 75.4728 35.2809 77.156 36.3514C78.6368 37.291 78.1714 42.0605 78.0022 43.3476C77.6819 45.7952 77.156 48.3573 77.156 50.8816C77.156 54.2309 76.3099 57.4131 76.3099 60.8376C76.3099 61.0171 76.3099 60.4787 76.3099 60.2995C76.3099 59.4921 76.189 58.6769 76.3099 57.8778C76.5547 56.2545 76.8357 54.4423 77.156 52.7652C78.0233 48.2153 80.1992 44.5453 82.2391 40.6568C82.6924 39.7894 84.9377 37.4391 86.1889 38.235C88.0927 39.4446 86.476 49.2569 85.9078 51.4197C84.9952 54.8963 83.9767 58.4219 83.3663 61.9138C83.2907 62.3563 82.9764 63.0105 83.3663 63.2594C84.8984 64.2327 88.1169 61.9487 88.7304 64.8737C89.2683 67.4418 89.2683 70.6514 88.7304 73.2151C88.4342 74.6252 87.3191 76.0739 87.3191 77.5205L67.5581 75.6369Z"
+                      stroke="#BD5141"
+                      strokeWidth="2.79259"
+                      strokeMiterlimit="10"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <circle cx="58" cy="58" r="56.26" stroke="#BD5141" strokeWidth="3.48" />
+                  </svg>
+                </div>
+              </div>
+            </div>
           </div>
         ) : (
           <div>
@@ -59,13 +106,26 @@ export const GenerateIdentityComponent = ({ isLoading, onClose, loadingMessage, 
 
         {imageUrl ? (
           <div className="flex items-center justify-center flex-col">
-            <a href={imageUrl} download="semaphore.jpg" className="flex items-center justify-center flex-col mb-5">
+            <a
+              href={imageUrl}
+              download="semaphore.jpg"
+              className="flex items-center justify-center flex-col mb-5 w-full"
+            >
               <img src={imageUrl} alt="img" className="mb-7 " />
-              <button className="px-3 text-[16px] text-brand-beige bg-brand-black border-brand-gray2 border-2  shadow-[-3px_3px_0px_0px_rgba(71,95,111)] rounded-full flex items-center justify-center">
-                <span className="mr-4">Take a screen shot</span>
-                <svg width="15px" height="12px" viewBox="0 0 15 12" xmlns="http://www.w3.org/2000/svg" fill="#EAE1DA">
-                  <path d="M0.889648 0.662C0.890858 0.486919 0.96031 0.319345 1.083 0.195478C1.20569 0.071612 1.37177 0.00139643 1.54536 0H13.454C13.8162 0 14.1097 0.296667 14.1097 0.662V11.338C14.1085 11.5131 14.039 11.6807 13.9163 11.8045C13.7936 11.9284 13.6275 11.9986 13.454 12H1.54536C1.37139 11.9998 1.20461 11.93 1.08166 11.8059C0.958711 11.6817 0.889648 11.5135 0.889648 11.338V0.662ZM2.21165 1.33333V10.6667H12.7877V1.33333H2.21165ZM7.49966 8C8.02558 8 8.52997 7.78929 8.90185 7.41421C9.27374 7.03914 9.48266 6.53043 9.48266 6C9.48266 5.46957 9.27374 4.96086 8.90185 4.58579C8.52997 4.21071 8.02558 4 7.49966 4C6.97373 4 6.46935 4.21071 6.09746 4.58579C5.72558 4.96086 5.51665 5.46957 5.51665 6C5.51665 6.53043 5.72558 7.03914 6.09746 7.41421C6.46935 7.78929 6.97373 8 7.49966 8ZM7.49966 9.33333C6.62312 9.33333 5.78247 8.98214 5.16267 8.35702C4.54286 7.7319 4.19465 6.88406 4.19465 6C4.19465 5.11595 4.54286 4.2681 5.16267 3.64298C5.78247 3.01786 6.62312 2.66667 7.49966 2.66667C8.3762 2.66667 9.21684 3.01786 9.83665 3.64298C10.4565 4.2681 10.8047 5.11595 10.8047 6C10.8047 6.88406 10.4565 7.7319 9.83665 8.35702C9.21684 8.98214 8.3762 9.33333 7.49966 9.33333ZM10.8047 2H12.1267V3.33333H10.8047V2Z" />
-                </svg>
+              <button className="w-full border-2 border-brand-gray2 bg-brand-yellow p-2 py-4 shadow-[-3px_3px_0px_0px_rgba(30,30,30)] text-brand-button">
+                <div className="flex items-center justify-center">
+                  <span className="mr-4">Take a Screenshoot</span>
+                  <svg
+                    className="left-[16.67%] right-[16.67%] top-[17.59%] bottom-[17.59%]"
+                    width="16px"
+                    height="16px"
+                    viewBox="0 0 16 16"
+                    fill="#BD5141"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M12.172 6.99968L6.808 1.63568L8.222 0.22168L16 7.99968L8.222 15.7777L6.808 14.3637L12.172 8.99968H0V6.99968H12.172Z" />
+                  </svg>
+                </div>
               </button>
             </a>
             <Link href="/experiences-page">
@@ -98,7 +158,7 @@ export const GenerateIdentityComponent = ({ isLoading, onClose, loadingMessage, 
                 'Generating Identity'
               ) : (
                 <div className="flex items-center justify-center">
-                  <span className="mr-4">Join the Group</span>
+                  <span className="mr-4">Accept</span>
                   <svg
                     className="left-[16.67%] right-[16.67%] top-[17.59%] bottom-[17.59%]"
                     width="16px"
@@ -112,6 +172,7 @@ export const GenerateIdentityComponent = ({ isLoading, onClose, loadingMessage, 
                 </div>
               )}
             </button>
+
             <p className="mb-3 py-5 px-3 text-brand-beige opacity-70 text-xs">
               Learn more about <a className="underline">Semaphore</a>
             </p>
