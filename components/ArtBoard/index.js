@@ -131,8 +131,7 @@ export default function artBoard() {
     }
 
     setIsLoading(true)
-    setLoadingMessage(`1. Generating zero knowledge proof \n 
-        2. Submitting message transaction`)
+    setLoadingMessage(`1. Generating zero knowledge proof`)
     const signal = 'proposal_1'
     const { fullProofTemp, solidityProof, nullifierHash, externalNullifier, merkleTreeRoot, groupId } =
       await generateFullProof(identityKey, signal)
@@ -140,6 +139,7 @@ export default function artBoard() {
     console.log('POSTING to /api/modifyCanvas:')
     console.log('tilesRef.current: ', tilesRef.current)
     console.log('canvasId.current: ', canvasId.current)
+    setLoadingMessage(`2. Submitting message transaction`)
 
     const response = await axios.post('/api/modifyCanvas', {
       updatedTiles: tilesRef.current,
