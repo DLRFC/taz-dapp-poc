@@ -2,8 +2,9 @@
 import dynamic from 'next/dynamic'
 import { Identity } from '@semaphore-protocol/identity'
 import { Group } from '@semaphore-protocol/group'
+
 const Sketch = dynamic(() => import('react-p5'), {
-  ssr: false,
+  ssr: false
 })
 const { generateProof } = require('@semaphore-protocol/proof')
 const { verifyProof } = require('@semaphore-protocol/proof')
@@ -40,28 +41,18 @@ export default function GenerativeArt() {
     const externalNullifier = 10
     const signal = 'This is my Signal'
 
-    const fullProof = await generateProof(
-      newIdentity,
-      group,
-      externalNullifier,
-      signal,
-      {
-        zkeyFilePath:
-          'https://www.trusted-setup-pse.org/semaphore/20/semaphore.zkey',
-        wasmFilePath:
-          'https://www.trusted-setup-pse.org/semaphore/20/semaphore.wasm',
-      },
-    )
+    const fullProof = await generateProof(newIdentity, group, externalNullifier, signal, {
+      zkeyFilePath: 'https://www.trusted-setup-pse.org/semaphore/20/semaphore.zkey',
+      wasmFilePath: 'https://www.trusted-setup-pse.org/semaphore/20/semaphore.wasm'
+    })
     console.log('Proof')
     console.log(fullProof)
 
     // Verify Proof Off Chain
     // Fetch Verification Key
-    const verificationKey = await fetch(
-      'https://www.trusted-setup-pse.org/semaphore/20/semaphore.json',
-    ).then(function (res) {
-      return res.json()
-    })
+    const verificationKey = await fetch('https://www.trusted-setup-pse.org/semaphore/20/semaphore.json').then((res) =>
+      res.json()
+    )
 
     const res = await verifyProof(verificationKey, fullProof)
     console.log('Verification')
@@ -76,6 +67,7 @@ export default function GenerativeArt() {
       <Sketch setup={setup} draw={draw} />
 
       <button
+        type="button"
         className="bg-blue-300 text-gray-700 font-bold p-5 mt-3 rounded-2xl"
         onClick={handleGenerateProof}
       >
@@ -83,12 +75,12 @@ export default function GenerativeArt() {
       </button>
       <h1>Proof</h1>
       <h1>Address</h1>
-      <input className="bg-gray-200"></input>
-      <button className="bg-blue-300 text-gray-700 font-bold p-5 mt-3 rounded-2xl">
+      <input className="bg-gray-200" />
+      <button type="button" className="bg-blue-300 text-gray-700 font-bold p-5 mt-3 rounded-2xl">
         Submit
       </button>
       <h1>Submited</h1>
-      <button className="bg-blue-300 text-gray-700 font-bold p-5 mt-3 rounded-2xl">
+      <button type="button" className="bg-blue-300 text-gray-700 font-bold p-5 mt-3 rounded-2xl">
         Mint Nft
       </button>
       <h1>Minted!</h1>

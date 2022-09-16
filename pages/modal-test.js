@@ -1,11 +1,9 @@
 import { AnimatePresence } from 'framer-motion'
 import React, { useState } from 'react'
-// import Modal from './Modal/Modal'
+
 import LoadingModal from '../components/LoadingModal/Index.js'
 import useGetMembers from '../hooks/useGetMembers.js'
 import { useGenerateProof } from '../hooks/useGenerateProof.js'
-
-// import './style.css'
 
 export default function ModalTest() {
   const [showModal, setShowModal] = useState(false)
@@ -27,8 +25,7 @@ export default function ModalTest() {
 
   const handleGenerateProof = () => {
     console.log(generateFullProof)
-    const [fullProof, solidityProof, proofNullifierHash, signal] =
-      generateFullProof('secret-message')
+    const [fullProof, solidityProof, proofNullifierHash, signal] = generateFullProof('secret-message')
     console.log(fullProof)
     console.log(solidityProof)
     console.log(proofNullifierHash)
@@ -36,23 +33,16 @@ export default function ModalTest() {
   }
   return (
     <div className="container flex items-center justify-center flex-col">
-      <AnimatePresence
-        initial={false}
-        exitBeforeEnter
-        onExitComplete={() => null}
-      >
+      <AnimatePresence initial={false} exitBeforeEnter onExitComplete={() => null}>
         {showModal && <LoadingModal onClose={() => setShowModal(false)} />}
       </AnimatePresence>
-      <button
-        className="button my-10 p-3 bg-gray-300"
-        onClick={() => setShowModal(true)}
-      >
+      <button type="button" className="button my-10 p-3 bg-gray-300" onClick={() => setShowModal(true)}>
         Show Modal
       </button>
-      <button className="p-3 bg-gray-300 mt-5" onClick={handleGetMembersHook}>
+      <button type="button" className="p-3 bg-gray-300 mt-5" onClick={handleGetMembersHook}>
         Test GetMembers Hook
       </button>
-      <button className="p-3 bg-gray-300 mt-5" onClick={handleGenerateProof}>
+      <button type="button" className="p-3 bg-gray-300 mt-5" onClick={handleGenerateProof}>
         Generate Proof
       </button>
     </div>

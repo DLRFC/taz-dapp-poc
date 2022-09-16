@@ -107,7 +107,9 @@ export default function Questions({ questionsProp }) {
 
   return (
     <>
-      <div className="sticky top-[600px] z-30 flex justify-between mx-2 min-w-[200px]">
+
+      <div className="sticky top-[400px] z-30 flex justify-between mx-2 min-w-[200px]">
+
         <button type="button" onClick={scrollToTop}>
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="32" height="32" rx="16" fill="#1E1E1E" />

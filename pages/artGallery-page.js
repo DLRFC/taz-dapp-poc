@@ -5,19 +5,20 @@ import { Subgraphs } from '../hooks/subgraphs'
 //   ssr: false,
 // })
 
-export default function ArtGalleryPage(props) {
+export default function ArtGalleryPage({ images }) {
   return (
     <div>
-      <ArtGallery images={props.images} />
+      <ArtGallery images={images} />
     </div>
   )
 }
 
+// eslint-disable-next-line no-unused-vars
 export async function getServerSideProps(context) {
   const subgraphs = new Subgraphs()
   const images = await subgraphs.getMintedTokens()
 
   return {
-    props: { images },
+    props: { images }
   }
 }

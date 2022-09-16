@@ -1,24 +1,23 @@
-import AnswerQuestion from '../../components/AnswerQuestion'
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
+
+import AnswerQuestion from '../../components/AnswerQuestion'
 
 export default function AnswerQuestionPage() {
-  const [localIdentity, setLocalIdentity] = useState()
+  const [localIdentity, setLocalIdentity] = useState('')
   const router = useRouter()
   const { messageId } = router.query
 
   useEffect(() => {
     // setter
+    // Can use localIdentity as value? instead of identityKey?
     let identityKey = ''
-    console.log(window)
-    console.log(window.localStorage)
     if (identityKey === '') {
       identityKey = window.localStorage.getItem('identity')
     }
     setLocalIdentity(identityKey)
-    console.log(identityKey)
-  })
+  }, [localIdentity])
 
   return (
     <div>
@@ -26,11 +25,12 @@ export default function AnswerQuestionPage() {
         <AnswerQuestion messageId={messageId} />
       ) : (
         <>
-          <h1 className="flex items-center justify-center p-10 text-2xl">
-            First Generate an Identity
-          </h1>
+          <h1 className="flex items-center justify-center p-10 text-2xl">First Generate an Identity</h1>
           <Link href="/">
-            <button className="bg-brand-beige2 w-full p-2 border-2 border-brand-gray2 shadow-[-3px_3px_0px_0px_rgba(71,95,111)] mb-8 px-10">
+            <button
+              type="button"
+              className="bg-brand-beige2 w-full p-2 border-2 border-brand-gray2 shadow-[-3px_3px_0px_0px_rgba(71,95,111)] mb-8 px-10"
+            >
               Go to Home
             </button>
           </Link>
@@ -40,8 +40,9 @@ export default function AnswerQuestionPage() {
   )
 }
 
+// eslint-disable-next-line no-unused-vars
 export async function getServerSideProps(context) {
   return {
-    props: {},
+    props: {}
   }
 }
