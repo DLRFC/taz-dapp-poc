@@ -5,7 +5,7 @@ import Header from '../Header/index.js'
 
 // Page 3 will Generate Identity and Join Group
 export const GenerateIdentityComponent = ({ isLoading, onClose, loadingMessage, imageUrl, handleJoinButton }) => (
-  <div className="p-4 font-sans bg-brand-blue">
+  <div className="p-4 font-sans bg-brand-blue h-[900px]">
     {/* {isLoading ? (
         <div className="absolute top-[0px] left-[0px] z-20">
           <LoadingModal onClose={onClose} loadingMessage={loadingMessage} />

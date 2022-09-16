@@ -2,6 +2,7 @@ import { Identity } from '@semaphore-protocol/identity'
 import { Group } from '@semaphore-protocol/group'
 import { useEffect, useState } from 'react'
 // import { Subgraph } from '@semaphore-protocol/subgraph'
+import { ethers } from 'ethers'
 import { Subgraphs } from './subgraphs'
 
 const { generateProof, verifyProof, packToSolidityProof } = require('@semaphore-protocol/proof')
@@ -23,10 +24,11 @@ export const useGenerateProof = () => {
     console.log('IdentityCommitment', identity.generateCommitment().toString())
     console.log(members)
     // -----Changed for testing
-    // group.addMembers(members)
-    group.addMember(identity.generateCommitment().toString())
+    group.addMembers(members)
+    console.log('members', members)
+    // group.addMember(identity.generateCommitment().toString())
 
-    const merkleTreeRoot = group.root
+    const merkleTreeRoot = group.root.toString()
     console.log('group root', merkleTreeRoot)
 
     // Adapt Signal

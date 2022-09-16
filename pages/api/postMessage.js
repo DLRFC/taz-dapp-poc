@@ -2,12 +2,13 @@ import { ethers } from 'ethers'
 import dotenv from 'dotenv'
 // import Semaphore from '../utils/Semaphore.json'
 import TazMessage from '../utils/TazMessage.json'
+import { TAZMESSAGE_CONTRACT } from '../../config/goerli.json'
 
 dotenv.config({ path: '../../.env.local' })
 const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL)
 const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider)
 const tazMessageAbi = TazMessage.abi
-const tazMessageAddress = process.env.TAZ_MESSAGE_CONTRACT_ADDRESS
+const tazMessageAddress = TAZMESSAGE_CONTRACT
 
 // console.log("tazMessageAddress", tazMessageAddress)
 // console.log("tazMessageAbi", TazMessage)
@@ -15,9 +16,12 @@ const tazMessageAddress = process.env.TAZ_MESSAGE_CONTRACT_ADDRESS
 const tazMessageContract = new ethers.Contract(tazMessageAddress, tazMessageAbi, signer)
 
 export default async function handler(req, res) {
+  console.log('api called')
   if (res.method === 'GET') {
     res.status(405).json('GET not allowed')
   } else if (req.method === 'POST') {
+    console.log('Post APi called')
+
     const {
       parentMessageId,
       messageId,

@@ -41,7 +41,8 @@ const Questions = () => {
     // TO DO handle
     const messageContent = question
     const messageId = ethers.utils.id(messageContent)
-    const signal = messageId
+    const signal = messageId.slice(35)
+    console.log('signal', signal)
     const { fullProofTemp, solidityProof, nullifierHash, externalNullifier, merkleTreeRoot, groupId } =
       await generateFullProof(identityKey, signal)
 
@@ -57,7 +58,7 @@ const Questions = () => {
       solidityProof
     }
     console.log('body', body)
-    alert(`Submit question: ${question}`)
+    // alert(`Submit question: ${question}`)
 
     await axios.post('/api/postMessage', body, {
       timeout: API_REQUEST_TIMEOUT
