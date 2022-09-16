@@ -9,22 +9,22 @@ import Link from 'next/link'
 const QuestionsBoardComponent = ({ questions, clearIdentity }) => {
   return (
     <div className="grid">
-      <div className="flex col-start-1 row-start-1 fixed">
-        <div className="absolute top-[130px] -left-[51px]">
-          <RedCircle />
-        </div>
-        <div className="absolute top-[295px] left-[279px]">
-          <YellowCircle />
-        </div>
-        <div className="absolute top-[320px] left-[175px]">
+      <div className="col-start-1 row-start-1 fixed">
+        <div className="absolute top-[175px] left-[380px]">
           <BunnyQuestion />
         </div>
-        <div className="absolute top-[590px] -left-[10px]">
+        <div className="absolute top-[218px] -left-[51px]">
+          <YellowCircle />
+        </div>
+        <div className="absolute top-[360px] left-[320px]">
           <BlueEllipse />
+        </div>
+        <div className="absolute top-[659px] left-[9px]">
+          <RedCircle />
         </div>
       </div>
 
-      <div className="flex col-start-1 row-start-1 px-6 py-8">
+      <div className="col-start-1 row-start-1 px-6 py-8">
         <Link href="/experiences-page">
           <div className="relative inline-block bg-black ml-1 mt-1 mb-12 px-1 text-xl text-brand-beige2 cursor-pointer">
             <BackArrow />
@@ -32,15 +32,16 @@ const QuestionsBoardComponent = ({ questions, clearIdentity }) => {
           </div>
         </Link>
         <div>
-          <h2 className="relative inline-block ml-1 mb-2 px-1 text-4xl text-black">ASK AND ANSWER</h2>
+          <h2 className="relative inline-block ml-1 mb-2 text-4xl text-black">ASK AND ANSWER</h2>
         </div>
         <div>
-          <h2 className="relative inline-block ml-1 mb-2 px-1 text-4xl text-black">QUESTIONS FREELY</h2>
+          <h2 className="relative inline-block ml-1 mb-2 text-4xl text-black">QUESTIONS FREELY</h2>
         </div>
         <div>
-          <h3 className="relative inline-block ml-1 mb-2 px-1 py-5 text-gl text-black">
-            More details about what makes this anonymous
-          </h3>
+          <h3 className="relative inline-block ml-1 text-l text-black font-extrabold">More details about what</h3>
+        </div>
+        <div>
+          <h3 className="relative inline-block ml-1 mb-4 text-l text-black">makes this anonymous</h3>
         </div>
 
         <div className="z-0  min-w-[200px] relative divide-y overflow-y-auto rounded-md border-2 border-brand-blue bg-white drop-shadow-lg">

@@ -10,22 +10,22 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
   return (
     <div>
       <div className="grid">
-        <div className="flex col-start-1 row-start-1 fixed">
+        <div className="col-start-1 row-start-1 fixed">
           <div className="absolute top-[130px] -left-[51px]">
             <RedCircle />
           </div>
           <div className="absolute top-[295px] left-[279px]">
             <YellowCircle />
           </div>
-          <div className="absolute top-[320px] left-[175px]">
-            <ShadowBunny />
-          </div>
           <div className="absolute top-[590px] -left-[10px]">
             <BlueEllipse />
           </div>
+          <div className="absolute top-[320px] left-[175px]">
+            <ShadowBunny />
+          </div>
         </div>
 
-        <div className="flex col-start-1 row-start-1 px-6 py-8 font-sans text-brand-brown">
+        <div className="col-start-1 row-start-1 px-6 py-8 font-sans text-brand-brown">
           <div>
             <h1 className="relative inline-block bg-black ml-1 mb-12 px-1 text-brand-h2 text-brand-beige2">TAZ</h1>
           </div>
@@ -128,19 +128,13 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
           </div>
         </div>
 
-        <a
-          href="https://pse-team.notion.site/About-the-TAZ-app-1ae2793046414468b56472f43725961e"
-          className="pb-10 underline"
-        >
+        <a href="" className="pb-10 underline">
           About this app
         </a>
-        <a href="http://semaphore.appliedzkp.org/ ------" className="pb-10 underline">
-          About Semaphore
+        <a href="" className="pb-10 underline">
+          Build with Semaphore
         </a>
-        <a href="esp.ethereum.foundation/semaphore-grants" className="pb-10 underline">
-          Semaphore Grants Round
-        </a>
-        <a href="https://appliedzkp.org/ ----------------" className="pb-12 underline">
+        <a href="" className="pb-10 underline">
           Privacy & Scaling Explorations
         </a>
         <div>
@@ -148,9 +142,9 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
             Disconnect ID
           </button>
         </div>
-        <p className="text-center text-brand-beige text-brand-2xs mt-20">
+        <p className="text-center text-brand-beige text-brand-2xs mt-12">
           &#8220;The password is 🤝🏽🔭🧑🏽‍🚀✨🤌🏽&#8221;&nbsp;&ndash;&nbsp;
-          <Link href="https://appliedzkp.org/ ----------------">
+          <Link href="">
             <a className="underline mt-3">@PrivacyScaling</a>
           </Link>
         </p>
