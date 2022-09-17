@@ -8,7 +8,7 @@ import Link from 'next/link'
 
 const QuestionsBoardComponent = ({ questions, clearIdentity }) => {
   return (
-    <div className="grid">
+    <div className="grid mb-20">
       <div className="col-start-1 row-start-1 fixed">
         <div className="absolute top-[185px] left-[380px]">
           <BunnyQuestion />
@@ -55,15 +55,6 @@ const QuestionsBoardComponent = ({ questions, clearIdentity }) => {
               </div>
             </Link>
           ))}
-        </div>
-        <div className="flex items-center justify-center  flex-col m-6 text-brand-2xs text-brand-gray">
-          <button className="mb-3 text-lg" onClick={clearIdentity}>
-            Logout
-          </button>
-          {/* &#8220;who am I?&#8221;&nbsp;&ndash;&nbsp; */}
-          <a href="" className="underline mt-3">
-            @PrivacyScaling
-          </a>
         </div>
       </div>
     </div>

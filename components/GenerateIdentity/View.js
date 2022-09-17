@@ -18,26 +18,6 @@ export const GenerateIdentityComponent = ({ isLoading, onClose, loadingMessage, 
     ) : null}
     <Header />
 
-    <svg
-      className="absolute -left-2 top-[370px]"
-      width="69"
-      height="100"
-      viewBox="0 0 69 100"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <ellipse cx="18.8812" cy="50" rx="49.8812" ry="50" fill="#BD5141" />
-    </svg>
-    <svg
-      className="absolute right-[0px] top-[642px]"
-      width="121"
-      height="160"
-      viewBox="0 0 121 160"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <ellipse cx="80.6202" cy="80" rx="80.6202" ry="80" fill="#EFAD5F" />
-    </svg>
     <div className="flex flex-col items-center rounded-md px-3 z-10">
       <div className="z-10 mt-3 h-[586px] w-full py-3 px-4">
         {!imageUrl ? (

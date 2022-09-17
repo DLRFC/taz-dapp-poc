@@ -143,12 +143,6 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
             Disconnect ID
           </button>
         </div>
-        <p className="text-center text-brand-beige text-brand-2xs mt-20">
-          &#8220;The password is 🤝🏽🔭🧑🏽‍🚀✨🤌🏽&#8221;&nbsp;&ndash;&nbsp;
-          <a href="https://twitter.com/PrivacyScaling" className="underline mt-3">
-            @PrivacyScaling
-          </a>
-        </p>
       </div>
     </div>
   )
