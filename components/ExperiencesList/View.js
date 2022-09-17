@@ -119,25 +119,28 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
         </div>
       </div>
 
-      <div className="relative flex items-left flex-col p-12 bg-black text-brand-yellow mt-8">
+      <div className="relative flex items-left flex-col p-12 bg-black text-brand-yellow mt-12">
         <div className="py-10 px-5 flex items-end justify-between bg-black">
-          <div className="transform -ml-6 text-xl tracking-wide text-brand-beige">
+          <div className="transform -ml-6 text-xl tracking-widest text-brand-beige">
             <h1>TEMP_RARY</h1>
             <h1 className="bg-brand-beige px-1 text-brand-black">AN_NYMOUS</h1>
             <h1>Z_NE</h1>
           </div>
         </div>
 
-        <a href="" className="pb-10 underline">
+        <a
+          href="https://pse-team.notion.site/About-the-TAZ-app-1ae2793046414468b56472f43725961e"
+          className="pb-10 underline"
+        >
           About this app
         </a>
-        <a href="" className="pb-10 underline">
+        <a href="http://semaphore.appliedzkp.org/" className="pb-10 underline">
           About Semaphore
         </a>
-        <a href="" className="pb-10 underline">
+        <a href="esp.ethereum.foundation/semaphore-grants" className="pb-10 underline">
           Semaphore Grants Round
         </a>
-        <a href="" className="pb-10 underline">
+        <a href="https://appliedzkp.org/" className="pb-14 underline">
           Privacy & Scaling Explorations
         </a>
         <div>
@@ -145,11 +148,11 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
             Disconnect ID
           </button>
         </div>
-        <p className="text-center text-brand-beige text-brand-2xs mt-12">
+        <p className="text-center text-brand-beige text-brand-2xs mt-20">
           &#8220;The password is 🤝🏽🔭🧑🏽‍🚀✨🤌🏽&#8221;&nbsp;&ndash;&nbsp;
-          <Link href="">
-            <a className="underline mt-3">@PrivacyScaling</a>
-          </Link>
+          <a href="https://twitter.com/PrivacyScaling" className="underline mt-3">
+            @PrivacyScaling
+          </a>
         </p>
       </div>
     </div>
