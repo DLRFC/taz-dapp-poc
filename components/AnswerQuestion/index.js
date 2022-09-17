@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import axios from 'axios'
+import { ethers } from 'ethers'
+import { AnimatePresence } from 'framer-motion'
+
 import { Identity } from '@semaphore-protocol/identity'
 import { Group } from '@semaphore-protocol/group'
-import { useRouter } from 'next/router'
-import { ethers } from 'ethers'
+
 import LoadingModal from '../LoadingModal/Index.js'
-import { AnimatePresence } from 'framer-motion'
 import { Subgraphs } from '../../hooks/subgraphs'
 import { GROUP_ID, API_REQUEST_TIMEOUT, TAZMESSAGE_SUBGRAPH } from '../../config/goerli.json'
 
@@ -26,7 +28,7 @@ const AnswerQuestion = (props) => {
 
   const router = useRouter()
 
-  const messageId = props.messageId
+  const { messageId } = props
 
   const [question, setQuestion] = useState([])
 
@@ -118,10 +120,8 @@ const AnswerQuestion = (props) => {
       // Verify Proof Off Chain
       // Fetch Verification Key
       // Verifing Zero Knwoladge proof off Chain
-      const verificationKey = await fetch('https://www.trusted-setup-pse.org/semaphore/16/semaphore.json').then(
-        function (res) {
-          return res.json()
-        }
+      const verificationKey = await fetch('https://www.trusted-setup-pse.org/semaphore/16/semaphore.json').then((res) =>
+        res.json()
       )
 
       const res = await verifyProof(verificationKey, fullProof)
@@ -152,7 +152,7 @@ const AnswerQuestion = (props) => {
       console.log(response.data)
 
       // go to the answer page to see submitted answer
-      router.push('/answers-board-page/' + messageId)
+      router.push(`/answers-board-page/${messageId}`)
     } catch (error) {
       setIsLoading(false)
 
@@ -166,11 +166,11 @@ const AnswerQuestion = (props) => {
 
   return (
     <div className="p-4 font-sans bg-brand-beige">
-      {isLoading ? (
+      {isLoading && (
         <AnimatePresence initial={false} exitBeforeEnter onExitComplete={() => null} className="z-20">
           <LoadingModal onClose={onClose} loadingMessage={loadingMessage} loadingProof={loadingProof} />
         </AnimatePresence>
-      ) : null}
+      )}
       <svg
         className="absolute -left-2 top-[370px]"
         width="69"
@@ -194,7 +194,7 @@ const AnswerQuestion = (props) => {
 
       <div className="flex flex-col items-center overflow-hidden rounded-md border-2 border-brand-gray shadow-xl">
         <div className="flex w-full justify-between border-b-2 border-brand-gray bg-brand-beige2 p-3">
-          <Link href={'/answers-board-page/' + messageId}>
+          <Link href={`/answers-board-page/${messageId}`}>
             <svg
               className="cursor-pointer scale-[100%]"
               width="30"
