@@ -16,7 +16,6 @@
         "unnamedComponents": ["arrow-function", "function-expression"]
       }
     ],
-    "react/jsx-no-bind": 1,
     "react/prop-types": "off",
     "no-underscore-dangle": "off",
     "no-alert": "off",
