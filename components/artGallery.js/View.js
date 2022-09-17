@@ -1,7 +1,5 @@
-// import React, { useEffect, useState } from 'react'
-// import { images } from './data'
 import Link from 'next/link'
-import Button from '../Button'
+
 import Modal from './Modal'
 import BackArrow from '../ArrowNavigators/BackArrow'
 
