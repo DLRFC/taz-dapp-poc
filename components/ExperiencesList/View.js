@@ -26,16 +26,13 @@ const ExperiencesListComponent = ({ clearIdentity }) => (
 
       <div className="col-start-1 row-start-1 px-6 py-8 font-sans text-brand-brown">
         <div>
-          <h1 className="relative inline-block bg-black ml-1 mb-12 px-1 text-brand-h2 text-brand-beige2">TAZ</h1>
+          <h1 className="relative inline-block bg-black ml-3 mb-12 px-1 text-xl text-brand-beige2">TAZ</h1>
         </div>
         <div>
-          <h2 className="relative inline-block bg-black ml-1 mb-2 px-1 text-4xl text-brand-beige2">BEING ANONYMOUS</h2>
+          <h2 className="relative inline-block bg-black ml-3 mb-2 px-1 text-4xl text-brand-beige2">BE ANONYMOUS</h2>
         </div>
         <div>
-          <h2 className="relative inline-block bg-black ml-1 mb-2 px-1 text-4xl text-brand-beige2">LETS US BE</h2>
-        </div>
-        <div>
-          <h2 className="relative inline-block bg-black ml-1 mb-16 px-1 text-4xl text-brand-beige2">OURSELVES</h2>
+          <h2 className="relative inline-block bg-black ml-3 mb-12 px-1 text-4xl text-brand-beige2"> BE YOURSELf</h2>
         </div>
 
         <div className="relative flex flex-col items-center overflow-hidden rounded-md border-2 border-brand-blue shadow-xl bg-white mb-8">
@@ -56,7 +53,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => (
           <Link href="artGallery-page">
             <div className="flex w-full flex-row items-center border-b-2 border-brand-blue py-3 px-2 cursor-pointer">
               <div className="w-[90%]">
-                <p className="py-2 font-bold">Gallery</p>
+                <p className="py-2 font-bold">Devcon VI Gallery</p>
                 <p className="opacity-[70%]">Create on collaborative canvases</p>
               </div>
               <SelectorArrow />
