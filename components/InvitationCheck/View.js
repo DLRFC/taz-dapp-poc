@@ -1,5 +1,7 @@
 import QrReader from 'react-qr-reader'
 import { AnimatePresence } from 'framer-motion'
+import { RiArrowRightLine, RiUploadLine } from 'react-icons/ri'
+
 import LoadingModal from '../LoadingModal/Index'
 import Header from '../Header'
 
@@ -18,6 +20,7 @@ const InvitationCheckComponent = ({
   setSelected,
   selected,
   handleScan,
+  inviteCodeChangeHandler,
   setInvitation,
   data,
   validate,
@@ -28,11 +31,11 @@ const InvitationCheckComponent = ({
   console.log('change')
   return (
     <div className="p-4 font-sans bg-brand-blue">
-      {isLoading ? (
+      {isLoading && (
         <AnimatePresence initial={false} exitBeforeEnter onExitComplete={() => null} className="z-20">
           <LoadingModal onClose={onClose} loadingMessage={loadingMessage} />
         </AnimatePresence>
-      ) : null}
+      )}
       <Header />
       {!isSignUp ? (
         <div className="flex flex-col items-center overflow-hidden rounded-md px-3 text-brand-gray2">
@@ -46,20 +49,11 @@ const InvitationCheckComponent = ({
                   This is an anonymous, members-only experience
                 </p>
                 <button
-                  className="text-brand-button bg-brand-yellow w-full py-4 border-2 border-brand-gray2 shadow-[-5px_5px_0px_0px_rgba(30,30,30)] text-brand-button flex items-center justify-center"
+                  className="text-brand-button bg-brand-yellow flex items-center justify-center w-full py-4 border-2 border-brand-gray2 shadow-[-5px_5px_0px_0px_rgba(30,30,30)]"
                   onClick={handleSignUpButton}
                 >
                   <span className="mr-4">Yes, I was invited</span>
-                  <svg
-                    className="left-[16.67%] right-[16.67%] top-[17.59%] bottom-[17.59%]"
-                    width="16px"
-                    height="16px"
-                    viewBox="0 0 16 16"
-                    fill="#BD5141"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M12.172 6.99968L6.808 1.63568L8.222 0.22168L16 7.99968L8.222 15.7777L6.808 14.3637L12.172 8.99968H0V6.99968H12.172Z" />
-                  </svg>
+                  <RiArrowRightLine size={24} fill="#BD5141" />
                 </button>
                 <p className="py-5 px-3 text-brand-info text-brand-beige opacity-70">
                   If not, visit a TAZ location to grab an invitation card.
@@ -78,16 +72,7 @@ const InvitationCheckComponent = ({
                   ) : (
                     <div className="flex items-center justify-center">
                       <span className="mr-4">Upload Sempahore ID</span>
-                      <svg
-                        className="left-[16.67%] right-[16.67%] top-[17.59%] bottom-[17.59%]"
-                        width="18px"
-                        height="19px"
-                        viewBox="0 0 18 19"
-                        fill="#EAE1DA"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path d="M0 17H18V19H0V17ZM10 3.828V15H8V3.828L1.929 9.9L0.515 8.486L9 0L17.485 8.485L16.071 9.899L10 3.83V3.828Z" />
-                      </svg>
+                      <RiUploadLine size={24} fill="#EAE1DA" />
                     </div>
                   )}
                 </button>
@@ -139,43 +124,24 @@ const InvitationCheckComponent = ({
 
                 <input
                   className="border-solid border-2 border-brand-beige w-full mb-3 py-2 rounded-sm bg-[#F0EBE8] bg-opacity-10 max-w-[80%] text-brand-beige text-xl text-center"
+                  type="text"
+                  placeholder="test-15"
+                  maxLength="6"
                   value={invitation}
-                  onChange={(e) => setInvitation(e.target.value)}
+                  onChange={inviteCodeChangeHandler}
                 />
                 <p className="text-brand-beige mb-3 px-1 text-sm opacity-70">or type the 6 digits code here</p>
               </div>
 
-              {invitation ? (
+              {invitation && invitation.length > 5 && (
                 <button
                   className="w-full border-2 border-brand-gray2 bg-brand-yellow p-2 py-4 shadow-[-3px_3px_0px_0px_rgba(30,30,30)] text-sm flex items-center justify-center"
                   onClick={validate}
                 >
                   <span className="mr-4">Next</span>
-                  <svg
-                    className="left-[16.67%] right-[16.67%] top-[17.59%] bottom-[17.59%]"
-                    width="16px"
-                    height="16px"
-                    viewBox="0 0 16 16"
-                    fill="#BD5141"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M12.172 6.99968L6.808 1.63568L8.222 0.22168L16 7.99968L8.222 15.7777L6.808 14.3637L12.172 8.99968H0V6.99968H12.172Z" />
-                  </svg>
+                  <RiArrowRightLine size={24} fill="#BD5141" />
                 </button>
-              ) : null}
-              {/* <button
-                                className="bg-brand-beige2 w-full p-2 border-2 border-brand-gray2 shadow-[-3px_3px_0px_0px_rgba(71,95,111)] mb-[180px]"
-                                onClick={validate}
-                            >
-                                Submit
-                            </button>
-
-                            <button
-                                className="bg-brand-beige2 w-full p-2 border-2 border-brand-gray2 shadow-[-3px_3px_0px_0px_rgba(71,95,111)] mb-20"
-                                onClick={handleSignUpButton}
-                            >
-                                Back
-                            </button> */}
+              )}
             </div>
           </div>
         </div>

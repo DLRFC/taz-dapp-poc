@@ -1,6 +1,5 @@
-// import React, { useEffect, useState } from 'react'
-// import { images } from './data'
 import Link from 'next/link'
+
 import Modal from './Modal'
 import BackTAZ from '../ArrowNavigators/BackTAZ'
 
