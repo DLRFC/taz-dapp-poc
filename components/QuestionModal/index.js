@@ -1,4 +1,3 @@
-import { useRef } from 'react'
 import QuestionModalView from './View'
 
 const QuestionModal = ({ isOpen, closeModal, handleQuestionChange, handleSubmit }) => (

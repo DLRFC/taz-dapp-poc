@@ -92,7 +92,7 @@ const AskQuestion = () => {
 
       // Go to the next page
       setLoadingMessage('3. Transaction successfuly submitted!')
-      router.push('/questions-page')
+      router.push('/questions')
     } catch (error) {
       setIsLoading(false)
       console.log('error', error)

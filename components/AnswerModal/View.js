@@ -1,12 +1,12 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useRef } from 'react'
 
-export default function QuestionModalView({ isOpen, closeModal, handleQuestionChange, handleSubmit }) {
-  const questionTextRef = useRef(null)
+export default function AnswerModalView({ isOpen, closeModal, handleAnswerChange, handleSubmit }) {
+  const answerTextRef = useRef(null)
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" initialFocus={questionTextRef} className="relative z-40" onClose={closeModal}>
+      <Dialog as="div" initialFocus={answerTextRef} className="relative z-40" onClose={closeModal}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -62,11 +62,11 @@ export default function QuestionModalView({ isOpen, closeModal, handleQuestionCh
                 </div>
                 <div className="p-4">
                   <Dialog.Title as="h3" className="text-brand-brown mb-8">
-                    Type your question
+                    Type your response
                   </Dialog.Title>
                   <textarea
-                    ref={questionTextRef}
-                    onChange={handleQuestionChange}
+                    ref={answerTextRef}
+                    onChange={handleAnswerChange}
                     rows={8}
                     maxLength={280}
                     className="w-full p-4 border-2 mb-1 border-brand-blue text-brand-black rounded-lg"
@@ -79,7 +79,7 @@ export default function QuestionModalView({ isOpen, closeModal, handleQuestionCh
                       className="inline-flex justify-center rounded-full border border-transparent bg-brand-black px-12 py-1 text-sm font-medium text-brand-beige hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-beige focus-visible:ring-offset-2"
                       onClick={handleSubmit}
                     >
-                      Ask anonymously
+                      Answer anonymously
                     </button>
                   </div>
                 </div>

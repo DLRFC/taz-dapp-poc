@@ -4,10 +4,11 @@
     "browser": true,
     "es6": true
   },
-  "extends": ["airbnb", "prettier"], // Using airbnb rather than airbnb-base for its inclusion of React rules
+  "extends": ["next/core-web-vitals", "airbnb-base", "prettier"], // Using airbnb rather than airbnb-base for its inclusion of React rules Use "plugin:@typescript-eslint/recommended" when converted to TS
   "rules": {
-    "react/react-in-jsx-scope": "off", // suppress errors for missing 'import React' in files
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }], // allow jsx syntax in js files (for next.js project)
+    "react/jsx-props-no-spreading": "off",
+    "react/react-in-jsx-scope": "off", // Remove need to import React in files
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }], // allow jsx syntax in js files (for next.js project)
     "react/function-component-definition": [
       "error",
       {
@@ -15,7 +16,8 @@
         "unnamedComponents": ["arrow-function", "function-expression"]
       }
     ],
-    "react/jsx-no-bind": "off",
+    "react/jsx-no-bind": 1,
+    "react/prop-types": "off",
     "no-underscore-dangle": "off",
     "no-alert": "off",
     "no-nested-ternary": "off",
@@ -24,45 +26,19 @@
     "import/no-relative-packages": "off",
     "no-bitwise": "off",
     "no-restricted-syntax": "off",
+    "no-param-reassign": "off",
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
     "no-console": ["warn", { "allow": ["info", "warn", "error"] }]
-  },
-  "overrides": [
-    // Overrides for Typescript
-    {
-      "files": ["**/*.ts", "**/*.tsx"],
-      "env": {
-        "browser": true,
-        "es6": true
-      },
-      "extends": ["airbnb-base", "airbnb-typescript/base", "prettier"],
-      "parser": "@typescript-eslint/parser",
-      "parserOptions": {
-        "ecmaVersion": 6,
-        "sourceType": "module",
-        "project": ["./tsconfig.json"]
-      },
-      "plugins": ["@typescript-eslint"],
-      "rules": {
-        "no-underscore-dangle": "off",
-        "no-alert": "off",
-        "no-nested-ternary": "off",
-        "import/no-extraneous-dependencies": "off",
-        "import/extensions": "off",
-        "import/no-relative-packages": "off",
-        "no-bitwise": "off",
-        "no-restricted-syntax": "off",
-        "no-console": ["warn", { "allow": ["info", "warn", "error"] }],
-        "@typescript-eslint/lines-between-class-members": "off",
-        "no-param-reassign": "off",
-        "@typescript-eslint/naming-convention": [
-          "error",
-          {
-            "selector": "variable",
-            "format": ["camelCase", "PascalCase", "UPPER_CASE", "snake_case"],
-            "leadingUnderscore": "allow"
-          }
-        ]
-      }
-    }
-  ]
+
+    // "@typescript-eslint/lines-between-class-members": "off",
+    // "@typescript-eslint/no-unused-vars": "off", // Warn once conversion to TS
+    // "@typescript-eslint/naming-convention": [
+    //   "error",
+    //   {
+    //     "selector": "variable",
+    //     "format": ["camelCase", "PascalCase", "UPPER_CASE", "snake_case"],
+    //     "leadingUnderscore": "allow"
+    //   }
+    // ]
+  }
 }

@@ -1,19 +1,24 @@
 import { useState, useEffect } from 'react'
+import { router } from 'next'
 import axios from 'axios'
 import { ethers } from 'ethers'
 import QuestionsBoard from '../../components/QuestionsBoard'
 import QuestionModal from '../../components/QuestionModal'
 import { useGenerateProof } from '../../hooks/useGenerateProof'
-import LoadingModal from '../../components/LoadingModal/Index.js'
+import ProcessingModal from '../../components/ProcessingModal'
+import { Subgraphs } from '../../hooks/subgraphs'
+import { TAZMESSAGE_SUBGRAPH } from '../../config/goerli.json'
 
-const { API_REQUEST_TIMEOUT, GROUP_ID } = require('../../config/goerli.json')
+const { API_REQUEST_TIMEOUT } = require('../../config/goerli.json')
 
-const Questions = () => {
+export default function Questions({ questionsProp }) {
   const [generateFullProof] = useGenerateProof()
-  const [isOpen, setIsOpen] = useState(false)
+  const [questionModalIsOpen, setQuestionModalIsOpen] = useState(false)
+  const [processingModalIsOpen, setProcessingModalIsOpen] = useState(false)
   const [question, setQuestion] = useState()
-  // const [isMember, setIsMember] = useState(false)
   const [identityKey, setIdentityKey] = useState('')
+  const [questions, setQuestions] = useState(questionsProp)
+  const [steps, setSteps] = useState([])
 
   useEffect(() => {
     let identityKeyTemp = ''
@@ -24,12 +29,20 @@ const Questions = () => {
     }
   })
 
-  function closeModal() {
-    setIsOpen(false)
+  const closeQuestionModal = () => {
+    setQuestionModalIsOpen(false)
   }
 
-  function openModal() {
-    setIsOpen(true)
+  const openQuestionModal = () => {
+    setQuestionModalIsOpen(true)
+  }
+
+  const closeProcessingModal = () => {
+    setProcessingModalIsOpen(false)
+  }
+
+  const openProcessingModal = () => {
+    setProcessingModalIsOpen(true)
   }
 
   const handleQuestionChange = (event) => {
@@ -38,13 +51,20 @@ const Questions = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    // TO DO handle
+
+    closeQuestionModal()
+    openProcessingModal()
+
+    setSteps(['Generating zero knowledge proof'])
+
     const messageContent = question
     const messageId = ethers.utils.id(messageContent)
     const signal = messageId.slice(35)
-    console.log('signal', signal)
+    console.log('QUESTIONS PAGE | signal', signal)
     const { fullProofTemp, solidityProof, nullifierHash, externalNullifier, merkleTreeRoot, groupId } =
       await generateFullProof(identityKey, signal)
+
+    setSteps(['Generated zero knowledge proof', 'Submitting message transaction'])
 
     const body = {
       parentMessageId: '',
@@ -57,12 +77,28 @@ const Questions = () => {
       externalNullifier,
       solidityProof
     }
-    console.log('body', body)
-    // alert(`Submit question: ${question}`)
+    console.log('QUESTIONS PAGE | body', body)
 
     await axios.post('/api/postMessage', body, {
       timeout: API_REQUEST_TIMEOUT
     })
+
+    setSteps(['Generated zero knowledge proof', 'Submitted message transaction', 'Answer successfully added'])
+
+    // Solution below adds the new record to state, as opposed to refreshing.
+    // const updatedQuestions = [
+    //   {
+    //     id: Math.round(Math.random() * 100000000000).toString(),
+    //     messageId,
+    //     messageContent
+    //   }
+    // ].concat(questions)
+    // console.log('QUESTIONS PAGE | udpatedQuestions', updatedQuestions)
+    // setQuestions(updatedQuestions)
+
+    router.reload(window.location.pathname)
+
+    setTimeout(closeProcessingModal, 2000)
   }
 
   const scrollToTop = () => {
@@ -71,8 +107,10 @@ const Questions = () => {
 
   return (
     <>
+
       <div className="sticky top-[400px] z-30 flex justify-between mx-2 min-w-[200px]">
-        <button onClick={scrollToTop}>
+
+        <button type="button" onClick={scrollToTop}>
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="32" height="32" rx="16" fill="#1E1E1E" />
             <path
@@ -83,21 +121,63 @@ const Questions = () => {
         </button>
         <button
           type="button"
-          onClick={openModal}
+          onClick={openQuestionModal}
           className="rounded-full bg-brand-yellow px-4 py-2 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
         >
           Ask a question
         </button>
       </div>
+      <ProcessingModal isOpen={processingModalIsOpen} closeModal={closeProcessingModal} steps={steps} />
       <QuestionModal
-        isOpen={isOpen}
-        closeModal={closeModal}
+        isOpen={questionModalIsOpen}
+        closeModal={closeQuestionModal}
         handleQuestionChange={handleQuestionChange}
         handleSubmit={handleSubmit}
       />
-      <QuestionsBoard />
+      <QuestionsBoard questions={questions} />
     </>
   )
 }
 
-export default Questions
+export async function getServerSideProps(context) {
+  // const subgraphs = new Subgraphs()
+  // const images = await subgraphs.getMintedTokens()
+
+  const fetchQuestions = async () => {
+    // Construct query for subgraph
+    const postData = {
+      query: `
+      {
+        messageAddeds(
+          orderBy: timestamp
+          where: {parentMessageId: ""}
+          orderDirection: desc
+        ) {
+          id
+          messageContent
+          messageId
+          parentMessageId
+        }
+      }
+      `
+    }
+    // Fetch data
+
+    let data = []
+    try {
+      const result = await axios.post(TAZMESSAGE_SUBGRAPH, postData)
+      data = result.data.data.messageAddeds
+    } catch (err) {
+      console.log('Error fetching subgraph data: ', err)
+    }
+    return data
+  }
+
+  const questions = await fetchQuestions()
+
+  // console.log('QUESTIONS PAGE | fetched questions', questions)
+
+  return {
+    props: { questionsProp: questions }
+  }
+}
