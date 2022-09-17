@@ -13,7 +13,7 @@ const AnswersBoard = (props) => {
   const [question, setQuestion] = useState(props.question)
 
   return (
-    <div className="grid">
+    <div className="grid mb-20">
       <div className="col-start-1 row-start-1 fixed">
         <div className="absolute top-[150px] -left-[30px]">
           <BlueEllipse />
