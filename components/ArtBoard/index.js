@@ -3,7 +3,6 @@ import { useScreenshot } from 'use-react-screenshot'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useGenerateProof } from '../../hooks/useGenerateProof'
-import Button from '../Button'
 import ArtBoardComponent from './View'
 
 export default function artBoard() {

@@ -1,9 +1,7 @@
-// import React, { useEffect, useState } from 'react'
-// import { images } from './data'
 import Link from 'next/link'
-import Button from '../Button'
+
 import Modal from './Modal'
-import BackArrow from '../ArrowNavigators/BackArrow'
+import BackTAZ from '../ArrowNavigators/BackTAZ'
 
 export default function ArtGalleryComponent({
   open,
@@ -40,10 +38,12 @@ export default function ArtGalleryComponent({
       </div>
       <div className="flex flex-col items-center rounded-md px-3 mb-[0px]">
         <div className="z-10 mt-3 w-full py-3 px-4">
-          <div className="flex max-w-[76px] max-h-[32px] bg-black ml-1 mt-1 mb-12 px-1 text-xl text-brand-beige2 cursor-pointer shadow-[2.0px_3.0px_3.0px_rgba(0,0,0,0.38)]">
-            <BackArrow />
-            <h1>TAZ</h1>
-          </div>
+          <Link href="/experiences-page">
+            <div className="flex max-w-[76px] max-h-[32px] bg-black ml-3 mt-1 mb-12 px-1 text-xl text-brand-beige2 cursor-pointer shadow-[2.0px_3.0px_3.0px_rgba(0,0,0,0.38)]">
+              <BackTAZ />
+              <h1>TAZ</h1>
+            </div>
+          </Link>
           <p className="px-3 text-xl font-bold">WELCOME TO THE DEVCON XI GALLERY</p>
           <p className="mb-3 py-5 px-3 text-brand-info text-[#1E1E1E] opacity-70 leading-[21px]">
             Every canvas has 9 anonymous contributors. There are 5 active canvases at one time.

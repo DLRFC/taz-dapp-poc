@@ -1,5 +1,6 @@
-import AnswerBoard from '../../components/AnswersBoard'
 import { useRouter } from 'next/router'
+
+import AnswerBoard from '../../components/AnswersBoard'
 
 export default function AnswersBoardPage() {
   const router = useRouter()
@@ -12,8 +13,9 @@ export default function AnswersBoardPage() {
   )
 }
 
+// eslint-disable-next-line no-unused-vars
 export async function getServerSideProps(context) {
   return {
-    props: {},
+    props: {}
   }
 }

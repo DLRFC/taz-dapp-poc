@@ -95,6 +95,7 @@ const DrawingHtml = forwardRef(
             <div>
               <button
                 id="black"
+                aria-label="black color picker"
                 className="w-4 h-4 m-1 bg-black rounded-full"
                 type="submit"
                 onClick={(e) => handleColorSelect(e)}
@@ -103,6 +104,7 @@ const DrawingHtml = forwardRef(
             <div>
               <button
                 id="red-600"
+                aria-label="red color picker"
                 className="w-4 h-4 m-1 bg-red-600 rounded-full"
                 type="submit"
                 onClick={(e) => handleColorSelect(e)}
@@ -111,6 +113,7 @@ const DrawingHtml = forwardRef(
             <div>
               <button
                 id="orange-500"
+                aria-label="orange color picker"
                 className="w-4 h-4 m-1 bg-orange-500 rounded-full"
                 type="submit"
                 onClick={(e) => handleColorSelect(e)}
@@ -119,6 +122,7 @@ const DrawingHtml = forwardRef(
             <div>
               <button
                 id="yellow-300"
+                aria-label="yellow color picker"
                 className="w-4 h-4 m-1 bg-yellow-300 rounded-full"
                 type="submit"
                 onClick={(e) => handleColorSelect(e)}
@@ -127,6 +131,7 @@ const DrawingHtml = forwardRef(
             <div>
               <button
                 id="green-600"
+                aria-label="green color picker"
                 className="w-4 h-4 m-1 bg-green-600 rounded-full"
                 type="submit"
                 onClick={(e) => handleColorSelect(e)}
@@ -135,6 +140,7 @@ const DrawingHtml = forwardRef(
             <div>
               <button
                 id="blue-600"
+                aria-label="blue color picker"
                 className="w-4 h-4 m-1 bg-blue-600 rounded-full"
                 type="submit"
                 onClick={(e) => handleColorSelect(e)}
@@ -143,6 +149,7 @@ const DrawingHtml = forwardRef(
             <div>
               <button
                 id="purple-600"
+                aria-label="purple color picker"
                 className="w-4 h-4 m-1 bg-purple-600 rounded-full"
                 type="submit"
                 onClick={(e) => handleColorSelect(e)}
@@ -151,6 +158,7 @@ const DrawingHtml = forwardRef(
             <div>
               <button
                 id="white"
+                aria-label="white color picker"
                 className="w-4 h-4 m-1 bg-white border border-black rounded-full"
                 type="submit"
                 onClick={(e) => handleColorSelect(e)}
