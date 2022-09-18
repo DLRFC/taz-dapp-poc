@@ -44,7 +44,7 @@ const QuestionsBoardComponent = ({ questions, clearIdentity }) => (
         <h3 className="relative inline-block ml-3 mb-4 text-lg text-brand-blue tracking-wide">makes this anonymous</h3>
       </div>
 
-      <div className="z-0  min-w-[200px] relative divide-y overflow-y-auto rounded-md border-2 border-brand-blue bg-white drop-shadow-lg">
+      <div className="z-0  min-w-[200px] relative divide-y overflow-y-auto rounded-md border-2 border-brand-blue bg-white drop-shadow-lg mb-20">
         {questions.map((question) => (
           <Link href={`/answers/${question.messageId}`} key={question.id}>
             <div className="flex w-full flex-row items-center border-brand-blue p-4 cursor-pointer">
@@ -53,14 +53,6 @@ const QuestionsBoardComponent = ({ questions, clearIdentity }) => (
             </div>
           </Link>
         ))}
-      </div>
-      <div className="flex items-center justify-center  flex-col m-6 text-brand-2xs text-brand-gray">
-        <button className="mb-3 text-lg" onClick={clearIdentity}>
-          Logout
-        </button>
-        <a href="" className="underline mt-3">
-          @PrivacyScaling
-        </a>
       </div>
     </div>
   </div>
