@@ -1,7 +1,8 @@
 //SPDX-License-Identifier: MIT
 pragma solidity 0.8.13;
 
-import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
 
 interface ISemaphore {
     function addMember(uint256 groupId, uint256 identityCommitment) external;
@@ -16,28 +17,45 @@ interface ISemaphore {
     ) external;
 }
 
-contract TazMessage is Ownable {
+contract TazMessage is AccessControl {
+    using Counters for Counters.Counter;
+
+    bytes32 public constant TAZ_ADMIN_ROLE = keccak256("TAZ_ADMIN_ROLE");
+    bytes32 public constant REVIEWER_ROLE = keccak256("REVIEWER_ROLE");
 
     // Stores the address of the Semaphore contract used for verifications
     ISemaphore public semaContract;
 
-    // Nested mappiing that stores the members (by group) that
-    // have been added to the Semaphore contract through this contract
-    mapping(uint256 => mapping(uint256 => bool)) internal groups;
-
     // Emitted when a member is added to a group on the Semaphore contract
     event MemberAdded(uint256 indexed groupId, uint256 identityCommitment);
 
-    event MessageAdded(string parentMessageId, string messageId, string messageContent);
+    event MessageAdded(string parentMessageId, string messageId, uint256 messageNum, string messageContent);
+
+    event ViolationAdded(uint256 messageNum, address reviewer);
+
+    // Stores the members (by group) that have been added
+    // to the Semaphore contract through this contract
+    mapping(uint256 => mapping(uint256 => bool)) internal groups;
+
+    // Used for UI-friendly message reference
+    Counters.Counter private _messageNumCounter;
 
     constructor(ISemaphore semaContractAddr) {
         semaContract = semaContractAddr;
+
+        _setRoleAdmin(TAZ_ADMIN_ROLE, TAZ_ADMIN_ROLE);
+        _setRoleAdmin(REVIEWER_ROLE, TAZ_ADMIN_ROLE);
+
+        _grantRole(TAZ_ADMIN_ROLE, msg.sender);
+
+        // Skip zero
+        _messageNumCounter.increment();
     }
 
-    // This method exists to allow for the group admin to be updated on the Semaphore contract
-    // when this contract is updated and deployed to a new address, so that a new Semaphore
-    // group doesn't have to be created.
-    function updateSemaphoreGroupAdmin(uint256 groupId, address newAdmin) external onlyOwner {
+    // Exists to allow for the group admin to be updated on the Semaphore
+    // contract when this contract is updated and deployed to a new address,
+    // so that a new Semaphore group doesn't have to be created.
+    function updateSemaphoreGroupAdmin(uint256 groupId, address newAdmin) external onlyRole(TAZ_ADMIN_ROLE) {
         semaContract.updateGroupAdmin(groupId, newAdmin);
     }
 
@@ -46,8 +64,9 @@ contract TazMessage is Ownable {
         return groups[groupId][identityCommitment];
     }
 
-    // Adds a member to a group on the Semaphore contract, and tracks members added through this contract
-    function addMember(uint256 groupId, uint256 identityCommitment) external onlyOwner {
+    // Adds a member to a group on the Semaphore contract, and tracks members
+    // added through this contract
+    function addMember(uint256 groupId, uint256 identityCommitment) external onlyRole(TAZ_ADMIN_ROLE) {
         // Check that the member has not already been added
         require(!memberExists(groupId, identityCommitment), "Member already added to group");
 
@@ -68,12 +87,18 @@ contract TazMessage is Ownable {
         bytes32 signal,
         uint256 nullifierHash,
         uint256 externalNullifier,
-        uint256[8] calldata proof) external {
+        uint256[8] calldata proof) external returns (uint256) {
+        uint256 messageNum = _messageNumCounter.current();
 
         // Verify proof with Sempahore contract
         semaContract.verifyProof(groupId, merkleTreeRoot, signal, nullifierHash, externalNullifier, proof);
 
-        emit MessageAdded("", messageId, messageContent);
+        // Increment for next use
+        _messageNumCounter.increment();
+
+        emit MessageAdded("", messageId, messageNum, messageContent);
+
+        return messageNum;
     }
 
     // Verifies a proof and replies to an existing message
@@ -86,7 +111,8 @@ contract TazMessage is Ownable {
         bytes32 signal,
         uint256 nullifierHash,
         uint256 externalNullifier,
-        uint256[8] calldata proof) external {
+        uint256[8] calldata proof) external returns (uint256) {
+        uint256 messageNum = _messageNumCounter.current();
 
         // Require a valid parentMessageId
         require(bytes(parentMessageId).length > 0, "Invalid ID for parent message");
@@ -94,7 +120,28 @@ contract TazMessage is Ownable {
         // Verify proof with Sempahore contract
         semaContract.verifyProof(groupId, merkleTreeRoot, signal, nullifierHash, externalNullifier, proof);
 
-        emit MessageAdded(parentMessageId, messageId, messageContent);
+        // Increment for next use
+        _messageNumCounter.increment();
+
+        emit MessageAdded(parentMessageId, messageId, _messageNumCounter.current(), messageContent);
+
+        return messageNum;
+    }
+
+    function addReviewers(address[] calldata reviewers) external onlyRole(TAZ_ADMIN_ROLE) {
+        for(uint256 i = 0; i < reviewers.length; ++i) {
+            grantRole(REVIEWER_ROLE, reviewers[i]);
+        }
+    }
+
+    function removeReviewers(address[] calldata reviewers) external onlyRole(TAZ_ADMIN_ROLE) {
+        for(uint256 i = 0; i < reviewers.length; ++i) {
+            revokeRole(REVIEWER_ROLE, reviewers[i]);
+        }
+    }
+
+    function addViolation(uint256 messageNum) external onlyRole(REVIEWER_ROLE) {
+        emit ViolationAdded(messageNum, msg.sender);
     }
 }
 
