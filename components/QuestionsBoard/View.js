@@ -10,7 +10,7 @@ import BackTAZ from '../ArrowNavigators/BackTAZ'
 const QuestionsBoardComponent = ({ questions, clearIdentity }) => (
   <div className="grid">
     <div className="col-start-1 row-start-1 fixed">
-      <div className="absolute top-[175px] left-[380px]">
+      <div className="absolute top-[175px] left-[340px]">
         <BunnyQuestion />
       </div>
       <div className="absolute top-[218px] -left-[51px]">
