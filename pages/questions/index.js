@@ -141,7 +141,8 @@ export default function Questions({ questionsProp }) {
   }, [fact])
 
   return (
-    <>
+    <div className="min-h-[700px]">
+
       <div className="sticky top-[400px] z-30 flex justify-between mx-2 min-w-[200px]">
         <button type="button" onClick={scrollToTop}>
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -168,7 +169,7 @@ export default function Questions({ questionsProp }) {
         handleSubmit={handleSubmit}
       />
       <QuestionsBoard questions={questions} />
-    </>
+    </div>
   )
 }
 
