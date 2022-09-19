@@ -25,10 +25,10 @@ Initial steps required when deploying the contract locally:
   - Add a group to the local-forked-Goerli Semaphore contract with the new TazMessage contract address as the group admin
   - Add a member to that group on the Semaphore contract so that membership can be verified
 */
-const DEPLOY_NEW_TAZ_MESSAGE_CONTRACT = true // Generally always do this on local fork
+const DEPLOY_NEW_TAZ_MESSAGE_CONTRACT = false // Generally always do this on local fork
 const CREATE_NEW_GROUP = true // Will fail if group id already exists
 const ADD_MEMBER = true // Will fail if member has already been added to the group
-const TEST_REVIEWERS_AND_VIOLATIONS = true
+const TEST_REVIEWERS_AND_VIOLATIONS = false
 
 describe('TazMessage', () => {
   let contract
@@ -86,14 +86,14 @@ describe('TazMessage', () => {
 
   if (ADD_MEMBER) {
     describe('# addMember', () => {
-      it('Should fail to add a member if caller is not an admin', async () => {
-        const identity = new Identity(identitySeed)
-        const identityCommitment = identity.generateCommitment()
-        const tx = contract.connect(signer2).addMember(GROUP_ID, identityCommitment)
-        await expect(tx).to.be.revertedWith(
-          `AccessControl: account ${signer2.address.toLowerCase()} is missing role ${TAZ_ADMIN_ROLE_HASH}`
-        )
-      })
+      // it('Should fail to add a member if caller is not an admin', async () => {
+      //   const identity = new Identity(identitySeed)
+      //   const identityCommitment = identity.generateCommitment()
+      //   const tx = contract.connect(signer2).addMember(GROUP_ID, identityCommitment)
+      //   await expect(tx).to.be.revertedWith(
+      //     `AccessControl: account ${signer2.address.toLowerCase()} is missing role ${TAZ_ADMIN_ROLE_HASH}`
+      //   )
+      // })
 
       it('Should add a member', async () => {
         const identity = new Identity(identitySeed)
@@ -107,134 +107,134 @@ describe('TazMessage', () => {
         await expect(tx).to.emit(contract, 'MemberAdded').withArgs(GROUP_ID, identityCommitment)
       })
 
-      it('Should fail to add a member if the member has already been added', async () => {
-        const identity = new Identity(identitySeed)
-        const identityCommitment = identity.generateCommitment()
-        const tx = contract.connect(signer1).addMember(GROUP_ID, identityCommitment)
-        await expect(tx).to.be.revertedWith('Member already added to group')
-      })
+      // it('Should fail to add a member if the member has already been added', async () => {
+      //   const identity = new Identity(identitySeed)
+      //   const identityCommitment = identity.generateCommitment()
+      //   const tx = contract.connect(signer1).addMember(GROUP_ID, identityCommitment)
+      //   await expect(tx).to.be.revertedWith('Member already added to group')
+      // })
     })
   }
 
-  describe('# addMessage', () => {
-    it('Should add a message', async () => {
-      const messageContent = 'What is the name of this Dapp?'
-      const messageId = ethers.utils.id(messageContent)
-      const signal = messageId.slice(35)
-      const proofElements = await run('createProof', {
-        identitySeed,
-        groupId: GROUP_ID,
-        signal,
-        externalNullifier: Math.round(Math.random() * 1000000000),
-        logs: false
-      })
-      /*
-      console.log('messageId:', messageId)
-      console.log('messageContent:', messageContent)
-      console.log('proofElements.groupId:', proofElements.groupId)
-      console.log('proofElements.merkleTreeRoot:', proofElements.merkleTreeRoot)
-      console.log('proofElements.signalBytes32:', proofElements.signalBytes32)
-      console.log('proofElements.nullifierHash:', proofElements.nullifierHash)
-      console.log('proofElements.externalNullifier:', proofElements.externalNullifier)
-      console.log('proofElements.solidityProof:', proofElements.solidityProof)
-      */
-      const tx = await contract
-        .connect(signer1)
-        .addMessage(
-          messageId,
-          messageContent,
-          proofElements.groupId,
-          proofElements.merkleTreeRoot,
-          proofElements.signalBytes32,
-          proofElements.nullifierHash,
-          proofElements.externalNullifier,
-          proofElements.solidityProof,
-          { gasLimit: 1500000 }
-        )
+  // describe('# addMessage', () => {
+  //   it('Should add a message', async () => {
+  //     const messageContent = 'What is the name of this Dapp?'
+  //     const messageId = ethers.utils.id(messageContent)
+  //     const signal = messageId.slice(35)
+  //     const proofElements = await run('createProof', {
+  //       identitySeed,
+  //       groupId: GROUP_ID,
+  //       signal,
+  //       externalNullifier: Math.round(Math.random() * 1000000000),
+  //       logs: false
+  //     })
+  //     /*
+  //     console.log('messageId:', messageId)
+  //     console.log('messageContent:', messageContent)
+  //     console.log('proofElements.groupId:', proofElements.groupId)
+  //     console.log('proofElements.merkleTreeRoot:', proofElements.merkleTreeRoot)
+  //     console.log('proofElements.signalBytes32:', proofElements.signalBytes32)
+  //     console.log('proofElements.nullifierHash:', proofElements.nullifierHash)
+  //     console.log('proofElements.externalNullifier:', proofElements.externalNullifier)
+  //     console.log('proofElements.solidityProof:', proofElements.solidityProof)
+  //     */
+  //     const tx = await contract
+  //       .connect(signer1)
+  //       .addMessage(
+  //         messageId,
+  //         messageContent,
+  //         proofElements.groupId,
+  //         proofElements.merkleTreeRoot,
+  //         proofElements.signalBytes32,
+  //         proofElements.nullifierHash,
+  //         proofElements.externalNullifier,
+  //         proofElements.solidityProof,
+  //         { gasLimit: 1500000 }
+  //       )
 
-      await expect(tx).to.emit(contract, 'MessageAdded').withArgs('', messageId, anyValue, messageContent)
+  //     await expect(tx).to.emit(contract, 'MessageAdded').withArgs('', messageId, anyValue, messageContent)
 
-      /*
-      // Method below allows for testing individual arguments separately. Same result.
-      const receipt = await tx.wait()
-      const interfaceMessageAdded = new ethers.utils.Interface([
-        'event MessageAdded(string parentMessageId, string messageId, uint256 messageNum, string messageContent)'
-      ])
-      const { data } = receipt.logs[1]
-      const { topics } = receipt.logs[1]
-      const event = interfaceMessageAdded.decodeEventLog('MessageAdded', data, topics)
-      expect(event.parentMessageId).to.equal('')
-      expect(event.messageId).to.equal(messageId)
-      expect(event.messageContent).to.equal(messageContent)
-      */
-    })
-  })
+  //     /*
+  //     // Method below allows for testing individual arguments separately. Same result.
+  //     const receipt = await tx.wait()
+  //     const interfaceMessageAdded = new ethers.utils.Interface([
+  //       'event MessageAdded(string parentMessageId, string messageId, uint256 messageNum, string messageContent)'
+  //     ])
+  //     const { data } = receipt.logs[1]
+  //     const { topics } = receipt.logs[1]
+  //     const event = interfaceMessageAdded.decodeEventLog('MessageAdded', data, topics)
+  //     expect(event.parentMessageId).to.equal('')
+  //     expect(event.messageId).to.equal(messageId)
+  //     expect(event.messageContent).to.equal(messageContent)
+  //     */
+  //   })
+  // })
 
-  describe('# replyToMessage', () => {
-    it('Should reply to a message', async () => {
-      const messageContent = 'The name of the Dapp is TAZ'
-      const messageId = ethers.utils.id(messageContent)
-      const parentMessageId = ethers.utils.id('What is the name of this Dapp?')
-      const signal = messageId.slice(35)
+  // describe('# replyToMessage', () => {
+  //   it('Should reply to a message', async () => {
+  //     const messageContent = 'The name of the Dapp is TAZ'
+  //     const messageId = ethers.utils.id(messageContent)
+  //     const parentMessageId = ethers.utils.id('What is the name of this Dapp?')
+  //     const signal = messageId.slice(35)
 
-      const proofElements = await run('createProof', {
-        identitySeed,
-        groupId: GROUP_ID,
-        signal,
-        externalNullifier: Math.round(Math.random() * 1000000000),
-        logs: false
-      })
+  //     const proofElements = await run('createProof', {
+  //       identitySeed,
+  //       groupId: GROUP_ID,
+  //       signal,
+  //       externalNullifier: Math.round(Math.random() * 1000000000),
+  //       logs: false
+  //     })
 
-      const tx = contract
-        .connect(signer1)
-        .replyToMessage(
-          parentMessageId,
-          messageId,
-          messageContent,
-          proofElements.groupId,
-          proofElements.merkleTreeRoot,
-          proofElements.signalBytes32,
-          proofElements.nullifierHash,
-          proofElements.externalNullifier,
-          proofElements.solidityProof,
-          { gasLimit: 1500000 }
-        )
+  //     const tx = contract
+  //       .connect(signer1)
+  //       .replyToMessage(
+  //         parentMessageId,
+  //         messageId,
+  //         messageContent,
+  //         proofElements.groupId,
+  //         proofElements.merkleTreeRoot,
+  //         proofElements.signalBytes32,
+  //         proofElements.nullifierHash,
+  //         proofElements.externalNullifier,
+  //         proofElements.solidityProof,
+  //         { gasLimit: 1500000 }
+  //       )
 
-      await expect(tx).to.emit(contract, 'MessageAdded').withArgs(parentMessageId, messageId, anyValue, messageContent)
-    })
+  //     await expect(tx).to.emit(contract, 'MessageAdded').withArgs(parentMessageId, messageId, anyValue, messageContent)
+  //   })
 
-    it('Should fail to reply to message when parentMessageId is empty', async () => {
-      const messageContent = 'The name of the Dapp is unknowable'
-      const messageId = ethers.utils.id(messageContent)
-      const parentMessageId = ''
-      const signal = messageId.slice(35)
+  //   it('Should fail to reply to message when parentMessageId is empty', async () => {
+  //     const messageContent = 'The name of the Dapp is unknowable'
+  //     const messageId = ethers.utils.id(messageContent)
+  //     const parentMessageId = ''
+  //     const signal = messageId.slice(35)
 
-      const proofElements = await run('createProof', {
-        identitySeed,
-        groupId: GROUP_ID,
-        signal,
-        externalNullifier: Math.round(Math.random() * 1000000000),
-        logs: false
-      })
+  //     const proofElements = await run('createProof', {
+  //       identitySeed,
+  //       groupId: GROUP_ID,
+  //       signal,
+  //       externalNullifier: Math.round(Math.random() * 1000000000),
+  //       logs: false
+  //     })
 
-      const tx = contract
-        .connect(signer1)
-        .replyToMessage(
-          parentMessageId,
-          messageId,
-          messageContent,
-          proofElements.groupId,
-          proofElements.merkleTreeRoot,
-          proofElements.signalBytes32,
-          proofElements.nullifierHash,
-          proofElements.externalNullifier,
-          proofElements.solidityProof,
-          { gasLimit: 1500000 }
-        )
+  //     const tx = contract
+  //       .connect(signer1)
+  //       .replyToMessage(
+  //         parentMessageId,
+  //         messageId,
+  //         messageContent,
+  //         proofElements.groupId,
+  //         proofElements.merkleTreeRoot,
+  //         proofElements.signalBytes32,
+  //         proofElements.nullifierHash,
+  //         proofElements.externalNullifier,
+  //         proofElements.solidityProof,
+  //         { gasLimit: 1500000 }
+  //       )
 
-      await expect(tx).to.be.revertedWith('Invalid ID for parent message')
-    })
-  })
+  //     await expect(tx).to.be.revertedWith('Invalid ID for parent message')
+  //   })
+  // })
 
   if (TEST_REVIEWERS_AND_VIOLATIONS) {
     describe('# addReviewers', () => {
