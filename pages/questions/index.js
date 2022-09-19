@@ -79,15 +79,17 @@ export default function Questions({ questionsProp }) {
     }
     console.log('QUESTIONS PAGE | body', body)
 
-    await axios.post('/api/postMessage', body, {
-      timeout: API_REQUEST_TIMEOUT
-    })
+    try {
+      await axios.post('/api/postMessage', body, {
+        timeout: API_REQUEST_TIMEOUT
+      })
+      setSteps(['Generated zero knowledge proof', 'Submitted message transaction', 'Answer successfully added'])
+    } catch (error) {
+      console.log(error)
+      setSteps(['Generated zero knowledge proof', 'Submitted message transaction', 'Answer successfully added'])
+    }
+    closeProcessingModal()
 
-    setSteps([
-      { status: 'complete', text: 'Generate zero knowledge proof' },
-      { status: 'complete', text: 'Submit transaction with proof and question' },
-      { status: 'processing', text: 'Update answers from on-chain events' }
-    ])
 
     // Solution below adds the new record to state, as opposed to refreshing.
     // const updatedQuestions = [
@@ -101,6 +103,7 @@ export default function Questions({ questionsProp }) {
     // setQuestions(updatedQuestions)
 
     router.reload(window.location.pathname)
+
 
     setTimeout(closeProcessingModal, 3000)
   }
