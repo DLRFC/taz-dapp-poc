@@ -3,6 +3,7 @@ import { Accordion, AccordionHeader, AccordionBody } from '@material-tailwind/re
 
 import Link from 'next/link'
 
+// import { textAlign } from 'html2canvas/dist/types/css/property-descriptors/text-align'
 import SelectorArrow from '../ArrowNavigators/SelectorArrow'
 import DropDownArrow from '../ArrowNavigators/DropDownArrow'
 import RedCircle from '../svgElements/RedCircle'
@@ -185,16 +186,17 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
           href="https://pse-team.notion.site/About-the-TAZ-app-1ae2793046414468b56472f43725961e"
           target="_blank"
           className="pb-10 underline"
+          rel="noreferrer"
         >
           About this app
         </a>
-        <a href="http://semaphore.appliedzkp.org/" target="_blank" className="pb-10 underline">
+        <a href="http://semaphore.appliedzkp.org/" target="_blank" className="pb-10 underline" rel="noreferrer">
           About Semaphore
         </a>
         <a href="esp.ethereum.foundation/semaphore-grants" target="_blank" className="pb-10 underline">
           Semaphore Grants Round
         </a>
-        <a href="https://appliedzkp.org/" target="_blank" className="pb-14 underline">
+        <a href="https://appliedzkp.org/" target="_blank" className="pb-14 underline" rel="noreferrer">
           Privacy & Scaling Explorations
         </a>
         <div>
