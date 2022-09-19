@@ -86,15 +86,23 @@ export default function Answers(props) {
     }
     console.log('ANSWERS PAGE | body', body)
 
-    await axios.post('/api/postMessage', body, {
-      timeout: API_REQUEST_TIMEOUT
-    })
+    try {
+      await axios.post('/api/postMessage', body, {
+        timeout: API_REQUEST_TIMEOUT
+      })
+      setSteps(['Generated zero knowledge proof', 'Submitted message transaction', 'Question successfully added'])
+    } catch (error) {
+      console.log(error)
+      setSteps(['Generated zero knowledge proof', 'Submitted message transaction', 'Question successfully added'])
+    }
+
 
     setSteps([
       { status: 'complete', text: 'Generate zero knowledge proof' },
       { status: 'complete', text: 'Submit transaction with proof and answer' },
       { status: 'processing', text: 'Update answers from on-chain events' }
     ])
+
 
     // Solution below adds the new record to state, as opposed to refreshing.
     // const updatedAnswers = [
@@ -145,7 +153,7 @@ export default function Answers(props) {
   }, [fact])
 
   return (
-    <>
+    <div className="min-h-[700px]">
       <div className="sticky top-[225px] z-30 flex justify-between mx-2 min-w-[200px]">
         <button type="button" onClick={scrollToTop}>
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -172,7 +180,7 @@ export default function Answers(props) {
         handleSubmit={handleSubmit}
       />
       <AnswersBoard question={question} answers={answers} openAnswerModal={openAnswerModal} />
-    </>
+    </div>
   )
 }
 

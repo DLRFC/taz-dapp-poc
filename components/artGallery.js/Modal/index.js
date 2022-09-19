@@ -23,7 +23,7 @@ export default function Modal({ images, onClose, activeImage, setActiveImage }) 
       >
         <button
           onClick={onClose}
-          className="border-none h-[400px] w-[300px] rounded-md"
+          className="border-none h-[300px] w-[300px] rounded-md"
           style={{
             boxShadow: `0 20px 50px #2563eb`,
             backgroundImage: `url(${activeImage})`,
@@ -31,7 +31,7 @@ export default function Modal({ images, onClose, activeImage, setActiveImage }) 
           }}
         ></button>
       </div>
-      <div className="absolute z-20 bottom-5 w-[100%] h-[70px] overflow-x-auto flex justify-center">
+      <div className="mt-20 z-20  w-[100%] h-[70px] overflow-x-auto flex justify-center">
         {images.map((image) => (
           <button
             style={{
@@ -39,7 +39,7 @@ export default function Modal({ images, onClose, activeImage, setActiveImage }) 
               backgroundSize: 'cover',
               border: `1px solid ${activeImage === image.uri ? '#06b6d4' : 'transparent'}`
             }}
-            className="h-[100%] w-[50px] cursor-pointer mx-1"
+            className="h-[50px] w-[50px] cursor-pointer mx-1"
             key={image.id}
             onClick={(e) => handleControlTabClick(e, image.uri)}
           ></button>
