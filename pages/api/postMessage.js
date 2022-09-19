@@ -6,14 +6,17 @@ import { TAZMESSAGE_CONTRACT } from '../../config/goerli.json'
 
 dotenv.config({ path: '../../.env.local' })
 const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL)
-const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider)
+const signer_2 = new ethers.Wallet(process.env.PRIVATE_KEY_2).connect(provider)
+const signer_3 = new ethers.Wallet(process.env.PRIVATE_KEY_3).connect(provider)
+
 const tazMessageAbi = TazMessage.abi
 const tazMessageAddress = TAZMESSAGE_CONTRACT
 
 // console.log("tazMessageAddress", tazMessageAddress)
 // console.log("tazMessageAbi", TazMessage)
 
-const tazMessageContract = new ethers.Contract(tazMessageAddress, tazMessageAbi, signer)
+const tazMessageContract_2 = new ethers.Contract(tazMessageAddress, tazMessageAbi, signer_2)
+const tazMessageContract_3 = new ethers.Contract(tazMessageAddress, tazMessageAbi, signer_3)
 
 export default async function handler(req, res) {
   console.log('api called')
@@ -54,7 +57,7 @@ export default async function handler(req, res) {
       console.log('BACKEND LOG | Transacting reply')
 
       try {
-        tx = await tazMessageContract.replyToMessage(
+        tx = await tazMessageContract_3.replyToMessage(
           parentMessageId,
           messageId,
           messageContent,
@@ -91,7 +94,7 @@ export default async function handler(req, res) {
       //   uint256[8] calldata proof) external {
 
       try {
-        tx = await tazMessageContract.addMessage(
+        tx = await tazMessageContract_2.addMessage(
           messageId,
           messageContent,
           groupId,

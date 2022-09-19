@@ -125,7 +125,7 @@ const InvitationCheckComponent = ({
                 <input
                   className="border-solid border-2 border-brand-beige w-full mb-3 py-2 rounded-sm bg-[#F0EBE8] bg-opacity-10 max-w-[80%] text-brand-beige text-xl text-center"
                   type="text"
-                  placeholder="test-15"
+                  placeholder="invitation-code"
                   maxLength="6"
                   value={invitation}
                   onChange={inviteCodeChangeHandler}
