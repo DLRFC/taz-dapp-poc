@@ -35,9 +35,19 @@ const AnswersBoard = (props) => {
               </div>
             </Link>
           </div>
-          <p className="border-0" style={{ borderTopWidth: '0px' }}>
-            {question.messageContent}
-          </p>
+          {question === 0 ? (
+            <div>
+              Question is still being indexed, you can check your transaction here:{' '}
+              <a className="py-2 text-brand-red" href={`https://goerli.etherscan.io/tx/${messageId}`}>
+                https://goerli.etherscan.io/tx/{messageId}
+              </a>
+            </div>
+          ) : (
+            <p className="border-0" style={{ borderTopWidth: '0px' }}>
+              {question.messageContent}
+            </p>
+          )}
+
           {/* <div className="flex justify-end border-0 mb-4" style={{ borderTopWidth: '0px' }}>
             <button
               type="button"
