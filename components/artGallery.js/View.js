@@ -2,6 +2,7 @@ import Link from 'next/link'
 
 import Modal from './Modal'
 import BackTAZ from '../ArrowNavigators/BackTAZ'
+import ArtBunny from '../svgElements/ArtBunny'
 
 export default function ArtGalleryComponent({
   open,
@@ -45,12 +46,16 @@ export default function ArtGalleryComponent({
             </div>
           </Link>
           <p className="px-3 text-xl font-bold">WELCOME TO THE DEVCON XI GALLERY</p>
-          <p className="mb-3 py-5 px-3 text-brand-info text-[#1E1E1E] opacity-70 leading-[21px]">
+          <p className="py-5 px-3 mr-16 text-brand-info text-[#1E1E1E] opacity-70 leading-[21px]">
             Every canvas has 9 anonymous contributors. There are 5 active canvases at one time.
             {/* <Link href="/artBoard-page">
               <a className="underline">Click Here to start drawing</a>
             </Link> */}
           </p>
+          <div className="absolute top-[184px] left-[284px]">
+            <ArtBunny />
+          </div>
+
           <div className="absolute left-0 bg-[#1E1E1E] mb-10">
             <p className="text-brand-beige text-[12px] w-full px-10 py-2">
               Vote for your favorite! The winner will be announced at the end of the week.
