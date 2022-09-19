@@ -10,6 +10,7 @@ export default function artBoard() {
   const [identityKey, setIdentityKey] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isFilling, setIsFilling] = useState(false)
+  const [userSelectedTile, setUserSelectedTile] = useState(false)
 
   const [isDrawing, setIsDrawing] = useState(false)
 
@@ -87,8 +88,15 @@ export default function artBoard() {
     setIsFilling(!isFilling)
   }
 
-  const startDrawing = () => {
-    setIsDrawing(true)
+  const startDrawing = (i) => {
+    if (tiles[i] == '' && userSelectedTile == false) {
+      setIsDrawing(true)
+      setSelectedTile(i)
+    } else if (i == selectedTile) {
+      setIsDrawing(true)
+    } else {
+      console.log('You Cannot select this Tile')
+    }
   }
   const minimize = () => {
     const uri = stageRef.current.toDataURL()
@@ -96,6 +104,7 @@ export default function artBoard() {
     console.log('selectedTile', selectedTile)
     console.log('tiles', tiles)
     tiles[selectedTile] = uri
+    setUserSelectedTile(true)
     setIsDrawing(false)
   }
 
@@ -168,6 +177,11 @@ export default function artBoard() {
     router.push('/artGallery-page')
   }
 
+  const handleResetTile = () => {
+    tiles[selectedTile] = ''
+    setUserSelectedTile(false)
+  }
+
   // const handleGenerateProof = async () => {
   //   const { fullProofTemp, solidityProof, nullifierHashTemp, externalNullifier, signal, merkleTreeRoot, groupId } =
   //     await generateFullProof(identityKey)
@@ -204,6 +218,7 @@ export default function artBoard() {
       setColor={setColor}
       setFillColor={setFillColor}
       minimize={minimize}
+      handleResetTile={handleResetTile}
     />
   )
 }
