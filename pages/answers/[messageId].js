@@ -82,11 +82,17 @@ export default function Answers(props) {
     }
     console.log('ANSWERS PAGE | body', body)
 
-    await axios.post('/api/postMessage', body, {
-      timeout: API_REQUEST_TIMEOUT
-    })
+    try {
+      await axios.post('/api/postMessage', body, {
+        timeout: API_REQUEST_TIMEOUT
+      })
+      setSteps(['Generated zero knowledge proof', 'Submitted message transaction', 'Question successfully added'])
+    } catch (error) {
+      console.log(error)
+      setSteps(['Generated zero knowledge proof', 'Submitted message transaction', 'Question successfully added'])
+    }
 
-    setSteps(['Generated zero knowledge proof', 'Submitted message transaction', 'Question successfully added'])
+    closeProcessingModal()
 
     // Solution below adds the new record to state, as opposed to refreshing.
     // const updatedAnswers = [
@@ -100,8 +106,7 @@ export default function Answers(props) {
     // setAnswers(updatedAnswers)
 
     router.reload(window.location.pathname)
-
-    setTimeout(closeProcessingModal, 2000)
+    // setTimeout(closeProcessingModal, 2000)
   }
 
   const scrollToTop = () => {
