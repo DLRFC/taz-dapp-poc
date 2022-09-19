@@ -253,7 +253,7 @@ describe('TazToken', () => {
         groupId: GROUP_ID,
         signal,
         externalNullifier: EXTERNAL_NULLIFIER_FOR_VOTING,
-        logs: false
+        logs: true
       })
 
       const tx = contract
@@ -281,7 +281,7 @@ describe('TazToken', () => {
         groupId: GROUP_ID,
         signal,
         externalNullifier: EXTERNAL_NULLIFIER_FOR_VOTING,
-        logs: false
+        logs: true
       })
 
       const tx = contract
@@ -305,7 +305,7 @@ describe('TazToken', () => {
         groupId: GROUP_ID,
         signal,
         externalNullifier: EXTERNAL_NULLIFIER_FOR_VOTING,
-        logs: false
+        logs: true
       })
 
       const tx = contract

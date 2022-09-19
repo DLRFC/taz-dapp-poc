@@ -19,18 +19,10 @@ export default function Answers(props) {
   const [identityKey, setIdentityKey] = useState('')
   const [answers, setAnswers] = useState(props.answersProp)
   const [steps, setSteps] = useState([])
+  const [fact, setFact] = useState([])
   // const [isMember, setIsMember] = useState(false)
 
   const parentMessageId = props.messageId
-
-  useEffect(() => {
-    let identityKeyTemp = ''
-    if (identityKeyTemp === '') {
-      identityKeyTemp = window.localStorage.getItem('identity')
-      setIdentityKey(identityKeyTemp)
-      // setIsMember(true)
-    }
-  })
 
   const closeAnswerModal = () => {
     setAnswerModalIsOpen(false)
@@ -40,8 +32,12 @@ export default function Answers(props) {
     setAnswerModalIsOpen(true)
   }
 
-  const closeProcessingModal = () => {
+  const internalCloseProcessingModal = () => {
     setProcessingModalIsOpen(false)
+  }
+
+  const closeProcessingModal = () => {
+    setProcessingModalIsOpen(true)
   }
 
   const openProcessingModal = () => {
@@ -58,7 +54,11 @@ export default function Answers(props) {
     closeAnswerModal()
     openProcessingModal()
 
-    setSteps(['Generating zero knowledge proof'])
+    setSteps([
+      { status: 'processing', text: 'Generate zero knowledge proof' },
+      { status: 'queued', text: 'Submit transaction with proof and answer' },
+      { status: 'queued', text: 'Update answers from on-chain events' }
+    ])
 
     const messageContent = answer
     const messageId = ethers.utils.id(messageContent)
@@ -67,7 +67,11 @@ export default function Answers(props) {
     const { fullProofTemp, solidityProof, nullifierHash, externalNullifier, merkleTreeRoot, groupId } =
       await generateFullProof(identityKey, signal)
 
-    setSteps(['Generated zero knowledge proof', 'Submitting message transaction'])
+    setSteps([
+      { status: 'complete', text: 'Generate zero knowledge proof' },
+      { status: 'processing', text: 'Submit transaction with proof and answer' },
+      { status: 'queued', text: 'Update answers from on-chain events' }
+    ])
 
     const body = {
       parentMessageId,
@@ -86,7 +90,11 @@ export default function Answers(props) {
       timeout: API_REQUEST_TIMEOUT
     })
 
-    setSteps(['Generated zero knowledge proof', 'Submitted message transaction', 'Question successfully added'])
+    setSteps([
+      { status: 'complete', text: 'Generate zero knowledge proof' },
+      { status: 'complete', text: 'Submit transaction with proof and answer' },
+      { status: 'processing', text: 'Update answers from on-chain events' }
+    ])
 
     // Solution below adds the new record to state, as opposed to refreshing.
     // const updatedAnswers = [
@@ -101,12 +109,40 @@ export default function Answers(props) {
 
     router.reload(window.location.pathname)
 
-    setTimeout(closeProcessingModal, 2000)
+    setTimeout(internalCloseProcessingModal, 3000)
   }
 
   const scrollToTop = () => {
     window.scrollTo(0, 0)
   }
+
+  const rotateFact = () => {
+    const facts = [
+      'Proving time is the time it takes for a proof to be completed.',
+      'Sempahore identities are given to all Semaphore group members. They are comprised of three parts: identity commitment, trapdoor, and nullifier.',
+      'Trapdoor and nullifier values are the private values of the Semaphore identity. To avoid fraud, the owner must keep both values secret.',
+      'Semaphore uses the Poseidon hash function to create the identity commitment from the identity private values. Identity commitments can be made public, similarly to Ethereum addresses.',
+      'Semaphore identities can be generated deterministically or randomly. Deterministic identities can be generated from the hash of a secret message.'
+    ]
+
+    let newIndex = facts.indexOf(fact) + 1
+    if (newIndex === facts.length) newIndex = 0
+    setFact(facts[newIndex])
+  }
+
+  useEffect(() => {
+    let identityKeyTemp = ''
+    if (identityKeyTemp === '') {
+      identityKeyTemp = window.localStorage.getItem('identity')
+      setIdentityKey(identityKeyTemp)
+      // setIsMember(true)
+    }
+    rotateFact()
+  }, [])
+
+  useEffect(() => {
+    setTimeout(rotateFact, 6000)
+  }, [fact])
 
   return (
     <>
@@ -128,7 +164,7 @@ export default function Answers(props) {
           Answer this question
         </button>
       </div>
-      <ProcessingModal isOpen={processingModalIsOpen} closeModal={closeProcessingModal} steps={steps} />
+      <ProcessingModal isOpen={processingModalIsOpen} closeModal={closeProcessingModal} steps={steps} fact={fact} />
       <AnswerModal
         isOpen={answerModalIsOpen}
         closeModal={closeAnswerModal}

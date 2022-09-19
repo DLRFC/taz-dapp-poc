@@ -72,8 +72,8 @@ export default function AnswerModalView({ isOpen, closeModal, handleAnswerChange
                     className="w-full p-4 border-2 mb-1 border-brand-blue text-brand-black rounded-lg"
                     defaultValue=""
                   />
-                  <p className="mb-7 flex justify-center text-xs text-brand-red">Must be less than 280 characters</p>
-                  <div className="flex justify-center mb-3">
+                  {/* <p className="mb-7 flex justify-center text-xs text-brand-red">Must be less than 280 characters</p> */}
+                  <div className="flex justify-center mb-3 mt-7">
                     <button
                       type="button"
                       className="inline-flex justify-center rounded-full border border-transparent bg-brand-black px-12 py-1 text-sm font-medium text-brand-beige hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-beige focus-visible:ring-offset-2"
