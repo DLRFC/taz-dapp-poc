@@ -16,46 +16,21 @@ const GenerateTile = forwardRef(
     fillColor,
     startDrawing
   }) => (
-    <td className="bg-white p-0">
-      {selectedTile === i ? (
-        <div onClick={startDrawing} className="cursor-pointer w-[112px] h-[112px]">
-          {tiles[i] ? (
-            <img
-              className="w-[112px] h-[112px]"
-              id={`${i}`}
-              src={
-                tiles[i] ? tiles[i] : '' // "https://media.istockphoto.com/vectors/cartoon-raven-isolated-on-white-background-vector-id597250060?k=20&m=597250060&s=612x612&w=0&h=yl0rXftvQNqXTKQyRjqumexaKiyW6Bq0OFl1Ko4zaAs="
-              }
-            />
-          ) : (
-            <p className="w-[112px] h-[112px] flex items-center justify-center text-center border-[1px] border-brand-gray border-collapse">
-              Click here to start Drawing on this Tile
-            </p>
-          )}
-        </div> /* <DrawingHtml
-          stageRef={stageRef}
-          borderRef={borderRef}
-          color={color}
-          lines={lines}
-          setLines={setLines}
-          fillColor={fillColor}
-        /> */
-      ) : (
-        <div>
-          {tiles[i] ? (
-            <img
-              className="w-[112px] h-[112px]"
-              id={`${i}`}
-              src={
-                tiles[i] ? tiles[i] : ''
-                // "https://media.istockphoto.com/vectors/cartoon-raven-isolated-on-white-background-vector-id597250060?k=20&m=597250060&s=612x612&w=0&h=yl0rXftvQNqXTKQyRjqumexaKiyW6Bq0OFl1Ko4zaAs="
-              }
-            />
-          ) : (
-            <p className="w-[112px] h-[112px] border-[1px] border-brand-gray border-collapse" />
-          )}
-        </div>
-      )}
+    <td className="bg-white p-0 ">
+      <div className="w-[112px] h-[112px]" onClick={() => startDrawing(i)}>
+        {tiles[i] ? (
+          <img
+            className=""
+            id={`${i}`}
+            src={
+              tiles[i] ? tiles[i] : ''
+              // "https://media.istockphoto.com/vectors/cartoon-raven-isolated-on-white-background-vector-id597250060?k=20&m=597250060&s=612x612&w=0&h=yl0rXftvQNqXTKQyRjqumexaKiyW6Bq0OFl1Ko4zaAs="
+            }
+          />
+        ) : (
+          <p className="w-[112px] h-[112px] border-[1px] border-brand-gray border-collapse" />
+        )}
+      </div>
     </td>
   )
 )

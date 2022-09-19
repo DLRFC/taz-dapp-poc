@@ -30,7 +30,9 @@ const AnswersBoard = (props) => {
         <div className="z-0 p-4 min-w-[200px] relative divide-y overflow-y-auto border-2 border-brand-blue rounded-md bg-white drop-shadow-lg">
           <div className="mb-4 border-0">
             <Link href="/questions" className="cursor-pointer">
-              <BackArrow />
+              <div>
+                <BackArrow />
+              </div>
             </Link>
           </div>
           <p className="border-0" style={{ borderTopWidth: '0px' }}>

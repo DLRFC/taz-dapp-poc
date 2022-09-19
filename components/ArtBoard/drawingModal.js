@@ -202,7 +202,11 @@ const DrawingHtml = forwardRef(
             </Stage>
           </div>
           <div>
-            <button className="bg-brand-yellow font-bold text-xs p-2 rounded-full" type="submit" onClick={minimize}>
+            <button
+              className="bg-brand-yellow font-bold text-xs mt-3 p-2 rounded-full"
+              type="submit"
+              onClick={minimize}
+            >
               minimize
             </button>
           </div>
