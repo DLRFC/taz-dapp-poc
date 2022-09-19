@@ -29,8 +29,12 @@ export default function Questions({ questionsProp }) {
     setQuestionModalIsOpen(true)
   }
 
-  const closeProcessingModal = () => {
+  const internalCloseProcessingModal = () => {
     setProcessingModalIsOpen(false)
+  }
+
+  const closeProcessingModal = () => {
+    setProcessingModalIsOpen(true)
   }
 
   const openProcessingModal = () => {
@@ -102,7 +106,7 @@ export default function Questions({ questionsProp }) {
 
     router.reload(window.location.pathname)
 
-    setTimeout(closeProcessingModal, 3000)
+    setTimeout(internalCloseProcessingModal, 3000)
   }
 
   const scrollToTop = () => {
