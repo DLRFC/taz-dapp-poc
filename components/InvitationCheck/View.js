@@ -4,7 +4,6 @@ import { RiArrowRightLine, RiUploadLine } from 'react-icons/ri'
 
 import LoadingModal from '../LoadingModal/Index'
 import Header from '../Header'
-import Loading from '../Loading'
 
 // Page 1 it will check Invitation
 const InvitationCheckComponent = ({
@@ -32,7 +31,6 @@ const InvitationCheckComponent = ({
   console.log('change')
   return (
     <div className="p-4 font-sans bg-brand-blue">
-      <Loading size="sm" />
       {isLoading && (
         <AnimatePresence initial={false} exitBeforeEnter onExitComplete={() => null} className="z-20">
           <LoadingModal onClose={onClose} loadingMessage={loadingMessage} />
