@@ -67,7 +67,7 @@ export default async function handler(req, res) {
           nullifierHash,
           externalNullifier,
           solidityProof,
-          { gasLimit: 150000000 }
+          { gasLimit: 15000000 }
         )
         console.log('Transaction Finished!')
         const response = await tx.wait(1)
@@ -103,7 +103,7 @@ export default async function handler(req, res) {
           nullifierHash,
           externalNullifier,
           solidityProof,
-          { gasLimit: 150000000 }
+          { gasLimit: 15000000 }
         )
         console.log(tx)
 

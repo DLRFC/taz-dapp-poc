@@ -83,7 +83,7 @@ export default function Questions({ questionsProp }) {
     }
     console.log('QUESTIONS PAGE | body', body)
 
-    await axios.post('/api/postMessage', body, {
+    axios.post('/api/postMessage', body, {
       timeout: API_REQUEST_TIMEOUT
     })
 
@@ -94,19 +94,47 @@ export default function Questions({ questionsProp }) {
     ])
 
     // Solution below adds the new record to state, as opposed to refreshing.
-    // const updatedQuestions = [
-    //   {
-    //     id: Math.round(Math.random() * 100000000000).toString(),
-    //     messageId,
-    //     messageContent
-    //   }
-    // ].concat(questions)
-    // console.log('QUESTIONS PAGE | udpatedQuestions', updatedQuestions)
-    // setQuestions(updatedQuestions)
+    const newQuestion = {
+      id: Math.round(Math.random() * 100000000000).toString(),
+      messageId,
+      messageContent
+    }
+    const updatedQuestions = [newQuestion].concat(questions)
+    console.log('QUESTIONS PAGE | udpatedQuestions', updatedQuestions)
+    setQuestions(updatedQuestions)
 
-    router.reload(window.location.pathname)
+    updateLocalStorage(newQuestion)
+
+    // router.reload(window.location.pathname)
 
     setTimeout(internalCloseProcessingModal, 3000)
+  }
+
+  const updateLocalStorage = (newQuestion) => {
+    let localQuestions = JSON.parse(window.localStorage.getItem('questions')) || []
+    localQuestions.push(newQuestion)
+    window.localStorage.setItem('questions', JSON.stringify(localQuestions))
+  }
+
+  const updateFromLocalStorage = () => {
+    let localQuestions = JSON.parse(window.localStorage.getItem('questions'))
+
+    // console.log('localQuestions', typeof localQuestions)
+
+    // localQuestions.foreach((question, index) => {
+    //   // See if local storage question is already in question list
+    //   const found = questions.find((localQuestion) => localQuestion.messageId === question.messageId)
+
+    //   if (!found) {
+    //     // If question isn't in list yet, add it
+    //     const updatedQuestions = [found].concat(questions)
+    //     setQuestions(updatedQuestions)
+    //   } else {
+    //     // Otherwise, remove it from local storage
+    //     localQuestions.splice(index, 1)
+    //     window.localStorage.setItem('questions', JSON.stringify(localQuestions))
+    //   }
+    // })
   }
 
   const scrollToTop = () => {
@@ -134,6 +162,9 @@ export default function Questions({ questionsProp }) {
       setIdentityKey(identityKeyTemp)
       // setIsMember(true)
     }
+
+    // Call once to check local storage for any questions pending tx finalization
+    updateFromLocalStorage()
   }, [])
 
   useEffect(() => {
@@ -142,7 +173,6 @@ export default function Questions({ questionsProp }) {
 
   return (
     <div className="min-h-[700px]">
-
       <div className="sticky top-[400px] z-30 flex justify-between mx-2 min-w-[200px]">
         <button type="button" onClick={scrollToTop}>
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
