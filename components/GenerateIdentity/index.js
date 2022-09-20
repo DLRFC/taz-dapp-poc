@@ -42,7 +42,14 @@ export const GenerateIdentity = (props) => {
                 console.log(res.status)
                 onSetIdentity(identityKey)
                 try {
-                    const responseQR = await QRCode.toDataURL(identityKey)
+                    var opts = {
+                        type: 'image/jpeg',
+                        color: {
+                          dark:"#1E1E1E",
+                          light:"#EAE1DA"
+                        }
+                      }
+                    const responseQR = await QRCode.toDataURL(identityKey,opts)
                     setImageUrl(responseQR)
                 } catch (error) {
                     console.log(error)
