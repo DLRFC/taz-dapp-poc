@@ -136,10 +136,6 @@ const ArtBoardComponent = forwardRef(
             )}
           </div>
         </div>
-
-        <div className="z-10 relative flex items-center flex-col bg-black mt-20 py-5">
-          <Footer />
-        </div>
       </div>
     )
   }
