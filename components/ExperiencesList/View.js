@@ -1,5 +1,7 @@
 import Link from 'next/link'
 
+// import { textAlign } from 'html2canvas/dist/types/css/property-descriptors/text-align'
+
 import RedCircle from '../svgElements/RedCircle'
 import YellowCircle from '../svgElements/YellowCircle'
 import ShadowBunny from '../svgElements/ShadowBunny'
@@ -103,16 +105,17 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
         <a
           href="https://pse-team.notion.site/About-the-TAZ-app-1ae2793046414468b56472f43725961e"
           className="pb-10 underline"
+          rel="noreferrer"
         >
           About this app
         </a>
-        <a href="http://semaphore.appliedzkp.org/" className="pb-10 underline">
+        <a href="http://semaphore.appliedzkp.org/" target="_blank" className="pb-10 underline" rel="noreferrer">
           About Semaphore
         </a>
         <a href="esp.ethereum.foundation/semaphore-grants" className="pb-10 underline">
           Semaphore Grants Round
         </a>
-        <a href="https://appliedzkp.org/" className="pb-14 underline">
+        <a href="https://appliedzkp.org/" target="_blank" className="pb-14 underline" rel="noreferrer">
           Privacy & Scaling Explorations
         </a>
         <div>

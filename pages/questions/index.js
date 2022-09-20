@@ -19,15 +19,7 @@ export default function Questions({ questionsProp }) {
   const [identityKey, setIdentityKey] = useState('')
   const [questions, setQuestions] = useState(questionsProp)
   const [steps, setSteps] = useState([])
-
-  useEffect(() => {
-    let identityKeyTemp = ''
-    if (identityKeyTemp === '') {
-      identityKeyTemp = window.localStorage.getItem('identity')
-      setIdentityKey(identityKeyTemp)
-      // setIsMember(true)
-    }
-  })
+  const [fact, setFact] = useState([])
 
   const closeQuestionModal = () => {
     setQuestionModalIsOpen(false)
@@ -37,8 +29,12 @@ export default function Questions({ questionsProp }) {
     setQuestionModalIsOpen(true)
   }
 
-  const closeProcessingModal = () => {
+  const internalCloseProcessingModal = () => {
     setProcessingModalIsOpen(false)
+  }
+
+  const closeProcessingModal = () => {
+    setProcessingModalIsOpen(true)
   }
 
   const openProcessingModal = () => {
@@ -55,7 +51,11 @@ export default function Questions({ questionsProp }) {
     closeQuestionModal()
     openProcessingModal()
 
-    setSteps(['Generating zero knowledge proof'])
+    setSteps([
+      { status: 'processing', text: 'Generate zero knowledge proof' },
+      { status: 'queued', text: 'Submit transaction with proof and question' },
+      { status: 'queued', text: 'Update answers from on-chain events' }
+    ])
 
     const messageContent = question
     const messageId = ethers.utils.id(messageContent)
@@ -64,7 +64,11 @@ export default function Questions({ questionsProp }) {
     const { fullProofTemp, solidityProof, nullifierHash, externalNullifier, merkleTreeRoot, groupId } =
       await generateFullProof(identityKey, signal)
 
-    setSteps(['Generated zero knowledge proof', 'Submitting message transaction'])
+    setSteps([
+      { status: 'complete', text: 'Generate zero knowledge proof' },
+      { status: 'processing', text: 'Submit transaction with proof and question' },
+      { status: 'queued', text: 'Update answers from on-chain events' }
+    ])
 
     const body = {
       parentMessageId: '',
@@ -79,37 +83,123 @@ export default function Questions({ questionsProp }) {
     }
     console.log('QUESTIONS PAGE | body', body)
 
-    await axios.post('/api/postMessage', body, {
+    const txResponse = await axios.post('/api/postMessage', body, {
       timeout: API_REQUEST_TIMEOUT
     })
 
-    setSteps(['Generated zero knowledge proof', 'Submitted message transaction', 'Answer successfully added'])
+    console.log('txResponse Status', txResponse.status)
+    console.log('txResponse Hash', txResponse.data.hash)
+
+    setSteps([
+      { status: 'complete', text: 'Generate zero knowledge proof' },
+      { status: 'complete', text: 'Submit transaction with proof and question' },
+      { status: 'processing', text: 'Update answers from on-chain events' }
+    ])
 
     // Solution below adds the new record to state, as opposed to refreshing.
-    // const updatedQuestions = [
-    //   {
-    //     id: Math.round(Math.random() * 100000000000).toString(),
-    //     messageId,
-    //     messageContent
+    if (txResponse.status === 201) {
+      const newQuestion = {
+        id: 1000000000,
+        messageId: txResponse.data.hash,
+        messageContent
+      }
+      const updatedQuestions = [newQuestion].concat(questions)
+      console.log('QUESTIONS PAGE | udpatedQuestions', updatedQuestions)
+      window.localStorage.setItem('savedQuestion', JSON.stringify(newQuestion))
+
+      setQuestions(updatedQuestions)
+
+      // updateLocalStorage(newQuestion)
+    }
+
+    // router.reload(window.location.pathname)
+
+    setTimeout(internalCloseProcessingModal, 3000)
+  }
+
+  // const updateLocalStorage = (newQuestion) => {
+  //   const localQuestions = JSON.parse(window.localStorage.getItem('questions')) || []
+  //   localQuestions.push(newQuestion)
+  //   window.localStorage.setItem('questions', JSON.stringify(localQuestions))
+  // }
+
+  const updateFromLocalStorage = () => {
+    const localQuestions = JSON.parse(window.localStorage.getItem('questions'))
+
+    // console.log('localQuestions', typeof localQuestions)
+
+    // localQuestions.foreach((question, index) => {
+    //   // See if local storage question is already in question list
+    //   const found = questions.find((localQuestion) => localQuestion.messageId === question.messageId)
+
+    //   if (!found) {
+    //     // If question isn't in list yet, add it
+    //     const updatedQuestions = [found].concat(questions)
+    //     setQuestions(updatedQuestions)
+    //   } else {
+    //     // Otherwise, remove it from local storage
+    //     localQuestions.splice(index, 1)
+    //     window.localStorage.setItem('questions', JSON.stringify(localQuestions))
     //   }
-    // ].concat(questions)
-    // console.log('QUESTIONS PAGE | udpatedQuestions', updatedQuestions)
-    // setQuestions(updatedQuestions)
-
-    router.reload(window.location.pathname)
-
-    setTimeout(closeProcessingModal, 2000)
+    // })
   }
 
   const scrollToTop = () => {
     window.scrollTo(0, 0)
   }
 
+  const rotateFact = () => {
+    const facts = [
+      'Proving time is the time it takes for a proof to be completed.',
+      'Sempahore identities are given to all Semaphore group members. They are comprised of three parts: identity commitment, trapdoor, and nullifier.',
+      'Trapdoor and nullifier values are the private values of the Semaphore identity. To avoid fraud, the owner must keep both values secret.',
+      'Semaphore uses the Poseidon hash function to create the identity commitment from the identity private values. Identity commitments can be made public, similarly to Ethereum addresses.',
+      'Semaphore identities can be generated deterministically or randomly. Deterministic identities can be generated from the hash of a secret message.'
+    ]
+
+    let newIndex = facts.indexOf(fact) + 1
+    if (newIndex === facts.length) newIndex = 0
+    setFact(facts[newIndex])
+  }
+
+  useEffect(() => {
+    let identityKeyTemp = ''
+    if (identityKeyTemp === '') {
+      identityKeyTemp = window.localStorage.getItem('identity')
+      setIdentityKey(identityKeyTemp)
+      // setIsMember(true)
+    }
+
+    // Check if question is fetched form subgraph
+    const savedQuestion = JSON.parse(window.localStorage.getItem('savedQuestion'))
+
+    const index = questions.some((element) => {
+      if (savedQuestion && element.messageContent === savedQuestion.messageContent) {
+        return true
+      }
+
+      return false
+    })
+    if (index) {
+      window.localStorage.removeItem('savedQuestion')
+    } else if (savedQuestion) {
+      const updatedQuestions = [savedQuestion].concat(questions)
+      setQuestions(updatedQuestions)
+    }
+
+    // How to check if a savedQuestion already exists in questions without a for loop?
+
+    // Call once to check local storage for any questions pending tx finalization
+    // updateFromLocalStorage()
+  }, [])
+
+  useEffect(() => {
+    setTimeout(rotateFact, 6000)
+  }, [fact])
+
   return (
-    <>
-
+    <div className="min-h-[700px]">
       <div className="sticky top-[400px] z-30 flex justify-between mx-2 min-w-[200px]">
-
         <button type="button" onClick={scrollToTop}>
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="32" height="32" rx="16" fill="#1E1E1E" />
@@ -127,7 +217,7 @@ export default function Questions({ questionsProp }) {
           Ask a question
         </button>
       </div>
-      <ProcessingModal isOpen={processingModalIsOpen} closeModal={closeProcessingModal} steps={steps} />
+      <ProcessingModal isOpen={processingModalIsOpen} closeModal={closeProcessingModal} steps={steps} fact={fact} />
       <QuestionModal
         isOpen={questionModalIsOpen}
         closeModal={closeQuestionModal}
@@ -135,7 +225,7 @@ export default function Questions({ questionsProp }) {
         handleSubmit={handleSubmit}
       />
       <QuestionsBoard questions={questions} />
-    </>
+    </div>
   )
 }
 

@@ -18,7 +18,7 @@ module.exports = {
       ],
       forking: {
         url: process.env.GOERLI_URL,
-        blockNumber: 7592694 // This block came after the deployment of the new Semaphore contract, prior to us adding a group
+        blockNumber: 7622092 // This block came after the deployment of the new Semaphore contract, prior to us adding a group
       }
     },
     goerli: {

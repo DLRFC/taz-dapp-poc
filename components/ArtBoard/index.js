@@ -151,6 +151,7 @@ export default function artBoard() {
 
     const response = await axios.post('/api/modifyCanvas', {
       updatedTiles: tilesRef.current,
+      tileIndex: selectedTile,
       canvasId: canvasId.current
     })
     console.log('RESPONSE FROM /api/modifyCanvas:')
