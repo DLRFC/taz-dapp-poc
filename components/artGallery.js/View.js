@@ -62,6 +62,7 @@ export default function ArtGalleryComponent({
               </p>
             </div>
           </div>
+          {/* I think this should become a css grid */}
           <div className="flex flex-wrap md:w-3/4 lg:w-3/4 mx-auto bg-white border border-brand-gray2">
             {images.map((image) => (
               <ImageCard key={image.id} url={image.uri} onClick={() => handleClick(image.uri)} />
