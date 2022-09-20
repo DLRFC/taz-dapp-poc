@@ -6,7 +6,7 @@ import Footer from '../Footer'
 
 // Page 3 will Generate Identity and Join Group
 export const GenerateIdentityComponent = ({ isLoading, onClose, loadingMessage, imageUrl, handleJoinButton }) => (
-  <div className="p-4 font-sans bg-brand-blue h-[900px]">
+  <div className="font-sans bg-brand-blue h-full">
     {/* {isLoading ? (
         <div className="absolute top-[0px] left-[0px] z-20">
           <LoadingModal onClose={onClose} loadingMessage={loadingMessage} />
@@ -19,16 +19,16 @@ export const GenerateIdentityComponent = ({ isLoading, onClose, loadingMessage, 
     ) : null}
     <Header />
 
-    <div className="flex flex-col items-center rounded-md px-3 z-10">
-      <div className="z-10 mt-3 h-[586px] w-full py-3 px-4">
+    <div className="flex flex-col items-center rounded-md px-[32px] py-4 z-10">
+      <div className="z-10 mt-3 h-[570px] w-full py-3">
         {!imageUrl ? (
-          <div>
-            <p className="px-3 font-bold text-xl text-brand-beige">You've been invited to Join a Semaphore Group</p>
-            <p className="mb-3 py-5 px-3 text-brand-beige opacity-70 text-sm">
+          <div className="h-full w-full">
+            <p className="font-bold text-brand-h3 text-brand-beige">You've been invited to Join a Semaphore Group</p>
+            <p className="mb-3 py-5 text-brand-beige opacity-70 text-[14px]]">
               Accepting this invitation will generate a Semaphore ID that will be added to the following group.
             </p>
-            <div className="bg-brand-beige rounded-2xl mb-5 relative shadow-[rgba(0,_0,_0,_0.38)_0px_4px_10px] mb-14">
-              <div className="p-5 pb-20">
+            <div className="bg-brand-beige rounded-2xl mb-[41px] relative shadow-[rgba(0,_0,_0,_0.38)_0px_4px_10px] h-[157px]">
+              <div className="p-5">
                 <p className="text-brand-red text-brand-h3">SEMAPHORE GROUP</p>
                 <p className="text-brand-gray2 text-brand-h1">DEVCON VI</p>
                 <div className="absolute right-0 bottom-0">
@@ -75,62 +75,7 @@ export const GenerateIdentityComponent = ({ isLoading, onClose, loadingMessage, 
                 </div>
               </div>
             </div>
-          </div>
-        ) : (
-          <div>
-            <p className="px-3 font-bold text-xl text-brand-beige">You're in Anon!</p>
-            <p className="mb-3 py-5 px-3 text-brand-beige opacity-70 text-[16px]">
-              This ID can be used with TAZ and other Semaphore supported dApps
-            </p>
-          </div>
-        )}
-
-        {imageUrl ? (
-          <div className="flex items-center justify-center flex-col">
-            <a
-              href={imageUrl}
-              download="semaphore.jpg"
-              className="flex items-center justify-center flex-col mb-5 w-full"
-            >
-              <img src={imageUrl} alt="img" className="mb-7 " />
-              <button className="w-full border-2 border-brand-gray2 bg-brand-yellow p-2 py-4 shadow-[-3px_3px_0px_0px_rgba(30,30,30)] text-brand-button">
-                <div className="flex items-center justify-center">
-                  <span className="mr-4">Take a Screenshoot</span>
-                  <svg
-                    className="left-[16.67%] right-[16.67%] top-[17.59%] bottom-[17.59%]"
-                    width="16px"
-                    height="16px"
-                    viewBox="0 0 16 16"
-                    fill="#BD5141"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M12.172 6.99968L6.808 1.63568L8.222 0.22168L16 7.99968L8.222 15.7777L6.808 14.3637L12.172 8.99968H0V6.99968H12.172Z" />
-                  </svg>
-                </div>
-              </button>
-            </a>
-            <Link href="/experiences-page">
-              <button className="w-[100%] p-3 text-brand-button bg-brand-yellow border-brand-gray2 border-2  shadow-[-3px_3px_0px_0px_rgba(30,30,30)] flex items-center justify-center">
-                <span className="mr-4">Enter the TAZ</span>
-                <svg
-                  className="left-[16.67%] right-[16.67%] top-[17.59%] bottom-[17.59%]"
-                  width="16px"
-                  height="16px"
-                  viewBox="0 0 16 16"
-                  fill="#BD5141"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M12.172 6.99968L6.808 1.63568L8.222 0.22168L16 7.99968L8.222 15.7777L6.808 14.3637L12.172 8.99968H0V6.99968H12.172Z" />
-                </svg>
-              </button>
-            </Link>
-            <p className="mb-3 py-5 px-3 text-brand-beige text-[12px]">
-              Your browser will remember your ID unless you remove it or use a private browser. Save the QR image in
-              case your browser forgets :)
-            </p>
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center">
+            <div className="flex flex-col items-center justify-center">
             <button
               className="w-full border-2 border-brand-gray2 bg-brand-yellow p-2 py-4 shadow-[-3px_3px_0px_0px_rgba(30,30,30)] text-brand-button"
               onClick={handleJoinButton}
@@ -157,10 +102,78 @@ export const GenerateIdentityComponent = ({ isLoading, onClose, loadingMessage, 
             <p className="mb-3 py-5 px-3 text-brand-beige opacity-70 text-xs">
               Learn more about <a className="underline">Semaphore</a>
             </p>
+
+
+          </div>
+          
+          </div>
+        ) : (
+          <div>
+            <p className="font-bold text-xl text-brand-beige">You’ve joined the group!</p>
+            <p className="mb-3 py-5 text-brand-beige opacity-70 text-[16px]">
+              Save this QR, it contains your Semaphore ID and group membership
+            </p>
+            <div className="flex items-center justify-center flex-col">
+            <a
+              href={imageUrl}
+              download="semaphore.jpg"
+              className="flex items-center justify-center flex-col mb-5 w-full"
+            >
+              <img src={imageUrl} alt="img" className="mb-7 rounded-xl" />
+              <button className="border-2 border-brand-gray2 bg-brand-gray2 text-brand-beige p-2 text-brand-button rounded-2xl">
+                <div className="flex items-center">
+                  <span>Screenshoot!</span>
+                  <div className='px-2'>
+                    <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <g clip-path="url(#clip0_2100_9458)">
+                      <path d="M1.89001 2.662C1.89122 2.48692 1.96068 2.31934 2.08337 2.19548C2.20606 2.07161 2.37214 2.0014 2.54573 2H14.4543C14.8165 2 15.11 2.29667 15.11 2.662V13.338C15.1088 13.5131 15.0394 13.6807 14.9167 13.8045C14.794 13.9284 14.6279 13.9986 14.4543 14H2.54573C2.37176 13.9998 2.20498 13.93 2.08203 13.8059C1.95908 13.6817 1.89001 13.5135 1.89001 13.338V2.662ZM3.21202 3.33333V12.6667H13.788V3.33333H3.21202ZM8.50002 10C9.02595 10 9.53033 9.78929 9.90222 9.41421C10.2741 9.03914 10.483 8.53043 10.483 8C10.483 7.46957 10.2741 6.96086 9.90222 6.58579C9.53033 6.21071 9.02595 6 8.50002 6C7.9741 6 7.46971 6.21071 7.09783 6.58579C6.72594 6.96086 6.51702 7.46957 6.51702 8C6.51702 8.53043 6.72594 9.03914 7.09783 9.41421C7.46971 9.78929 7.9741 10 8.50002 10ZM8.50002 11.3333C7.62348 11.3333 6.78284 10.9821 6.16303 10.357C5.54322 9.7319 5.19502 8.88406 5.19502 8C5.19502 7.11595 5.54322 6.2681 6.16303 5.64298C6.78284 5.01786 7.62348 4.66667 8.50002 4.66667C9.37657 4.66667 10.2172 5.01786 10.837 5.64298C11.4568 6.2681 11.805 7.11595 11.805 8C11.805 8.88406 11.4568 9.7319 10.837 10.357C10.2172 10.9821 9.37657 11.3333 8.50002 11.3333ZM11.805 4H13.127V5.33333H11.805V4Z" fill="#EAE1DA"/>
+                      </g>
+                      <defs>
+                      <clipPath id="clip0_2100_9458">
+                      <rect width="15.864" height="16" fill="white" transform="translate(0.567993)"/>
+                      </clipPath>
+                      </defs>
+                    </svg>
+                  </div>
+
+                </div>
+              </button>
+            </a>
+            <Link href="/experiences-page">
+              <button className="w-[100%] p-3 text-brand-button bg-brand-yellow border-brand-gray2 border-2  shadow-[-3px_3px_0px_0px_rgba(30,30,30)] flex items-center justify-center">
+                <span className="mr-4">Enter the TAZ</span>
+                <svg
+                  className="left-[16.67%] right-[16.67%] top-[17.59%] bottom-[17.59%]"
+                  width="16px"
+                  height="16px"
+                  viewBox="0 0 16 16"
+                  fill="#BD5141"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M12.172 6.99968L6.808 1.63568L8.222 0.22168L16 7.99968L8.222 15.7777L6.808 14.3637L12.172 8.99968H0V6.99968H12.172Z" />
+                </svg>
+              </button>
+            </Link>
+            <p className="mb-3 py-5 px-3 text-brand-beige text-[12px] text-center">
+              {`Your browser will remember your ID unless you remove it or use a private browser. Save the QR image in
+              case your browser forgets :)`}
+            </p>
+          </div>
+   
+          <div className="flex flex-col items-center justify-center">
+       
+          </div>
           </div>
         )}
+        
+
+
       </div>
+
+      
+
     </div>
+
     <Footer />
     {/* <div className="absolute bottom-[50px] left-0 -z-10 h-[20%] w-full bg-black" /> */}
   </div>

@@ -33,7 +33,7 @@ const InvitationCheckComponent = ({
 }) => {
   console.log('change')
   return (
-    <div className="p-4 font-sans bg-brand-blue">
+    <div className=" font-sans bg-brand-blue h-full">
       {isLoading && (
         <AnimatePresence initial={false} exitBeforeEnter onExitComplete={() => null} className="z-20">
           <LoadingModal onClose={onClose} loadingMessage={loadingMessage} />
@@ -41,14 +41,14 @@ const InvitationCheckComponent = ({
       )}
       <Header />
       {!isSignUp ? (
-        <div className="flex flex-col items-center overflow-hidden rounded-md px-3 text-brand-gray2">
-          <div className="h-[1586px] py-3 w-full px-4 z-10">
+        <div className="flex flex-col px-[32px] items-center overflow-hidden rounded-md  text-brand-gray2">
+          <div className="h-full py-3 w-full  z-10">
             <div className="divide-y">
               <div>
-                <p className="py-5 font-bold mb-1 px-3 text-brand-h2 text-brand-beige">
+                <p className="py-5 font-bold mb-1  text-brand-h2 text-brand-beige">
                   Where you invited to join a group?
                 </p>
-                <p className="py-2 mb-3 px-3 text-brand-h3 text-brand-beige opacity-70">
+                <p className="py-2 mb-3  text-brand-h3 text-brand-beige opacity-70">
                   This is an anonymous, members-only experience
                 </p>
                 <button
@@ -58,7 +58,7 @@ const InvitationCheckComponent = ({
                   <span className="mr-4">Yes, I was invited</span>
                   <RiArrowRightLine size={24} fill="#BD5141" />
                 </button>
-                <p className="py-5 px-3 text-brand-info text-brand-beige opacity-70">
+                <p className="py-5 text-brand-info text-brand-beige opacity-70">
                   If not, visit a TAZ location to grab an invitation card.
                 </p>
               </div>
@@ -93,24 +93,16 @@ const InvitationCheckComponent = ({
         </div>
       ) : (
         <div className="flex flex-col items-center overflow-hidden rounded-md px-3 text-brand-gray2">
-          <div className="h-[1600px] py-3 w-full px-4 z-10">
+          <div className="h-[700px] py-3 w-full px-4 z-10">
             <p className="py-5 font-bold mb-3 px-3 text-brand-button text-brand-beige">
               Scan the QR code on the invitation card
             </p>
 
             <div>
-              {/* <button
-                                className="bg-brand-beige2 w-full p-2 border-2 border-brand-gray2 shadow-[-3px_3px_0px_0px_rgba(71,95,111)] mb-8"
-                                onClick={handleStartScan}
-                            >
-                                {startScan ? 'Stop Scan' : 'Scan Invitation QR Code'}
-                            </button> */}
+  
 
               <div className="flex items-center justify-center flex-col mb-5">
-                {/* <select className="mb-3" onChange={(e) => setSelected(e.target.value)}>
-                  <option value="environment">Back Camera</option>
-                  <option value="user">Front Camera</option>
-                </select> */}
+
                 <QrReader
                   facingMode={selected}
                   delay={1000}
@@ -149,6 +141,7 @@ const InvitationCheckComponent = ({
           </div>
         </div>
       )}
+
       <Footer />
       {/* <div className="absolute bottom-[50px] left-0 -z-10 h-[20%] w-full bg-black" /> */}
     </div>

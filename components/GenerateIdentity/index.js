@@ -3,6 +3,8 @@ import axios from 'axios'
 import { Identity } from '@semaphore-protocol/identity'
 import QRCode from 'qrcode'
 import { useIdentityLoginContext } from '../../context/IdentityContextProvider'
+import { useScreenshot } from 'use-react-screenshot'
+
 
 import { GenerateIdentityComponent } from './View'
 
@@ -11,10 +13,12 @@ export const GenerateIdentity = (props) => {
     const { invitation } = props
 
     const onSetIdentity = useIdentityLoginContext()
-    const [imageUrl, setImageUrl] = useState('')
+    const [imageUrl, setImageUrl] = useState('10')
     // const [isGeneratingIdentity, setIsGeneratingIdentity] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [loadingMessage, setLoadingMessage] = useState('This is a Loading Message')
+    const [image, takeScreenShot] = useScreenshot({})
+
     const handleJoinButton = async () => {
         // setIsGeneratingIdentity(true)
         setIsLoading(true)
@@ -42,7 +46,14 @@ export const GenerateIdentity = (props) => {
                 console.log(res.status)
                 onSetIdentity(identityKey)
                 try {
-                    const responseQR = await QRCode.toDataURL(identityKey)
+                    var opts = {
+                        type: 'image/jpeg',
+                        color: {
+                          dark:"#1E1E1E",
+                          light:"#EAE1DA"
+                        }
+                      }
+                    const responseQR = await QRCode.toDataURL(identityKey,opts)
                     setImageUrl(responseQR)
                 } catch (error) {
                     console.log(error)
