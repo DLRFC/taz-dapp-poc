@@ -4,6 +4,7 @@ import { RiArrowUpCircleFill } from 'react-icons/ri'
 import Modal from './Modal'
 import BackTAZ from '../ArrowNavigators/BackTAZ'
 import ArtBunny from '../svgElements/ArtBunny'
+import Footer from '../Footer'
 
 export default function ArtGalleryComponent({
   open,
@@ -47,7 +48,10 @@ export default function ArtGalleryComponent({
               {/* <Link href="/artBoard-page">
               <a className="underline">Click Here to start drawing</a>
             </Link> */}
-            </p>
+          </p>
+          <div className="absolute top-[184px] left-[260px]">
+            <ArtBunny />
+
           </div>
           <div className="flex justify-center bg-[#1E1E1E] mb-10">
             <p className="text-brand-beige text-[12px] w-full md:w-3/4 lg:w-3/4 px-10 py-2">
@@ -68,8 +72,10 @@ export default function ArtGalleryComponent({
           </div>
         </Link> */}
       </div>
-      <div className="absolute overflow-hidden top-40 lg:top-16 -right-6">
-        <ArtBunny />
+
+      <div className="z-20 relative flex items-center flex-col bg-black mt-20 py-5">
+        <Footer />
+
       </div>
     </div>
   )

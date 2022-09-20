@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { AnimatePresence } from 'framer-motion'
 import LoadingModal from '../LoadingModal/Index.js'
 import Header from '../Header/index.js'
+import Footer from '../Footer'
 
 // Page 3 will Generate Identity and Join Group
 export const GenerateIdentityComponent = ({ isLoading, onClose, loadingMessage, imageUrl, handleJoinButton }) => (
@@ -168,12 +169,12 @@ export const GenerateIdentityComponent = ({ isLoading, onClose, loadingMessage, 
 
 
       </div>
-      <p className="text-center py-[40px] px-3 mt-10 text-brand-beige opacity-70 text-xs">
-              "Your identity is burnt." - <a className="underline">@PrivacyScaling</a>
-            </p>
+
       
 
     </div>
 
+    <Footer />
+    {/* <div className="absolute bottom-[50px] left-0 -z-10 h-[20%] w-full bg-black" /> */}
   </div>
 )

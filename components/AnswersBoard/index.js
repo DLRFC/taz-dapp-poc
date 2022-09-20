@@ -5,6 +5,7 @@ import YellowCircle from '../svgElements/YellowCircle'
 import BlueEllipse from '../svgElements/BlueEllipse'
 import ConvoBubbles from '../svgElements/ConvoBubbles'
 import BackArrow from '../svgElements/BackArrow'
+import Footer from '../Footer'
 
 const AnswersBoard = (props) => {
   const { messageId } = props
@@ -14,7 +15,7 @@ const AnswersBoard = (props) => {
 
   return (
     <div className="grid mb-20">
-      <div className="col-start-1 row-start-1 fixed">
+      <div className="z-0 col-start-1 row-start-1 fixed">
         <div className="absolute top-[150px] -left-[30px]">
           <BlueEllipse />
         </div>
@@ -26,7 +27,7 @@ const AnswersBoard = (props) => {
         </div>
       </div>
 
-      <div className="col-start-1 row-start-1 px-6 py-8">
+      <div className="z-10 col-start-1 row-start-1 px-6 py-8">
         <div className="z-0 p-4 min-w-[200px] relative divide-y overflow-y-auto border-2 border-brand-blue rounded-md bg-white drop-shadow-lg">
           <div className="mb-4 border-0">
             <Link href="/questions" className="cursor-pointer">
@@ -70,6 +71,10 @@ const AnswersBoard = (props) => {
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="z-20 relative flex items-center flex-col bg-black mt-20 py-5">
+        <Footer />
       </div>
     </div>
   )
