@@ -32,7 +32,7 @@ export default function ArtGalleryComponent({
           </button>
         </Link>
       </div>
-      <div className="flex flex-col items">
+      <div className="flex flex-col items-center">
         <div className="z-10 mt-3 w-full py-3">
           <Link href="/experiences-page">
             <div className="flex max-w-[76px] max-h-[32px] bg-black ml-3 mt-1 mb-12 px-1 text-xl text-brand-beige2 cursor-pointer shadow-[2.0px_3.0px_3.0px_rgba(0,0,0,0.38)]">
@@ -40,20 +40,22 @@ export default function ArtGalleryComponent({
               <h1>TAZ</h1>
             </div>
           </Link>
-          <p className="px-3 text-xl font-bold">WELCOME TO THE DEVCON XI GALLERY</p>
-          <p className="py-5 px-3 mr-16 text-brand-info text-[#1E1E1E] opacity-70 leading-[21px]">
-            Every canvas has 9 anonymous contributors. There are 5 active canvases at one time.
-            {/* <Link href="/artBoard-page">
+          <div className="flex flex-col items-center md:w-3/4 lg:w-3/4">
+            <p className="px-3 text-xl font-bold">WELCOME TO THE DEVCON XI GALLERY</p>
+            <p className="py-5 px-3 mr-16 text-brand-info text-[#1E1E1E] opacity-70 leading-[21px]">
+              Every canvas has 9 anonymous contributors. There are 5 active canvases at one time.
+              {/* <Link href="/artBoard-page">
               <a className="underline">Click Here to start drawing</a>
             </Link> */}
-          </p>
-          <div className="bg-[#1E1E1E] mb-10">
-            <p className="text-brand-beige text-[12px] w-full px-10 py-2">
+            </p>
+          </div>
+          <div className="flex justify-center bg-[#1E1E1E] mb-10">
+            <p className="text-brand-beige text-[12px] w-full md:w-3/4 lg:w-3/4 px-10 py-2">
               Vote for your favorite! The winner will be announced at the end of the week.
             </p>
           </div>
         </div>
-        <div className="flex">
+        <div className="flex md:w-3/4 lg:w-3/4">
           {images.map((image) => (
             <ImageCard key={image.id} url={image.uri} onClick={() => handleClick(image.uri)} />
           ))}
@@ -74,7 +76,7 @@ export default function ArtGalleryComponent({
 }
 
 const ImageCard = ({ url, onClick }) => (
-  <picture onClick={onClick} className="w-2/4 m-4 border border-brand-gray2 hover:bg-red-700 cursor-pointer">
+  <picture onClick={onClick} className="w-2/4 md:w-1/4 m-4 border border-brand-gray2 hover:bg-red-700 cursor-pointer">
     <img src={url} alt="" />
   </picture>
 )
