@@ -24,11 +24,16 @@ export const useGenerateProof = () => {
 
     // Adapt Signal
     // const signal = 'proposal_1'
+    let fullProofTemp
+    try {
+      fullProofTemp = await generateProof(identity, group, externalNullifier, signal, {
+        zkeyFilePath: '/semaphore.zkey',
+        wasmFilePath: '/semaphoreWasm.wasm'
+      })
+    } catch (error) {
+      return error
+    }
 
-    const fullProofTemp = await generateProof(identity, group, externalNullifier, signal, {
-      zkeyFilePath: '/semaphore.zkey',
-      wasmFilePath: '/semaphoreWasm.wasm'
-    })
     const { nullifierHash } = fullProofTemp.publicSignals
     const solidityProof = packToSolidityProof(fullProofTemp.proof)
     return {
