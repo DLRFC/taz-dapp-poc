@@ -70,11 +70,11 @@ export default async function handler(req, res) {
           { gasLimit: 15000000 }
         )
         console.log('Transaction Finished!')
-        const response = await tx.wait(1)
-        console.log(response)
+        // const response = await tx.wait(1)
+        console.log(tx)
         console.log('Reply Message Success!')
 
-        res.status(201).json(response)
+        res.status(201).json(tx)
       } catch (error) {
         console.log('Reply to Message transaction failed!')
         console.log(error)
@@ -107,9 +107,9 @@ export default async function handler(req, res) {
         )
         console.log(tx)
 
-        const response = await tx.wait(1)
-        console.log(response)
-        res.status(201).json(response)
+        // const response = await tx.wait(1)
+        console.log(tx)
+        res.status(201).json(tx)
       } catch (error) {
         console.log('Add Message transaction failed!')
         console.log(error)

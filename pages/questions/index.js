@@ -83,9 +83,12 @@ export default function Questions({ questionsProp }) {
     }
     console.log('QUESTIONS PAGE | body', body)
 
-    axios.post('/api/postMessage', body, {
+    const txResponse = await axios.post('/api/postMessage', body, {
       timeout: API_REQUEST_TIMEOUT
     })
+
+    console.log('txResponse Status', txResponse.status)
+    console.log('txResponse Hash', txResponse.data.hash)
 
     setSteps([
       { status: 'complete', text: 'Generate zero knowledge proof' },
@@ -94,30 +97,34 @@ export default function Questions({ questionsProp }) {
     ])
 
     // Solution below adds the new record to state, as opposed to refreshing.
-    const newQuestion = {
-      id: Math.round(Math.random() * 100000000000).toString(),
-      messageId,
-      messageContent
-    }
-    const updatedQuestions = [newQuestion].concat(questions)
-    console.log('QUESTIONS PAGE | udpatedQuestions', updatedQuestions)
-    setQuestions(updatedQuestions)
+    if (txResponse.status === 201) {
+      const newQuestion = {
+        id: 1000000000,
+        messageId: txResponse.data.hash,
+        messageContent
+      }
+      const updatedQuestions = [newQuestion].concat(questions)
+      console.log('QUESTIONS PAGE | udpatedQuestions', updatedQuestions)
+      window.localStorage.setItem('savedQuestion', JSON.stringify(newQuestion))
 
-    updateLocalStorage(newQuestion)
+      setQuestions(updatedQuestions)
+
+      // updateLocalStorage(newQuestion)
+    }
 
     // router.reload(window.location.pathname)
 
     setTimeout(internalCloseProcessingModal, 3000)
   }
 
-  const updateLocalStorage = (newQuestion) => {
-    let localQuestions = JSON.parse(window.localStorage.getItem('questions')) || []
-    localQuestions.push(newQuestion)
-    window.localStorage.setItem('questions', JSON.stringify(localQuestions))
-  }
+  // const updateLocalStorage = (newQuestion) => {
+  //   const localQuestions = JSON.parse(window.localStorage.getItem('questions')) || []
+  //   localQuestions.push(newQuestion)
+  //   window.localStorage.setItem('questions', JSON.stringify(localQuestions))
+  // }
 
   const updateFromLocalStorage = () => {
-    let localQuestions = JSON.parse(window.localStorage.getItem('questions'))
+    const localQuestions = JSON.parse(window.localStorage.getItem('questions'))
 
     // console.log('localQuestions', typeof localQuestions)
 
@@ -163,8 +170,27 @@ export default function Questions({ questionsProp }) {
       // setIsMember(true)
     }
 
+    // Check if question is fetched form subgraph
+    const savedQuestion = JSON.parse(window.localStorage.getItem('savedQuestion'))
+
+    const index = questions.some((element) => {
+      if (savedQuestion && element.messageContent === savedQuestion.messageContent) {
+        return true
+      }
+
+      return false
+    })
+    if (index) {
+      window.localStorage.removeItem('savedQuestion')
+    } else if (savedQuestion) {
+      const updatedQuestions = [savedQuestion].concat(questions)
+      setQuestions(updatedQuestions)
+    }
+
+    // How to check if a savedQuestion already exists in questions without a for loop?
+
     // Call once to check local storage for any questions pending tx finalization
-    updateFromLocalStorage()
+    // updateFromLocalStorage()
   }, [])
 
   useEffect(() => {
