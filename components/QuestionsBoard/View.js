@@ -6,6 +6,7 @@ import BlueEllipse from '../svgElements/BlueEllipse'
 import RedCircle from '../svgElements/RedCircle'
 import SelectorArrow from '../ArrowNavigators/SelectorArrow'
 import BackTAZ from '../ArrowNavigators/BackTAZ'
+import Footer from '../Footer'
 
 const QuestionsBoardComponent = ({ questions, clearIdentity }) => (
   <div className="grid">
@@ -44,7 +45,7 @@ const QuestionsBoardComponent = ({ questions, clearIdentity }) => (
         <h3 className="ml-3 mb-4 text-brand-body text-brand-blue">makes this anonymous</h3>
       </div>
 
-      <div className="min-w-[200px] relative divide-y overflow-y-auto rounded-md border-2 border-brand-blue bg-white drop-shadow-lg mb-20">
+      <div className="min-w-[200px] relative divide-y overflow-y-auto rounded-md border-2 border-brand-blue bg-white drop-shadow-lg">
         {questions.map((question) => (
           <Link href={`/answers/${question.messageId}`} key={question.id}>
             <div className="flex w-full flex-row items-center border-brand-blue p-4 cursor-pointer">
@@ -54,6 +55,10 @@ const QuestionsBoardComponent = ({ questions, clearIdentity }) => (
           </Link>
         ))}
       </div>
+    </div>
+
+    <div className="z-20 relative flex items-center flex-col bg-black mt-20 py-5">
+      <Footer />
     </div>
   </div>
 )

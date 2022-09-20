@@ -4,6 +4,9 @@ import { RiArrowRightLine, RiUploadLine } from 'react-icons/ri'
 
 import LoadingModal from '../LoadingModal/Index'
 import Header from '../Header'
+import Loading from '../Loading'
+import Footer from '../Footer'
+
 
 // Page 1 it will check Invitation
 const InvitationCheckComponent = ({
@@ -146,8 +149,8 @@ const InvitationCheckComponent = ({
           </div>
         </div>
       )}
-
-      <div className="absolute bottom-[50px] left-0 -z-10 h-[20%] w-full bg-black" />
+      <Footer />
+      {/* <div className="absolute bottom-[50px] left-0 -z-10 h-[20%] w-full bg-black" /> */}
     </div>
   )
 }
