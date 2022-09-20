@@ -13,7 +13,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
   return (
     <div>
       <div className="grid">
-        <div className="col-start-1 row-start-1 fixed">
+        <div className="z-0 col-start-1 row-start-1 fixed">
           <div className="absolute top-[130px] -left-[51px]">
             <RedCircle />
           </div>
@@ -28,7 +28,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
           </div>
         </div>
 
-        <div className="col-start-1 row-start-1 px-6 py-8 font-sans text-brand-brown">
+        <div className="z-10 col-start-1 row-start-1 px-6 py-8 font-sans text-brand-brown">
           <div>
             <h1 className="relative inline-block bg-black ml-3 mb-12 px-1 text-xl text-brand-beige2">TAZ</h1>
           </div>
@@ -82,7 +82,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
             </Link>
           </div>
 
-          <div className=" relative flex flex-col items-center overflow-hidden rounded-md border-2 border-brand-blue shadow-xl bg-white mt-20 mb-20">
+          <div className="z-20 relative flex flex-col items-center overflow-hidden rounded-md border-2 border-brand-blue shadow-xl bg-white mt-20 mb-20">
             <div className="flex w-full justify-between border-b-2 border-brand-blue bg-black text-15px text-brand-beige p-3">
               <div>🧑‍🏫</div>
               <div>FAQ</div>
