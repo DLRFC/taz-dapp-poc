@@ -6,7 +6,10 @@ import { TAZMESSAGE_CONTRACT } from '../../config/goerli.json'
 
 dotenv.config({ path: '../../.env.local' })
 const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL)
-const signer_2 = new ethers.Wallet(process.env.PRIVATE_KEY_2).connect(provider)
+const signer_array = process.env.PRIVATE_KEY_ARRAY.split(',')
+console.log('signer Array1', signer_array)
+
+const signer_2 = new ethers.Wallet(signer_array[0]).connect(provider)
 const signer_3 = new ethers.Wallet(process.env.PRIVATE_KEY_3).connect(provider)
 
 const tazMessageAbi = TazMessage.abi
@@ -94,6 +97,8 @@ export default async function handler(req, res) {
       //   uint256[8] calldata proof) external {
 
       try {
+        // Fetch nonce(based on wallet)
+        console.log('signer Array2', signer_array)
         tx = await tazMessageContract_2.addMessage(
           messageId,
           messageContent,
@@ -103,9 +108,10 @@ export default async function handler(req, res) {
           nullifierHash,
           externalNullifier,
           solidityProof,
-          { gasLimit: 15000000 }
+          { gasLimit: 1500000 }
         )
-        console.log(tx)
+        // Update nonce++ of that wallet
+        // console.log(tx)
 
         // const response = await tx.wait(1)
         console.log(tx)
