@@ -36,9 +36,6 @@ const InvitationCheckComponent = ({
           <LoadingModal onClose={onClose} loadingMessage={loadingMessage} />
         </AnimatePresence>
       )}
-      <AnimatePresence initial={false} exitBeforeEnter onExitComplete={() => null} className="z-20">
-        <LoadingModal onClose={onClose} loadingMessage={loadingMessage} />
-      </AnimatePresence>
       <Header />
       {!isSignUp ? (
         <div className="flex flex-col items-center overflow-hidden rounded-md px-3 text-brand-gray2">
