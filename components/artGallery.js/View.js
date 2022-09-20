@@ -78,6 +78,7 @@ export default function ArtGalleryComponent({
 
       </div>
     </div>
+</div>
   )
 }
 
