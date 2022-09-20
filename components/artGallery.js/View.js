@@ -68,7 +68,7 @@ export default function ArtGalleryComponent({
           </div>
         </Link> */}
       </div>
-      <div className="absolute overflow-hidden top-[184px] left-[284px]">
+      <div className="absolute overflow-hidden top-40 lg:top-16 -right-6">
         <ArtBunny />
       </div>
     </div>
