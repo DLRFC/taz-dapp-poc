@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Modal from './Modal'
 import BackTAZ from '../ArrowNavigators/BackTAZ'
 import ArtBunny from '../svgElements/ArtBunny'
+import Footer from '../Footer'
 
 export default function ArtGalleryComponent({
   open,
@@ -52,7 +53,7 @@ export default function ArtGalleryComponent({
               <a className="underline">Click Here to start drawing</a>
             </Link> */}
           </p>
-          <div className="absolute top-[184px] left-[284px]">
+          <div className="absolute top-[184px] left-[260px]">
             <ArtBunny />
           </div>
 
@@ -75,6 +76,10 @@ export default function ArtGalleryComponent({
             <Button text="Start CoDrawing" />
           </div>
         </Link> */}
+      </div>
+
+      <div className="z-20 relative flex items-center flex-col bg-black mt-20 py-5">
+        <Footer />
       </div>
     </div>
   )

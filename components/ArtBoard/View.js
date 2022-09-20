@@ -7,6 +7,7 @@ import LoadingModal from '../LoadingModal/Index'
 import DrawingModal from './drawingModal'
 import GenerateTile from './generateTile'
 import BackArrow from '../svgElements/BackArrow'
+import Footer from '../Footer'
 
 // import { Identity } from '@semaphore-protocol/identity'
 
@@ -41,7 +42,7 @@ const ArtBoardComponent = forwardRef(
     ]
 
     return (
-      <div className="px-6 py-8 font-sans mb-20">
+      <div className="px-6 py-8 font-sans">
         {isLoading ? (
           <AnimatePresence initial={false} exitBeforeEnter onExitComplete={() => null} className="z-20">
             <LoadingModal loadingMessage={loadingMessage} />
@@ -134,6 +135,10 @@ const ArtBoardComponent = forwardRef(
               <p className="text-center w-full">Select a Tile</p>
             )}
           </div>
+        </div>
+
+        <div className="z-10 relative flex items-center flex-col bg-black mt-20 py-5">
+          <Footer />
         </div>
       </div>
     )
