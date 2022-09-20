@@ -3,7 +3,12 @@
 const withMT = require('@material-tailwind/react/utils/withMT')
 
 module.exports = withMT({
-  content: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
+  content: [
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
+    './public/**/*.html',
+    './node_modules/flowbite-react/**/*.js'
+  ],
   theme: {
     extend: {
       fontFamily: {
@@ -42,5 +47,5 @@ module.exports = withMT({
       }
     }
   },
-  plugins: [require('@tailwindcss/line-clamp')]
+  plugins: [require('@tailwindcss/line-clamp'), require('flowbite/plugin')]
 })

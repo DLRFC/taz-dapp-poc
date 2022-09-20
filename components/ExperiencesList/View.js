@@ -1,38 +1,13 @@
-import { useState } from 'react'
-import { Accordion, AccordionHeader, AccordionBody } from '@material-tailwind/react'
-
 import Link from 'next/link'
 
-import SelectorArrow from '../ArrowNavigators/SelectorArrow'
-import DropDownArrow from '../ArrowNavigators/DropDownArrow'
 import RedCircle from '../svgElements/RedCircle'
 import YellowCircle from '../svgElements/YellowCircle'
 import ShadowBunny from '../svgElements/ShadowBunny'
 import BlueEllipse from '../svgElements/BlueEllipse'
-
-function Icon({ id, open }) {
-  return (
-    <DropDownArrow className={`${id === open ? 'rotate-180' : ''} h-5 w-5 transition-transform`}></DropDownArrow>
-    // <svg
-    //   xmlns="http://www.w3.org/2000/svg"
-    //   className={`${id === open ? 'rotate-180' : ''} h-5 w-5 transition-transform`}
-    //   fill="none"
-    //   viewBox="0 0 24 24"
-    //   stroke="currentColor"
-    //   strokeWidth={2}
-    // >
-    //   <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-    // </svg>
-  )
-}
+import SelectorArrow from '../ArrowNavigators/SelectorArrow'
+import Accordion from '../FAQ/Accordion'
 
 const ExperiencesListComponent = ({ clearIdentity }) => {
-  const [open, setOpen] = useState(0)
-
-  const handleOpen = (value) => {
-    setOpen(open === value ? 0 : value)
-  }
-
   return (
     <div>
       <div className="grid">
@@ -69,7 +44,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
               <div></div>
             </div>
             <Link href="questions">
-              <div className="flex w-full flex-row items-center border-b-2 border-brand-blue py-3 px-2 cursor-pointer">
+              <div className="flex w-full flex-row items-center border-b-2 border-brand-blue py-3 px-4 cursor-pointer">
                 <div className="w-[90%]">
                   <p className="py-2 text-brand-h3 font-bold">Q&A</p>
                   <p className="text-brand-info opacity-[70%]">Anonymously ask & answer questions</p>
@@ -78,7 +53,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
               </div>
             </Link>
             <Link href="artGallery-page">
-              <div className="flex w-full flex-row items-center border-b-2 border-brand-blue py-3 px-2 cursor-pointer">
+              <div className="flex w-full flex-row items-center py-3 px-4 cursor-pointer">
                 <div className="w-[90%]">
                   <p className="py-2 text-brand-h3 font-bold">Devcon VI Gallery</p>
                   <p className="text-brand-info opacity-[70%]">Create on collaborative canvases</p>
@@ -95,7 +70,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
               <div></div>
             </div>
             <Link href="">
-              <div className="flex w-full flex-row items-center border-b-2 border-brand-blue py-3 px-2 cursor-pointer">
+              <div className="flex w-full flex-row items-center py-3 px-4 cursor-pointer">
                 <div className="w-[90%]">
                   <p className="py-2 text-brand-h3 font-bold">Zkitter</p>
                   <p className="text-brand-info opacity-[70%]">Social media but make it anon</p>
@@ -111,63 +86,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
               <div>FAQ</div>
               <div></div>
             </div>
-
-            <div className="flex w-full border-b-2 border-brand-blue py-3 pl-2 pr-4 cursor-pointer">
-              <Accordion open={open === 1} icon={<Icon id={1} open={open} />}>
-                <AccordionHeader
-                  class="flex justify-between items-center w-full py-3 text-brand-brown font-sans text-brand-h3 leading-snug"
-                  onClick={() => handleOpen(1)}
-                >
-                  What is a Semaphore ID?
-                </AccordionHeader>
-                <AccordionBody class="block w-full py-3 text-brand-brown font-sans text-brand-info opacity-[70%] leading-normal">
-                  Semaphore IDs contain 3 parts: Trapdoor and Nullifier to avoid fraud and Commitment to interact
-                  publicly.
-                </AccordionBody>
-              </Accordion>
-            </div>
-            <div className="flex w-full border-b-2 border-brand-blue py-3 pl-2 pr-4 cursor-pointer">
-              <Accordion open={open === 2} icon={<Icon id={2} open={open} />}>
-                <AccordionHeader
-                  class="flex justify-between items-center w-full py-3 text-brand-brown font-sans text-brand-h3 leading-snug select-none transition-none"
-                  onClick={() => handleOpen(2)}
-                >
-                  How am I anonymous?
-                </AccordionHeader>
-                <AccordionBody class="block w-full py-3 text-brand-brown font-sans text-brand-info opacity-[70%] leading-normal">
-                  Semaphore IDs contain 3 parts: Trapdoor and Nullifier to avoid fraud and Commitment to interact
-                  publicly.
-                </AccordionBody>
-              </Accordion>
-            </div>
-            <div className="flex w-full border-b-2 border-brand-blue py-3 pl-2 pr-4 cursor-pointer">
-              <Accordion open={open === 3} icon={<Icon id={3} open={open} />}>
-                <AccordionHeader
-                  class="flex justify-between items-center w-full py-3 text-brand-brown font-sans text-brand-h3 leading-snug select-none transition-none"
-                  onClick={() => handleOpen(3)}
-                >
-                  Why does it take a long time to post?
-                </AccordionHeader>
-                <AccordionBody class="block w-full py-3 text-brand-brown font-sans text-brand-info opacity-[70%] leading-normal">
-                  Semaphore IDs contain 3 parts: Trapdoor and Nullifier to avoid fraud and Commitment to interact
-                  publicly.
-                </AccordionBody>
-              </Accordion>
-            </div>
-            <div className="flex w-full border-b-2 border-brand-blue py-3 pl-2 pr-4 cursor-pointer">
-              <Accordion open={open === 4} icon={<Icon id={4} open={open} />}>
-                <AccordionHeader
-                  class="flex justify-between items-center w-full py-3 text-brand-brown font-sans text-brand-h3 leading-snug select-none transition-none"
-                  onClick={() => handleOpen(4)}
-                >
-                  Why are you using a centralized backend?
-                </AccordionHeader>
-                <AccordionBody class="block w-full py-3 text-brand-brown font-sans text-brand-info opacity-[70%] leading-normal">
-                  Semaphore IDs contain 3 parts: Trapdoor and Nullifier to avoid fraud and Commitment to interact
-                  publicly.
-                </AccordionBody>
-              </Accordion>
-            </div>
+            <Accordion />
           </div>
         </div>
       </div>
@@ -183,18 +102,17 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
 
         <a
           href="https://pse-team.notion.site/About-the-TAZ-app-1ae2793046414468b56472f43725961e"
-          target="_blank"
           className="pb-10 underline"
         >
           About this app
         </a>
-        <a href="http://semaphore.appliedzkp.org/" target="_blank" className="pb-10 underline">
+        <a href="http://semaphore.appliedzkp.org/" className="pb-10 underline">
           About Semaphore
         </a>
-        <a href="esp.ethereum.foundation/semaphore-grants" target="_blank" className="pb-10 underline">
+        <a href="esp.ethereum.foundation/semaphore-grants" className="pb-10 underline">
           Semaphore Grants Round
         </a>
-        <a href="https://appliedzkp.org/" target="_blank" className="pb-14 underline">
+        <a href="https://appliedzkp.org/" className="pb-14 underline">
           Privacy & Scaling Explorations
         </a>
         <div>
