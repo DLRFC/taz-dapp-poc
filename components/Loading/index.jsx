@@ -16,7 +16,7 @@ const colorVariant = {
   quaternary: 'text-brand-blue fill-brand-beige'
 }
 
-export const Loading = ({ size = 'med', variant = 'primary', ...rest }) => (
+const Loading = ({ size = 'med', variant = 'primary', ...rest }) => (
   <div>
     <svg
       className={`inline animate-spin ${colorVariant[variant]} ${loaderSize[size]}`}
