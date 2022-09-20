@@ -153,7 +153,7 @@ export const GenerateIdentityComponent = ({ isLoading, onClose, loadingMessage, 
                 </svg>
               </button>
             </Link>
-            <p className="mb-3 py-5 px-3 text-brand-beige text-[12px]">
+            <p className="mb-3 py-5 px-3 text-brand-beige text-[12px] text-center">
               {`Your browser will remember your ID unless you remove it or use a private browser. Save the QR image in
               case your browser forgets :)`}
             </p>
