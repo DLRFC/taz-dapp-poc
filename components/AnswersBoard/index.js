@@ -13,7 +13,7 @@ const AnswersBoard = (props) => {
   const [question, setQuestion] = useState(props.question)
 
   return (
-    <div className="grid mb-20">
+    <div className="z-0 grid mb-20">
       <div className="col-start-1 row-start-1 fixed">
         <div className="absolute top-[150px] -left-[30px]">
           <BlueEllipse />
@@ -26,7 +26,7 @@ const AnswersBoard = (props) => {
         </div>
       </div>
 
-      <div className="col-start-1 row-start-1 px-6 py-8">
+      <div className="z-10 col-start-1 row-start-1 px-6 py-8">
         <div className="z-0 p-4 min-w-[200px] relative divide-y overflow-y-auto border-2 border-brand-blue rounded-md bg-white drop-shadow-lg">
           <div className="mb-4 border-0">
             <Link href="/questions" className="cursor-pointer">
