@@ -26,8 +26,8 @@ export const useGenerateProof = () => {
     // const signal = 'proposal_1'
 
     const fullProofTemp = await generateProof(identity, group, externalNullifier, signal, {
-      zkeyFilePath: 'https://www.trusted-setup-pse.org/semaphore/16/semaphore.zkey',
-      wasmFilePath: 'https://www.trusted-setup-pse.org/semaphore/16/semaphore.wasm'
+      zkeyFilePath: '/semaphore.zkey',
+      wasmFilePath: '/semaphoreWasm.wasm'
     })
     const { nullifierHash } = fullProofTemp.publicSignals
     const solidityProof = packToSolidityProof(fullProofTemp.proof)
