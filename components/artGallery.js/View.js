@@ -7,15 +7,7 @@ import BackTAZ from '../ArrowNavigators/BackTAZ'
 import ArtBunny from '../svgElements/ArtBunny'
 import Footer from '../Footer'
 
-export default function ArtGalleryComponent({
-  open,
-  handleClose,
-  activeImage,
-  setActiveImage,
-  handleClick,
-  images,
-  scrollTop
-}) {
+export default function ArtGalleryComponent({ open, handleClose, activeImage, setActiveImage, handleClick, images }) {
   const [showTopBtn, setShowTopBtn] = useState(false)
 
   useEffect(() => {
@@ -52,9 +44,6 @@ export default function ArtGalleryComponent({
             <p className="px-3 text-xl font-bold">WELCOME TO THE DEVCON XI GALLERY</p>
             <p className="w-3/4 py-5 px-3 min-h-[100px] md:min-h-fit text-brand-info text-[#1E1E1E] opacity-70">
               Every canvas has 9 anonymous contributors. There are 5 active canvases at one time.
-              {/* <Link href="/artBoard-page">
-              <a className="underline">Click Here to start drawing</a>
-            </Link> */}
             </p>
             <div className="flex justify-center bg-[#1E1E1E]">
               <p className="text-brand-beige text-[12px] w-full md:w-3/4 lg:w-3/4 px-10 py-2">
@@ -106,19 +95,3 @@ const ImageCard = ({ url, onClick }) => (
     <img src={url} alt="" />
   </picture>
 )
-
-// For fixed sticky buttons
-
-/* <div className="sticky top-[400px] z-30 flex justify-between mx-2">
-        <button onClick={scrollTop}>
-          <RiArrowUpCircleFill size={40} fill="#1E1E1E" />
-        </button>
-        <Link href="/artBoard-page">
-          <button
-            type="button"
-            className="rounded-full bg-brand-yellow px-4 py-2 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
-          >
-            Draw with others
-          </button>
-        </Link>
-      </div> */
