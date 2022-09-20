@@ -128,11 +128,11 @@ const InvitationCheckComponent = ({
                   className="border-solid border-2 border-brand-beige w-full mb-3 py-2 rounded-sm bg-[#F0EBE8] bg-opacity-10 max-w-[80%] text-brand-beige text-xl text-center"
                   type="text"
                   placeholder="invitation-code"
-                  maxLength="6"
+                  maxLength="8"
                   value={invitation}
                   onChange={inviteCodeChangeHandler}
                 />
-                <p className="text-brand-beige mb-3 px-1 text-sm opacity-70">or type the 6 digits code here</p>
+                <p className="text-brand-beige mb-3 px-1 text-sm opacity-70">or type the 8 digits code here</p>
               </div>
 
               {invitation && invitation.length > 5 && (
