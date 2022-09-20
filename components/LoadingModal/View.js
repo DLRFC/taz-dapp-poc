@@ -35,7 +35,7 @@ const LoadingModalComponent = ({ handleClick, loadingMessage, loadingProof }) =>
         animate="visible"
         exit="exit"
         onClick={(e) => e.stopPropagation()}
-        className="w-full md:w-2/4 h-[450px] sm:w-9/12 border rounded border-brand-gray bg-white drop-shadow-lg items-center justify-center mt-[270px]"
+        className="w-full md:w-2/4 h-[450px] sm:w-9/12 m-32 md:mt-64 border rounded border-brand-gray bg-white drop-shadow-lg items-center justify-center"
       >
         <div className="flex items-center rounded-t border-b border-brand-gray gap-4 py-4 px-4 bg-brand-beige">
           <Loading size="sm" variant="teritary" />
