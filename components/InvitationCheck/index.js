@@ -38,7 +38,7 @@ export default function InvitationCheck() {
     // setLoadingScan(true)
     try {
       if (scanData && scanData !== '') {
-        const scanDataCode = scanData.slice(-6)
+        const scanDataCode = scanData.slice(-8)
         console.log(`loaded >>>`, scanDataCode)
         setData(scanDataCode)
         setStartScan(false)
@@ -54,8 +54,8 @@ export default function InvitationCheck() {
   }
 
   const validate = async () => {
-    if (invitation.length < 5) {
-      alert('Error: must be 6 characters')
+    if (invitation.length < 8) {
+      alert('Error: must be 8 characters')
       return
     }
     setIsLoading(true)
