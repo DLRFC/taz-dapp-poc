@@ -6,11 +6,7 @@ import { Subgraphs } from '../hooks/subgraphs'
 // })
 
 export default function ArtGalleryPage({ images }) {
-  return (
-    <div>
-      <ArtGallery images={images} />
-    </div>
-  )
+  return <ArtGallery images={images} />
 }
 
 // eslint-disable-next-line no-unused-vars

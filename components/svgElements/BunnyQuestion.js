@@ -8,6 +8,7 @@ function BunnyQuestion(props) {
         stroke="black"
         strokeWidth="2.3"
         fill="black"
+        {...props}
       />
     </svg>
   )
