@@ -7,6 +7,7 @@ import Header from '../Header'
 import Loading from '../Loading'
 import Footer from '../Footer'
 
+
 // Page 1 it will check Invitation
 const InvitationCheckComponent = ({
   isSignUp,
@@ -33,7 +34,6 @@ const InvitationCheckComponent = ({
   console.log('change')
   return (
     <div className="p-4 font-sans bg-brand-blue">
-      <Loading size="sm" />
       {isLoading && (
         <AnimatePresence initial={false} exitBeforeEnter onExitComplete={() => null} className="z-20">
           <LoadingModal onClose={onClose} loadingMessage={loadingMessage} />
@@ -129,11 +129,11 @@ const InvitationCheckComponent = ({
                   className="border-solid border-2 border-brand-beige w-full mb-3 py-2 rounded-sm bg-[#F0EBE8] bg-opacity-10 max-w-[80%] text-brand-beige text-xl text-center"
                   type="text"
                   placeholder="invitation-code"
-                  maxLength="6"
+                  maxLength="8"
                   value={invitation}
                   onChange={inviteCodeChangeHandler}
                 />
-                <p className="text-brand-beige mb-3 px-1 text-sm opacity-70">or type the 6 digits code here</p>
+                <p className="text-brand-beige mb-3 px-1 text-sm opacity-70">or type the 8 digits code here</p>
               </div>
 
               {invitation && invitation.length > 5 && (
