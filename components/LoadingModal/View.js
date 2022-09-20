@@ -1,16 +1,12 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 
-const LoadingModalComponent = ({
-  handleClick,
-  loadingMessage,
-  loadingProof,
-}) => {
+const LoadingModalComponent = ({ handleClick, loadingMessage, loadingProof }) => {
   // const testProof =''
   const dropIn = {
     hidden: {
       y: '-200vh',
-      opacity: 0,
+      opacity: 0
     },
     visible: {
       y: '0',
@@ -19,18 +15,18 @@ const LoadingModalComponent = ({
         duration: 0.1,
         type: 'spring',
         damping: 25,
-        stiffness: 500,
-      },
+        stiffness: 500
+      }
     },
     exit: {
       y: '-200vh',
-      opacity: 0,
-    },
+      opacity: 0
+    }
   }
   return (
     <div
       onClick={handleClick}
-      className="absolute top-0 left-0 bottom-0 right-0 h-[100%] w-[100%] m-0 bg-[#00000070] flex flex-col items-center justify-center px-5 z-20"
+      className="absolute top-0 left-0 bottom-0 right-0 h-[2000px] w-[100%] m-0 bg-[#00000070] flex flex-col items-center px-5 z-20"
     >
       <motion.div
         variants={dropIn}
@@ -38,7 +34,7 @@ const LoadingModalComponent = ({
         animate="visible"
         exit="exit"
         onClick={(e) => e.stopPropagation()}
-        className=" w-[100%] h-[60%] sm:w-[70%] sm:h-[50%] bg-brand-beige2 border-[1px] flex flex-col items-center justify-center rounded-[5px]"
+        className=" w-[100%] h-[450px] sm:w-[70%] sm:h-[450px] bg-brand-beige2 border-[1px] flex flex-col items-center justify-center rounded-[5px] mt-[270px]"
       >
         <div className="index-[10] relative divide-y rounded-md border-2 border-gray-500 bg-white drop-shadow-lg h-[90%] w-[90%] sm:w-[70%]">
           <div className="flex items-center gap-4 py-4 px-4 bg-brand-beige">

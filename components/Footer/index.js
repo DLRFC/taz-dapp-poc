@@ -12,7 +12,7 @@ const footerMessages = [
 
 const Footer = () => {
   const [message, setMessage] = useState(footerMessages[0])
-  var randomMessage = footerMessages[Math.floor(Math.random() * footerMessages.length)]
+  const randomMessage = footerMessages[Math.floor(Math.random() * footerMessages.length)]
 
   useEffect(() => setMessage(randomMessage), [])
 
