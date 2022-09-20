@@ -48,34 +48,33 @@ export default function ArtGalleryComponent({
               {/* <Link href="/artBoard-page">
               <a className="underline">Click Here to start drawing</a>
             </Link> */}
-          </p>
-          <div className="absolute top-[184px] left-[260px]">
-            <ArtBunny />
-
-          </div>
-          <div className="flex justify-center bg-[#1E1E1E] mb-10">
-            <p className="text-brand-beige text-[12px] w-full md:w-3/4 lg:w-3/4 px-10 py-2">
-              Vote for your favorite! The winner will be announced at the end of the week.
             </p>
+            <div className="absolute top-[184px] left-[260px]">
+              <ArtBunny />
+            </div>
+            <div className="flex justify-center bg-[#1E1E1E] mb-10">
+              <p className="text-brand-beige text-[12px] w-full md:w-3/4 lg:w-3/4 px-10 py-2">
+                Vote for your favorite! The winner will be announced at the end of the week.
+              </p>
+            </div>
+          </div>
+          <div className="flex md:w-3/4 lg:w-3/4">
+            {images.map((image) => (
+              <ImageCard key={image.id} url={image.uri} onClick={() => handleClick(image.uri)} />
+            ))}
           </div>
         </div>
-        <div className="flex md:w-3/4 lg:w-3/4">
-          {images.map((image) => (
-            <ImageCard key={image.id} url={image.uri} onClick={() => handleClick(image.uri)} />
-          ))}
-        </div>
-      </div>
-      <div className="flex items-center justify-center mb-20">
-        {/* <Link href="/artBoard-page">
+        <div className="flex items-center justify-center mb-20">
+          {/* <Link href="/artBoard-page">
           <div>
             <Button text="Start CoDrawing" />
           </div>
         </Link> */}
-      </div>
+        </div>
 
-      <div className="z-20 relative flex items-center flex-col bg-black mt-20 py-5">
-        <Footer />
-
+        <div className="z-20 relative flex items-center flex-col bg-black mt-20 py-5">
+          <Footer />
+        </div>
       </div>
     </div>
   )
