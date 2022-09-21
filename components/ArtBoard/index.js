@@ -95,18 +95,18 @@ export default function artBoard() {
   }
 
   const startDrawing = (i) => {
-    // if (tiles[i] === '' && userSelectedTile === false) {
-    //   setIsDrawing(true)
-    //   setSelectedTile(i)
-    // } else if (i === selectedTile) {
-    //   setIsDrawing(true)
-    // } else {
-    //   console.log('You Cannot select this Tile')
-    // }
+    if (tiles[i] === '' && userSelectedTile === false) {
+      setIsDrawing(true)
+      setSelectedTile(i)
+    } else if (i === selectedTile) {
+      setIsDrawing(true)
+    } else {
+      console.log('You Cannot select this Tile')
+    }
 
-    // For testing
-    setSelectedTile(i)
-    setIsDrawing(true)
+    // ------ For testing
+    // setSelectedTile(i)
+    // setIsDrawing(true)
   }
   const minimize = () => {
     const uri = stageRef.current.toDataURL()
@@ -159,13 +159,39 @@ export default function artBoard() {
     console.log('canvasId.current: ', canvasId.current)
     setLoadingMessage(`2. Submitting message transaction`)
 
-    const response = await axios.post('/api/modifyCanvas', {
-      updatedTiles: tilesRef.current,
-      tileIndex: selectedTile,
-      canvasId: canvasId.current
-    })
-    console.log('RESPONSE FROM /api/modifyCanvas:')
-    console.log(response)
+    // const response = await axios.post('/api/modifyCanvas', {
+    //   updatedTiles: tilesRef.current,
+    //   tileIndex: selectedTile,
+    //   canvasId: canvasId.current
+    // })
+    // console.log('RESPONSE FROM /api/modifyCanvas:')
+    // console.log(response)
+
+    // if (response.status === 201) {
+    //   router.push('/artGallery-page')
+    // } else if (response.status === 203) {
+    //   alert('Tile already exists, please submit another Tile')
+    //   setIsLoading(false)
+    // }
+
+    try {
+      const response = await axios.post('/api/modifyCanvas', {
+        updatedTiles: tilesRef.current,
+        tileIndex: selectedTile,
+        canvasId: canvasId.current
+      })
+      if (response.status === 201) {
+        router.push('/artGallery-page')
+      }
+    } catch (error) {
+      alert('Tile already exists, please submit another Tile')
+      console.log('error', error)
+      console.log('data', error.response.data.existingTile)
+      tiles[selectedTile] = error.response.data.existingTile
+      setIsLoading(false)
+      setUserSelectedTile(false)
+      setSelectedTile(null)
+    }
 
     if (tilesRemaining.length === 0) {
       const body = {
@@ -195,9 +221,11 @@ export default function artBoard() {
       }
       if (mintResponse.status === 201) {
         window.localStorage.setItem('savedCanva', JSON.stringify(newCanvas))
+        router.push('/artGallery-page')
+      } else if (mintResponse.status === 403) {
+        alert('Tx have failed, please try submitting again')
       }
     }
-    router.push('/artGallery-page')
   }
 
   const handleResetTile = () => {
@@ -242,6 +270,7 @@ export default function artBoard() {
       setFillColor={setFillColor}
       minimize={minimize}
       handleResetTile={handleResetTile}
+      userSelectedTile={userSelectedTile}
     />
   )
 }

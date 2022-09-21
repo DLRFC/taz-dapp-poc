@@ -47,7 +47,7 @@ export default async function handler(req, res) {
 
     // Find the matching canvas based on the canvasId
     const match = dbs.data.filter((canvas) => canvas.data.canvasId === canvasId)[0]
-    console.log(match.data.tiles[tileIndex]);
+    console.log(match.data.tiles[tileIndex])
 
     if (match.data.tiles[tileIndex] === '') {
       const newLocal = 'Canvas successfully updated!'
@@ -67,7 +67,8 @@ export default async function handler(req, res) {
       res.status(201).json(newLocal)
     } else {
       const newLocal = 'Error: this tile has already been filled'
-      res.status(500).json(newLocal)
+      const existingTile = match.data.tiles[tileIndex]
+      res.status(403).json({ newLocal, existingTile })
     }
   }
 }

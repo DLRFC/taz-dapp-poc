@@ -121,6 +121,9 @@ export default function Answers({ messageId, questionProp, answersProp }) {
 
       // Save answer to local storage
       window.localStorage.setItem('savedAnswer', JSON.stringify(newAnswer))
+    } else if (postResponse.status === 203) {
+      alert('Tx Failed, please try again!')
+      internalCloseProcessingModal()
     }
 
     // router.reload(window.location.pathname)
