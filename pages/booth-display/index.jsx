@@ -6,49 +6,16 @@ import Header from '../../components/Header'
 import TazBoothHeaderLogo from '../../components/TazBoothHeaderLogo'
 import TazBoothHeaderDate from '../../components/TazBoothHeaderDate'
 import TazBoothFooter from '../../components/TazBoothFooter'
+import TazBoothCanvasGrid from '../../components/TazBoothCanvasGrid'
 
-const BoothDisplay = ({ images, artBoard }) => {
-  const [gallaryImages, setGallaryImages] = useState(images)
-  const [liveCanvas, setLiveCanvis] = useState()
-
-  console.log('Artboard from Server', artBoard)
-
-  useEffect(() => {
-    axios
-      .get('/api/modifyCanvas')
-      .then((response) => {
-        console.log(response)
-      })
-      .catch((error) => console.log(error))
-    // handle updaing data
-  }, [gallaryImages])
-
-  return (
-    <div className="flex flex-col h-screen justify-between bg-brand-black">
-      <TazBoothHeaderLogo />
-      <TazBoothHeaderDate />
-      <div className="container flex mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-        <section className="w-1/2">
-          <p>Active Artboard goes here</p>
-        </section>
-        <section className="overflow-hidden text-gray-700 w-1/2">
-          <div className="container p-2 lg:pt-12 lg:px-32">
-            <ul className="flex flex-wrap -m-1 md:-m-2">
-              {gallaryImages.map((img) => (
-                <li key={img.id} className="flex flex-wrap w-1/4">
-                  <picture>
-                    <img alt="gallery" className="block object-cover object-center w-full h-auto" src={img.uri} />
-                  </picture>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-      </div>
-      <TazBoothFooter />
-    </div>
-  )
-}
+const BoothDisplay = ({ images, artBoard }) => (
+  <div className="flex flex-col h-full justify-between bg-brand-black">
+    <TazBoothHeaderLogo />
+    <TazBoothHeaderDate />
+    <TazBoothCanvasGrid images={images} />
+    <TazBoothFooter />
+  </div>
+)
 
 export default BoothDisplay
 
