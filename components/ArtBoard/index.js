@@ -9,7 +9,7 @@ export default function artBoard() {
   const [generateFullProof] = useGenerateProof()
   const [identityKey, setIdentityKey] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [isFilling, setIsFilling] = useState(false)
+  const [tool, setTool] = useState()
   const [userSelectedTile, setUserSelectedTile] = useState(false)
 
   const [isDrawing, setIsDrawing] = useState(false)
@@ -84,8 +84,14 @@ export default function artBoard() {
     lines.pop()
     setLines(lines.concat())
   }
-  const handleFill = () => {
-    setIsFilling(!isFilling)
+
+  const toggleTool = (e) => {
+    if (e.target.alt === 'fill') {
+      console.log('settofill')
+      setTool('fill')
+    } else {
+      setTool('pen')
+    }
   }
 
   const startDrawing = (i) => {
@@ -110,9 +116,9 @@ export default function artBoard() {
 
   const handleColorSelect = (e) => {
     console.log('handleColorSelect: ', e.target)
-    if (isFilling) {
+    if (tool === 'fill') {
       setFillColor(e.target.id)
-      setIsFilling(!isFilling)
+      setColor(e.target.id)
     } else {
       setColor(e.target.id)
     }
@@ -211,9 +217,9 @@ export default function artBoard() {
       setLines={setLines}
       stageRef={stageRef}
       handleUndo={handleUndo}
-      handleFill={handleFill}
+      toggleTool={toggleTool}
       handleColorSelect={handleColorSelect}
-      isFilling={isFilling}
+      tool={tool}
       color={color}
       fillColor={fillColor}
       setColor={setColor}
