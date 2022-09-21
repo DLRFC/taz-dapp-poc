@@ -15,19 +15,17 @@ const TazBoothCanvasGrid = ({ images }) => {
   }, [gallaryImages])
 
   return (
-    <div className="container h-fit flex py-6 sm:px-6 lg:px-8">
-      <section className="overflow-hidden text-gray-700 w-1/2">
-        <div className="container p-2">
-          <ul className="flex flex-wrap -m-1 md:-m-2">
-            {gallaryImages.map((img) => (
-              <li key={img.id} className="flex flex-wrap w-1/4 border border-brand-gray2">
-                <picture>
-                  <img alt="gallery" className="block object-cover object-center w-full h-auto" src={img.uri} />
-                </picture>
-              </li>
-            ))}
-          </ul>
-        </div>
+    <div className="container h-fit w-full flex self-center p-8 ">
+      <section className="overflow-hidden text-gray-700 ">
+        <ul className="flex flex-wrap">
+          {gallaryImages.map((img) => (
+            <li key={img.id} className="flex flex-wrap w-1/12 border border-brand-gray2">
+              <picture>
+                <img alt="gallery" className="block object-cover object-center w-full h-auto" src={img.uri} />
+              </picture>
+            </li>
+          ))}
+        </ul>
       </section>
     </div>
   )
