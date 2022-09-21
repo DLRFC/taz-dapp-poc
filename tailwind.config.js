@@ -34,8 +34,8 @@ module.exports = {
           yellow: '#EFAD5F',
           orange: '#BD5141',
           brown: '#402917',
-          brown2: '#513E2E'
-        }
+          brown2: '#513E2E',
+        },
       },
       boxShadow: {
         question: '4px 4px 25px rgba(0, 0, 0, 0.25)'

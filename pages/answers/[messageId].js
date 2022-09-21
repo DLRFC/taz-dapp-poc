@@ -7,6 +7,11 @@ import AnswerModal from '../../components/AnswerModal'
 import { useGenerateProof } from '../../hooks/useGenerateProof'
 import ProcessingModal from '../../components/ProcessingModal'
 import { Subgraphs } from '../../hooks/subgraphs'
+import { TAZMESSAGE_SUBGRAPH } from '../../config/goerli.json'
+import Footer from '../../components/Footer'
+import BlueEllipse from '../../components/svgElements/BlueEllipse'
+import YellowCircle from '../../components/svgElements/YellowCircle'
+import RedCircle from '../../components/svgElements/RedCircle'
 
 const { API_REQUEST_TIMEOUT } = require('../../config/goerli.json')
 
@@ -171,7 +176,7 @@ export default function Answers({ messageId, questionProp, answersProp }) {
   }, [fact])
 
   return (
-    <div className="min-h-[700px]">
+    <div className="relative min-h-[900px] h-auto flex flex-col">
       {question === 0 ? null : (
         <div className="sticky top-[225px] z-30 flex justify-between mx-2 min-w-[200px]">
           <button type="button" onClick={scrollToTop}>
@@ -201,6 +206,18 @@ export default function Answers({ messageId, questionProp, answersProp }) {
         handleSubmit={handleSubmit}
       />
       <AnswersBoard question={question} answers={answers} openAnswerModal={openAnswerModal} messageId={messageId} />
+      <div className="z-20 absolute bottom-0 w-full  flex-col bg-black mt-20 py-5">
+        <Footer />
+      </div>
+      <div className="absolute bottom-0 ">
+        <BlueEllipse />
+      </div>
+      <div className="absolute top-[369px] -right-0">
+        <YellowCircle />
+      </div>
+      <div className="absolute top-[100px] ">
+        <RedCircle />
+      </div>
     </div>
   )
 }
