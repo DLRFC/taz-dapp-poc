@@ -6,6 +6,7 @@ import AnswersBoard from '../../components/AnswersBoard'
 import AnswerModal from '../../components/AnswerModal'
 import { useGenerateProof } from '../../hooks/useGenerateProof'
 import ProcessingModal from '../../components/ProcessingModal'
+import { Subgraphs } from '../../hooks/subgraphs'
 import { TAZMESSAGE_SUBGRAPH } from '../../config/goerli.json'
 import Footer from '../../components/Footer'
 import BlueEllipse from '../../components/svgElements/BlueEllipse'
@@ -14,19 +15,19 @@ import RedCircle from '../../components/svgElements/RedCircle'
 
 const { API_REQUEST_TIMEOUT } = require('../../config/goerli.json')
 
-export default function Answers(props) {
+export default function Answers({ messageId, questionProp, answersProp }) {
   const [generateFullProof] = useGenerateProof()
   const [answerModalIsOpen, setAnswerModalIsOpen] = useState(false)
   const [processingModalIsOpen, setProcessingModalIsOpen] = useState(false)
-  const [question, setQuestion] = useState(props.questionProp)
+  const [question, setQuestion] = useState(questionProp)
   const [answer, setAnswer] = useState()
   const [identityKey, setIdentityKey] = useState('')
-  const [answers, setAnswers] = useState(props.answersProp)
+  const [answers, setAnswers] = useState(answersProp)
   const [steps, setSteps] = useState([])
   const [fact, setFact] = useState([])
   // const [isMember, setIsMember] = useState(false)
 
-  const parentMessageId = props.messageId
+  const parentMessageId = messageId
 
   const closeAnswerModal = () => {
     setAnswerModalIsOpen(false)
@@ -92,16 +93,12 @@ export default function Answers(props) {
     }
     console.log('ANSWERS PAGE | body', body)
 
-    try {
-      await axios.post('/api/postMessage', body, {
-        timeout: API_REQUEST_TIMEOUT
-      })
-      setSteps(['Generated zero knowledge proof', 'Submitted message transaction', 'Question successfully added'])
-      // answers.push(messageContent)
-    } catch (error) {
-      console.log(error)
-      setSteps(['Generated zero knowledge proof', 'Submitted message transaction', 'Question successfully added'])
-    }
+    const postResponse = await axios.post('/api/postMessage', body, {
+      timeout: API_REQUEST_TIMEOUT
+    })
+
+    console.log('ANSWERS PAGE | postResponse.status', postResponse.status)
+    console.log('ANSWERS PAGE | postResponse.data.hash', postResponse.data.hash)
 
     setSteps([
       { status: 'complete', text: 'Generate zero knowledge proof' },
@@ -110,19 +107,36 @@ export default function Answers(props) {
     ])
 
     // Solution below adds the new record to state, as opposed to refreshing.
-    // const updatedAnswers = [
-    //   {
-    //     id: Math.round(Math.random() * 100000000000).toString(),
-    //     messageId,
-    //     messageContent
-    //   }
-    // ].concat(answers)
-    // console.log('ANSWERS PAGE | updatedAnswers', updatedAnswers)
-    // setAnswers(updatedAnswers)
+    if (postResponse.status === 201) {
+      const newAnswer = {
+        id: Math.round(Math.random() * 100000000000).toString(),
+        messageId: postResponse.data.hash,
+        messageContent
+      }
+      const updatedAnswers = [newAnswer].concat(answers)
+      setAnswers(updatedAnswers)
 
-    router.reload(window.location.pathname)
+      console.log('ANSWERS PAGE | updatedAnswers', updatedAnswers)
+      console.log('ANSWERS PAGE | answers', answers)
 
-    setTimeout(internalCloseProcessingModal, 3000)
+      // Save answer to local storage
+      window.localStorage.setItem('savedAnswer', JSON.stringify(newAnswer))
+    }
+
+    // router.reload(window.location.pathname)
+
+    setTimeout(internalCloseProcessingModal, 2000)
+  }
+
+  const updateFromLocalStorage = () => {
+    const savedAnswer = JSON.parse(window.localStorage.getItem('savedAnswer'))
+    const found = answers.some((element) => savedAnswer && element.messageContent === savedAnswer.messageContent)
+    if (found) {
+      window.localStorage.removeItem('savedAnswer')
+    } else if (savedAnswer) {
+      const updatedAnswers = [savedAnswer].concat(answers)
+      setAnswers(updatedAnswers)
+    }
   }
 
   const scrollToTop = () => {
@@ -150,11 +164,15 @@ export default function Answers(props) {
       setIdentityKey(identityKeyTemp)
       // setIsMember(true)
     }
+
+    // Check local storage for any questions pending tx finalization
+    updateFromLocalStorage()
+
     rotateFact()
   }, [])
 
   useEffect(() => {
-    setTimeout(rotateFact, 6000)
+    setTimeout(rotateFact, 8000)
   }, [fact])
 
   return (
@@ -187,13 +205,7 @@ export default function Answers(props) {
         handleAnswerChange={handleAnswerChange}
         handleSubmit={handleSubmit}
       />
-      <AnswersBoard
-        question={question}
-        answers={answers}
-        openAnswerModal={openAnswerModal}
-        messageId={props.messageId}
-      />
-
+      <AnswersBoard question={question} answers={answers} openAnswerModal={openAnswerModal} messageId={messageId} />
       <div className="z-20 absolute bottom-0 w-full  flex-col bg-black mt-20 py-5">
         <Footer />
       </div>
@@ -211,56 +223,11 @@ export default function Answers(props) {
 }
 
 export async function getServerSideProps({ query }) {
-  // const subgraphs = new Subgraphs()
-  // const images = await subgraphs.getMintedTokens()
+  const subgraphs = new Subgraphs()
+  const data = await subgraphs.getAnswers(query.messageId)
 
   // console.log('ANSWERS PAGE | query.messageid', query.messageId)
-
-  const fetchAnswers = async () => {
-    // Construct query for subgraph
-    const postData = {
-      query: `
-      {
-        parentMessageAddeds: messageAddeds(
-          orderBy: messageId
-          first: 1
-          where: {messageId: "${query.messageId}"}
-          orderDirection: desc
-        ) {
-          id
-          messageContent
-          messageId
-        }
-        messageAddeds(
-          orderBy: timestamp
-          where: {parentMessageId: "${query.messageId}"}
-          orderDirection: desc
-        ) {
-          id
-          messageContent
-          messageId
-          parentMessageId
-        }
-      }
-      `
-    }
-    // Fetch data
-
-    let data = []
-    try {
-      const result = await axios.post(TAZMESSAGE_SUBGRAPH, postData)
-      const question = result.data.data.parentMessageAddeds[0]
-      const answers = result.data.data.messageAddeds
-      data = { question, answers }
-    } catch (err) {
-      console.log('Error fetching subgraph data: ', err)
-    }
-    return data
-  }
-  // let data
-  const data = await fetchAnswers()
-
-  // console.log('ANSWERS PAGE | fetched answers', data)
+  console.log('ANSWERS PAGE | fetched answers', data)
 
   return {
     props: { messageId: query.messageId, questionProp: data.question || 0, answersProp: data.answers }
