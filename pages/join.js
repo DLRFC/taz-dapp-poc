@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { GenerateIdentity } from '../components/GenerateIdentity'
+import GenerateIdentity from '../components/GenerateIdentity'
 
 export default function JoinPage() {
   const router = useRouter()

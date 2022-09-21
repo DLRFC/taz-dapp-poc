@@ -7,13 +7,13 @@ import AnswerModal from '../../components/AnswerModal'
 import { useGenerateProof } from '../../hooks/useGenerateProof'
 import ProcessingModal from '../../components/ProcessingModal'
 import { Subgraphs } from '../../hooks/subgraphs'
-import { TAZMESSAGE_SUBGRAPH } from '../../config/goerli.json'
 import Footer from '../../components/Footer'
 import BlueEllipse from '../../components/svgElements/BlueEllipse'
 import YellowCircle from '../../components/svgElements/YellowCircle'
 import RedCircle from '../../components/svgElements/RedCircle'
 
-const { API_REQUEST_TIMEOUT } = require('../../config/goerli.json')
+const { API_REQUEST_TIMEOUT, FACT_ROTATION_INTERVAL } = require('../../config/goerli.json')
+const { FACTS } = require('../../data/facts.json')
 
 export default function Answers({ messageId, questionProp, answersProp }) {
   const [generateFullProof] = useGenerateProof()
@@ -24,7 +24,7 @@ export default function Answers({ messageId, questionProp, answersProp }) {
   const [identityKey, setIdentityKey] = useState('')
   const [answers, setAnswers] = useState(answersProp)
   const [steps, setSteps] = useState([])
-  const [fact, setFact] = useState([])
+  const [fact, setFact] = useState(FACTS[Math.floor(Math.random() * FACTS.length)])
   // const [isMember, setIsMember] = useState(false)
 
   const parentMessageId = messageId
@@ -147,17 +147,7 @@ export default function Answers({ messageId, questionProp, answersProp }) {
   }
 
   const rotateFact = () => {
-    const facts = [
-      'Proving time is the time it takes for a proof to be completed.',
-      'Sempahore identities are given to all Semaphore group members. They are comprised of three parts: identity commitment, trapdoor, and nullifier.',
-      'Trapdoor and nullifier values are the private values of the Semaphore identity. To avoid fraud, the owner must keep both values secret.',
-      'Semaphore uses the Poseidon hash function to create the identity commitment from the identity private values. Identity commitments can be made public, similarly to Ethereum addresses.',
-      'Semaphore identities can be generated deterministically or randomly. Deterministic identities can be generated from the hash of a secret message.'
-    ]
-
-    let newIndex = facts.indexOf(fact) + 1
-    if (newIndex === facts.length) newIndex = 0
-    setFact(facts[newIndex])
+    setFact(FACTS[FACTS.indexOf(fact) + 1 === FACTS.length ? 0 : FACTS.indexOf(fact) + 1])
   }
 
   useEffect(() => {
@@ -170,12 +160,10 @@ export default function Answers({ messageId, questionProp, answersProp }) {
 
     // Check local storage for any questions pending tx finalization
     updateFromLocalStorage()
-
-    rotateFact()
   }, [])
 
   useEffect(() => {
-    setTimeout(rotateFact, 8000)
+    setTimeout(rotateFact, FACT_ROTATION_INTERVAL)
   }, [fact])
 
   return (

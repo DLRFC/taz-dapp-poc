@@ -1,15 +1,14 @@
 import QrReader from 'react-qr-reader'
 import { AnimatePresence } from 'framer-motion'
 import { RiArrowRightLine, RiUploadLine } from 'react-icons/ri'
-
-import LoadingModal from '../LoadingModal/Index'
+// import LoadingModal from '../LoadingModal/Index'
+import ProcessingModal from '../ProcessingModal'
 import Header from '../Header'
 import Loading from '../Loading'
 import Footer from '../Footer'
 
-
 // Page 1 it will check Invitation
-const InvitationCheckComponent = ({
+export default function InvitationCheckComponent({
   isSignUp,
   handleSignUpButton,
   handleUploadQrCode,
@@ -29,25 +28,26 @@ const InvitationCheckComponent = ({
   validate,
   onClose,
   loadingMessage,
-  invitation
-}) => {
+  invitation,
+  steps,
+  fact
+}) {
   console.log('change')
   return (
     <div className=" font-sans bg-brand-blue h-full">
-      {isLoading && (
+      {/* {isLoading && (
         <AnimatePresence initial={false} exitBeforeEnter onExitComplete={() => null} className="z-20">
           <LoadingModal onClose={onClose} loadingMessage={loadingMessage} />
         </AnimatePresence>
-      )}
+      )} */}
+      <ProcessingModal isOpen={isLoading} closeModal={onClose} steps={steps} fact={fact} />
       <Header />
       {!isSignUp ? (
         <div className="flex flex-col px-[32px] items-center overflow-hidden rounded-md  text-brand-gray2">
           <div className="h-[570px] py-3 w-full  z-10">
             <div className="divide-y divide-opacity-70">
               <div>
-                <p className="pt-10 font-bold  text-brand-[20px] text-brand-beige">
-                  Do you have a TAZ invitation?
-                </p>
+                <p className="pt-10 font-bold  text-brand-[20px] text-brand-beige">Do you have a TAZ invitation?</p>
                 <p className="py-5 mb-8  text-brand-[16px] text-brand-beige opacity-70">
                   Use it to create your anonymous identity.
                 </p>
@@ -79,7 +79,7 @@ const InvitationCheckComponent = ({
                     </div>
                   )}
                 </button>
-                
+
                 <QrReader
                   className={`border-0 w-0 h-0`}
                   ref={qrRef}
@@ -100,10 +100,7 @@ const InvitationCheckComponent = ({
             </p>
 
             <div>
-  
-
               <div className="flex items-center justify-center flex-col mb-5">
-
                 <QrReader
                   facingMode={selected}
                   delay={1000}
@@ -147,5 +144,3 @@ const InvitationCheckComponent = ({
     </div>
   )
 }
-
-export default InvitationCheckComponent
