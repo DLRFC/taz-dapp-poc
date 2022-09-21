@@ -105,6 +105,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
 
         <a
           href="https://pse-team.notion.site/About-the-TAZ-app-1ae2793046414468b56472f43725961e"
+          target="_blank"
           className="pb-10 underline"
           rel="noreferrer"
         >
@@ -113,7 +114,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
         <a href="http://semaphore.appliedzkp.org/" target="_blank" className="pb-10 underline" rel="noreferrer">
           About Semaphore
         </a>
-        <a href="esp.ethereum.foundation/semaphore-grants" className="pb-10 underline">
+        <a href="esp.ethereum.foundation/semaphore-grants" target="_blank" className="pb-10 underline" rel="noreferrer">
           Semaphore Grants Round
         </a>
         <a href="https://appliedzkp.org/" target="_blank" className="pb-14 underline" rel="noreferrer">
