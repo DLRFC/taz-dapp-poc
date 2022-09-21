@@ -95,14 +95,18 @@ export default function artBoard() {
   }
 
   const startDrawing = (i) => {
-    if (tiles[i] == '' && userSelectedTile == false) {
-      setIsDrawing(true)
-      setSelectedTile(i)
-    } else if (i == selectedTile) {
-      setIsDrawing(true)
-    } else {
-      console.log('You Cannot select this Tile')
-    }
+    // if (tiles[i] === '' && userSelectedTile === false) {
+    //   setIsDrawing(true)
+    //   setSelectedTile(i)
+    // } else if (i === selectedTile) {
+    //   setIsDrawing(true)
+    // } else {
+    //   console.log('You Cannot select this Tile')
+    // }
+
+    // For testing
+    setSelectedTile(i)
+    setIsDrawing(true)
   }
   const minimize = () => {
     const uri = stageRef.current.toDataURL()
@@ -178,8 +182,20 @@ export default function artBoard() {
       console.log('canvasUri: ', canvasUri)
       console.log('canvasId.current: ', canvasId.current)
       const mintResponse = await axios.post('/api/mintFullCanvas', body)
-      console.log('RESPONSE FROM /api/mintFullCanvas:')
-      console.log(mintResponse)
+
+      console.log('RESPONSE FROM /api/mintFullCanvas:', mintResponse)
+      console.log('Canva Uri', mintResponse.ipfsUrl)
+
+      const newCanvas = {
+        id: 10000,
+        timestamp: 999999999,
+        tokenId: 100000,
+        uri: mintResponse.data.ipfsUrl,
+        canvaUri: canvasUri
+      }
+      if (mintResponse.status === 201) {
+        window.localStorage.setItem('savedCanva', JSON.stringify(newCanvas))
+      }
     }
     router.push('/artGallery-page')
   }

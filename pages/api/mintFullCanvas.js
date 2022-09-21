@@ -111,8 +111,8 @@ export default async function handler(req, res) {
           )
           console.log(tx)
 
-          const response = await tx.wait(3)
-          console.log(response)
+          // const response = await tx.wait(1)
+          // console.log(response)
 
           // Reset canvas in database
           await client.query(
@@ -124,7 +124,7 @@ export default async function handler(req, res) {
           )
 
           // Send response to frontend
-          res.status(201).json('Canvas NFT minted')
+          res.status(201).json({ tx, ipfsUrl })
         } catch (error) {
           console.log(error)
           res.status(500).json('Error in catch 1: ', error)
