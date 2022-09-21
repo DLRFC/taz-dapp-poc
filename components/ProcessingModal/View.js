@@ -31,7 +31,10 @@ export default function LoadingModalView({ isOpen, closeModal, steps, fact }) {
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel className="w-10/12 max-w-md transform overflow-hidden rounded-lg border-brand-blue border-2 bg-white text-left align-middle shadow-xl transition-all min-w-[240px]">
-                <Dialog.Title as="div" className="text-brand-blue p-4 mb-1 bg-brand-beige border-b-2 border-brand-blue">
+                <Dialog.Title
+                  as="div"
+                  className="text-brand-blue p-4 mb-1 bg-brand-beige2 border-b-2 border-brand-blue"
+                >
                   <button
                     type="button"
                     className="flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-beige2"
@@ -104,7 +107,7 @@ export default function LoadingModalView({ isOpen, closeModal, steps, fact }) {
                       </li>
                     ))}
                   </ol>
-                  <div className="relative p-4 bg-brand-beige h-[220px]">
+                  <div className="relative p-4 bg-brand-beige2 h-[220px]">
                     <h3 className="text-brand-red text-sm">ZK facts</h3>
                     <p className="text-brand-blue duration-150 z-20 text-xs pt-2 pb-12">{fact}</p>
                     <svg
