@@ -7,7 +7,6 @@ import QuestionModal from '../../components/QuestionModal'
 import { useGenerateProof } from '../../hooks/useGenerateProof'
 import ProcessingModal from '../../components/ProcessingModal'
 import { Subgraphs } from '../../hooks/subgraphs'
-import { TAZMESSAGE_SUBGRAPH } from '../../config/goerli.json'
 
 const { API_REQUEST_TIMEOUT } = require('../../config/goerli.json')
 
@@ -61,8 +60,10 @@ export default function Questions({ questionsProp }) {
     const messageId = ethers.utils.id(messageContent)
     const signal = messageId.slice(35)
     console.log('QUESTIONS PAGE | signal', signal)
-    const { fullProofTemp, solidityProof, nullifierHash, externalNullifier, merkleTreeRoot, groupId } =
-      await generateFullProof(identityKey, signal)
+    const { solidityProof, nullifierHash, externalNullifier, merkleTreeRoot, groupId } = await generateFullProof(
+      identityKey,
+      signal
+    )
 
     setSteps([
       { status: 'complete', text: 'Generate zero knowledge proof' },
@@ -83,65 +84,49 @@ export default function Questions({ questionsProp }) {
     }
     console.log('QUESTIONS PAGE | body', body)
 
-    const txResponse = await axios.post('/api/postMessage', body, {
+    const postResponse = await axios.post('/api/postMessage', body, {
       timeout: API_REQUEST_TIMEOUT
     })
 
-    console.log('txResponse Status', txResponse.status)
-    console.log('txResponse Hash', txResponse.data.hash)
+    console.log('QUESTIONS PAGE | postResponse.status', postResponse.status)
+    console.log('QUESTIONS PAGE | postResponse.data.hash', postResponse.data.hash)
 
     setSteps([
       { status: 'complete', text: 'Generate zero knowledge proof' },
       { status: 'complete', text: 'Submit transaction with proof and question' },
-      { status: 'processing', text: 'Update answers from on-chain events' }
+      { status: 'processing', text: 'Update questions from on-chain events' }
     ])
 
     // Solution below adds the new record to state, as opposed to refreshing.
-    if (txResponse.status === 201) {
+    if (postResponse.status === 201) {
       const newQuestion = {
-        id: 1000000000,
-        messageId: txResponse.data.hash,
+        id: Math.round(Math.random() * 100000000000).toString(),
+        messageId: postResponse.data.hash,
         messageContent
       }
       const updatedQuestions = [newQuestion].concat(questions)
-      console.log('QUESTIONS PAGE | udpatedQuestions', updatedQuestions)
-      window.localStorage.setItem('savedQuestion', JSON.stringify(newQuestion))
-
       setQuestions(updatedQuestions)
 
-      // updateLocalStorage(newQuestion)
+      console.log('QUESTIONS PAGE | updatedQuestions', updatedQuestions)
+
+      // Save question to local storage
+      window.localStorage.setItem('savedQuestion', JSON.stringify(newQuestion))
     }
 
     // router.reload(window.location.pathname)
 
-    setTimeout(internalCloseProcessingModal, 3000)
+    setTimeout(internalCloseProcessingModal, 2000)
   }
 
-  // const updateLocalStorage = (newQuestion) => {
-  //   const localQuestions = JSON.parse(window.localStorage.getItem('questions')) || []
-  //   localQuestions.push(newQuestion)
-  //   window.localStorage.setItem('questions', JSON.stringify(localQuestions))
-  // }
-
   const updateFromLocalStorage = () => {
-    const localQuestions = JSON.parse(window.localStorage.getItem('questions'))
-
-    // console.log('localQuestions', typeof localQuestions)
-
-    // localQuestions.foreach((question, index) => {
-    //   // See if local storage question is already in question list
-    //   const found = questions.find((localQuestion) => localQuestion.messageId === question.messageId)
-
-    //   if (!found) {
-    //     // If question isn't in list yet, add it
-    //     const updatedQuestions = [found].concat(questions)
-    //     setQuestions(updatedQuestions)
-    //   } else {
-    //     // Otherwise, remove it from local storage
-    //     localQuestions.splice(index, 1)
-    //     window.localStorage.setItem('questions', JSON.stringify(localQuestions))
-    //   }
-    // })
+    const savedQuestion = JSON.parse(window.localStorage.getItem('savedQuestion'))
+    const found = questions.some((element) => savedQuestion && element.messageContent === savedQuestion.messageContent)
+    if (found) {
+      window.localStorage.removeItem('savedQuestion')
+    } else if (savedQuestion) {
+      const updatedQuestions = [savedQuestion].concat(questions)
+      setQuestions(updatedQuestions)
+    }
   }
 
   const scrollToTop = () => {
@@ -170,31 +155,14 @@ export default function Questions({ questionsProp }) {
       // setIsMember(true)
     }
 
-    // Check if question is fetched form subgraph
-    const savedQuestion = JSON.parse(window.localStorage.getItem('savedQuestion'))
+    // Check local storage for any questions pending tx finalization
+    updateFromLocalStorage()
 
-    const index = questions.some((element) => {
-      if (savedQuestion && element.messageContent === savedQuestion.messageContent) {
-        return true
-      }
-
-      return false
-    })
-    if (index) {
-      window.localStorage.removeItem('savedQuestion')
-    } else if (savedQuestion) {
-      const updatedQuestions = [savedQuestion].concat(questions)
-      setQuestions(updatedQuestions)
-    }
-
-    // How to check if a savedQuestion already exists in questions without a for loop?
-
-    // Call once to check local storage for any questions pending tx finalization
-    // updateFromLocalStorage()
+    rotateFact()
   }, [])
 
   useEffect(() => {
-    setTimeout(rotateFact, 6000)
+    setTimeout(rotateFact, 8000)
   }, [fact])
 
   return (
@@ -229,41 +197,9 @@ export default function Questions({ questionsProp }) {
   )
 }
 
-export async function getServerSideProps(context) {
-  // const subgraphs = new Subgraphs()
-  // const images = await subgraphs.getMintedTokens()
-
-  const fetchQuestions = async () => {
-    // Construct query for subgraph
-    const postData = {
-      query: `
-      {
-        messageAddeds(
-          orderBy: timestamp
-          where: {parentMessageId: ""}
-          orderDirection: desc
-        ) {
-          id
-          messageContent
-          messageId
-          parentMessageId
-        }
-      }
-      `
-    }
-    // Fetch data
-
-    let data = []
-    try {
-      const result = await axios.post(TAZMESSAGE_SUBGRAPH, postData)
-      data = result.data.data.messageAddeds
-    } catch (err) {
-      console.log('Error fetching subgraph data: ', err)
-    }
-    return data
-  }
-
-  const questions = await fetchQuestions()
+export async function getServerSideProps() {
+  const subgraphs = new Subgraphs()
+  const questions = await subgraphs.getQuestions()
 
   // console.log('QUESTIONS PAGE | fetched questions', questions)
 
