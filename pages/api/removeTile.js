@@ -9,14 +9,15 @@ export default async function handler(req, res) {
   if (res.method === 'GET') {
     res.status(405).json('GET not allowed')
   } else if (req.method === 'POST') {
-    const { canvasId, tileIndex, pwd } = req.body
+    const { canvasId, tileId, pwd } = req.body
 
-    if (!canvasId || !tileIndex || !pwd) {
-      const newLocal = 'Please provide canvasId, tileIndex and password'
+    if (!canvasId || !tileId || !pwd) {
+      const newLocal = 'Please provide canvasId, tile number and password'
       res.status(500).json(newLocal)
     }
 
     if (pwd === process.env.REMOVE_TILE_PWD) {
+      console.log("pwd accepted")
       const dbs = await client.query(
         query.Map(
           query.Paginate(query.Match(query.Index('all_canvases')), {
@@ -26,10 +27,13 @@ export default async function handler(req, res) {
         )
       )
 
+      console.log("canvas id: ", canvasId);
+
       const match = dbs.data.filter((canvas) => canvas.data.canvasId === canvasId)[0]
+      console.log(match); // convert to INT!
 
       const tiles = match.data.tiles
-      tiles[tileIndex] = ''
+      tiles[tileId -1] = ''
 
       const newLocal = 'Tile successfully deleted!'
 
