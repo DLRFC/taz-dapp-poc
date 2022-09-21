@@ -72,7 +72,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
               <div className="text-15px text-brand-blue">Take your ID with you </div>
               <div></div>
             </div>
-            <a href="https://www.auti.sm" target="_blank" rel="noreferrer">
+            <Link href="https://www.auti.sm" target="_blank" rel="noreferrer">
               <div className="flex w-full flex-row items-center py-3 px-4 cursor-pointer">
                 <div className="w-[90%]">
                   <p className="py-2 text-brand-h3 font-bold">Zkitter</p>
@@ -80,7 +80,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
                 </div>
                 <SelectorArrow />
               </div>
-            </a>
+            </Link>
           </div>
 
           <div className="relative flex flex-col items-center overflow-hidden rounded-md border-2 border-brand-blue shadow-xl bg-white mt-20 mb-20">
