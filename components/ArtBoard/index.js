@@ -5,6 +5,8 @@ import { useRouter } from 'next/router'
 import { useGenerateProof } from '../../hooks/useGenerateProof'
 import ArtBoardComponent from './View'
 
+const { FACTS } = require('../../data/facts.json')
+
 export default function artBoard() {
   const [generateFullProof] = useGenerateProof()
   const [identityKey, setIdentityKey] = useState('')
@@ -32,6 +34,8 @@ export default function artBoard() {
   const canvasRef = useRef(null)
   const borderRef = useRef(null)
   const [image, takeScreenShot] = useScreenshot({})
+  const [steps, setSteps] = useState([])
+  const [fact, setFact] = useState(FACTS[Math.floor(Math.random() * FACTS.length)])
 
   useEffect(() => {
     let tilesTemp
@@ -149,7 +153,10 @@ export default function artBoard() {
     }
 
     setIsLoading(true)
-    setLoadingMessage(`1. Generating zero knowledge proof`)
+    setSteps([
+      { status: 'processing', text: 'Generate zero knowledge proof' },
+      { status: 'queued', text: 'Verify ZKP Membership and submit Art' }
+    ])
     const signal = 'proposal_1'
     const { fullProofTemp, solidityProof, nullifierHash, externalNullifier, merkleTreeRoot, groupId } =
       await generateFullProof(identityKey, signal)
@@ -157,7 +164,6 @@ export default function artBoard() {
     console.log('POSTING to /api/modifyCanvas:')
     console.log('tilesRef.current: ', tilesRef.current)
     console.log('canvasId.current: ', canvasId.current)
-    setLoadingMessage(`2. Submitting message transaction`)
 
     // const response = await axios.post('/api/modifyCanvas', {
     //   updatedTiles: tilesRef.current,
@@ -175,6 +181,10 @@ export default function artBoard() {
     // }
 
     try {
+      setSteps([
+        { status: 'complete', text: 'Generate zero knowledge proof' },
+        { status: 'processing', text: 'Verify ZKP Membership and submit Art' }
+      ])
       const response = await axios.post('/api/modifyCanvas', {
         updatedTiles: tilesRef.current,
         tileIndex: selectedTile,
@@ -207,6 +217,13 @@ export default function artBoard() {
       console.log('POSTING to /api/mintFullCanvas')
       console.log('canvasUri: ', canvasUri)
       console.log('canvasId.current: ', canvasId.current)
+      setSteps([
+        { status: 'complete', text: 'Generate zero knowledge proof' },
+        { status: 'complete', text: 'Submit transaction with proof and Canva' },
+        { status: 'processing', text: 'Update ArtGallery from on-chain events' }
+      ])
+
+      // Add Try and Catch
       const mintResponse = await axios.post('/api/mintFullCanvas', body)
 
       console.log('RESPONSE FROM /api/mintFullCanvas:', mintResponse)
@@ -231,6 +248,14 @@ export default function artBoard() {
   const handleResetTile = () => {
     tiles[selectedTile] = ''
     setUserSelectedTile(false)
+  }
+
+  const closeProcessingModal = () => {
+    setIsLoading(false)
+  }
+
+  const rotateFact = () => {
+    setFact(FACTS[FACTS.indexOf(fact) + 1 === FACTS.length ? 0 : FACTS.indexOf(fact) + 1])
   }
 
   // const handleGenerateProof = async () => {
@@ -271,6 +296,9 @@ export default function artBoard() {
       minimize={minimize}
       handleResetTile={handleResetTile}
       userSelectedTile={userSelectedTile}
+      closeProcessingModal={closeProcessingModal}
+      steps={steps}
+      fact={fact}
     />
   )
 }
