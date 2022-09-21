@@ -33,7 +33,8 @@ const ArtBoardComponent = forwardRef(
     startDrawing,
     isDrawing,
     minimize,
-    handleResetTile
+    handleResetTile,
+    userSelectedTile
   }) => {
     const tileCounter = [
       [0, 1, 2],
@@ -111,7 +112,7 @@ const ArtBoardComponent = forwardRef(
           </div>
 
           <div className="flex py-2">
-            {tiles[selectedTile] ? (
+            {userSelectedTile ? (
               <div className="flex items-center justify-between w-full">
                 <button
                   className="bg-brand-yellow font-bold text-[12px] px-4 py-2 rounded-full"

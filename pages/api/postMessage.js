@@ -81,7 +81,7 @@ export default async function handler(req, res) {
       } catch (error) {
         console.log('Reply to Message transaction failed!')
         console.log(error)
-        res.status(403).json(error)
+        res.status(203).json(error)
       }
     } else {
       console.log('BACKEND LOG | Add Message')
@@ -119,7 +119,7 @@ export default async function handler(req, res) {
       } catch (error) {
         console.log('Add Message transaction failed!')
         console.log(error)
-        res.status(403).json(error)
+        res.status(203).json(error)
       }
     }
   }

@@ -127,7 +127,7 @@ export default async function handler(req, res) {
           res.status(201).json({ tx, ipfsUrl })
         } catch (error) {
           console.log(error)
-          res.status(500).json('Error in catch 1: ', error)
+          res.status(403).json('Error in catch 1: ', error)
         }
       }
     } catch (error) {

@@ -111,6 +111,9 @@ export default function Questions({ questionsProp }) {
 
       // Save question to local storage
       window.localStorage.setItem('savedQuestion', JSON.stringify(newQuestion))
+    } else if (postResponse.status === 203) {
+      alert('Your Transaction have failed please try submitting again')
+      internalCloseProcessingModal()
     }
 
     // router.reload(window.location.pathname)
