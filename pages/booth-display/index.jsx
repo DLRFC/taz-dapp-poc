@@ -3,6 +3,9 @@ import axios from 'axios'
 
 import { Subgraphs } from '../../hooks/subgraphs'
 import Header from '../../components/Header'
+import TazBoothHeaderLogo from '../../components/TazBoothHeaderLogo'
+import TazBoothHeaderDate from '../../components/TazBoothHeaderDate'
+import TazBoothFooter from '../../components/TazBoothFooter'
 
 const BoothDisplay = ({ images, artBoard }) => {
   const [gallaryImages, setGallaryImages] = useState(images)
@@ -21,8 +24,9 @@ const BoothDisplay = ({ images, artBoard }) => {
   }, [gallaryImages])
 
   return (
-    <div className="h-screen bg-brand-blue">
-      <Header />
+    <div className="flex flex-col h-screen justify-between bg-brand-black">
+      <TazBoothHeaderLogo />
+      <TazBoothHeaderDate />
       <div className="container flex mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
         <section className="w-1/2">
           <p>Active Artboard goes here</p>
@@ -41,6 +45,7 @@ const BoothDisplay = ({ images, artBoard }) => {
           </div>
         </section>
       </div>
+      <TazBoothFooter />
     </div>
   )
 }
