@@ -8,8 +8,8 @@ const DrawingHtml = forwardRef(
     minimize,
     handleColorSelect,
     handleUndo,
-    handleFill,
-    isFilling,
+    toggleTool,
+    tool,
     color,
     stageRef,
     borderRef,
@@ -18,18 +18,18 @@ const DrawingHtml = forwardRef(
     fillColor
   }) => {
     const isDrawing = React.useRef(false)
-    const [tool] = React.useState('pen')
     const COLORCONVERT = {
       white: 'white',
       black: '#171717',
-      'red-600': '#dc2626',
-      'orange-500': '#f97316',
-      'yellow-300': '#fde047',
-      'green-600': '#16a34a',
-      'blue-600': '#2563eb',
-      'purple-600': '#9333ea'
+      'brand-orange': '#BD5141',
+      'brand-yellow': '#EFAD5F',
+      'brand-yellow2': '#EFD85F',
+      'brand-green': '#90B188',
+      'brand-blue': '#435C6C',
+      'brand-blue2': '#5F99EF',
+      'brand-purple': '#8679AB'
     }
-    const drawingSize = 200
+    const drawingSize = 300
 
     const dropIn = {
       hidden: {
@@ -89,68 +89,109 @@ const DrawingHtml = forwardRef(
           animate="visible"
           exit="exit"
           onClick={(e) => e.stopPropagation()}
-          className=" w-[100%] h-[60%] sm:w-[70%] sm:h-[50%] bg-brand-beige2 border-[1px] flex flex-col items-center justify-center rounded-[5px]"
+          className=" w-flex h-flex p-2 bg-white border-2 border-black flex flex-col items-center justify-center rounded-[5px]"
         >
-          <div className="flex grid grid-rows-1 grid-cols-10">
+          <div className="flex grid grid-rows-1 pb-1 grid-cols-9">
+            <div>
+              <button
+                id="brand-orange"
+                aria-label="orange color picker"
+                className={
+                  color === 'brand-orange'
+                    ? 'outline outline-slate-500 outline-4 w-6 h-6 m-[5px] bg-brand-orange rounded-full'
+                    : 'w-6 h-6 m-[5px] bg-brand-orange rounded-full'
+                }
+                type="submit"
+                onClick={(e) => handleColorSelect(e)}
+              />
+            </div>
+            <div>
+              <button
+                id="brand-yellow"
+                aria-label="yellow color picker"
+                className={
+                  color === 'brand-yellow'
+                    ? 'outline outline-slate-500 outline-4 w-6 h-6 m-[5px] bg-brand-yellow rounded-full'
+                    : 'w-6 h-6 m-[5px] bg-brand-yellow rounded-full'
+                }
+                type="submit"
+                onClick={(e) => handleColorSelect(e)}
+              />
+            </div>
+            <div>
+              <button
+                id="brand-yellow2"
+                aria-label="yellow2 color picker"
+                className={
+                  color === 'brand-yellow2'
+                    ? 'outline outline-slate-500 outline-4 w-6 h-6 m-[5px] bg-brand-yellow2 rounded-full'
+                    : 'w-6 h-6 m-[5px] bg-brand-yellow2 rounded-full'
+                }
+                type="submit"
+                onClick={(e) => handleColorSelect(e)}
+              />
+            </div>
+            <div>
+              <button
+                id="brand-green"
+                aria-label="green color picker"
+                className={
+                  color === 'brand-green'
+                    ? 'outline outline-slate-500 outline-4 w-6 h-6 m-[5px] bg-brand-green rounded-full'
+                    : 'w-6 h-6 m-[5px] bg-brand-green rounded-full'
+                }
+                type="submit"
+                onClick={(e) => handleColorSelect(e)}
+              />
+            </div>
+            <div>
+              <button
+                id="brand-blue2"
+                aria-label="blue2 color picker"
+                className={
+                  color === 'brand-blue2'
+                    ? 'outline outline-slate-500 outline-4 w-6 h-6 m-[5px] bg-brand-blue2 rounded-full'
+                    : 'w-6 h-6 m-[5px] bg-brand-blue2 rounded-full'
+                }
+                type="submit"
+                onClick={(e) => handleColorSelect(e)}
+              />
+            </div>
+            <div>
+              <button
+                id="brand-blue"
+                aria-label="blue color picker"
+                className={
+                  color === 'brand-blue'
+                    ? 'outline outline-slate-500 outline-4 w-6 h-6 m-[5px] bg-brand-blue rounded-full'
+                    : 'w-6 h-6 m-[5px] bg-brand-blue rounded-full'
+                }
+                type="submit"
+                onClick={(e) => handleColorSelect(e)}
+              />
+            </div>
+            <div>
+              <button
+                id="brand-purple"
+                aria-label="purple color picker"
+                className={
+                  color === 'brand-purple'
+                    ? 'outline outline-slate-500 outline-4 w-6 h-6 m-[5px] bg-brand-purple rounded-full'
+                    : 'w-6 h-6 m-[5px] bg-brand-purple rounded-full'
+                }
+                type="submit"
+                onClick={(e) => handleColorSelect(e)}
+              />
+            </div>
             <div>
               <button
                 id="black"
                 aria-label="black color picker"
-                className="w-4 h-4 m-1 bg-black rounded-full"
-                type="submit"
-                onClick={(e) => handleColorSelect(e)}
-              />
-            </div>
-            <div>
-              <button
-                id="red-600"
-                aria-label="red color picker"
-                className="w-4 h-4 m-1 bg-red-600 rounded-full"
-                type="submit"
-                onClick={(e) => handleColorSelect(e)}
-              />
-            </div>
-            <div>
-              <button
-                id="orange-500"
-                aria-label="orange color picker"
-                className="w-4 h-4 m-1 bg-orange-500 rounded-full"
-                type="submit"
-                onClick={(e) => handleColorSelect(e)}
-              />
-            </div>
-            <div>
-              <button
-                id="yellow-300"
-                aria-label="yellow color picker"
-                className="w-4 h-4 m-1 bg-yellow-300 rounded-full"
-                type="submit"
-                onClick={(e) => handleColorSelect(e)}
-              />
-            </div>
-            <div>
-              <button
-                id="green-600"
-                aria-label="green color picker"
-                className="w-4 h-4 m-1 bg-green-600 rounded-full"
-                type="submit"
-                onClick={(e) => handleColorSelect(e)}
-              />
-            </div>
-            <div>
-              <button
-                id="blue-600"
-                aria-label="blue color picker"
-                className="w-4 h-4 m-1 bg-blue-600 rounded-full"
-                type="submit"
-                onClick={(e) => handleColorSelect(e)}
-              />
-            </div>
-            <div>
-              <button
-                id="purple-600"
-                aria-label="purple color picker"
-                className="w-4 h-4 m-1 bg-purple-600 rounded-full"
+                className={
+                  color === 'black'
+                    ? 'outline outline-slate-500 outline-4 w-6 h-6 m-[5px] bg-black rounded-full'
+                    : 'w-6 h-6 m-[5px] bg-black rounded-full'
+                }
                 type="submit"
                 onClick={(e) => handleColorSelect(e)}
               />
@@ -159,16 +200,14 @@ const DrawingHtml = forwardRef(
               <button
                 id="white"
                 aria-label="white color picker"
-                className="w-4 h-4 m-1 bg-white border border-black rounded-full"
+                className={
+                  color === 'white'
+                    ? 'outline outline-slate-500 outline-4 w-6 h-6 m-[5px] bg-white rounded-full'
+                    : 'w-6 h-6 m-[5px] bg-white rounded-full border border-black'
+                }
                 type="submit"
                 onClick={(e) => handleColorSelect(e)}
               />
-            </div>
-            <div className={isFilling ? 'm-1 border border-black flex' : 'm-1 flex'} onClick={handleFill}>
-              <Image className="cursor-pointer" src="/paint_bucket.png" alt="fill" width="20" height="20" />
-            </div>
-            <div className="m-2" onClick={handleUndo}>
-              <Image className="cursor-pointer" src="/undo-transparent.png" alt="undo" width="20" height="20" />
             </div>
           </div>
           <div ref={borderRef} className="border-black border touch-none bg-white h-[250] w-[250]">
@@ -201,14 +240,34 @@ const DrawingHtml = forwardRef(
               </Layer>
             </Stage>
           </div>
-          <div>
-            <button
-              className="bg-brand-yellow font-bold text-xs mt-3 p-2 rounded-full"
-              type="submit"
-              onClick={minimize}
-            >
-              minimize
-            </button>
+          <div className="flex flex-row w-full items-center">
+            <div className="justify-left ml-2">
+              <button
+                className="bg-black text-xs text-white w-32 p-2 pl-4 rounded-full flex flex-row"
+                type="submit"
+                onClick={minimize}
+              >
+                <Image src="/minimize.png" alt="minimize" width="16" height="16" />
+                <p className="pl-4">minimize</p>
+              </button>
+            </div>
+            <div className="flex flex-row w-full items-center justify-items-center grid grid-cols-3">
+              <div
+                className={tool === 'pen' ? 'p-1 border border-black justify-items-center' : 'p-1'}
+                onClick={toggleTool}
+              >
+                <Image className="cursor-pointer" src="/pen.png" alt="pen" width="25" height="25" />
+              </div>
+              <div
+                className={tool === 'fill' ? 'p-1 border border-black justify-items-center' : 'p-1'}
+                onClick={toggleTool}
+              >
+                <Image className="cursor-pointer" src="/fill_bucket.png" alt="fill" width="25" height="25" />
+              </div>
+              <div className="m-2" onClick={handleUndo}>
+                <Image className="cursor-pointer" src="/undo.png" alt="undo" width="25" height="25" />
+              </div>
+            </div>
           </div>
         </motion.div>
       </div>
