@@ -30,14 +30,15 @@ export default async function handler(req, res) {
 
       const dbs = await client.query(
         query.Map(
-          query.Paginate(query.Match(query.Index('all_codes')), {
+          query.Paginate(query.Match(query.Index('all_hashes')), {
             size: 10000
           }),
           query.Lambda('codeRef', query.Get(query.Var('codeRef')))
         )
       )
 
-      const match = dbs.data.filter((code) => code.data.code === invitation)
+      const hashedInv = ethers.utils.id(invitation);
+      const match = dbs.data.filter((code) => code.data.code === hashedInv)
 
       let isValid
 
