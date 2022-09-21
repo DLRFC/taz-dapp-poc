@@ -13,15 +13,11 @@ const { API_REQUEST_TIMEOUT } = require('../../config/goerli.json')
 export default function Questions({ questionsProp }) {
   const [generateFullProof] = useGenerateProof()
   const [questionModalIsOpen, setQuestionModalIsOpen] = useState(false)
-  const [processingModalIsOpen, setProcessingModalIsOpen] = useState(true)
+  const [processingModalIsOpen, setProcessingModalIsOpen] = useState(false)
   const [question, setQuestion] = useState()
   const [identityKey, setIdentityKey] = useState('')
   const [questions, setQuestions] = useState(questionsProp)
-  const [steps, setSteps] = useState([
-    { status: 'complete', text: 'Generate zero knowledge proof' },
-    { status: 'processing', text: 'Submit transaction with proof and question' },
-    { status: 'queued', text: 'Update answers from on-chain events' }
-  ])
+  const [steps, setSteps] = useState([])
   const [fact, setFact] = useState([])
 
   const closeQuestionModal = () => {
