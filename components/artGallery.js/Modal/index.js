@@ -2,9 +2,9 @@ import React from 'react'
 // import { images } from '../data'
 
 export default function Modal({ images, onClose, activeImage, setActiveImage }) {
-  const handleClick = () => {
-    onClose && onClose()
-  }
+  // const handleClick = () => {
+  //   onClose && onClose()
+  // }
   const handleControlTabClick = (e, url) => {
     e.stopPropagation()
     setActiveImage(url)
@@ -14,12 +14,12 @@ export default function Modal({ images, onClose, activeImage, setActiveImage }) 
   return (
     // <div onClick={handleClick} className={styles.backdrop}>
     <div
-      onClick={handleClick}
-      className="absolute left-0 top-0 bottom-0 right-0 h-[100%] w-[100%] overflow-scroll bg-[#00000070] flex flex-col items-center justify-center z-20"
+      onClick={onClose}
+      className="absolute left-0 top-0 bottom-0 right-0 h-[100%] w-[100%] overflow-scroll bg-[#00000070] flex flex-col items-center justify-start z-20"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-[50%] min-h-[30%] flex flex-col justify-center items-center"
+        className="pt-20 w-[50%] min-h-[30%] flex flex-col justify-center items-center"
       >
         <button
           onClick={onClose}

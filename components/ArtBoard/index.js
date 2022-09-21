@@ -9,7 +9,7 @@ export default function artBoard() {
   const [generateFullProof] = useGenerateProof()
   const [identityKey, setIdentityKey] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [isFilling, setIsFilling] = useState(false)
+  const [tool, setTool] = useState()
   const [userSelectedTile, setUserSelectedTile] = useState(false)
 
   const [isDrawing, setIsDrawing] = useState(false)
@@ -84,19 +84,29 @@ export default function artBoard() {
     lines.pop()
     setLines(lines.concat())
   }
-  const handleFill = () => {
-    setIsFilling(!isFilling)
+
+  const toggleTool = (e) => {
+    if (e.target.alt === 'fill') {
+      console.log('settofill')
+      setTool('fill')
+    } else {
+      setTool('pen')
+    }
   }
 
   const startDrawing = (i) => {
-    if (tiles[i] == '' && userSelectedTile == false) {
+    if (tiles[i] === '' && userSelectedTile === false) {
       setIsDrawing(true)
       setSelectedTile(i)
-    } else if (i == selectedTile) {
+    } else if (i === selectedTile) {
       setIsDrawing(true)
     } else {
       console.log('You Cannot select this Tile')
     }
+
+    // ------ For testing
+    // setSelectedTile(i)
+    // setIsDrawing(true)
   }
   const minimize = () => {
     const uri = stageRef.current.toDataURL()
@@ -110,9 +120,9 @@ export default function artBoard() {
 
   const handleColorSelect = (e) => {
     console.log('handleColorSelect: ', e.target)
-    if (isFilling) {
+    if (tool === 'fill') {
       setFillColor(e.target.id)
-      setIsFilling(!isFilling)
+      setColor(e.target.id)
     } else {
       setColor(e.target.id)
     }
@@ -149,13 +159,39 @@ export default function artBoard() {
     console.log('canvasId.current: ', canvasId.current)
     setLoadingMessage(`2. Submitting message transaction`)
 
-    const response = await axios.post('/api/modifyCanvas', {
-      updatedTiles: tilesRef.current,
-      tileIndex: selectedTile,
-      canvasId: canvasId.current
-    })
-    console.log('RESPONSE FROM /api/modifyCanvas:')
-    console.log(response)
+    // const response = await axios.post('/api/modifyCanvas', {
+    //   updatedTiles: tilesRef.current,
+    //   tileIndex: selectedTile,
+    //   canvasId: canvasId.current
+    // })
+    // console.log('RESPONSE FROM /api/modifyCanvas:')
+    // console.log(response)
+
+    // if (response.status === 201) {
+    //   router.push('/artGallery-page')
+    // } else if (response.status === 203) {
+    //   alert('Tile already exists, please submit another Tile')
+    //   setIsLoading(false)
+    // }
+
+    try {
+      const response = await axios.post('/api/modifyCanvas', {
+        updatedTiles: tilesRef.current,
+        tileIndex: selectedTile,
+        canvasId: canvasId.current
+      })
+      if (response.status === 201) {
+        router.push('/artGallery-page')
+      }
+    } catch (error) {
+      alert('Tile already exists, please submit another Tile')
+      console.log('error', error)
+      console.log('data', error.response.data.existingTile)
+      tiles[selectedTile] = error.response.data.existingTile
+      setIsLoading(false)
+      setUserSelectedTile(false)
+      setSelectedTile(null)
+    }
 
     if (tilesRemaining.length === 0) {
       const body = {
@@ -172,10 +208,24 @@ export default function artBoard() {
       console.log('canvasUri: ', canvasUri)
       console.log('canvasId.current: ', canvasId.current)
       const mintResponse = await axios.post('/api/mintFullCanvas', body)
-      console.log('RESPONSE FROM /api/mintFullCanvas:')
-      console.log(mintResponse)
+
+      console.log('RESPONSE FROM /api/mintFullCanvas:', mintResponse)
+      console.log('Canva Uri', mintResponse.ipfsUrl)
+
+      const newCanvas = {
+        id: 10000,
+        timestamp: 999999999,
+        tokenId: 100000,
+        uri: mintResponse.data.ipfsUrl,
+        canvaUri: canvasUri
+      }
+      if (mintResponse.status === 201) {
+        window.localStorage.setItem('savedCanva', JSON.stringify(newCanvas))
+        router.push('/artGallery-page')
+      } else if (mintResponse.status === 403) {
+        alert('Tx have failed, please try submitting again')
+      }
     }
-    router.push('/artGallery-page')
   }
 
   const handleResetTile = () => {
@@ -211,15 +261,16 @@ export default function artBoard() {
       setLines={setLines}
       stageRef={stageRef}
       handleUndo={handleUndo}
-      handleFill={handleFill}
+      toggleTool={toggleTool}
       handleColorSelect={handleColorSelect}
-      isFilling={isFilling}
+      tool={tool}
       color={color}
       fillColor={fillColor}
       setColor={setColor}
       setFillColor={setFillColor}
       minimize={minimize}
       handleResetTile={handleResetTile}
+      userSelectedTile={userSelectedTile}
     />
   )
 }

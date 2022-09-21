@@ -8,12 +8,13 @@ import ShadowBunny from '../svgElements/ShadowBunny'
 import BlueEllipse from '../svgElements/BlueEllipse'
 import SelectorArrow from '../ArrowNavigators/SelectorArrow'
 import Accordion from '../FAQ/Accordion'
+import Footer from '../Footer'
 
 const ExperiencesListComponent = ({ clearIdentity }) => {
   return (
     <div>
       <div className="grid">
-        <div className="col-start-1 row-start-1 fixed">
+        <div className="z-0 col-start-1 row-start-1 fixed">
           <div className="absolute top-[130px] -left-[51px]">
             <RedCircle />
           </div>
@@ -28,7 +29,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
           </div>
         </div>
 
-        <div className="col-start-1 row-start-1 px-6 py-8 font-sans text-brand-brown">
+        <div className="z-10 col-start-1 row-start-1 px-6 py-8 font-sans text-brand-brown">
           <div>
             <h1 className="relative inline-block bg-black ml-3 mb-12 px-1 text-xl text-brand-beige2">TAZ</h1>
           </div>
@@ -71,7 +72,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
               <div className="text-15px text-brand-blue">Take your ID with you </div>
               <div></div>
             </div>
-            <Link href="">
+            <a href="https://www.auti.sm" target="_blank" rel="noreferrer">
               <div className="flex w-full flex-row items-center py-3 px-4 cursor-pointer">
                 <div className="w-[90%]">
                   <p className="py-2 text-brand-h3 font-bold">Zkitter</p>
@@ -79,10 +80,10 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
                 </div>
                 <SelectorArrow />
               </div>
-            </Link>
+            </a>
           </div>
 
-          <div className=" relative flex flex-col items-center overflow-hidden rounded-md border-2 border-brand-blue shadow-xl bg-white mt-20 mb-20">
+          <div className="relative flex flex-col items-center overflow-hidden rounded-md border-2 border-brand-blue shadow-xl bg-white mt-20 mb-20">
             <div className="flex w-full justify-between border-b-2 border-brand-blue bg-black text-15px text-brand-beige p-3">
               <div>🧑‍🏫</div>
               <div>FAQ</div>
@@ -93,7 +94,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
         </div>
       </div>
 
-      <div className="relative flex items-left flex-col p-12 bg-black text-brand-yellow mt-12">
+      <div className="z-20 relative flex items-left flex-col p-12 pb-5 bg-black text-brand-yellow mt-12">
         <div className="py-10 px-5 flex items-end justify-between bg-black">
           <div className="transform -ml-6 text-xl tracking-widest text-brand-beige">
             <h1>TEMP_RARY</h1>
@@ -119,10 +120,11 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
           Privacy & Scaling Explorations
         </a>
         <div>
-          <button className="bg-brand-yellow text-black py-2 px-4 rounded-full " onClick={clearIdentity}>
+          <button className="bg-brand-yellow text-black py-2 px-4 rounded-full mb-20" onClick={clearIdentity}>
             Disconnect ID
           </button>
         </div>
+        <Footer />
       </div>
     </div>
   )

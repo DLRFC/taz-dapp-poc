@@ -7,6 +7,7 @@ import LoadingModal from '../LoadingModal/Index'
 import DrawingModal from './drawingModal'
 import GenerateTile from './generateTile'
 import BackArrow from '../svgElements/BackArrow'
+import Footer from '../Footer'
 
 // import { Identity } from '@semaphore-protocol/identity'
 
@@ -21,9 +22,9 @@ const ArtBoardComponent = forwardRef(
     lines,
     setLines,
     handleUndo,
-    handleFill,
+    toggleTool,
     handleColorSelect,
-    isFilling,
+    tool,
     stageRef,
     borderRef,
     canvasRef,
@@ -32,7 +33,8 @@ const ArtBoardComponent = forwardRef(
     startDrawing,
     isDrawing,
     minimize,
-    handleResetTile
+    handleResetTile,
+    userSelectedTile
   }) => {
     const tileCounter = [
       [0, 1, 2],
@@ -41,7 +43,7 @@ const ArtBoardComponent = forwardRef(
     ]
 
     return (
-      <div className="px-6 py-8 font-sans mb-20">
+      <div className="px-6 py-8 font-sans">
         {isLoading ? (
           <AnimatePresence initial={false} exitBeforeEnter onExitComplete={() => null} className="z-20">
             <LoadingModal loadingMessage={loadingMessage} />
@@ -56,8 +58,8 @@ const ArtBoardComponent = forwardRef(
               lines={lines}
               setLines={setLines}
               fillColor={fillColor}
-              isFilling={isFilling}
-              handleFill={handleFill}
+              tool={tool}
+              toggleTool={toggleTool}
               handleUndo={handleUndo}
               handleColorSelect={handleColorSelect}
               minimize={minimize}
@@ -110,7 +112,7 @@ const ArtBoardComponent = forwardRef(
           </div>
 
           <div className="flex py-2">
-            {tiles[selectedTile] ? (
+            {userSelectedTile ? (
               <div className="flex items-center justify-between w-full">
                 <button
                   className="bg-brand-yellow font-bold text-[12px] px-4 py-2 rounded-full"
