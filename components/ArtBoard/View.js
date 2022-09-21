@@ -22,9 +22,9 @@ const ArtBoardComponent = forwardRef(
     lines,
     setLines,
     handleUndo,
-    handleFill,
+    toggleTool,
     handleColorSelect,
-    isFilling,
+    tool,
     stageRef,
     borderRef,
     canvasRef,
@@ -57,8 +57,8 @@ const ArtBoardComponent = forwardRef(
               lines={lines}
               setLines={setLines}
               fillColor={fillColor}
-              isFilling={isFilling}
-              handleFill={handleFill}
+              tool={tool}
+              toggleTool={toggleTool}
               handleUndo={handleUndo}
               handleColorSelect={handleColorSelect}
               minimize={minimize}
