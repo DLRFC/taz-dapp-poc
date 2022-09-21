@@ -129,7 +129,7 @@ export default function GenerateIdentityComponent({
                   <img src={imageUrl} alt="img" className="mb-7 rounded-xl" />
                   <button className="border-2 border-brand-gray2 bg-brand-gray2 text-brand-beige p-2 text-brand-button rounded-2xl">
                     <div className="flex items-center">
-                      <span>Screenshoot!</span>
+                      <span>Screenshot!</span>
                       <div className="px-2">
                         <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <g clipPath="url(#clip0_2100_9458)">

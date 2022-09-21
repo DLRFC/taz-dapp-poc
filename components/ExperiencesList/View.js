@@ -43,7 +43,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
           <div className="relative flex flex-col items-center overflow-hidden rounded-md border-2 border-brand-blue shadow-xl bg-white mb-8">
             <div className="flex w-full justify-between border-b-2 border-brand-blue bg-brand-beige2 p-3">
               <div>📂</div>
-              <div className="text-brand-blue text-15px">Use your Semaphore ID here </div>
+              <div className="text-brand-blue text-15px">Use your ID here </div>
               <div></div>
             </div>
             <Link href="questions">

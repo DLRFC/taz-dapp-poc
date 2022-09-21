@@ -37,7 +37,7 @@ export default function GenerateIdentity(props) {
     // setLoadingMessage('Identity is Generating')
     setSteps([
       { status: 'processing', text: 'Generating Semaphore Identity (private values and id commitment)' },
-      { status: 'queued', text: 'Send invitation code and identity commmitment to our sever/relay' },
+      { status: 'queued', text: 'Send invitation code and identity commmitment to our server/relay' },
       { status: 'queued', text: 'Add ID commitment to group' },
       { status: 'queued', text: 'Generate ID QR code' },
       { status: 'queued', text: 'Save private values to browser cache' }
@@ -55,7 +55,7 @@ export default function GenerateIdentity(props) {
     setTimeout(() => {
       setSteps([
         { status: 'complete', text: 'Generated Semaphore Identity (private values and id commitment)' },
-        { status: 'processing', text: 'Sending invitation code and identity commmitment to our sever/relay' },
+        { status: 'processing', text: 'Sending invitation code and identity commmitment to our server/relay' },
         { status: 'queued', text: 'Add ID commitment to group' },
         { status: 'queued', text: 'Generate ID QR code' },
         { status: 'queued', text: 'Save private values to browser cache' }
@@ -77,7 +77,7 @@ export default function GenerateIdentity(props) {
 
         setSteps([
           { status: 'complete', text: 'Generated Semaphore Identity (private values and id commitment)' },
-          { status: 'complete', text: 'Sent invitation code and identity commmitment to our sever/relay' },
+          { status: 'complete', text: 'Sent invitation code and identity commmitment to our server/relay' },
           { status: 'processing', text: 'Adding ID commitment to group' },
           { status: 'queued', text: 'Generate ID QR code' },
           { status: 'queued', text: 'Save private values to browser cache' }
@@ -86,7 +86,7 @@ export default function GenerateIdentity(props) {
           setTimeout(() => {
             setSteps([
               { status: 'complete', text: 'Generated Semaphore Identity (private values and id commitment)' },
-              { status: 'complete', text: 'Sent invitation code and identity commmitment to our sever/relay' },
+              { status: 'complete', text: 'Sent invitation code and identity commmitment to our server/relay' },
               { status: 'complete', text: 'Added ID commitment to group' },
               { status: 'processing', text: 'Generating ID QR code' },
               { status: 'queued', text: 'Save private values to browser cache' }
@@ -134,7 +134,7 @@ export default function GenerateIdentity(props) {
       setTimeout(() => {
         setSteps([
           { status: 'complete', text: 'Generated Semaphore Identity (private values and id commitment)' },
-          { status: 'complete', text: 'Sent invitation code and identity commmitment to our sever/relay' },
+          { status: 'complete', text: 'Sent invitation code and identity commmitment to our server/relay' },
           { status: 'complete', text: 'Added ID commitment to group' },
           { status: 'complete', text: 'Generated ID QR code' },
           { status: 'processing', text: 'Saving private values to browser cache' }
@@ -146,7 +146,7 @@ export default function GenerateIdentity(props) {
       setTimeout(() => {
         setSteps([
           { status: 'complete', text: 'Generated Semaphore Identity (private values and id commitment)' },
-          { status: 'complete', text: 'Sent invitation code and identity commmitment to our sever/relay' },
+          { status: 'complete', text: 'Sent invitation code and identity commmitment to our server/relay' },
           { status: 'complete', text: 'Added ID commitment to group' },
           { status: 'complete', text: 'Generated ID QR code' },
           { status: 'complete', text: 'Saved private values to browser cache' }
