@@ -1,10 +1,9 @@
 import { useState, useRef } from 'react'
-import axios from 'axios'
-// import Link from 'next/link'
 import { useRouter } from 'next/router'
+import axios from 'axios'
+import { Identity } from '@semaphore-protocol/identity'
 
 import { useIdentityLoginContext } from '../../context/IdentityContextProvider'
-import { Identity } from '@semaphore-protocol/identity'
 // import useGetMembers from '../../hooks/useGetMembers'
 import ValidateInvitationComponent from './View'
 
@@ -15,13 +14,12 @@ const { GROUP_ID } = require('../../config/goerli.json')
 
 // Page 1 it will check Invitation
 export default function InvitationCheck() {
-  console.log('test')
   const [selected, setSelected] = useState('environment')
   const [startScan, setStartScan] = useState(false)
   // const [loadingScan, setLoadingScan] = useState(false)
   const [data, setData] = useState('')
   const onSetIdentity = useIdentityLoginContext()
-  const [invitation, setInvitation] = useState('test-code-15')
+  const [invitation, setInvitation] = useState('')
   const [response, setResponse] = useState('')
   const [isSignUp, setIsSignUp] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -32,12 +30,15 @@ export default function InvitationCheck() {
 
   const qrRef = useRef(null)
 
+  const inviteCodeChangeHandler = (event) => {
+    setInvitation(event.target.value)
+  }
+
   const handleScan = async (scanData) => {
     // setLoadingScan(true)
     try {
-      console.log(`loaded data data`, scanData)
       if (scanData && scanData !== '') {
-        const scanDataCode = scanData.slice(-6)
+        const scanDataCode = scanData.slice(-8)
         console.log(`loaded >>>`, scanDataCode)
         setData(scanDataCode)
         setStartScan(false)
@@ -53,6 +54,10 @@ export default function InvitationCheck() {
   }
 
   const validate = async () => {
+    if (invitation.length < 8) {
+      alert('Error: must be 8 characters')
+      return
+    }
     setIsLoading(true)
     setLoadingMessage('Verifying your Invitation-Code')
 
@@ -93,8 +98,7 @@ export default function InvitationCheck() {
   const handleScanQrCode = async (result) => {
     if (result) {
       setCheckingIdenty(true)
-      console.log(result)
-      console.log('Scanned!')
+      console.log('Scanned', result)
 
       // check it identity is part of members array
       const checkIdentity = new Identity(result)
@@ -108,9 +112,8 @@ export default function InvitationCheck() {
 
       const subgraphs = new Subgraphs()
       const check = await subgraphs.isVerifiedGroupIdentity(GROUP_ID.toString(), checkIdentityCommitment)
-      console.log('Is Identity part of Semaphore?')
+      console.log('Is Identity part of Semaphore?', check)
 
-      console.log(check)
       if (check) {
         onSetIdentity(result)
         router.push(`/`)
@@ -140,12 +143,12 @@ export default function InvitationCheck() {
       setSelected={setSelected}
       selected={selected}
       handleScan={handleScan}
-      setInvitation={setInvitation}
+      invitation={invitation}
+      inviteCodeChangeHandler={inviteCodeChangeHandler}
       data={data}
       validate={validate}
       onClose={onClose}
       loadingMessage={loadingMessage}
-      invitation={invitation}
     />
   )
 }

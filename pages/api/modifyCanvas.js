@@ -33,8 +33,7 @@ export default async function handler(req, res) {
     // To update the database the backend needs the canvasId and the updated tiles from the request body
     // For example: updatedTiles: ["newDrawingString","","","","","","","",""] canvasId: 1
 
-    const { canvasId } = req.body
-    const { updatedTiles } = req.body
+    const { canvasId, updatedTiles, tileIndex } = req.body
 
     // Query all 5 canvases from the database
     const dbs = await client.query(
@@ -48,21 +47,28 @@ export default async function handler(req, res) {
 
     // Find the matching canvas based on the canvasId
     const match = dbs.data.filter((canvas) => canvas.data.canvasId === canvasId)[0]
+    console.log(match.data.tiles[tileIndex])
 
-    const newLocal = 'Canvas successfully updated!'
-    // Update the canvas in the database
-    // eslint-disable-next-line no-unused-expressions
-    await client
-      .query(
-        query.Update(query.Ref(match.ref), {
-          data: {
-            tiles: updatedTiles
-          }
-        })
-        // eslint-disable-next-line no-sequences
-      )
-      .then((ret) => console.log(ret))
-    // Send response back to frontend
-    res.status(201).json(newLocal)
+    if (match.data.tiles[tileIndex] === '') {
+      const newLocal = 'Canvas successfully updated!'
+      // Update the canvas in the database
+      // eslint-disable-next-line no-unused-expressions
+      await client
+        .query(
+          query.Update(query.Ref(match.ref), {
+            data: {
+              tiles: updatedTiles
+            }
+          })
+          // eslint-disable-next-line no-sequences
+        )
+        .then((ret) => console.log(ret))
+      // Send response back to frontend
+      res.status(201).json(newLocal)
+    } else {
+      const newLocal = 'Error: this tile has already been filled'
+      const existingTile = match.data.tiles[tileIndex]
+      res.status(403).json({ newLocal, existingTile })
+    }
   }
 }

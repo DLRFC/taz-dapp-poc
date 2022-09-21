@@ -1,11 +1,13 @@
 import React, { forwardRef } from 'react'
+import Link from 'next/link'
 
 import { AnimatePresence } from 'framer-motion'
 
-import Button from '../Button'
 import LoadingModal from '../LoadingModal/Index'
 import DrawingModal from './drawingModal'
 import GenerateTile from './generateTile'
+import BackArrow from '../svgElements/BackArrow'
+import Footer from '../Footer'
 
 // import { Identity } from '@semaphore-protocol/identity'
 
@@ -20,9 +22,9 @@ const ArtBoardComponent = forwardRef(
     lines,
     setLines,
     handleUndo,
-    handleFill,
+    toggleTool,
     handleColorSelect,
-    isFilling,
+    tool,
     stageRef,
     borderRef,
     canvasRef,
@@ -30,7 +32,9 @@ const ArtBoardComponent = forwardRef(
     fillColor,
     startDrawing,
     isDrawing,
-    minimize
+    minimize,
+    handleResetTile,
+    userSelectedTile
   }) => {
     const tileCounter = [
       [0, 1, 2],
@@ -54,8 +58,8 @@ const ArtBoardComponent = forwardRef(
               lines={lines}
               setLines={setLines}
               fillColor={fillColor}
-              isFilling={isFilling}
-              handleFill={handleFill}
+              tool={tool}
+              toggleTool={toggleTool}
               handleUndo={handleUndo}
               handleColorSelect={handleColorSelect}
               minimize={minimize}
@@ -63,45 +67,24 @@ const ArtBoardComponent = forwardRef(
             />
           </AnimatePresence>
         ) : null}
-        <svg
-          className="absolute -left-2 top-[230px]"
-          width="69"
-          height="100"
-          viewBox="0 0 69 100"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <ellipse cx="18.8812" cy="50" rx="49.8812" ry="50" fill="#BD5141" />
-        </svg>
 
-        <svg
-          className="absolute right-[0px] top-[520px]"
-          width="121"
-          height="160"
-          viewBox="0 0 121 160"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <ellipse cx="80.6202" cy="80" rx="80.6202" ry="80" fill="#EFAD5F" />
-          <path
-            transform="translate(-9, 0)"
-            d="M5.86415 0.843262L7.73372 2.72888L3.99457 6.50008L7.73372 10.2714L5.86415 12.157L0.255371 6.50008L5.86415 0.843262Z"
-            fill="#475F6F"
-          />
-        </svg>
-
-        <div className="w-full rounded-md border-2 border-gray-500 bg-white drop-shadow-lg">
-          <div className=" p-3">
-            <p className="text-sm text-black w-full font-bold">Select a tile to start drawing</p>
+        <div className="z-0 p-4 min-w-[200px] relative divide-y overflow-y-auto border-2 border-brand-blue rounded-md bg-white drop-shadow-lg">
+          <div className="mb-4 border-0">
+            <Link href="/artGallery-page">
+              <div>
+                <BackArrow />
+              </div>
+            </Link>
           </div>
-          <div className=" px-3 pb-3">
-            <p className="text-xs text-brand-brown text-black">
+          <div className="border-0 text-brand-brown" style={{ borderTopWidth: '0px' }}>
+            <p className="text-sm w-full font-bold mb-4">Select a tile to start drawing</p>
+            <p className="text-xs opacity-[70%] mb-4">
               Your drawing will appear alongside other's. Select 1 tile at a time.
             </p>
           </div>
           <div className="flex items-center justify-center">
             <div ref={canvasRef} id="ipfsURI">
-              <table className="mr-3 ml-3">
+              <table>
                 <tbody>
                   {tileCounter.map((counter) => (
                     <tr className="w-full h-full" key={counter}>
@@ -128,16 +111,30 @@ const ArtBoardComponent = forwardRef(
             </div>
           </div>
 
-          <div className="flex p-2">
-            <div>
-              <button
-                className="bg-brand-yellow font-bold text-xs p-2 rounded-full ml-2"
-                type="submit"
-                onClick={submit}
-              >
-                Submit tile
-              </button>
-            </div>
+          <div className="flex py-2">
+            {userSelectedTile ? (
+              <div className="flex items-center justify-between w-full">
+                <button
+                  className="bg-brand-yellow font-bold text-[12px] px-4 py-2 rounded-full"
+                  type="submit"
+                  onClick={handleResetTile}
+                >
+                  Reset Tile
+                </button>
+
+                <p>tile: {selectedTile + 1}</p>
+
+                <button
+                  className="bg-brand-yellow font-bold text-[12px] px-4 py-2 rounded-full"
+                  type="submit"
+                  onClick={submit}
+                >
+                  Submit tile
+                </button>
+              </div>
+            ) : (
+              <p className="text-center w-full">Select a Tile</p>
+            )}
           </div>
         </div>
       </div>

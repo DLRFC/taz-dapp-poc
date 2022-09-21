@@ -7,7 +7,19 @@ export default function ArtGallery(props) {
   const [activeImage, setActiveImage] = useState(null)
   const [open, setOpen] = useState(false)
   const handleClick = (url) => {
+    console.log('images', images)
     setActiveImage(url)
+  }
+
+  const updateFromLocalStorage = () => {
+    const savedCanvas = JSON.parse(window.localStorage.getItem('savedCanva'))
+    const found = images.some((element) => savedCanvas && element.uri === savedCanvas.uri)
+    if (found) {
+      window.localStorage.removeItem('savedQuestion')
+    } else if (savedCanvas) {
+      const updatedCanvas = [savedCanvas].concat(images)
+      setImages(updatedCanvas)
+    }
   }
 
   useEffect(() => {
@@ -15,7 +27,7 @@ export default function ArtGallery(props) {
       // open modal
       setOpen(true)
     }
-    console.log('image', props.images)
+    updateFromLocalStorage()
   }, [activeImage])
 
   const handleClose = () => {
@@ -23,13 +35,6 @@ export default function ArtGallery(props) {
     setActiveImage(null)
   }
 
-  // const scrollToTop = () => {
-  //   window.scrollTo(0, 0)
-  // }
-
-  const scrollTop = () => {
-    window.scrollTo(0, 0)
-  }
   return (
     <ArtGalleryComponent
       open={open}
@@ -38,7 +43,6 @@ export default function ArtGallery(props) {
       setActiveImage={setActiveImage}
       handleClick={handleClick}
       images={images}
-      scrollTop={scrollTop}
     />
   )
 }

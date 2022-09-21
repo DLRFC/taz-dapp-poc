@@ -6,14 +6,20 @@ import { TAZMESSAGE_CONTRACT } from '../../config/goerli.json'
 
 dotenv.config({ path: '../../.env.local' })
 const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL)
-const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider)
+const signer_array = process.env.PRIVATE_KEY_ARRAY.split(',')
+console.log('signer Array1', signer_array)
+
+const signer_2 = new ethers.Wallet(signer_array[0]).connect(provider)
+const signer_3 = new ethers.Wallet(process.env.PRIVATE_KEY_3).connect(provider)
+
 const tazMessageAbi = TazMessage.abi
 const tazMessageAddress = TAZMESSAGE_CONTRACT
 
 // console.log("tazMessageAddress", tazMessageAddress)
 // console.log("tazMessageAbi", TazMessage)
 
-const tazMessageContract = new ethers.Contract(tazMessageAddress, tazMessageAbi, signer)
+const tazMessageContract_2 = new ethers.Contract(tazMessageAddress, tazMessageAbi, signer_2)
+const tazMessageContract_3 = new ethers.Contract(tazMessageAddress, tazMessageAbi, signer_3)
 
 export default async function handler(req, res) {
   console.log('api called')
@@ -54,7 +60,7 @@ export default async function handler(req, res) {
       console.log('BACKEND LOG | Transacting reply')
 
       try {
-        tx = await tazMessageContract.replyToMessage(
+        tx = await tazMessageContract_3.replyToMessage(
           parentMessageId,
           messageId,
           messageContent,
@@ -67,15 +73,15 @@ export default async function handler(req, res) {
           { gasLimit: 15000000 }
         )
         console.log('Transaction Finished!')
-        const response = await tx.wait(3)
-        console.log(response)
+        // const response = await tx.wait(1)
+        console.log(tx)
         console.log('Reply Message Success!')
 
-        res.status(201).json(response)
+        res.status(201).json(tx)
       } catch (error) {
         console.log('Reply to Message transaction failed!')
         console.log(error)
-        res.status(403).json(error)
+        res.status(203).json(error)
       }
     } else {
       console.log('BACKEND LOG | Add Message')
@@ -91,7 +97,9 @@ export default async function handler(req, res) {
       //   uint256[8] calldata proof) external {
 
       try {
-        tx = await tazMessageContract.addMessage(
+        // Fetch nonce(based on wallet)
+        console.log('signer Array2', signer_array)
+        tx = await tazMessageContract_2.addMessage(
           messageId,
           messageContent,
           groupId,
@@ -100,17 +108,18 @@ export default async function handler(req, res) {
           nullifierHash,
           externalNullifier,
           solidityProof,
-          { gasLimit: 15000000 }
+          { gasLimit: 1500000 }
         )
-        console.log(tx)
+        // Update nonce++ of that wallet
+        // console.log(tx)
 
-        const response = await tx.wait(3)
-        console.log(response)
-        res.status(201).json(response)
+        // const response = await tx.wait(1)
+        console.log(tx)
+        res.status(201).json(tx)
       } catch (error) {
         console.log('Add Message transaction failed!')
         console.log(error)
-        res.status(403).json(error)
+        res.status(203).json(error)
       }
     }
   }

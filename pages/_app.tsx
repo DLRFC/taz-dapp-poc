@@ -8,6 +8,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
   <IdentityContextProvider>
     <Component {...pageProps} />
   </IdentityContextProvider>
+  
 )
 
 export default MyApp
