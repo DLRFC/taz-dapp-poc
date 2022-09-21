@@ -43,7 +43,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
           <div className="relative flex flex-col items-center overflow-hidden rounded-md border-2 border-brand-blue shadow-xl bg-white mb-8">
             <div className="flex w-full justify-between border-b-2 border-brand-blue bg-brand-beige2 p-3">
               <div>📂</div>
-              <div className="text-brand-blue text-15px">Use your Semaphore ID here </div>
+              <div className="text-brand-blue text-15px">Use your ID here </div>
               <div></div>
             </div>
             <Link href="questions">
@@ -72,7 +72,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
               <div className="text-15px text-brand-blue">Take your ID with you </div>
               <div></div>
             </div>
-            <a href="https://www.auti.sm" target="_blank" rel="noreferrer">
+            <Link href="https://www.auti.sm" target="_blank" rel="noreferrer">
               <div className="flex w-full flex-row items-center py-3 px-4 cursor-pointer">
                 <div className="w-[90%]">
                   <p className="py-2 text-brand-h3 font-bold">Zkitter</p>
@@ -80,7 +80,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
                 </div>
                 <SelectorArrow />
               </div>
-            </a>
+            </Link>
           </div>
 
           <div className="relative flex flex-col items-center overflow-hidden rounded-md border-2 border-brand-blue shadow-xl bg-white mt-20 mb-20">
@@ -105,6 +105,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
 
         <a
           href="https://pse-team.notion.site/About-the-TAZ-app-1ae2793046414468b56472f43725961e"
+          target="_blank"
           className="pb-10 underline"
           rel="noreferrer"
         >
@@ -113,7 +114,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => {
         <a href="http://semaphore.appliedzkp.org/" target="_blank" className="pb-10 underline" rel="noreferrer">
           About Semaphore
         </a>
-        <a href="esp.ethereum.foundation/semaphore-grants" className="pb-10 underline">
+        <a href="esp.ethereum.foundation/semaphore-grants" target="_blank" className="pb-10 underline" rel="noreferrer">
           Semaphore Grants Round
         </a>
         <a href="https://appliedzkp.org/" target="_blank" className="pb-14 underline" rel="noreferrer">

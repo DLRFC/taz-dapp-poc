@@ -35,14 +35,15 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
       <div className="flex flex-col items-center">
         <div className="z-10 mt-3 w-full py-3">
           <Link href="/experiences-page">
-            <div className="flex max-w-[76px] max-h-[32px] bg-black ml-3 mt-1 mb-12 px-1 text-xl text-brand-beige2 cursor-pointer shadow-[2.0px_3.0px_3.0px_rgba(0,0,0,0.38)]">
+            <div className="flex max-w-[76px] max-h-[32px] bg-black ml-9 mb-10 px-1 text-xl text-brand-beige2 cursor-pointer shadow-[2.0px_3.0px_3.0px_rgba(0,0,0,0.38)]">
               <BackTAZ />
               <h1>TAZ</h1>
             </div>
           </Link>
           <div className="flex flex-col">
-            <p className="px-3 text-xl font-bold">WELCOME TO THE DEVCON XI GALLERY</p>
-            <p className="w-3/4 py-5 px-3 min-h-[100px] md:min-h-fit text-brand-info text-[#1E1E1E] opacity-70">
+            <p className="px-9 pt-3 text-[24px] leading-5 font-extrabold">WELCOME TO THE</p>
+            <p className="px-9 text-[24px] font-extrabold">DEVCON XI GALLERY</p>
+            <p className="w-3/4 py-2 px-9 min-h-[90px] md:min-h-fit text-brand-info text-[#1E1E1E] opacity-70">
               Every canvas has 9 anonymous contributors. There are 5 active canvases at one time.
             </p>
             <div className="flex justify-center bg-[#1E1E1E]">

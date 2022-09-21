@@ -11,9 +11,6 @@ import Footer from '../Footer'
 const QuestionsBoardComponent = ({ questions, clearIdentity }) => (
   <div className="grid">
     <div className="z-0 col-start-1 row-start-1 fixed">
-      {/* <div className="absolute top-[175px] left-[340px]">
-        <BunnyQuestion />
-      </div> */}
       <div className="absolute top-[142px] -left-[51px]">
         <YellowCircle />
       </div>
@@ -32,29 +29,22 @@ const QuestionsBoardComponent = ({ questions, clearIdentity }) => (
           <h1>TAZ</h1>
         </div>
       </Link>
-      <div className="flex w-full justify-between">
-        <div className="pl-6">
-          <div>
-            <h2 className="ml-3 text-[24px] leading-5 font-extrabold">ASK AND ANSWER</h2>
-          </div>
-          <div>
-            <h2 className="ml-3 mb-1 text-[24px] font-extrabold">QUESTIONS FREELY</h2>
-          </div>
-          <div>
-            <h3 className="ml-3 text-brand-body text-brand-blue">More details about what</h3>
-          </div>
-          <div>
-            <h3 className="ml-3 mb-4 text-brand-body text-brand-blue">makes this anonymous</h3>
-          </div>
+      <div className="px-6 pt-3 pb-2">
+        <div>
+          <h2 className="ml-3 text-[24px] leading-5 font-extrabold">ASK AND ANSWER</h2>
         </div>
-
-        <div className="pt-8">
-          <BunnyQuestion />
+        <div>
+          <h2 className="ml-3 mb-1 text-[24px] font-extrabold">QUESTIONS FREELY</h2>
+        </div>
+        <div>
+          <h3 className="mx-3 pr-20 text-brand-body text-brand-blue">
+            More details about what makes this anonymous and copy about this long.
+          </h3>
         </div>
       </div>
     </div>
 
-    <div className="z-20 col-start-1 row-start-2 px-6">
+    <div className="z-10 col-start-1 row-start-2 px-6">
       <div className="z-20 min-w-[200px] relative divide-y overflow-y-auto rounded-md border-2 border-brand-blue bg-white drop-shadow-lg">
         {questions.map((question) => (
           <Link href={`/answers/${question.messageId}`} key={question.id}>
@@ -69,6 +59,9 @@ const QuestionsBoardComponent = ({ questions, clearIdentity }) => (
 
     <div className="z-30 relative flex items-center flex-col bg-black mt-20 py-5">
       <Footer />
+    </div>
+    <div className="absolute overflow-hidden top-36 md:top-20 -right-0">
+      <BunnyQuestion />
     </div>
   </div>
 )

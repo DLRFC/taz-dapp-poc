@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import { Identity } from '@semaphore-protocol/identity'
@@ -10,7 +10,8 @@ import ValidateInvitationComponent from './View'
 // const { Subgraph } = require('@semaphore-protocol/subgraph')
 import { Subgraphs } from '../../hooks/subgraphs'
 
-const { GROUP_ID } = require('../../config/goerli.json')
+const { GROUP_ID, FACT_ROTATION_INTERVAL } = require('../../config/goerli.json')
+const { FACTS } = require('../../data/facts.json')
 
 // Page 1 it will check Invitation
 export default function InvitationCheck() {
@@ -24,7 +25,9 @@ export default function InvitationCheck() {
   const [isSignUp, setIsSignUp] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [checkingIdentity, setCheckingIdenty] = useState(false)
-  const [loadingMessage, setLoadingMessage] = useState('This is a Loading Message')
+  // const [loadingMessage, setLoadingMessage] = useState('This is a Loading Message')
+  const [steps, setSteps] = useState([])
+  const [fact, setFact] = useState(FACTS[Math.floor(Math.random() * FACTS.length)])
   // const [members, setMembers] = useState([])
   const router = useRouter()
 
@@ -58,8 +61,12 @@ export default function InvitationCheck() {
       alert('Error: must be 8 characters')
       return
     }
+
     setIsLoading(true)
-    setLoadingMessage('Verifying your Invitation-Code')
+
+    // setLoadingMessage('Verifying your Invitation-Code')
+
+    setSteps([{ status: 'processing', text: 'Verifying invite is valid' }])
 
     const apiResponse = await axios.post('/api/validateInvitation', {
       invitation
@@ -70,6 +77,8 @@ export default function InvitationCheck() {
     setResponse(apiResponse.data.isValid)
 
     if (apiResponse.data.isValid) {
+      setSteps([{ status: 'complete', text: 'Verified invite is valid' }])
+
       console.log(response)
       console.log('moving to generate Id Page')
       router.push(`/generate-id-page?invitation=${invitation}`)
@@ -125,8 +134,17 @@ export default function InvitationCheck() {
   }
 
   const onClose = () => {
-    setIsLoading(!isLoading)
+    // setIsLoading(!isLoading)
+    setIsLoading(true) // Don't allow user to close
   }
+
+  const rotateFact = () => {
+    setFact(FACTS[FACTS.indexOf(fact) + 1 === FACTS.length ? 0 : FACTS.indexOf(fact) + 1])
+  }
+
+  useEffect(() => {
+    setTimeout(rotateFact, FACT_ROTATION_INTERVAL)
+  }, [fact])
 
   return (
     <ValidateInvitationComponent
@@ -148,7 +166,9 @@ export default function InvitationCheck() {
       data={data}
       validate={validate}
       onClose={onClose}
-      loadingMessage={loadingMessage}
+      // loadingMessage={loadingMessage}
+      steps={steps}
+      fact={fact}
     />
   )
 }
