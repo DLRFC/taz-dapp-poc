@@ -84,6 +84,7 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
         <ArtBunny />
       </div>
     </div>
+</div>
   )
 }
 

@@ -11,41 +11,51 @@ import Footer from '../Footer'
 const QuestionsBoardComponent = ({ questions, clearIdentity }) => (
   <div className="grid">
     <div className="z-0 col-start-1 row-start-1 fixed">
-      <div className="absolute top-[175px] left-[340px]">
+      {/* <div className="absolute top-[175px] left-[340px]">
         <BunnyQuestion />
-      </div>
-      <div className="absolute top-[218px] -left-[51px]">
+      </div> */}
+      <div className="absolute top-[142px] -left-[51px]">
         <YellowCircle />
       </div>
       <div className="absolute top-[360px] left-[320px]">
         <BlueEllipse />
       </div>
-      <div className="absolute top-[659px] left-[9px]">
+      <div className="absolute top-[500px] left-[9px]">
         <RedCircle />
       </div>
     </div>
 
-    <div className="z-10 col-start-1 row-start-1 px-6 py-8">
+    <div className="z-10 col-start-1 row-start-1">
       <Link href="/experiences-page">
-        <div className="flex max-w-[76px] max-h-[32px] bg-black ml-3 mb-8 px-1 text-xl text-brand-beige2 cursor-pointer shadow-[2.0px_3.0px_3.0px_rgba(0,0,0,0.38)]">
+        <div className="flex max-w-[76px] max-h-[32px] bg-black ml-9 mb-10 px-1 text-xl text-brand-beige2 cursor-pointer shadow-[2.0px_3.0px_3.0px_rgba(0,0,0,0.38)]">
           <BackTAZ />
           <h1>TAZ</h1>
         </div>
       </Link>
-      <div>
-        <h2 className="ml-3 text-[24px] leading-5 font-extrabold">ASK AND ANSWER</h2>
-      </div>
-      <div>
-        <h2 className="ml-3 mb-2 text-[24px] font-extrabold">QUESTIONS FREELY</h2>
-      </div>
-      <div>
-        <h3 className="ml-3 text-brand-body text-brand-blue">More details about what</h3>
-      </div>
-      <div>
-        <h3 className="ml-3 mb-4 text-brand-body text-brand-blue">makes this anonymous</h3>
-      </div>
+      <div className="flex w-full justify-between">
+        <div className="pl-6">
+          <div>
+            <h2 className="ml-3 text-[24px] leading-5 font-extrabold">ASK AND ANSWER</h2>
+          </div>
+          <div>
+            <h2 className="ml-3 mb-1 text-[24px] font-extrabold">QUESTIONS FREELY</h2>
+          </div>
+          <div>
+            <h3 className="ml-3 text-brand-body text-brand-blue">More details about what</h3>
+          </div>
+          <div>
+            <h3 className="ml-3 mb-4 text-brand-body text-brand-blue">makes this anonymous</h3>
+          </div>
+        </div>
 
-      <div className="min-w-[200px] relative divide-y overflow-y-auto rounded-md border-2 border-brand-blue bg-white drop-shadow-lg">
+        <div className="pt-8">
+          <BunnyQuestion />
+        </div>
+      </div>
+    </div>
+
+    <div className="z-20 col-start-1 row-start-2 px-6">
+      <div className="z-20 min-w-[200px] relative divide-y overflow-y-auto rounded-md border-2 border-brand-blue bg-white drop-shadow-lg">
         {questions.map((question) => (
           <Link href={`/answers/${question.messageId}`} key={question.id}>
             <div className="flex w-full flex-row items-center border-brand-blue p-4 cursor-pointer">
@@ -57,7 +67,7 @@ const QuestionsBoardComponent = ({ questions, clearIdentity }) => (
       </div>
     </div>
 
-    <div className="z-20 relative flex items-center flex-col bg-black mt-20 py-5">
+    <div className="z-30 relative flex items-center flex-col bg-black mt-20 py-5">
       <Footer />
     </div>
   </div>
