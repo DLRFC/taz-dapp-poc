@@ -19,7 +19,7 @@ export const useGenerateProof = () => {
     group.addMembers(members)
     console.log('members', members)
 
-    const merkleTreeRoot = group.root.toString()
+    const merkleTreeRoot = "15321826492023352870962927103391669489176214845427757953483817467264959830707n
     const externalNullifier = Math.round(Math.random() * 1000000000)
 
     // Adapt Signal
