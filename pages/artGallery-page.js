@@ -1,4 +1,4 @@
-import ArtGallery from '../components/artGallery.js/index.js'
+import ArtGallery from '../components/ArtGallery'
 import { Subgraphs } from '../hooks/subgraphs'
 
 export default function ArtGalleryPage({ images }) {
