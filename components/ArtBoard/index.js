@@ -39,7 +39,6 @@ export default function ArtBoard() {
   const [fact, setFact] = useState(FACTS[Math.floor(Math.random() * FACTS.length)])
 
   useEffect(() => {
-    setIsComponentLoading(true)
     let tilesTemp
     let selectedTileTemp
     let identityKeyTemp = ''
@@ -49,6 +48,8 @@ export default function ArtBoard() {
       // setIsMember(true)
     }
     const fetchData = async () => {
+      setIsComponentLoading(true)
+
       if (runFetch.current === false) {
         try {
           const result = await axios.get('/api/modifyCanvas')
@@ -103,18 +104,18 @@ export default function ArtBoard() {
   }
 
   const startDrawing = (i) => {
-    if (tiles[i] === '' && userSelectedTile === false) {
-      setIsDrawing(true)
-      setSelectedTile(i)
-    } else if (i === selectedTile) {
-      setIsDrawing(true)
-    } else {
-      console.log('You Cannot select this Tile')
-    }
+    // if (tiles[i] === '' && userSelectedTile === false) {
+    //   setIsDrawing(true)
+    //   setSelectedTile(i)
+    // } else if (i === selectedTile) {
+    //   setIsDrawing(true)
+    // } else {
+    //   console.log('You Cannot select this Tile')
+    // }
 
     // ------ For testing
-    // setSelectedTile(i)
-    // setIsDrawing(true)
+    setSelectedTile(i)
+    setIsDrawing(true)
   }
   const minimize = () => {
     const uri = stageRef.current.toDataURL()

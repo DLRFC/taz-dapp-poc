@@ -16,9 +16,11 @@ export default function ArtGallery(props) {
     const found = images.some((element) => savedCanvas && element.uri === savedCanvas.uri)
     if (found) {
       window.localStorage.removeItem('savedQuestion')
+      console.log('image found')
     } else if (savedCanvas) {
       const updatedCanvas = [savedCanvas].concat(images)
       setImages(updatedCanvas)
+      console.log('image not found')
     }
   }
 

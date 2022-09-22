@@ -29,6 +29,8 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
     })
   }
 
+  console.log('images', images)
+
   return (
     <div className="relative overflow-hidden">
       {open && (
