@@ -198,7 +198,7 @@ export default function Questions({ questionsProp }) {
           </button>
         </div>
       )}
-      <div className="z-20 absolute bottom-0 w-full  flex-col bg-black mt-20 py-5">
+      <div className="z-20 fixed bottom-0 w-full flex-col bg-black py-5">
         <Footer />
       </div>
       {/* <div className="sticky top-[400px] z-30 flex justify-between mx-2 min-w-[200px]">

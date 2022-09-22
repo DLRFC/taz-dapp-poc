@@ -69,7 +69,7 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
             </div>
           )}
         </div>
-        <div className="flex w-full justify-center bg-black mt-20 py-5 px-10">
+        <div className="flex w-full z-20 fixed bottom-0 justify-center bg-black py-5">
           <Footer />
         </div>
       </div>
