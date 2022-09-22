@@ -28,6 +28,7 @@ Initial steps required when deploying the contract locally:
 const DEPLOY_NEW_TAZ_MESSAGE_CONTRACT = true // Generally always do this on local fork
 const CREATE_NEW_GROUP = true // Will fail if group id already exists
 const ADD_MEMBER = true // Will fail if member has already been added to the group
+const TEST_ADD_ADMINS = true
 const TEST_REVIEWERS_AND_VIOLATIONS = true
 
 describe('TazMessage', () => {
@@ -112,6 +113,16 @@ describe('TazMessage', () => {
         const identityCommitment = identity.generateCommitment()
         const tx = contract.connect(signer1).addMember(GROUP_ID, identityCommitment)
         await expect(tx).to.be.revertedWith('Member already added to group')
+      })
+    })
+  }
+
+  if (TEST_ADD_ADMINS) {
+    describe('# addAdmins', () => {
+      it('Should add admins', async () => {
+        const admins = process.env.PUBLIC_KEY_ARRAY.split(',')
+        const tx = contract.connect(signer1).addAdmins(admins)
+        await expect(tx).to.not.be.reverted
       })
     })
   }
