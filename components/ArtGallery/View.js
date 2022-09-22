@@ -76,7 +76,7 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
         </div>
       </div>
       {/* Put Fixed and Absolute Positioned items at the bottom */}
-      <div className="fixed bottom-24 right-2 z-30 flex justify-end">
+      <div className="fixed bottom-[180px] right-2 z-30 flex justify-end">
         <Link href="/artBoard-page">
           <button
             type="button"
@@ -87,7 +87,7 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
         </Link>
       </div>
       {showTopBtn && (
-        <div className="fixed bottom-24 left-2 z-30 flex justify-end">
+        <div className="fixed bottom-[180px] left-2 z-30 flex justify-end">
           <button onClick={goToTop}>
             <BackToTopArrow size={40} fill="#1E1E1E" />
           </button>
