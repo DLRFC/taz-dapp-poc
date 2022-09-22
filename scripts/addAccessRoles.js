@@ -12,17 +12,26 @@ async function main() {
 
   const publicKeys = process.env.PUBLIC_KEY_ARRAY.split(',')
 
-  // console.log('Calling tazMessage.addAdmins')
-  // const tx1 = await tazMessage.connect(signer1).addAdmins(publicKeys)
-  // const receipt1 = await tx1.wait()
-  // console.log('tazMessage.addAdmins receipt', receipt1)
+  console.log('Calling tazMessage.addAdmins')
+  const tx1 = await tazMessage.connect(signer1).addAdmins(publicKeys)
+  const receipt1 = await tx1.wait()
+  console.log('tazMessage.addAdmins receipt', receipt1)
 
   console.log('Calling tazToken.addAdmins')
   const tx2 = await tazToken.connect(signer1).addAdmins(publicKeys)
   const receipt2 = await tx2.wait()
   console.log('tazToken.addAdmins receipt', receipt2)
 
-  // tazToken.addReviewers()
+  console.log('Calling tazMessage.addReviewers')
+  const tx3 = await tazMessage.connect(signer1).addReviewers([signer1.address])
+  const receipt3 = await tx3.wait()
+  console.log('tazMessage.addReviewers receipt', receipt3)
+
+  console.log('Calling tazToken.addReviewers')
+  const tx4 = await tazToken.connect(signer1).addReviewers([signer1.address])
+  const receipt4 = await tx4.wait()
+  console.log('tazToken.addReviewers receipt', receipt4)
+
   // tazToken.addStartStoppers()
 }
 
