@@ -11,6 +11,7 @@ import Footer from '../../components/Footer'
 import BlueEllipse from '../../components/svgElements/BlueEllipse'
 import YellowCircle from '../../components/svgElements/YellowCircle'
 import RedCircle from '../../components/svgElements/RedCircle'
+import BackToTopArrow from '../../components/svgElements/BackToTopArrow'
 
 const { API_REQUEST_TIMEOUT, FACT_ROTATION_INTERVAL } = require('../../config/goerli.json')
 const { FACTS } = require('../../data/facts.json')
@@ -25,6 +26,8 @@ export default function Answers({ messageId, questionProp, answersProp }) {
   const [answers, setAnswers] = useState(answersProp)
   const [steps, setSteps] = useState([])
   const [fact, setFact] = useState(FACTS[Math.floor(Math.random() * FACTS.length)])
+  const [showTopBtn, setShowTopBtn] = useState(false)
+
   // const [isMember, setIsMember] = useState(false)
 
   const parentMessageId = messageId
@@ -92,13 +95,35 @@ export default function Answers({ messageId, questionProp, answersProp }) {
       solidityProof
     }
     console.log('ANSWERS PAGE | body', body)
+    try {
+      const postResponse = await axios.post('/api/postMessage', body, {
+        timeout: API_REQUEST_TIMEOUT
+      })
+      if (postResponse.status === 201) {
+        const newAnswer = {
+          id: Math.round(Math.random() * 100000000000).toString(),
+          messageId: postResponse.data.hash,
+          messageContent
+        }
+        const updatedAnswers = [newAnswer].concat(answers)
+        setAnswers(updatedAnswers)
 
-    const postResponse = await axios.post('/api/postMessage', body, {
-      timeout: API_REQUEST_TIMEOUT
-    })
+        console.log('ANSWERS PAGE | updatedAnswers', updatedAnswers)
+        console.log('ANSWERS PAGE | answers', answers)
 
-    console.log('ANSWERS PAGE | postResponse.status', postResponse.status)
-    console.log('ANSWERS PAGE | postResponse.data.hash', postResponse.data.hash)
+        console.log('ANSWERS PAGE | postResponse.status', postResponse.status)
+        console.log('ANSWERS PAGE | postResponse.data.hash', postResponse.data.hash)
+
+        // Save answer to local storage
+        window.localStorage.setItem('savedAnswer', JSON.stringify(newAnswer))
+      } else if (postResponse.status === 203) {
+        alert('Tx Failed, please try again!')
+        internalCloseProcessingModal()
+      }
+    } catch (error) {
+      alert('Tx Failed, please try again!')
+      internalCloseProcessingModal()
+    }
 
     setSteps([
       { status: 'complete', text: 'Generate zero knowledge proof' },
@@ -107,24 +132,6 @@ export default function Answers({ messageId, questionProp, answersProp }) {
     ])
 
     // Solution below adds the new record to state, as opposed to refreshing.
-    if (postResponse.status === 201) {
-      const newAnswer = {
-        id: Math.round(Math.random() * 100000000000).toString(),
-        messageId: postResponse.data.hash,
-        messageContent
-      }
-      const updatedAnswers = [newAnswer].concat(answers)
-      setAnswers(updatedAnswers)
-
-      console.log('ANSWERS PAGE | updatedAnswers', updatedAnswers)
-      console.log('ANSWERS PAGE | answers', answers)
-
-      // Save answer to local storage
-      window.localStorage.setItem('savedAnswer', JSON.stringify(newAnswer))
-    } else if (postResponse.status === 203) {
-      alert('Tx Failed, please try again!')
-      internalCloseProcessingModal()
-    }
 
     // router.reload(window.location.pathname)
 
@@ -142,9 +149,9 @@ export default function Answers({ messageId, questionProp, answersProp }) {
     }
   }
 
-  const scrollToTop = () => {
-    window.scrollTo(0, 0)
-  }
+  // const scrollToTop = () => {
+  //   window.scrollTo(0, 0)
+  // }
 
   const rotateFact = () => {
     setFact(FACTS[FACTS.indexOf(fact) + 1 === FACTS.length ? 0 : FACTS.indexOf(fact) + 1])
@@ -166,9 +173,42 @@ export default function Answers({ messageId, questionProp, answersProp }) {
     setTimeout(rotateFact, FACT_ROTATION_INTERVAL)
   }, [fact])
 
+  useEffect(() => {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        setShowTopBtn(true)
+      } else {
+        setShowTopBtn(false)
+      }
+    })
+  }, [])
+
+  const goToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
+
   return (
     <div className="relative min-h-[900px] h-auto flex flex-col">
-      {question === 0 ? null : (
+      <div className="fixed bottom-24 right-2 z-30 flex justify-end">
+        <button
+          type="button"
+          className="rounded-full bg-brand-yellow px-4 py-2 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
+          onClick={openAnswerModal}
+        >
+          Answer this question
+        </button>
+      </div>
+      {showTopBtn && (
+        <div className="fixed bottom-24 left-2 z-30 flex justify-end">
+          <button onClick={goToTop}>
+            <BackToTopArrow size={40} fill="#1E1E1E" />
+          </button>
+        </div>
+      )}
+      {/* {question === 0 ? null : (
         <div className="sticky top-[225px] z-30 flex justify-between mx-2 min-w-[200px]">
           <button type="button" onClick={scrollToTop}>
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -187,7 +227,7 @@ export default function Answers({ messageId, questionProp, answersProp }) {
             Answer this question
           </button>
         </div>
-      )}
+      )} */}
 
       <ProcessingModal isOpen={processingModalIsOpen} closeModal={closeProcessingModal} steps={steps} fact={fact} />
       <AnswerModal

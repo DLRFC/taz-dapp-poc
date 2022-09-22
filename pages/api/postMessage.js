@@ -3,29 +3,16 @@ import dotenv from 'dotenv'
 // import Semaphore from '../utils/Semaphore.json'
 import TazMessage from '../utils/TazMessage.json'
 import { TAZMESSAGE_CONTRACT } from '../../config/goerli.json'
+import fetchWalletIndex from '../../helpers/fetchWalletIndex'
 
 dotenv.config({ path: '../../.env.local' })
-const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL)
-const random = Math.round(Math.random() * 15)
-const signer_array = process.env.PRIVATE_KEY_ARRAY.split(',')
-console.log('signer Array1', signer_array)
-
-// const signer_2 = new ethers.Wallet(signer_array[random]).connect(provider)
-const signer_2 = new ethers.Wallet(process.env.PRIVATE_KEY_2).connect(provider)
-
-const signer_3 = new ethers.Wallet(process.env.PRIVATE_KEY_3).connect(provider)
 
 const tazMessageAbi = TazMessage.abi
 const tazMessageAddress = TAZMESSAGE_CONTRACT
 
-// console.log("tazMessageAddress", tazMessageAddress)
-// console.log("tazMessageAbi", TazMessage)
-
-const tazMessageContract_2 = new ethers.Contract(tazMessageAddress, tazMessageAbi, signer_2)
-const tazMessageContract_3 = new ethers.Contract(tazMessageAddress, tazMessageAbi, signer_3)
-
 export default async function handler(req, res) {
   console.log('api called')
+
   if (res.method === 'GET') {
     res.status(405).json('GET not allowed')
   } else if (req.method === 'POST') {
@@ -44,26 +31,25 @@ export default async function handler(req, res) {
     } = req.body
 
     console.log('LOG | Body: ', req.body)
-
+    // Connect to Wallet
+    const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL)
+    const currentIndex = await fetchWalletIndex()
+    console.log('currentIndex', currentIndex)
+    const signer_array = process.env.PRIVATE_KEY_ARRAY.split(',')
+    console.log('signer_array', signer_array)
+    console.log('signer_array[currentIndex]', signer_array[currentIndex])
+    const signer = new ethers.Wallet(signer_array[currentIndex]).connect(provider)
+    console.log('signer', signer)
+    const tazMessageContract = new ethers.Contract(tazMessageAddress, tazMessageAbi, signer)
     const bytes32Signal = ethers.utils.formatBytes32String(signal)
 
-    //   console.log("messageId", messageId)
-    //   console.log("messageContent", messageContent)
-    //   console.log("groupId", groupId)
-    //   console.log("bytes32Signal", bytes32Signal)
-    //   console.log("nullifierHash", nullifierHash)
-    //   console.log("externalNullifier", externalNullifier)
-    //   console.log("solidityProof", solidityProof)
-
     let tx = null
-
-    // If a parentMessageId is not the default, reply. Otherwise, add new question.
 
     if (parentMessageId !== '') {
       console.log('BACKEND LOG | Transacting reply')
 
       try {
-        tx = await tazMessageContract_3.replyToMessage(
+        tx = await tazMessageContract.replyToMessage(
           parentMessageId,
           messageId,
           messageContent,
@@ -101,8 +87,7 @@ export default async function handler(req, res) {
 
       try {
         // Fetch nonce(based on wallet)
-        console.log('signer Array2', signer_array)
-        tx = await tazMessageContract_2.addMessage(
+        tx = await tazMessageContract.addMessage(
           messageId,
           messageContent,
           groupId,
