@@ -1,5 +1,5 @@
 import React from 'react'
-import ArtBunnyBooth from '../svgElements/ArtBunnyBooth'
+import ArtBunnyBooth from '../../svgElements/ArtBunnyBooth'
 
 const TazBoothFooter = () => (
   <div className="flex w-2/4 h-40 items-center overflow-hidden bg-brand-black text-brand-beige">

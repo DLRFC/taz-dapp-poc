@@ -3,10 +3,10 @@ import axios from 'axios'
 
 import { Subgraphs } from '../../hooks/subgraphs'
 import Header from '../../components/Header'
-import TazBoothHeaderLogo from '../../components/TazBoothHeaderLogo'
-import TazBoothHeaderDate from '../../components/TazBoothHeaderDate'
-import TazBoothFooter from '../../components/TazBoothFooter'
-import TazBoothCanvasGrid from '../../components/TazBoothCanvasGrid'
+import TazBoothHeaderLogo from '../../components/TazBooth/TazBoothHeaderLogo'
+import TazBoothHeaderDate from '../../components/TazBooth/TazBoothHeaderDate'
+import TazBoothFooter from '../../components/TazBooth/TazBoothFooter'
+import TazBoothCanvasGrid from '../../components/TazBooth/TazBoothCanvasGrid'
 
 const BoothDisplay = ({ images, artBoard }) => (
   <div className="flex flex-col h-full justify-between bg-brand-black">
