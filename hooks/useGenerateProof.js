@@ -17,6 +17,7 @@ export const useGenerateProof = () => {
     const subgraphs = new Subgraphs()
     const members = await subgraphs.getGroupIdentities(groupId)
     group.addMembers(members)
+    console.log('members', members)
 
     const merkleTreeRoot = group.root.toString()
     const externalNullifier = Math.round(Math.random() * 1000000000)

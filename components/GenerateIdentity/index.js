@@ -63,7 +63,10 @@ export default function GenerateIdentity(props) {
     }, 2500)
 
     // Step 2
-    await axios
+
+    // try{
+
+    const addMemberResponse = await axios
       .post('/api/addMember', {
         identityCommitment,
         invitation
@@ -94,6 +97,12 @@ export default function GenerateIdentity(props) {
           }, 2000)
         )
 
+        // } catch(error){
+        //   alert("Identity creation failed, please try again")
+        //   setIsLoading(false)
+
+        // }
+
         try {
           const opts = {
             type: 'image/jpeg',
@@ -123,10 +132,11 @@ export default function GenerateIdentity(props) {
 
         cancelTimers(timers)
         setIsLoading(false)
-        alert('Error encountered')
+        alert('Transaction Failed, please try again')
 
         // console.log(err.response?.status)
       })
+
     // step 3
     // Add logic to only set Identity when Response is True
 
