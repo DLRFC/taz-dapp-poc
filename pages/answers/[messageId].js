@@ -191,7 +191,7 @@ export default function Answers({ messageId, questionProp, answersProp }) {
   }
 
   return (
-    <div className="relative min-h-[900px] h-auto flex flex-col">
+    <div className="min-h-[700px] h-auto flex flex-col">
       <div classname="z-20 fixed bottom-0">
         <div className="absolute bottom-[180px] right-2 z-30 flex justify-end">
           <button
@@ -209,7 +209,7 @@ export default function Answers({ messageId, questionProp, answersProp }) {
             </button>
           </div>
         )}
-        <div className="z-20 absolute bottom-0 w-full  flex-col bg-black mt-20 py-5">
+        <div className="z-20 fixed bottom-0 w-full flex-col bg-black mt-20 py-5">
           <Footer />
         </div>
       </div>
@@ -246,13 +246,13 @@ export default function Answers({ messageId, questionProp, answersProp }) {
       {/* <div className="z-20 absolute bottom-0 w-full  flex-col bg-black mt-20 py-5">
         <Footer />
       </div> */}
-      <div className="absolute bottom-0 ">
+      <div className="z-0 absolute bottom-0 ">
         <BlueEllipse />
       </div>
-      <div className="absolute top-[369px] -right-0">
+      <div className="z-0 absolute top-[369px] -right-0">
         <YellowCircle />
       </div>
-      <div className="absolute top-[100px] ">
+      <div className="z-0 absolute top-[100px] ">
         <RedCircle />
       </div>
     </div>
