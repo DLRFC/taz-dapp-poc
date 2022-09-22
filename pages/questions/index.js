@@ -8,6 +8,7 @@ import { useGenerateProof } from '../../hooks/useGenerateProof'
 import ProcessingModal from '../../components/ProcessingModal'
 import { Subgraphs } from '../../hooks/subgraphs'
 import BackToTopArrow from '../../components/svgElements/BackToTopArrow'
+import Footer from '../../components/Footer'
 
 const { API_REQUEST_TIMEOUT, FACT_ROTATION_INTERVAL } = require('../../config/goerli.json')
 const { FACTS } = require('../../data/facts.json')
@@ -181,7 +182,7 @@ export default function Questions({ questionsProp }) {
 
   return (
     <div className="min-h-[700px]">
-      <div className="fixed bottom-24 right-2 z-30 flex justify-end">
+      <div className="fixed bottom-[180px] right-2 z-30 flex justify-end">
         <button
           type="button"
           className="rounded-full bg-brand-yellow px-4 py-2 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
@@ -191,12 +192,15 @@ export default function Questions({ questionsProp }) {
         </button>
       </div>
       {showTopBtn && (
-        <div className="fixed bottom-24 left-2 z-30 flex justify-end">
+        <div className="fixed bottom-2-[180px] left-2 z-30 flex justify-end">
           <button onClick={goToTop}>
             <BackToTopArrow size={40} fill="#1E1E1E" />
           </button>
         </div>
       )}
+      <div className="z-20 absolute bottom-0 w-full  flex-col bg-black mt-20 py-5">
+        <Footer />
+      </div>
       {/* <div className="sticky top-[400px] z-30 flex justify-between mx-2 min-w-[200px]">
         <button type="button" onClick={scrollToTop}>
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">

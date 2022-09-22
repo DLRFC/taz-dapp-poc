@@ -113,7 +113,12 @@ const ExperiencesListComponent = ({ clearIdentity }) => (
       <a href="http://semaphore.appliedzkp.org/" target="_blank" className="pb-10 underline" rel="noreferrer">
         About Semaphore
       </a>
-      <a href="esp.ethereum.foundation/semaphore-grants" target="_blank" className="pb-10 underline" rel="noreferrer">
+      <a
+        href="http://esp.ethereum.foundation/semaphore-grants"
+        target="_blank"
+        className="pb-10 underline"
+        rel="noreferrer"
+      >
         Semaphore Grants Round
       </a>
       <a href="https://appliedzkp.org/" target="_blank" className="pb-14 underline" rel="noreferrer">
