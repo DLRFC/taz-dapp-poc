@@ -4,7 +4,7 @@ import faunadb from 'faunadb'
 import { Web3Storage, File } from 'web3.storage'
 import { Blob } from '@web-std/blob'
 import { TAZTOKEN_CONTRACT } from '../../config/goerli.json'
-import fetchWalletIndex from '../utils/fetchWalletIndex';
+import fetchWalletIndex from '../../helpers/fetchWalletIndex';
 
 import TazToken from '../utils/TazToken.json'
 

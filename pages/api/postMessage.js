@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 // import Semaphore from '../utils/Semaphore.json'
 import TazMessage from '../utils/TazMessage.json'
 import { TAZMESSAGE_CONTRACT } from '../../config/goerli.json'
-import fetchWalletIndex from '../utils/fetchWalletIndex';
+import fetchWalletIndex from '../../helpers/fetchWalletIndex';
 
 dotenv.config({ path: '../../.env.local' })
 

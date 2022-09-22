@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 import faunadb from 'faunadb'
 import TazMessage from '../utils/TazMessage.json'
 import { GROUP_ID, TAZMESSAGE_CONTRACT } from '../../config/goerli.json'
-import fetchWalletIndex from '../utils/fetchWalletIndex';
+import fetchWalletIndex from '../../helpers/fetchWalletIndex';
 
 dotenv.config({ path: '../../.env.local' })
 
