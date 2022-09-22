@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 // import Semaphore from '../utils/Semaphore.json'
 import TazMessage from '../utils/TazMessage.json'
 import { TAZMESSAGE_CONTRACT } from '../../config/goerli.json'
+import fetchWalletIndex from '../../helpers/fetchWalletIndex';
 
 dotenv.config({ path: '../../.env.local' })
 
@@ -32,15 +33,9 @@ export default async function handler(req, res) {
     console.log('LOG | Body: ', req.body)
     // Connect to Wallet
     const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL)
-    const random = Math.round(Math.random() * 16)
-
-    const signerArray = process.env.PRIVATE_KEY_ARRAY.split(',')
-
-    console.log('random', random)
-    console.log('signer Array Full', signerArray)
-    console.log('signer Array random', signerArray[random])
-
-    const signer = new ethers.Wallet(signerArray[random]).connect(provider)
+    const currentIndex= await fetchWalletIndex()
+    const signer_array = process.env.PRIVATE_KEY_ARRAY.split(',')
+    const signer = new ethers.Wallet(signer_array[currentIndex]).connect(provider)
     const tazMessageContract = new ethers.Contract(tazMessageAddress, tazMessageAbi, signer)
     const bytes32Signal = ethers.utils.formatBytes32String(signal)
 
