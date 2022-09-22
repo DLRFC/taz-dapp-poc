@@ -7,6 +7,7 @@ import BackTAZ from '../ArrowNavigators/BackTAZ'
 import BackToTopArrow from '../svgElements/BackToTopArrow'
 import ArtBunny from '../svgElements/ArtBunny'
 import Footer from '../Footer'
+import Loading from '../Loading'
 
 export default function ArtGalleryComponent({ open, handleClose, activeImage, setActiveImage, handleClick, images }) {
   const [showTopBtn, setShowTopBtn] = useState(false)
@@ -54,15 +55,19 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
             </div>
           </div>
           {/* I think this should become a css grid */}
-          <div className="flex flex-wrap md:w-3/4 lg:w-3/4 mx-auto bg-white border border-brand-gray2">
-            {images.map((image) => (
-              <ImageCard
-                key={image.id}
-                url={image.canvaUri ? image.canvaUri : image.uri}
-                onClick={() => handleClick(image.uri)}
-              />
-            ))}
-          </div>
+          {!images ? (
+            <Loading size="xl" />
+          ) : (
+            <div className="flex flex-wrap md:w-3/4 lg:w-3/4 mx-auto bg-white border border-brand-gray2">
+              {images.map((image) => (
+                <ImageCard
+                  key={image.id}
+                  url={image.canvaUri ? image.canvaUri : image.uri}
+                  onClick={() => handleClick(image.uri)}
+                />
+              ))}
+            </div>
+          )}
         </div>
         <div className="flex w-full justify-center bg-black mt-20 py-5 px-10">
           <Footer />
