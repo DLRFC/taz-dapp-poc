@@ -25,6 +25,7 @@ export default function artBoard() {
 
   const [selectedTile, setSelectedTile] = useState()
   const [tiles, setTiles] = useState([''])
+  const [currentCanvas, setCurrentCanvas] = useState()
 
   const stageRef = useRef(null)
   const tilesRef = useRef()
@@ -55,6 +56,7 @@ export default function artBoard() {
 
           tilesTemp = result.data.canvas.tiles
           canvasId.current = result.data.canvas.canvasId
+          setCurrentCanvas(result.data.canvas.canvasId)
           console.log('tilesTemp: ', tilesTemp)
           console.log('canvasId.current: ', canvasId.current)
 
@@ -299,6 +301,7 @@ export default function artBoard() {
       closeProcessingModal={closeProcessingModal}
       steps={steps}
       fact={fact}
+      currentCanvas={currentCanvas}
     />
   )
 }

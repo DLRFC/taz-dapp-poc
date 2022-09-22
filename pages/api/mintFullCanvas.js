@@ -9,7 +9,15 @@ import TazToken from '../utils/TazToken.json'
 
 dotenv.config({ path: '../../.env.local' })
 const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL)
-const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider)
+const random = Math.round(Math.random() * 16)
+const signer_array = process.env.PRIVATE_KEY_ARRAY.split(',')
+console.log('random', random)
+console.log('signer Array Full', signer_array)
+console.log('signer Array random', signer_array[random])
+
+// const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider)
+const signer = new ethers.Wallet(signer_array[random]).connect(provider)
+
 const signerAddress = signer.getAddress()
 const { abi } = TazToken
 const contractAddress = TAZTOKEN_CONTRACT

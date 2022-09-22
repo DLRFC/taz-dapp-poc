@@ -11,6 +11,7 @@ import ProcessingModal from '../ProcessingModal'
 
 // import { Identity } from '@semaphore-protocol/identity'
 
+// eslint-disable-next-line react/display-name
 const ArtBoardComponent = forwardRef(
   ({
     isLoading,
@@ -37,7 +38,8 @@ const ArtBoardComponent = forwardRef(
     userSelectedTile,
     closeProcessingModal,
     steps,
-    fact
+    fact,
+    currentCanvas
   }) => {
     const tileCounter = [
       [0, 1, 2],
@@ -135,6 +137,9 @@ const ArtBoardComponent = forwardRef(
               <p className="text-center w-full">Select a Tile</p>
             )}
           </div>
+        </div>
+        <div className="flex items-center justify-center mt-5">
+          <p>CanvaId : {currentCanvas}</p>
         </div>
       </div>
     )

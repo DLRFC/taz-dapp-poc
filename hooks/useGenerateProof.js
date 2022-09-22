@@ -9,8 +9,6 @@ const { GROUP_ID } = require('../config/goerli.json')
 
 // eslint-disable-next-line import/prefer-default-export
 export const useGenerateProof = () => {
-  const [externalNullifier] = useState(Math.round(Math.random() * 1000000000))
-
   const generateFullProof = async (identityKey, signal) => {
     const identity = new Identity(identityKey)
     const group = new Group(16)
@@ -21,6 +19,7 @@ export const useGenerateProof = () => {
     group.addMembers(members)
 
     const merkleTreeRoot = group.root.toString()
+    const externalNullifier = Math.round(Math.random() * 1000000000)
 
     // Adapt Signal
     // const signal = 'proposal_1'
