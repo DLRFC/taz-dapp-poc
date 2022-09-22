@@ -1,11 +1,11 @@
 {
-  "TAZMESSAGE_CONTRACT": "0x2d9C7Bd91da34D5cEEF048a006745B877a872fe4",
-  "TAZTOKEN_CONTRACT": "0x057C44AE8bcDa02cd573Dc68796E33817b10688e",
+  "TAZMESSAGE_CONTRACT": "0x481AC6c70Ca1448Ead0CF5db4A920e71E394797f",
+  "TAZTOKEN_CONTRACT": "0x539AaaF75fFc2D52B13afe0D87d92E3db0cff7c9",
   "TAZMESSAGE_SUBGRAPH": "https://api.thegraph.com/subgraphs/name/dlrfc/taz-message-goerli",
   "TAZTOKEN_SUBGRAPH": "https://api.thegraph.com/subgraphs/name/dlrfc/taz-token-goerli",
   "SEMAPHORE_CONTRACT": "0xE585f0Db9aB24dC912404DFfb9b28fb8BF211fA6",
   "SEMAPHORE_SUBGRAPH": "https://api.thegraph.com/subgraphs/name/semaphore-protocol/goerli",
-  "GROUP_ID": 10800,
+  "GROUP_ID": 10803,
   "API_REQUEST_TIMEOUT": 500000,
   "EXTERNAL_NULLIFIER_FOR_VOTING": 115101,
   "FACT_ROTATION_INTERVAL": 8000
