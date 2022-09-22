@@ -4,34 +4,33 @@ import faunadb from 'faunadb'
 import { Web3Storage, File } from 'web3.storage'
 import { Blob } from '@web-std/blob'
 import { TAZTOKEN_CONTRACT } from '../../config/goerli.json'
+import fetchWalletIndex from '../utils/fetchWalletIndex';
 
 import TazToken from '../utils/TazToken.json'
 
 dotenv.config({ path: '../../.env.local' })
-const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL)
-const random = Math.round(Math.random() * 16)
-const signer_array = process.env.PRIVATE_KEY_ARRAY.split(',')
-console.log('random', random)
-console.log('signer Array Full', signer_array)
-console.log('signer Array random', signer_array[random])
-
-// const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider)
-const signer = new ethers.Wallet(signer_array[random]).connect(provider)
-
-const signerAddress = signer.getAddress()
-const { abi } = TazToken
-const contractAddress = TAZTOKEN_CONTRACT
-const nftContract = new ethers.Contract(contractAddress, abi, signer)
 
 export default async function handler(req, res) {
+  const secret = process.env.FAUNA_SECRET_KEY
+  const client = new faunadb.Client({ secret })
+  const { query } = faunadb
+
+  const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL)
+  const currentIndex = await fetchWalletIndex()
+  const signer_array = process.env.PRIVATE_KEY_ARRAY.split(',')
+  const signer = new ethers.Wallet(signer_array[currentIndex]).connect(provider)
+
+  const signerAddress = signer.getAddress()
+  const { abi } = TazToken
+  const contractAddress = TAZTOKEN_CONTRACT
+  const nftContract = new ethers.Contract(contractAddress, abi, signer)
+
   if (res.method === 'GET') {
     res.status(405).json('GET not allowed')
   } else if (req.method === 'POST') {
     try {
       // make connection to DB
-      const secret = process.env.FAUNA_SECRET_KEY
-      const client = new faunadb.Client({ secret })
-      const { query } = faunadb
+
       // get fileUrl and canvasId from frontend
       const { imageUri, canvasId, groupId, signal, nullifierHash, externalNullifier, merkleTreeRoot, solidityProof } =
         req.body
