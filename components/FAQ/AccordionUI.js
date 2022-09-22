@@ -3,7 +3,7 @@ import DropDownArrow from '../ArrowNavigators/DropDownArrow'
 import CollapseArrow from '../ArrowNavigators/CollapseArrow'
 
 const AccordionUI = ({ title, children, Id, Index, setIndex }) => {
-  const handleSetIndex = (Id) => Index !== Id && setIndex(Id)
+  const handleSetIndex = (Id) => (Index === Id ? setIndex(0) : setIndex(Id))
 
   return (
     <>
