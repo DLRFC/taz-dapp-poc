@@ -1,7 +1,7 @@
 import { Identity } from '@semaphore-protocol/identity'
 import { Group } from '@semaphore-protocol/group'
 import { useEffect, useState } from 'react'
-// import { Subgraph } from '@semaphore-protocol/subgraph'
+import { Subgraph } from '@semaphore-protocol/subgraph'
 import { Subgraphs } from './subgraphs'
 
 const { generateProof, packToSolidityProof } = require('@semaphore-protocol/proof')
@@ -15,11 +15,17 @@ export const useGenerateProof = () => {
     const groupId = GROUP_ID.toString()
 
     const subgraphs = new Subgraphs()
-    const members = await subgraphs.getGroupIdentities(groupId)
-    group.addMembers(members)
+    // const subgraph = new Subgraph()
+
+    const subgraph = new Subgraph('goerli')
+    const { members } = await subgraph.getGroup('10806', { members: true })
+    // const members = await subgraphs.getGroupIdentities(groupId)
     console.log('members', members)
 
-    const merkleTreeRoot = "15222118822168137685135834470351868912102265176789015941300788598590474344837n"
+    group.addMembers(members)
+
+    const merkleTreeRoot = group.root.toString()
+
     const externalNullifier = Math.round(Math.random() * 1000000000)
 
     // Adapt Signal
