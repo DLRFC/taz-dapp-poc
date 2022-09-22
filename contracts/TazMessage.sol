@@ -128,6 +128,18 @@ contract TazMessage is AccessControl {
         return messageNum;
     }
 
+    function addAdmins(address[] calldata admins) external onlyRole(TAZ_ADMIN_ROLE) {
+        for(uint256 i = 0; i < admins.length; ++i) {
+            grantRole(TAZ_ADMIN_ROLE, admins[i]);
+        }
+    }
+
+    function removeAdmins(address[] calldata admins) external onlyRole(TAZ_ADMIN_ROLE) {
+        for(uint256 i = 0; i < admins.length; ++i) {
+            revokeRole(TAZ_ADMIN_ROLE, admins[i]);
+        }
+    }
+
     function addReviewers(address[] calldata reviewers) external onlyRole(TAZ_ADMIN_ROLE) {
         for(uint256 i = 0; i < reviewers.length; ++i) {
             grantRole(REVIEWER_ROLE, reviewers[i]);

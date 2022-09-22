@@ -33,7 +33,7 @@ contract TazToken is ERC721, ERC721URIStorage, AccessControl {
 
     event VoteAdded(uint256 tokenId);
 
-    event ViolationAdded(uint256 messageNum, address reviewer);
+    event ViolationAdded(uint256 tokenId, address reviewer);
 
     Counters.Counter private _tokenIdCounter;
 
@@ -101,6 +101,18 @@ contract TazToken is ERC721, ERC721URIStorage, AccessControl {
         semaContract.verifyProof(groupId, merkleTreeRoot, signal, nullifierHash, _EXTERNAL_NULLIFIER_FOR_VOTING, proof);
 
         emit VoteAdded(tokenId);
+    }
+
+    function addAdmins(address[] calldata admins) external onlyRole(TAZ_ADMIN_ROLE) {
+        for(uint256 i = 0; i < admins.length; ++i) {
+            grantRole(TAZ_ADMIN_ROLE, admins[i]);
+        }
+    }
+
+    function removeAdmins(address[] calldata admins) external onlyRole(TAZ_ADMIN_ROLE) {
+        for(uint256 i = 0; i < admins.length; ++i) {
+            revokeRole(TAZ_ADMIN_ROLE, admins[i]);
+        }
     }
 
     function addStartStoppers(address[] calldata startStoppers) external onlyRole(TAZ_ADMIN_ROLE) {
