@@ -6,10 +6,13 @@ import { TAZMESSAGE_CONTRACT } from '../../config/goerli.json'
 
 dotenv.config({ path: '../../.env.local' })
 const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL)
+const random = Math.round(Math.random() * 15)
 const signer_array = process.env.PRIVATE_KEY_ARRAY.split(',')
 console.log('signer Array1', signer_array)
 
-const signer_2 = new ethers.Wallet(signer_array[0]).connect(provider)
+// const signer_2 = new ethers.Wallet(signer_array[random]).connect(provider)
+const signer_2 = new ethers.Wallet(process.env.PRIVATE_KEY_2).connect(provider)
+
 const signer_3 = new ethers.Wallet(process.env.PRIVATE_KEY_3).connect(provider)
 
 const tazMessageAbi = TazMessage.abi

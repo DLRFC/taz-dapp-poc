@@ -7,7 +7,7 @@ import LoadingModal from '../LoadingModal/Index'
 import DrawingModal from './drawingModal'
 import GenerateTile from './generateTile'
 import BackArrow from '../svgElements/BackArrow'
-import Footer from '../Footer'
+import ProcessingModal from '../ProcessingModal'
 
 // import { Identity } from '@semaphore-protocol/identity'
 
@@ -34,7 +34,10 @@ const ArtBoardComponent = forwardRef(
     isDrawing,
     minimize,
     handleResetTile,
-    userSelectedTile
+    userSelectedTile,
+    closeProcessingModal,
+    steps,
+    fact
   }) => {
     const tileCounter = [
       [0, 1, 2],
@@ -45,9 +48,7 @@ const ArtBoardComponent = forwardRef(
     return (
       <div className="px-6 py-8 font-sans">
         {isLoading ? (
-          <AnimatePresence initial={false} exitBeforeEnter onExitComplete={() => null} className="z-20">
-            <LoadingModal loadingMessage={loadingMessage} />
-          </AnimatePresence>
+          <ProcessingModal isOpen={isLoading} closeModal={closeProcessingModal} steps={steps} fact={fact} />
         ) : null}
         {isDrawing ? (
           <AnimatePresence initial={false} exitBeforeEnter onExitComplete={() => null} className="z-20">
@@ -111,21 +112,19 @@ const ArtBoardComponent = forwardRef(
             </div>
           </div>
 
-          <div className="flex py-2">
+          <div className="flex">
             {userSelectedTile ? (
-              <div className="flex items-center justify-between w-full">
+              <div className="flex items-center justify-between w-full pt-4">
                 <button
-                  className="bg-brand-yellow font-bold text-[12px] px-4 py-2 rounded-full"
+                  className=" font-bold text-[14px] px-4 py-2 rounded-full"
                   type="submit"
                   onClick={handleResetTile}
                 >
-                  Reset Tile
+                  Start Over
                 </button>
 
-                <p>tile: {selectedTile + 1}</p>
-
                 <button
-                  className="bg-brand-yellow font-bold text-[12px] px-4 py-2 rounded-full"
+                  className="bg-brand-yellow font-bold text-[14px] px-4 py-2 rounded-full"
                   type="submit"
                   onClick={submit}
                 >
