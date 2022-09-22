@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { RiArrowUpCircleFill } from 'react-icons/ri'
+// import { RiArrowUpCircleFill } from 'react-icons/ri'
 
 import Modal from './Modal'
 import BackTAZ from '../ArrowNavigators/BackTAZ'
+import BackToTopArrow from '../svgElements/BackToTopArrow'
 import ArtBunny from '../svgElements/ArtBunny'
 import Footer from '../Footer'
 
@@ -35,7 +36,7 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
       <div className="flex flex-col items-center">
         <div className="z-10 mt-3 w-full py-3">
           <Link href="/experiences-page">
-            <div className="flex max-w-[76px] max-h-[32px] bg-black ml-9 mb-10 px-1 text-xl text-brand-beige2 cursor-pointer shadow-[2.0px_3.0px_3.0px_rgba(0,0,0,0.38)]">
+            <div className="flex max-w-[76px] max-h-[32px] bg-black ml-9 mt-3 mb-10 px-1 text-xl text-brand-beige2 cursor-pointer shadow-[2.0px_3.0px_3.0px_rgba(0,0,0,0.38)]">
               <BackTAZ />
               <h1>TAZ</h1>
             </div>
@@ -68,7 +69,7 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
         </div>
       </div>
       {/* Put Fixed and Absolute Positioned items at the bottom */}
-      <div className="fixed bottom-10 right-3 z-30 flex justify-end mr-4">
+      <div className="fixed bottom-24 right-2 z-30 flex justify-end">
         <Link href="/artBoard-page">
           <button
             type="button"
@@ -79,9 +80,9 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
         </Link>
       </div>
       {showTopBtn && (
-        <div className="fixed bottom-10 left-3 z-30 flex justify-end ml-4">
+        <div className="fixed bottom-24 left-2 z-30 flex justify-end">
           <button onClick={goToTop}>
-            <RiArrowUpCircleFill size={40} fill="#1E1E1E" />
+            <BackToTopArrow size={40} fill="#1E1E1E" />
           </button>
         </div>
       )}

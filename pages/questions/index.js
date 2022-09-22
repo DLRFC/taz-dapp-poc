@@ -7,6 +7,7 @@ import QuestionModal from '../../components/QuestionModal'
 import { useGenerateProof } from '../../hooks/useGenerateProof'
 import ProcessingModal from '../../components/ProcessingModal'
 import { Subgraphs } from '../../hooks/subgraphs'
+import BackToTopArrow from '../../components/svgElements/BackToTopArrow'
 
 const { API_REQUEST_TIMEOUT, FACT_ROTATION_INTERVAL } = require('../../config/goerli.json')
 const { FACTS } = require('../../data/facts.json')
@@ -20,6 +21,7 @@ export default function Questions({ questionsProp }) {
   const [questions, setQuestions] = useState(questionsProp)
   const [steps, setSteps] = useState([])
   const [fact, setFact] = useState(FACTS[Math.floor(Math.random() * FACTS.length)])
+  const [showTopBtn, setShowTopBtn] = useState(false)
 
   const closeQuestionModal = () => {
     setQuestionModalIsOpen(false)
@@ -133,9 +135,9 @@ export default function Questions({ questionsProp }) {
     }
   }
 
-  const scrollToTop = () => {
-    window.scrollTo(0, 0)
-  }
+  // const scrollToTop = () => {
+  //   window.scrollTo(0, 0)
+  // }
 
   const rotateFact = () => {
     setFact(FACTS[FACTS.indexOf(fact) + 1 === FACTS.length ? 0 : FACTS.indexOf(fact) + 1])
@@ -157,9 +159,42 @@ export default function Questions({ questionsProp }) {
     setTimeout(rotateFact, FACT_ROTATION_INTERVAL)
   }, [fact])
 
+  useEffect(() => {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        setShowTopBtn(true)
+      } else {
+        setShowTopBtn(false)
+      }
+    })
+  }, [])
+
+  const goToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
+
   return (
     <div className="min-h-[700px]">
-      <div className="sticky top-[400px] z-30 flex justify-between mx-2 min-w-[200px]">
+      <div className="fixed bottom-24 right-2 z-30 flex justify-end">
+        <button
+          type="button"
+          className="rounded-full bg-brand-yellow px-4 py-2 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
+          onClick={openQuestionModal}
+        >
+          Ask a question
+        </button>
+      </div>
+      {showTopBtn && (
+        <div className="fixed bottom-24 left-2 z-30 flex justify-end">
+          <button onClick={goToTop}>
+            <BackToTopArrow size={40} fill="#1E1E1E" />
+          </button>
+        </div>
+      )}
+      {/* <div className="sticky top-[400px] z-30 flex justify-between mx-2 min-w-[200px]">
         <button type="button" onClick={scrollToTop}>
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="32" height="32" rx="16" fill="#1E1E1E" />
@@ -176,7 +211,7 @@ export default function Questions({ questionsProp }) {
         >
           Ask a question
         </button>
-      </div>
+      </div> */}
       <ProcessingModal isOpen={processingModalIsOpen} closeModal={closeProcessingModal} steps={steps} fact={fact} />
       <QuestionModal
         isOpen={questionModalIsOpen}
