@@ -1,11 +1,11 @@
 import * as React from 'react'
 
 const loaderSize = {
-  xsm: 'w-4 h-4',
+  xs: 'w-4 h-4',
   sm: 'w-8 h-8',
   med: 'w-12 h-12',
   lg: 'w-16 h-16',
-  xlg: 'w-20 h-20'
+  xl: 'w-20 h-20'
 }
 
 // TODO Review with design

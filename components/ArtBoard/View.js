@@ -3,11 +3,11 @@ import Link from 'next/link'
 
 import { AnimatePresence } from 'framer-motion'
 
-import LoadingModal from '../LoadingModal/Index'
 import DrawingModal from './drawingModal'
 import GenerateTile from './generateTile'
 import BackArrow from '../svgElements/BackArrow'
 import ProcessingModal from '../ProcessingModal'
+import Loading from '../Loading'
 
 // import { Identity } from '@semaphore-protocol/identity'
 
@@ -15,7 +15,7 @@ import ProcessingModal from '../ProcessingModal'
 const ArtBoardComponent = forwardRef(
   ({
     isLoading,
-    loadingMessage,
+    isComponentLoading,
     submit,
     setSelectedTile,
     selectedTile,
@@ -86,32 +86,38 @@ const ArtBoardComponent = forwardRef(
             </p>
           </div>
           <div className="flex items-center justify-center">
-            <div ref={canvasRef} id="ipfsURI">
-              <table>
-                <tbody>
-                  {tileCounter.map((counter) => (
-                    <tr className="w-full h-full" key={counter}>
-                      {counter.map((id) => (
-                        <GenerateTile
-                          startDrawing={startDrawing}
-                          key={id}
-                          selectedTile={selectedTile}
-                          setSelectedTile={setSelectedTile}
-                          i={id}
-                          tiles={tiles}
-                          color={color}
-                          fillColor={fillColor}
-                          stageRef={stageRef}
-                          borderRef={borderRef}
-                          lines={lines}
-                          setLines={setLines}
-                        />
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            {isComponentLoading ? (
+              <div className="my-10">
+                <Loading size="xl" />
+              </div>
+            ) : (
+              <div ref={canvasRef} id="ipfsURI">
+                <table>
+                  <tbody>
+                    {tileCounter.map((counter) => (
+                      <tr className="w-full h-full" key={counter}>
+                        {counter.map((id) => (
+                          <GenerateTile
+                            startDrawing={startDrawing}
+                            key={id}
+                            selectedTile={selectedTile}
+                            setSelectedTile={setSelectedTile}
+                            i={id}
+                            tiles={tiles}
+                            color={color}
+                            fillColor={fillColor}
+                            stageRef={stageRef}
+                            borderRef={borderRef}
+                            lines={lines}
+                            setLines={setLines}
+                          />
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
 
           <div className="flex">

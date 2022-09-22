@@ -1,4 +1,4 @@
-import React, { useState, createRef, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useScreenshot } from 'use-react-screenshot'
 import axios from 'axios'
 import { useRouter } from 'next/router'
@@ -7,16 +7,16 @@ import ArtBoardComponent from './View'
 
 const { FACTS } = require('../../data/facts.json')
 
-export default function artBoard() {
+export default function ArtBoard() {
   const [generateFullProof] = useGenerateProof()
   const [identityKey, setIdentityKey] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [isComponentLoading, setIsComponentLoading] = useState(false)
   const [tool, setTool] = useState()
   const [userSelectedTile, setUserSelectedTile] = useState(false)
 
   const [isDrawing, setIsDrawing] = useState(false)
 
-  const [loadingMessage, setLoadingMessage] = useState('Loading Message')
   const [lines, setLines] = useState([])
   const [color, setColor] = React.useState('black')
   const [fillColor, setFillColor] = React.useState()
@@ -39,6 +39,7 @@ export default function artBoard() {
   const [fact, setFact] = useState(FACTS[Math.floor(Math.random() * FACTS.length)])
 
   useEffect(() => {
+    setIsComponentLoading(true)
     let tilesTemp
     let selectedTileTemp
     let identityKeyTemp = ''
@@ -74,6 +75,7 @@ export default function artBoard() {
           setTiles(tilesTemp)
           tilesRef.current = tilesTemp
           setSelectedTile(selectedTileTemp)
+          setIsComponentLoading(false)
         } catch (err) {
           console.log("Error with axios.get('/api/modifyCanvas')", err)
         }
@@ -154,6 +156,7 @@ export default function artBoard() {
       canvasUri = await generateCanvasUri()
     }
 
+    // Should be renamed. This is for Posting data not loading.
     setIsLoading(true)
     setSteps([
       { status: 'processing', text: 'Generate zero knowledge proof' },
@@ -275,9 +278,9 @@ export default function artBoard() {
   return (
     <ArtBoardComponent
       isLoading={isLoading}
+      isComponentLoading={isComponentLoading}
       startDrawing={startDrawing}
       isDrawing={isDrawing}
-      loadingMessage={loadingMessage}
       submit={submit}
       canvasRef={canvasRef}
       borderRef={borderRef}
