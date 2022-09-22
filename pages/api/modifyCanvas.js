@@ -20,8 +20,8 @@ export default async function handler(req, res) {
     const canvases = dbs.data
 
     // Randomly select 1 out of the 5 canvases
-    // const randomIndex = Math.round(Math.random() * 4)
-    const randomIndex = 4
+    const randomIndex = Math.round(Math.random() * 2) + 1
+    // const randomIndex = 4
 
     const canvas = canvases[randomIndex].data
 

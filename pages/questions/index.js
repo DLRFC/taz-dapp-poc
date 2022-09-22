@@ -84,13 +84,33 @@ export default function Questions({ questionsProp }) {
       solidityProof
     }
     console.log('QUESTIONS PAGE | body', body)
+    try {
+      const postResponse = await axios.post('/api/postMessage', body, {
+        timeout: API_REQUEST_TIMEOUT
+      })
+      if (postResponse.status === 201) {
+        const newQuestion = {
+          id: Math.round(Math.random() * 100000000000).toString(),
+          messageId: postResponse.data.hash,
+          messageContent
+        }
+        const updatedQuestions = [newQuestion].concat(questions)
+        setQuestions(updatedQuestions)
 
-    const postResponse = await axios.post('/api/postMessage', body, {
-      timeout: API_REQUEST_TIMEOUT
-    })
+        console.log('QUESTIONS PAGE | updatedQuestions', updatedQuestions)
+        console.log('QUESTIONS PAGE | postResponse.status', postResponse.status)
+        console.log('QUESTIONS PAGE | postResponse.data.hash', postResponse.data.hash)
 
-    console.log('QUESTIONS PAGE | postResponse.status', postResponse.status)
-    console.log('QUESTIONS PAGE | postResponse.data.hash', postResponse.data.hash)
+        // Save question to local storage
+        window.localStorage.setItem('savedQuestion', JSON.stringify(newQuestion))
+      } else if (postResponse.status === 203) {
+        alert('Your Transaction have failed please try submitting again')
+        internalCloseProcessingModal()
+      }
+    } catch (error) {
+      alert('Your Transaction have failed please try submitting again')
+      internalCloseProcessingModal()
+    }
 
     setSteps([
       { status: 'complete', text: 'Generate zero knowledge proof' },
@@ -99,23 +119,6 @@ export default function Questions({ questionsProp }) {
     ])
 
     // Solution below adds the new record to state, as opposed to refreshing.
-    if (postResponse.status === 201) {
-      const newQuestion = {
-        id: Math.round(Math.random() * 100000000000).toString(),
-        messageId: postResponse.data.hash,
-        messageContent
-      }
-      const updatedQuestions = [newQuestion].concat(questions)
-      setQuestions(updatedQuestions)
-
-      console.log('QUESTIONS PAGE | updatedQuestions', updatedQuestions)
-
-      // Save question to local storage
-      window.localStorage.setItem('savedQuestion', JSON.stringify(newQuestion))
-    } else if (postResponse.status === 203) {
-      alert('Your Transaction have failed please try submitting again')
-      internalCloseProcessingModal()
-    }
 
     // router.reload(window.location.pathname)
 

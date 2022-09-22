@@ -92,13 +92,35 @@ export default function Answers({ messageId, questionProp, answersProp }) {
       solidityProof
     }
     console.log('ANSWERS PAGE | body', body)
+    try {
+      const postResponse = await axios.post('/api/postMessage', body, {
+        timeout: API_REQUEST_TIMEOUT
+      })
+      if (postResponse.status === 201) {
+        const newAnswer = {
+          id: Math.round(Math.random() * 100000000000).toString(),
+          messageId: postResponse.data.hash,
+          messageContent
+        }
+        const updatedAnswers = [newAnswer].concat(answers)
+        setAnswers(updatedAnswers)
 
-    const postResponse = await axios.post('/api/postMessage', body, {
-      timeout: API_REQUEST_TIMEOUT
-    })
+        console.log('ANSWERS PAGE | updatedAnswers', updatedAnswers)
+        console.log('ANSWERS PAGE | answers', answers)
 
-    console.log('ANSWERS PAGE | postResponse.status', postResponse.status)
-    console.log('ANSWERS PAGE | postResponse.data.hash', postResponse.data.hash)
+        console.log('ANSWERS PAGE | postResponse.status', postResponse.status)
+        console.log('ANSWERS PAGE | postResponse.data.hash', postResponse.data.hash)
+
+        // Save answer to local storage
+        window.localStorage.setItem('savedAnswer', JSON.stringify(newAnswer))
+      } else if (postResponse.status === 203) {
+        alert('Tx Failed, please try again!')
+        internalCloseProcessingModal()
+      }
+    } catch (error) {
+      alert('Tx Failed, please try again!')
+      internalCloseProcessingModal()
+    }
 
     setSteps([
       { status: 'complete', text: 'Generate zero knowledge proof' },
@@ -107,24 +129,6 @@ export default function Answers({ messageId, questionProp, answersProp }) {
     ])
 
     // Solution below adds the new record to state, as opposed to refreshing.
-    if (postResponse.status === 201) {
-      const newAnswer = {
-        id: Math.round(Math.random() * 100000000000).toString(),
-        messageId: postResponse.data.hash,
-        messageContent
-      }
-      const updatedAnswers = [newAnswer].concat(answers)
-      setAnswers(updatedAnswers)
-
-      console.log('ANSWERS PAGE | updatedAnswers', updatedAnswers)
-      console.log('ANSWERS PAGE | answers', answers)
-
-      // Save answer to local storage
-      window.localStorage.setItem('savedAnswer', JSON.stringify(newAnswer))
-    } else if (postResponse.status === 203) {
-      alert('Tx Failed, please try again!')
-      internalCloseProcessingModal()
-    }
 
     // router.reload(window.location.pathname)
 
