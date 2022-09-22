@@ -79,9 +79,9 @@ function QuestionsBoardComponent({ questions, clearIdentity }) {
         </div>
       </div>
 
-      <div className="z-30 relative flex items-center flex-col bg-black mt-20 py-5">
+      {/* <div className="z-30 relative flex items-center flex-col bg-black mt-20 py-5">
         <Footer />
-      </div>
+      </div> */}
       <div className="absolute overflow-hidden top-36 md:top-20 -right-0">
         <BunnyQuestion />
       </div>
