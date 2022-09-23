@@ -8,9 +8,9 @@ const ArtBoard = dynamic(() => import('../components/ArtBoard/index'), {
 
 export default function ArtBoardPage() {
   return (
-    <div className="relative min-h-[920px]">
+    <div className="relative min-h-[700px]">
       <ArtBoard />
-      <div className="z-10 absolute bottom-0 w-full flex items-center flex-col bg-black mt-20 py-5">
+      <div className="z-10 fixed bottom-0 w-full flex items-center flex-col bg-black py-5">
         <Footer />
       </div>
     </div>

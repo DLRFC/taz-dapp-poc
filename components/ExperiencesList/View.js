@@ -93,7 +93,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => (
       </div>
     </div>
 
-    <div className="z-20 relative flex items-left flex-col p-12 pb-5 bg-black text-brand-yellow mt-12">
+    {/* <div className="z-20 relative flex items-left flex-col p-12 pb-5 bg-black text-brand-yellow mt-12">
       <div className="py-10 px-5 flex items-end justify-between bg-black">
         <div className="transform -ml-6 text-xl tracking-widest text-brand-beige">
           <h1>TEMP_RARY</h1>
@@ -113,7 +113,12 @@ const ExperiencesListComponent = ({ clearIdentity }) => (
       <a href="http://semaphore.appliedzkp.org/" target="_blank" className="pb-10 underline" rel="noreferrer">
         About Semaphore
       </a>
-      <a href="esp.ethereum.foundation/semaphore-grants" target="_blank" className="pb-10 underline" rel="noreferrer">
+      <a
+        href="http://esp.ethereum.foundation/semaphore-grants"
+        target="_blank"
+        className="pb-10 underline"
+        rel="noreferrer"
+      >
         Semaphore Grants Round
       </a>
       <a href="https://appliedzkp.org/" target="_blank" className="pb-14 underline" rel="noreferrer">
@@ -134,7 +139,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => (
       </div>
 
       <Footer />
-    </div>
+    </div> */}
   </div>
 )
 

@@ -39,7 +39,6 @@ export default function ArtBoard() {
   const [fact, setFact] = useState(FACTS[Math.floor(Math.random() * FACTS.length)])
 
   useEffect(() => {
-    setIsComponentLoading(true)
     let tilesTemp
     let selectedTileTemp
     let identityKeyTemp = ''
@@ -49,6 +48,8 @@ export default function ArtBoard() {
       // setIsMember(true)
     }
     const fetchData = async () => {
+      setIsComponentLoading(true)
+
       if (runFetch.current === false) {
         try {
           const result = await axios.get('/api/modifyCanvas')
