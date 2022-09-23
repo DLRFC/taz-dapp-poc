@@ -15,13 +15,13 @@ export default function Modal({ images, onClose, activeImage, setActiveImage }) 
     // <div onClick={handleClick} className={styles.backdrop}>
     <div
       onClick={onClose}
-      className="absolute left-0 top-0 bottom-0 right-0 minh-[100vh] w-[100%] overflow-scroll bg-[#00000070] flex flex-col items-center justify-start"
+      className="absolute left-0 top-0 bottom-0 right-0 minh-[100vh] w-[100%] overflow-scroll bg-[#00000070] flex flex-col items-center justify-center"
     >
       <div
         onClick={(e) => e.stopPropagation()}
         className="pt-20 w-[50%] min-h-[30%] flex flex-col justify-center items-center"
       >
-        <div className="flex flex-col items-start p-0 gap-[2px] h-[489px] w-[338px] bg-[#EAE1DA] border-2 border-solid border-[#435C6C] rounded-md shadow-[0_4px_4px_rgba(0,0,0,0.25)] mt-[137px] z-[100]">
+        <div className="flex flex-col items-start p-0 gap-[2px] h-[489px] w-[338px] bg-[#EAE1DA] border-2 border-solid border-[#435C6C] rounded-md shadow-[0_4px_4px_rgba(0,0,0,0.25)] z-[100]">
           <div className="h-[53px] w-[334px] bg-white rounded-t-md flex flex-col p-8 items-center">
             <p className="text-[14px] leading-[150%] font-bold text-black w-[163px] h-[21px] text-center">
               Canvas ID {activeImage.id}
