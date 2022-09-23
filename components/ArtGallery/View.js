@@ -32,7 +32,7 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
   console.log('images', images)
 
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative overflow-hidden min-h-[100vh]">
       {open && (
         <Modal onClose={handleClose} activeImage={activeImage} setActiveImage={setActiveImage} images={images} />
       )}
@@ -65,7 +65,7 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
                 <ImageCard
                   key={image.id}
                   url={image.canvaUri ? image.canvaUri : image.uri}
-                  onClick={() => handleClick(image.uri)}
+                  onClick={() => handleClick(image.uri, image.id)}
                 />
               ))}
             </div>

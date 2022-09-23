@@ -7,8 +7,9 @@ export default function ArtGallery(props) {
   const [activeImage, setActiveImage] = useState(null)
   const [open, setOpen] = useState(false)
 
-  const handleClick = (url) => {
-    setActiveImage(url)
+  const handleClick = (url, id) => {
+    console.log(images)
+    setActiveImage({url, id})
   }
 
   const updateFromLocalStorage = () => {
