@@ -59,19 +59,22 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
       </div>
 
       {/* Image Gallery */}
-      <div className="flex flex-row-reverse flex-wrap w-full bg-white border-collapse">
+      <div className="flex flex-row-reverse flex-wrap grow h-full w-full bg-white outline">
         {!images ? (
           <Loading size="xl" />
         ) : (
-          images.map((image) => (
-            <ImageCard
-              key={image.id}
-              url={image.canvaUri ? image.canvaUri : image.uri}
-              onClick={() => handleClick(image.uri)}
-            />
+          images.map((img) => (
+            <picture
+              key={img.id}
+              onClick={handleClick}
+              className="w-1/2 min-h-[192] border border-brand-gray2 bg-white hover:bg-red-700 cursor-pointer"
+            >
+              <img src={img.canvaUri ? img.canvaUri : img.uri} alt={`Image ${img.id}`} />
+            </picture>
           ))
         )}
       </div>
+
       {/* Put Fixed and Absolute Positioned items at the bottom Gallery container */}
       <div className="fixed bottom-[15%] right-2 flex justify-end">
         <Link href="/artBoard-page">
@@ -90,18 +93,10 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
           </button>
         </div>
       )}
+
       <div className="flex w-full justify-center bg-black py-5">
         <Footer />
       </div>
     </div>
   )
 }
-
-const ImageCard = ({ url, onClick }) => (
-  <picture
-    onClick={onClick}
-    className="w-1/2 md:w-1/4 h-auto border border-brand-gray2 bg-white hover:bg-red-700 cursor-pointer"
-  >
-    <img src={url} alt="" />
-  </picture>
-)

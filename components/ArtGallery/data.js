@@ -1,4 +1,4 @@
-export const mockImages = [
+const mockImages = [
   {
     id: '01',
     uri: 'https://images.unsplash.com/photo-1612351641432-20a0f196086c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=786&q=80',
@@ -45,3 +45,5 @@ export const mockImages = [
     url: 'https://images.unsplash.com/photo-1507667522877-ad03f0c7b0e0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80'
   }
 ]
+
+export default mockImages

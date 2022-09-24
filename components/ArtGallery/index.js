@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import ArtGalleryComponent from './View'
-import { mockImages } from './data'
+import mockImages from './data'
 
 export default function ArtGallery(props) {
   const [images, setImages] = useState(props.images)
@@ -45,7 +45,7 @@ export default function ArtGallery(props) {
       activeImage={activeImage}
       setActiveImage={setActiveImage}
       handleClick={handleClick}
-      images={images}
+      images={mockImages}
     />
   )
 }
