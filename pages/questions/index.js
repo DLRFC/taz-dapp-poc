@@ -10,7 +10,7 @@ import { Subgraphs } from '../../hooks/subgraphs'
 import BackToTopArrow from '../../components/svgElements/BackToTopArrow'
 import Footer from '../../components/Footer'
 
-const { API_REQUEST_TIMEOUT, FACT_ROTATION_INTERVAL } = require('../../config/goerli.json')
+const { API_REQUEST_TIMEOUT, FACT_ROTATION_INTERVAL, CHAINED_MODAL_DELAY } = require('../../config/goerli.json')
 const { FACTS } = require('../../data/facts.json')
 
 export default function Questions({ questionsProp }) {
@@ -52,12 +52,12 @@ export default function Questions({ questionsProp }) {
     event.preventDefault()
 
     closeQuestionModal()
-    openProcessingModal()
+    setTimeout(openProcessingModal, CHAINED_MODAL_DELAY)
 
     setSteps([
       { status: 'processing', text: 'Generate zero knowledge proof' },
       { status: 'queued', text: 'Submit transaction with proof and question' },
-      { status: 'queued', text: 'Update answers from on-chain events' }
+      { status: 'queued', text: 'Update questions from on-chain events' }
     ])
 
     const messageContent = question
@@ -72,7 +72,7 @@ export default function Questions({ questionsProp }) {
     setSteps([
       { status: 'complete', text: 'Generate zero knowledge proof' },
       { status: 'processing', text: 'Submit transaction with proof and question' },
-      { status: 'queued', text: 'Update answers from on-chain events' }
+      { status: 'queued', text: 'Update questions from on-chain events' }
     ])
 
     const body = {
