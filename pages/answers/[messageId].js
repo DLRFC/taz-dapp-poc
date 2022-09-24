@@ -13,7 +13,7 @@ import YellowCircle from '../../components/svgElements/YellowCircle'
 import RedCircle from '../../components/svgElements/RedCircle'
 import BackToTopArrow from '../../components/svgElements/BackToTopArrow'
 
-const { API_REQUEST_TIMEOUT, FACT_ROTATION_INTERVAL } = require('../../config/goerli.json')
+const { API_REQUEST_TIMEOUT, FACT_ROTATION_INTERVAL, CHAINED_MODAL_DELAY } = require('../../config/goerli.json')
 const { FACTS } = require('../../data/facts.json')
 
 export default function Answers({ messageId, questionProp, answersProp }) {
@@ -60,7 +60,7 @@ export default function Answers({ messageId, questionProp, answersProp }) {
     event.preventDefault()
 
     closeAnswerModal()
-    openProcessingModal()
+    setTimeout(openProcessingModal, CHAINED_MODAL_DELAY)
 
     setSteps([
       { status: 'processing', text: 'Generate zero knowledge proof' },
