@@ -82,7 +82,7 @@ const ArtBoardComponent = forwardRef(
           <div className="border-0 text-brand-brown" style={{ borderTopWidth: '0px' }}>
             <p className="text-sm w-full font-bold mb-4">Select a tile to start drawing</p>
             <p className="text-xs opacity-[70%] mb-4">
-              Your drawing will appear alongside other's. Select 1 tile at a time.
+              Your drawing will appear alongside other&apos;s. Select 1 tile at a time.
             </p>
           </div>
           <div className="flex items-center justify-center">

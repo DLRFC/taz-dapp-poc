@@ -91,7 +91,7 @@ const DrawingHtml = forwardRef(
           onClick={(e) => e.stopPropagation()}
           className=" w-flex h-flex p-2 bg-white border-2 border-black flex flex-col items-center justify-center rounded-[5px]"
         >
-          <div className="flex grid grid-rows-1 pb-1 grid-cols-9">
+          <div className="grid grid-rows-1 pb-1 grid-cols-9">
             <div>
               <button
                 id="brand-orange"
@@ -251,7 +251,7 @@ const DrawingHtml = forwardRef(
                 <p className="pl-4">minimize</p>
               </button>
             </div>
-            <div className="flex flex-row w-full items-center justify-items-center grid grid-cols-3">
+            <div className="w-full items-center justify-items-center grid grid-cols-3">
               <div
                 className={tool === 'pen' ? 'p-1 border border-black justify-items-center' : 'p-1'}
                 onClick={toggleTool}
