@@ -1,12 +1,13 @@
 import React, { forwardRef } from 'react'
 import { Stage, Layer, Line, Rect } from 'react-konva'
 import { motion } from 'framer-motion'
-import Image from 'next/image'
 
+import Minimize from '../svgElements/Minimize'
 import PaintbrushEmpty from '../svgElements/PaintbrushEmpty'
 import PaintbrushFull from '../svgElements/PaintbrushFull'
 import PaintBucketEmpty from '../svgElements/PaintBucketEmpty'
 import PaintBucketFull from '../svgElements/PaintBucketFull'
+import Undo from '../svgElements/Undo'
 
 const DrawingHtml = forwardRef(
   ({
@@ -245,14 +246,14 @@ const DrawingHtml = forwardRef(
               </Layer>
             </Stage>
           </div>
-          <div className="flex flex-row w-full items-center">
+          <div className="flex flex-row w-full items-center mt-3 mb-1">
             <div className="justify-left ml-2">
               <button
                 className="bg-black text-xs text-white w-32 p-2 pl-4 rounded-full flex flex-row"
                 type="submit"
                 onClick={minimize}
               >
-                <Image src="/minimize.png" alt="minimize" width="16" height="16" />
+                <Minimize />
                 <p className="pl-4">minimize</p>
               </button>
             </div>
@@ -263,8 +264,8 @@ const DrawingHtml = forwardRef(
               <div className="cursor-pointer" onClick={toggleTool}>
                 {tool === 'fill' ? <PaintBucketFull /> : <PaintBucketEmpty />}
               </div>
-              <div className="m-2 pt-2" onClick={handleUndo}>
-                <Image className="cursor-pointer" src="/undo.png" alt="undo" width="25" height="25" />
+              <div className="cursor-pointer" onClick={handleUndo}>
+                <Undo />
               </div>
             </div>
           </div>
