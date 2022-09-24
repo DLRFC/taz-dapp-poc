@@ -256,7 +256,7 @@ const DrawingHtml = forwardRef(
                 <p className="pl-4">minimize</p>
               </button>
             </div>
-            <div className="flex flex-row w-full items-center justify-items-center grid grid-cols-3">
+            <div className="flex flex-row w-full items-center justify-items-center grid grid-cols-3 pl-4">
               <div className="cursor-pointer" onClick={toggleTool}>
                 {tool === 'pen' ? <PaintbrushFull /> : <PaintbrushEmpty />}
               </div>
