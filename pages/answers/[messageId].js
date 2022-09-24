@@ -102,6 +102,7 @@ export default function Answers({ messageId, questionProp, answersProp }) {
       if (postResponse.status === 201) {
         const newAnswer = {
           id: Math.round(Math.random() * 100000000000).toString(),
+          parentMessageId,
           messageId: postResponse.data.hash,
           messageContent
         }
@@ -143,7 +144,7 @@ export default function Answers({ messageId, questionProp, answersProp }) {
     const found = answers.some((element) => savedAnswer && element.messageContent === savedAnswer.messageContent)
     if (found) {
       window.localStorage.removeItem('savedAnswer')
-    } else if (savedAnswer) {
+    } else if (savedAnswer && savedAnswer.parentMessageId === parentMessageId) {
       const updatedAnswers = [savedAnswer].concat(answers)
       setAnswers(updatedAnswers)
     }
@@ -192,27 +193,27 @@ export default function Answers({ messageId, questionProp, answersProp }) {
 
   return (
     <div className="min-h-[700px] h-auto flex flex-col">
-      <div classname="z-20 fixed bottom-0">
-        <div className="absolute bottom-[180px] right-2 z-30 flex justify-end">
-          <button
-            type="button"
-            className="rounded-full bg-brand-yellow px-4 py-2 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
-            onClick={openAnswerModal}
-          >
-            Answer this question
+      {/* <div className="z-20 fixed bottom-0"> */}
+      <div className="fixed bottom-[180px] right-2 z-30 flex justify-end">
+        <button
+          type="button"
+          className="rounded-full bg-brand-yellow px-4 py-2 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
+          onClick={openAnswerModal}
+        >
+          Answer this question
+        </button>
+      </div>
+      {showTopBtn && (
+        <div className="fixed bottom-[180px] left-2 z-30 flex justify-end">
+          <button onClick={goToTop}>
+            <BackToTopArrow size={40} fill="#1E1E1E" />
           </button>
         </div>
-        {showTopBtn && (
-          <div className="absolute bottom-[180px] left-2 z-30 flex justify-end">
-            <button onClick={goToTop}>
-              <BackToTopArrow size={40} fill="#1E1E1E" />
-            </button>
-          </div>
-        )}
-        <div className="z-20 fixed bottom-0 w-full flex-col bg-black mt-20 py-5">
-          <Footer />
-        </div>
+      )}
+      <div className="z-20 fixed bottom-0 w-full flex-col bg-black mt-20 py-5">
+        <Footer />
       </div>
+      {/* </div> */}
 
       {/* {question === 0 ? null : (
         <div className="sticky top-[225px] z-30 flex justify-between mx-2 min-w-[200px]">
