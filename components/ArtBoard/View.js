@@ -8,6 +8,7 @@ import GenerateTile from './generateTile'
 import BackArrow from '../svgElements/BackArrow'
 import ProcessingModal from '../ProcessingModal'
 import Loading from '../Loading'
+import TrashCan from '../svgElements/TrashCan'
 
 // import { Identity } from '@semaphore-protocol/identity'
 
@@ -124,11 +125,12 @@ const ArtBoardComponent = forwardRef(
             {userSelectedTile ? (
               <div className="flex items-center justify-between w-full pt-4">
                 <button
-                  className=" font-bold text-[14px] px-4 py-2 rounded-full"
+                  className="flex items-center font-bold text-[14px] px-4 py-2 rounded-full"
                   type="submit"
                   onClick={handleResetTile}
                 >
-                  Start Over
+                  <TrashCan />
+                  <div className="pl-2">Start Over</div>
                 </button>
 
                 <button
