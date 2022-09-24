@@ -13,8 +13,10 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
   const [showTopBtn, setShowTopBtn] = useState(false)
 
   useEffect(() => {
+    // Get the view height of the device.
+    const windowHeight = window.outerHeight
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 20) {
+      if (window.scrollY > windowHeight) {
         setShowTopBtn(true)
       } else {
         setShowTopBtn(false)
@@ -30,10 +32,12 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
   }
 
   return (
-    <div className="h-screen overflow-hidden">
+    <div className="flex h-auto flex-col justify-between overflow-x-hidden">
       {open && (
         <Modal onClose={handleClose} activeImage={activeImage} setActiveImage={setActiveImage} images={images} />
       )}
+      {/* Header */}
+
       <div className="flex flex-col w-full px-8 mb-6">
         <div className="mt-16 mb-10">
           <BackLink hre="/experiences-page" />
@@ -54,8 +58,8 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
         </p>
       </div>
 
-      {/* Image Galary */}
-      <div className="flex-row-reverse flex-wrap h-full mx-auto bg-white border-collapse">
+      {/* Image Gallery */}
+      <div className="flex flex-row-reverse flex-wrap w-full bg-white border-collapse">
         {!images ? (
           <Loading size="xl" />
         ) : (
@@ -67,28 +71,26 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
             />
           ))
         )}
-
-        {/* Put Fixed and Absolute Positioned items at the bottom */}
-        <div className="fixed bottom-[180px] right-2 z-30 flex justify-end">
-          <Link href="/artBoard-page">
-            <button
-              type="button"
-              className="rounded-full bg-brand-yellow px-4 py-2 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
-            >
-              Draw with others
-            </button>
-          </Link>
-        </div>
-        {showTopBtn && (
-          <div className="fixed bottom-[180px] left-2 z-30 flex justify-end">
-            <button onClick={goToTop}>
-              <BackToTopArrow size={40} fill="#1E1E1E" />
-            </button>
-          </div>
-        )}
       </div>
-
-      <div className="flex w-full z-20 sticky bottom-0 justify-center bg-black py-5">
+      {/* Put Fixed and Absolute Positioned items at the bottom Gallery container */}
+      <div className="fixed bottom-[15%] right-2 flex justify-end">
+        <Link href="/artBoard-page">
+          <button
+            type="button"
+            className="rounded-full bg-brand-yellow px-4 py-2 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
+          >
+            Draw with others
+          </button>
+        </Link>
+      </div>
+      {showTopBtn && (
+        <div className="fixed bottom-[15%] left-2 flex justify-end">
+          <button onClick={goToTop}>
+            <BackToTopArrow size={40} fill="#1E1E1E" />
+          </button>
+        </div>
+      )}
+      <div className="flex w-full justify-center bg-black py-5">
         <Footer />
       </div>
     </div>

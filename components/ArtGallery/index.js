@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import ArtGalleryComponent from './View'
+import { mockImages } from './data'
 
 export default function ArtGallery(props) {
   const [images, setImages] = useState(props.images)
