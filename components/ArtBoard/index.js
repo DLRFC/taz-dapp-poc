@@ -94,7 +94,7 @@ export default function ArtBoard() {
   }
 
   const toggleTool = (e) => {
-    if (e.target.alt === 'fill') {
+    if (tool === 'pen') {
       console.log('settofill')
       setTool('fill')
     } else {
