@@ -32,7 +32,7 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
   }
 
   return (
-    <div className="flex h-auto flex-col justify-between overflow-x-hidden">
+    <div className="flex h-auto min-h-screen flex-col justify-between overflow-x-hidden">
       {open && (
         <Modal onClose={handleClose} activeImage={activeImage} setActiveImage={setActiveImage} images={images} />
       )}
@@ -59,16 +59,12 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
       </div>
 
       {/* Image Gallery */}
-      <div className="flex flex-row-reverse flex-wrap grow h-full w-full bg-white outline">
+      <div className="flex flex-row-reverse flex-wrap-reverse grow h-full w-full bg-white outline">
         {!images ? (
           <Loading size="xl" />
         ) : (
           images.map((img) => (
-            <picture
-              key={img.id}
-              onClick={handleClick}
-              className="w-1/2 min-h-[192] border border-brand-gray2 bg-white hover:bg-red-700 cursor-pointer"
-            >
+            <picture key={img.id} onClick={handleClick} className="w-1/2 h-auto outline cursor-pointer">
               <img src={img.canvaUri ? img.canvaUri : img.uri} alt={`Image ${img.id}`} />
             </picture>
           ))

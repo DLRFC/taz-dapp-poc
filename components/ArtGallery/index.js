@@ -45,7 +45,7 @@ export default function ArtGallery(props) {
       activeImage={activeImage}
       setActiveImage={setActiveImage}
       handleClick={handleClick}
-      images={mockImages}
+      images={images}
     />
   )
 }
