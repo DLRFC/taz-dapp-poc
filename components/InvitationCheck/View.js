@@ -44,7 +44,7 @@ export default function InvitationCheckComponent({
       <Header />
       {!isSignUp ? (
         <div className="flex flex-col px-[32px] items-center overflow-hidden rounded-md  text-brand-gray2">
-          <div className="h-[570px] py-3 w-full  z-10">
+          <div className="min-h-[700px] h-auto py-3 w-full  z-10">
             <div className="divide-y divide-opacity-70">
               <div>
                 <p className="pt-10 font-bold  text-brand-[20px] text-brand-beige">Do you have a TAZ invitation?</p>

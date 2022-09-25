@@ -11,12 +11,10 @@ export default async function handler(req, res) {
   const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL)
   const currentIndex = await fetchWalletIndex()
   const signer_array = process.env.PRIVATE_KEY_ARRAY.split(',')
-  const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider)
   const tazMessageAbi = TazMessage.abi
   const tazMessageAddress = TAZMESSAGE_CONTRACT
   const groupId = GROUP_ID
 
-  const tazMessageContract = new ethers.Contract(tazMessageAddress, tazMessageAbi, signer)
   const { invitation, identityCommitment } = req.body
 
   if (req.method === 'GET') {
@@ -57,7 +55,11 @@ export default async function handler(req, res) {
 
         try {
           console.log('Add Member Function called')
-          const tx = await tazMessageContract.addMember(groupId, identityCommitment)
+          console.log('currentIndex', currentIndex)
+          const signer = new ethers.Wallet(signer_array[currentIndex]).connect(provider)
+          const tazMessageContract = new ethers.Contract(tazMessageAddress, tazMessageAbi, signer)
+
+          const tx = await tazMessageContract.addMember(groupId, identityCommitment, { gasLimit: 15000000 })
           // console.log(tx)
 
           const response = await tx.wait(1).then(
