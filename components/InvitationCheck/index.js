@@ -37,39 +37,19 @@ export default function InvitationCheck() {
     setInvitation(event.target.value)
   }
 
-  const handleScan = async (scanData) => {
-    // setLoadingScan(true)
-    try {
-      if (scanData && scanData !== '') {
-        const scanDataCode = scanData.slice(-8)
-        console.log(`loaded >>>`, scanDataCode)
-        setData(scanDataCode)
-        setStartScan(false)
-        setInvitation(scanDataCode)
-      }
-    } catch {
-      console.log('error')
-    }
-  }
-
-  const handleSignUpButton = async () => {
-    setIsSignUp(!isSignUp)
-  }
-
-  const validate = async () => {
-    if (invitation.length < 8) {
+  const validate = async (invitationCode) => {
+    if (invitationCode.length < 8) {
       alert('Error: must be 8 characters')
       return
     }
 
     setIsLoading(true)
-
     // setLoadingMessage('Verifying your Invitation-Code')
 
     setSteps([{ status: 'processing', text: 'Verifying invite is valid' }])
 
     const apiResponse = await axios.post('/api/validateInvitation', {
-      invitation
+      invitation: invitationCode
     })
     console.log('Is code valid and not used yet? ', apiResponse.data.isValid)
 
@@ -81,11 +61,31 @@ export default function InvitationCheck() {
 
       console.log(response)
       console.log('moving to generate Id Page')
-      router.push(`/generate-id-page?invitation=${invitation}`)
+      router.push(`/generate-id-page?invitation=${invitationCode}`)
     } else if (apiResponse.data.isValid === false) {
       setIsLoading(false)
       alert('Invalid Invitation code')
     }
+  }
+
+  const handleScan = async (scanData) => {
+    // setLoadingScan(true)
+    try {
+      if (scanData && scanData !== '') {
+        const scanDataCode = scanData.slice(-8)
+        console.log(`loaded >>>`, scanDataCode)
+        setData(scanDataCode)
+        setStartScan(false)
+        setInvitation(scanDataCode)
+        validate(scanDataCode)
+      }
+    } catch {
+      console.log('error')
+    }
+  }
+
+  const handleSignUpButton = async () => {
+    setIsSignUp(!isSignUp)
   }
 
   const handleStartScan = () => {
@@ -142,6 +142,10 @@ export default function InvitationCheck() {
     setFact(FACTS[FACTS.indexOf(fact) + 1 === FACTS.length ? 0 : FACTS.indexOf(fact) + 1])
   }
 
+  const handleValidate = () => {
+    validate(invitation)
+  }
+
   useEffect(() => {
     setTimeout(rotateFact, FACT_ROTATION_INTERVAL)
   }, [fact])
@@ -164,7 +168,7 @@ export default function InvitationCheck() {
       invitation={invitation}
       inviteCodeChangeHandler={inviteCodeChangeHandler}
       data={data}
-      validate={validate}
+      handleValidate={handleValidate}
       onClose={onClose}
       // loadingMessage={loadingMessage}
       steps={steps}

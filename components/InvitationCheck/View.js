@@ -25,7 +25,7 @@ export default function InvitationCheckComponent({
   inviteCodeChangeHandler,
   setInvitation,
   data,
-  validate,
+  handleValidate,
   onClose,
   loadingMessage,
   invitation,
@@ -129,7 +129,7 @@ export default function InvitationCheckComponent({
               {invitation && invitation.length > 5 && (
                 <button
                   className="w-full border-2 border-brand-gray2 bg-brand-yellow p-2 py-4 mb-10 shadow-[-3px_3px_0px_0px_rgba(30,30,30)] text-sm flex items-center justify-center"
-                  onClick={validate}
+                  onClick={handleValidate}
                 >
                   <span className="mr-4">Next</span>
                   <RiArrowRightLine size={24} fill="#BD5141" />
