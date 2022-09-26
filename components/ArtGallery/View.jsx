@@ -59,7 +59,7 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
       </div>
 
       {/* Image Gallery */}
-      <div className="flex flex-row-reverse flex-wrap-reverse grow h-full w-full md:w-3/5 md:self-center lg:w-1/2 bg-white outline">
+      <div className="flex flex-row-reverse flex-wrap-reverse grow h-full w-full md:w-3/5 md:self-center lg:w-1/2 bg-white">
         {!images ? (
           <div className="flex justify-center w-full items-center">
             <Loading size="xl" />
@@ -72,9 +72,13 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
               <picture
                 key={img.tokenId}
                 onClick={() => handleClick({ tokenId: img.tokenId, url: img.uri })}
-                className="w-1/2 md:w-1/4 h-auto outline cursor-pointer"
+                className="w-1/2 md:w-1/4 h-auto cursor-pointer"
               >
-                <img src={img.canvaUri ? img.canvaUri : img.uri} alt={`Image ${img.tokenId}`} />
+                <img
+                  className="min-h-[195px] outline"
+                  src={img.canvaUri ? img.canvaUri : img.uri}
+                  alt={`Image ${img.tokenId}`}
+                />
               </picture>
             )
           })
