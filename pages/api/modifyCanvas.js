@@ -23,12 +23,25 @@ export default async function handler(req, res) {
     const randomIndex = Math.round(Math.random() * 1) + 1
     // const randomIndex = 4
 
-    const canvas = canvases[randomIndex].data
+    const canvas = canvases[randomIndex]
+
+    // If returned canvas is full, empty canvas first
+    if (!canvas.data.tiles.includes('')) {
+      canvas.data.tiles = ['', '', '', '', '', '', '', '', '']
+
+      await client.query(
+        query.Update(query.Ref(canvas.ref), {
+          data: {
+            tiles: canvas.data.tiles
+          }
+        })
+      )
+    }
 
     // Return the randomly selected canvas to the frontend.
     // The canvas that is returned to the frontend is an object with an array of strings (tiles) and a canvasId: {tiles: ["","","","","","","","",""], canvasId: 1}
 
-    res.status(200).json({ canvas })
+    res.status(200).json({ canvas: canvas.data })
   } else if (req.method === 'POST') {
     // To update the database the backend needs the canvasId and the updated tiles from the request body
     // For example: updatedTiles: ["newDrawingString","","","","","","","",""] canvasId: 1
