@@ -69,7 +69,11 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
           <Loading size="xl" />
         ) : (
           images.map((img) => (
-            <picture key={img.id} onClick={handleClick} className="w-1/2 h-auto outline cursor-pointer">
+            <picture
+              key={img.id}
+              onClick={() => handleClick({ tokenId: image.tokenId, url: image.uri })}
+              className="w-1/2 h-auto outline cursor-pointer"
+            >
               <img src={img.canvaUri ? img.canvaUri : img.uri} alt={`Image ${img.id}`} />
             </picture>
           ))
