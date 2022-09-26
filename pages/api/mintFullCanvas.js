@@ -4,7 +4,7 @@ import faunadb from 'faunadb'
 import { Web3Storage, File } from 'web3.storage'
 import { Blob } from '@web-std/blob'
 import { TAZTOKEN_CONTRACT } from '../../config/goerli.json'
-import fetchWalletIndex from '../../helpers/fetchWalletIndex';
+import { fetchWalletIndex, fetchNonce } from '../../helpers/walletHelpers'
 
 import TazToken from '../utils/TazToken.json'
 
@@ -103,6 +103,7 @@ export default async function handler(req, res) {
 
         try {
           const signalBytes32 = ethers.utils.formatBytes32String(signal)
+          const nonce = await fetchNonce(currentIndex)
           const tx = await nftContract.safeMint(
             signerAddress,
             ipfsUrl,
@@ -113,6 +114,7 @@ export default async function handler(req, res) {
             externalNullifier,
             solidityProof,
             {
+              nonce,
               gasLimit: 15000000
             }
           )

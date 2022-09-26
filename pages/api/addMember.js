@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 import faunadb from 'faunadb'
 import TazMessage from '../utils/TazMessage.json'
 import { GROUP_ID, TAZMESSAGE_CONTRACT } from '../../config/goerli.json'
-import fetchWalletIndex from '../../helpers/fetchWalletIndex'
+import { fetchWalletIndex, fetchNonce } from '../../helpers/walletHelpers';
 
 dotenv.config({ path: '../../.env.local' })
 
@@ -58,9 +58,10 @@ export default async function handler(req, res) {
           console.log('currentIndex', currentIndex)
           const signer = new ethers.Wallet(signer_array[currentIndex]).connect(provider)
           const tazMessageContract = new ethers.Contract(tazMessageAddress, tazMessageAbi, signer)
-
-          const tx = await tazMessageContract.addMember(groupId, identityCommitment, { gasLimit: 15000000 })
-          // console.log(tx)
+          const nonce = await fetchNonce(currentIndex)
+          console.log(nonce)
+          const tx = await tazMessageContract.addMember(groupId, identityCommitment, {nonce})
+          console.log(tx)
 
           const response = await tx.wait(1).then(
             client.query(

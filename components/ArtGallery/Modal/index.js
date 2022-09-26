@@ -5,9 +5,9 @@ export default function Modal({ images, onClose, activeImage, setActiveImage }) 
   // const handleClick = () => {
   //   onClose && onClose()
   // }
-  const handleControlTabClick = (e, url) => {
+  const handleControlTabClick = (e, image) => {
     e.stopPropagation()
-    setActiveImage(url)
+    setActiveImage(image)
   }
   // Special thanks to fireship.io for this beautiful code snippet to animate modal drop in.
 
@@ -21,12 +21,13 @@ export default function Modal({ images, onClose, activeImage, setActiveImage }) 
         onClick={(e) => e.stopPropagation()}
         className="pt-20 w-[50%] min-h-[30%] flex flex-col justify-center items-center"
       >
+        <div>Canvas ID {activeImage.tokenId}</div>
         <button
           onClick={onClose}
           className="border-none h-[300px] w-[300px] rounded-md"
           style={{
             boxShadow: `0 20px 50px #2563eb`,
-            backgroundImage: `url(${activeImage})`,
+            backgroundImage: `url(${activeImage.url})`,
             backgroundSize: 'cover'
           }}
         ></button>
@@ -41,7 +42,7 @@ export default function Modal({ images, onClose, activeImage, setActiveImage }) 
             }}
             className="h-[50px] w-[50px] cursor-pointer mx-1"
             key={image.id}
-            onClick={(e) => handleControlTabClick(e, image.uri)}
+            onClick={(e) => handleControlTabClick(e, { tokenId: image.tokenId, url: image.uri })}
           ></button>
         ))}
       </div>
