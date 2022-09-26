@@ -3,7 +3,7 @@ import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { RiArrowLeftLine } from 'react-icons/ri'
 
-export default function Modal({ title = 'Hello', description = 'Ma', children }) {
+export default function Modal({ title = 'Hello', description = 'Description about the Modal', children }) {
   const [open, setOpen] = useState(true)
 
   const cancelButtonRef = useRef(null)
