@@ -63,15 +63,18 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
         {!images ? (
           <Loading size="xl" />
         ) : (
-          images.map((img) => (
-            <picture
-              key={img.id}
-              onClick={() => handleClick({ tokenId: img.tokenId, url: img.uri })}
-              className="w-1/2 h-auto outline cursor-pointer"
-            >
-              <img src={img.canvaUri ? img.canvaUri : img.uri} alt={`Image ${img.id}`} />
-            </picture>
-          ))
+          images.map((img, index) => {
+            console.log('image', img, index)
+            return (
+              <picture
+                key={img.tokenId}
+                onClick={() => handleClick({ tokenId: img.tokenId, url: img.uri })}
+                className="w-1/2 h-auto outline cursor-pointer"
+              >
+                <img src={img.canvaUri ? img.canvaUri : img.uri} alt={`Image ${img.tokenId}`} />
+              </picture>
+            )
+          })
         )}
       </div>
 
@@ -100,3 +103,12 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
     </div>
   )
 }
+
+const ImageCard = ({ url, onClick }) => (
+  <picture
+    onClick={onClick}
+    className="w-1/2 md:w-1/4 border border-brand-gray2 bg-white hover:bg-red-700 cursor-pointer"
+  >
+    <img src={url} alt="" />
+  </picture>
+)
