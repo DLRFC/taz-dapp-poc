@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 // import { RiArrowUpCircleFill } from 'react-icons/ri'
 
-import Modal from './Modal'
+// import Modal from './Modal'
+import Modal from '../Modal'
 import BackToTopArrow from '../svgElements/BackToTopArrow'
 import ArtBunny from '../svgElements/ArtBunny'
 import Footer from '../Footer'
@@ -33,9 +34,13 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
 
   return (
     <div className="flex h-auto min-h-screen flex-col justify-between overflow-x-hidden">
-      {open && (
+      {/* {open && (
         <Modal onClose={handleClose} activeImage={activeImage} setActiveImage={setActiveImage} images={images} />
-      )}
+      )} */}
+
+      {/* Delete when done */}
+      {/* <Modal /> */}
+
       {/* Header */}
 
       <div className="flex flex-col w-full px-8 mb-6">
