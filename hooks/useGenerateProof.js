@@ -1,7 +1,7 @@
 import { Identity } from '@semaphore-protocol/identity'
 import { Group } from '@semaphore-protocol/group'
 import { useEffect, useState } from 'react'
-import { Subgraph } from '@semaphore-protocol/subgraph'
+// import { Subgraph } from '@semaphore-protocol/subgraph'
 import { Subgraphs } from './subgraphs'
 
 const { generateProof, packToSolidityProof } = require('@semaphore-protocol/proof')
@@ -14,12 +14,13 @@ export const useGenerateProof = () => {
     const group = new Group(16)
     const groupId = GROUP_ID.toString()
 
-    const subgraphs = new Subgraphs()
     // const subgraph = new Subgraph()
+    // const subgraph = new Subgraph('goerli')
+    // const { members } = await subgraph.getGroup(groupId, { members: true })
 
-    const subgraph = new Subgraph('goerli')
-    const { members } = await subgraph.getGroup('10806', { members: true })
-    // const members = await subgraphs.getGroupIdentities(groupId)
+    const subgraphs = new Subgraphs()
+    const members = await subgraphs.getGroupIdentities(groupId)
+
     console.log('members', members)
 
     group.addMembers(members)

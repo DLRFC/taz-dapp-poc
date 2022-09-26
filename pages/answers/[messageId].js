@@ -16,7 +16,7 @@ import BackToTopArrow from '../../components/svgElements/BackToTopArrow'
 const { API_REQUEST_TIMEOUT, FACT_ROTATION_INTERVAL, CHAINED_MODAL_DELAY } = require('../../config/goerli.json')
 const { FACTS } = require('../../data/facts.json')
 
-export default function Answers({ messageId, questionProp, answersProp }) {
+export default function Answers({ messageId, txHash, questionProp, answersProp }) {
   const [generateFullProof] = useGenerateProof()
   const [answerModalIsOpen, setAnswerModalIsOpen] = useState(false)
   const [processingModalIsOpen, setProcessingModalIsOpen] = useState(false)
@@ -69,8 +69,7 @@ export default function Answers({ messageId, questionProp, answersProp }) {
     ])
 
     const messageContent = answer
-    const messageId = ethers.utils.id(messageContent)
-    const signal = messageId.slice(35)
+    const signal = ethers.utils.id(messageContent).slice(35)
     console.log('ANSWERS PAGE | signal', signal)
     const { solidityProof, nullifierHash, externalNullifier, merkleTreeRoot, groupId } = await generateFullProof(
       identityKey,
@@ -85,7 +84,6 @@ export default function Answers({ messageId, questionProp, answersProp }) {
 
     const body = {
       parentMessageId,
-      messageId,
       messageContent,
       merkleTreeRoot,
       groupId,
@@ -103,7 +101,8 @@ export default function Answers({ messageId, questionProp, answersProp }) {
         const newAnswer = {
           id: Math.round(Math.random() * 100000000000).toString(),
           parentMessageId,
-          messageId: postResponse.data.hash,
+          messageId: 0,
+          txHash: postResponse.data.hash,
           messageContent
         }
         const updatedAnswers = [newAnswer].concat(answers)
@@ -243,7 +242,13 @@ export default function Answers({ messageId, questionProp, answersProp }) {
         handleAnswerChange={handleAnswerChange}
         handleSubmit={handleSubmit}
       />
-      <AnswersBoard question={question} answers={answers} openAnswerModal={openAnswerModal} messageId={messageId} />
+      <AnswersBoard
+        question={question}
+        answers={answers}
+        openAnswerModal={openAnswerModal}
+        messageId={messageId}
+        txHash={txHash}
+      />
       {/* <div className="z-20 absolute bottom-0 w-full  flex-col bg-black mt-20 py-5">
         <Footer />
       </div> */}
@@ -268,6 +273,11 @@ export async function getServerSideProps({ query }) {
   console.log('ANSWERS PAGE | fetched answers', data)
 
   return {
-    props: { messageId: query.messageId, questionProp: data.question || 0, answersProp: data.answers }
+    props: {
+      messageId: query.messageId,
+      txHash: query.txHash || '',
+      questionProp: data.question,
+      answersProp: data.answers
+    }
   }
 }

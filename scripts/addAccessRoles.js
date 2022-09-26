@@ -32,7 +32,10 @@ async function main() {
   const receipt4 = await tx4.wait()
   console.log('tazToken.addReviewers receipt', receipt4)
 
-  // tazToken.addStartStoppers()
+  console.log('Calling tazToken.addStartStoppers')
+  const tx5 = await tazToken.connect(signer1).addStartStoppers([signer1.address])
+  const receipt5 = await tx5.wait()
+  console.log('tazToken.addStartStoppers receipt', receipt5)
 }
 
 main().catch((error) => {

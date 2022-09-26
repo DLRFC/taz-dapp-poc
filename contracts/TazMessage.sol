@@ -29,16 +29,16 @@ contract TazMessage is AccessControl {
     // Emitted when a member is added to a group on the Semaphore contract
     event MemberAdded(uint256 indexed groupId, uint256 identityCommitment);
 
-    event MessageAdded(string parentMessageId, string messageId, uint256 messageNum, string messageContent);
+    event MessageAdded(uint256 parentMessageId, uint256 messageId, string messageContent);
 
-    event ViolationAdded(uint256 messageNum, address reviewer);
+    event ViolationAdded(uint256 messageId, address reviewer);
 
     // Stores the members (by group) that have been added
     // to the Semaphore contract through this contract
     mapping(uint256 => mapping(uint256 => bool)) internal groups;
 
     // Used for UI-friendly message reference
-    Counters.Counter private _messageNumCounter;
+    Counters.Counter private _messageIdCounter;
 
     constructor(ISemaphore semaContractAddr) {
         semaContract = semaContractAddr;
@@ -49,7 +49,7 @@ contract TazMessage is AccessControl {
         _grantRole(TAZ_ADMIN_ROLE, msg.sender);
 
         // Skip zero
-        _messageNumCounter.increment();
+        _messageIdCounter.increment();
     }
 
     // Exists to allow for the group admin to be updated on the Semaphore
@@ -80,7 +80,6 @@ contract TazMessage is AccessControl {
 
     // Verifies a proof and adds a message
     function addMessage(
-        string memory messageId,
         string memory messageContent,
         uint256 groupId,
         uint256 merkleTreeRoot,
@@ -88,23 +87,22 @@ contract TazMessage is AccessControl {
         uint256 nullifierHash,
         uint256 externalNullifier,
         uint256[8] calldata proof) external returns (uint256) {
-        uint256 messageNum = _messageNumCounter.current();
+        uint256 messageId = _messageIdCounter.current();
 
         // Verify proof with Sempahore contract
         semaContract.verifyProof(groupId, merkleTreeRoot, signal, nullifierHash, externalNullifier, proof);
 
         // Increment for next use
-        _messageNumCounter.increment();
+        _messageIdCounter.increment();
 
-        emit MessageAdded("", messageId, messageNum, messageContent);
+        emit MessageAdded(0, messageId, messageContent);
 
-        return messageNum;
+        return messageId;
     }
 
     // Verifies a proof and replies to an existing message
     function replyToMessage(
-        string memory parentMessageId,
-        string memory messageId,
+        uint256 parentMessageId,
         string memory messageContent,
         uint256 groupId,
         uint256 merkleTreeRoot,
@@ -112,20 +110,20 @@ contract TazMessage is AccessControl {
         uint256 nullifierHash,
         uint256 externalNullifier,
         uint256[8] calldata proof) external returns (uint256) {
-        uint256 messageNum = _messageNumCounter.current();
+        uint256 messageId = _messageIdCounter.current();
 
         // Require a valid parentMessageId
-        require(bytes(parentMessageId).length > 0, "Invalid ID for parent message");
+        require(parentMessageId > 0, "Invalid ID for parent message");
 
         // Verify proof with Sempahore contract
         semaContract.verifyProof(groupId, merkleTreeRoot, signal, nullifierHash, externalNullifier, proof);
 
         // Increment for next use
-        _messageNumCounter.increment();
+        _messageIdCounter.increment();
 
-        emit MessageAdded(parentMessageId, messageId, _messageNumCounter.current(), messageContent);
+        emit MessageAdded(parentMessageId, _messageIdCounter.current(), messageContent);
 
-        return messageNum;
+        return messageId;
     }
 
     function addAdmins(address[] calldata admins) external onlyRole(TAZ_ADMIN_ROLE) {
@@ -152,8 +150,7 @@ contract TazMessage is AccessControl {
         }
     }
 
-    function addViolation(uint256 messageNum) external onlyRole(REVIEWER_ROLE) {
-        emit ViolationAdded(messageNum, msg.sender);
+    function addViolation(uint256 messageId) external onlyRole(REVIEWER_ROLE) {
+        emit ViolationAdded(messageId, msg.sender);
     }
 }
-

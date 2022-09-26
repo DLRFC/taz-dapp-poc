@@ -61,8 +61,7 @@ export default function Questions({ questionsProp }) {
     ])
 
     const messageContent = question
-    const messageId = ethers.utils.id(messageContent)
-    const signal = messageId.slice(35)
+    const signal = ethers.utils.id(messageContent).slice(35)
     console.log('QUESTIONS PAGE | signal', signal)
     const { solidityProof, nullifierHash, externalNullifier, merkleTreeRoot, groupId } = await generateFullProof(
       identityKey,
@@ -76,8 +75,7 @@ export default function Questions({ questionsProp }) {
     ])
 
     const body = {
-      parentMessageId: '',
-      messageId,
+      parentMessageId: 0,
       messageContent,
       merkleTreeRoot,
       groupId,
@@ -94,7 +92,8 @@ export default function Questions({ questionsProp }) {
       if (postResponse.status === 201) {
         const newQuestion = {
           id: Math.round(Math.random() * 100000000000).toString(),
-          messageId: postResponse.data.hash,
+          messageId: 0,
+          txHash: postResponse.data.hash,
           messageContent
         }
         const updatedQuestions = [newQuestion].concat(questions)
