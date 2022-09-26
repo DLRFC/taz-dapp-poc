@@ -97,7 +97,7 @@ const DrawingHtml = forwardRef(
           onClick={(e) => e.stopPropagation()}
           className=" w-flex h-flex p-2 bg-white border-2 border-black flex flex-col items-center justify-center rounded-[5px]"
         >
-          <div className="flex grid grid-rows-1 pb-1 grid-cols-9">
+          <div className="grid grid-rows-1 pb-1 grid-cols-9">
             <div>
               <button
                 id="brand-orange"
