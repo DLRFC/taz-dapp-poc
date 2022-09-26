@@ -84,7 +84,6 @@ export default async function handler(req, res) {
       //   uint256[8] calldata proof) external {
 
       try {
-        // Fetch nonce(based on wallet)
         const nonce = fetchNonce(currentIndex)
         tx = await tazMessageContract.addMessage(
           messageContent,
@@ -96,7 +95,6 @@ export default async function handler(req, res) {
           solidityProof,
           { nonce, gasLimit: 1500000 }
         )
-        // Update nonce++ of that wallet
         // console.log(tx)
 
         // const response = await tx.wait(1)
