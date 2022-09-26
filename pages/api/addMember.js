@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 import faunadb from 'faunadb'
 import TazMessage from '../utils/TazMessage.json'
 import { GROUP_ID, TAZMESSAGE_CONTRACT } from '../../config/goerli.json'
-import fetchWalletIndex from '../../helpers/fetchWalletIndex'
+import { fetchWalletIndex, fetchNonce } from '../../helpers/walletHelpers';
 
 dotenv.config({ path: '../../.env.local' })
 
@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL)
   const currentIndex = await fetchWalletIndex()
   const signer_array = process.env.PRIVATE_KEY_ARRAY.split(',')
-  const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider)
+  const signer = new ethers.Wallet(signer_array[currentIndex]).connect(provider)
   const tazMessageAbi = TazMessage.abi
   const tazMessageAddress = TAZMESSAGE_CONTRACT
   const groupId = GROUP_ID
@@ -57,8 +57,10 @@ export default async function handler(req, res) {
 
         try {
           console.log('Add Member Function called')
-          const tx = await tazMessageContract.addMember(groupId, identityCommitment)
-          // console.log(tx)
+          const nonce = await fetchNonce(currentIndex)
+          console.log(nonce)
+          const tx = await tazMessageContract.addMember(groupId, identityCommitment, {nonce})
+          console.log(tx)
 
           const response = await tx.wait(1).then(
             client.query(

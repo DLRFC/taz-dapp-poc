@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 // import Semaphore from '../utils/Semaphore.json'
 import TazMessage from '../utils/TazMessage.json'
 import { TAZMESSAGE_CONTRACT } from '../../config/goerli.json'
-import fetchWalletIndex from '../../helpers/fetchWalletIndex'
+import { fetchWalletIndex, fetchNonce} from '../../helpers/walletHelpers'
 
 dotenv.config({ path: '../../.env.local' })
 
@@ -48,6 +48,7 @@ export default async function handler(req, res) {
       console.log('BACKEND LOG | Transacting reply')
 
       try {
+        const nonce = await fetchNonce(currentIndex)
         tx = await tazMessageContract.replyToMessage(
           parentMessageId,
           messageContent,
@@ -57,7 +58,7 @@ export default async function handler(req, res) {
           nullifierHash,
           externalNullifier,
           solidityProof,
-          { gasLimit: 15000000 }
+          { nonce,gasLimit: 15000000 }
         )
         console.log('Transaction Finished!')
         // const response = await tx.wait(1)
@@ -84,6 +85,7 @@ export default async function handler(req, res) {
 
       try {
         // Fetch nonce(based on wallet)
+        const nonce = fetchNonce(currentIndex)
         tx = await tazMessageContract.addMessage(
           messageContent,
           groupId,
@@ -92,7 +94,7 @@ export default async function handler(req, res) {
           nullifierHash,
           externalNullifier,
           solidityProof,
-          { gasLimit: 1500000 }
+          { nonce, gasLimit: 1500000 }
         )
         // Update nonce++ of that wallet
         // console.log(tx)
