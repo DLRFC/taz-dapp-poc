@@ -61,9 +61,12 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
       {/* Image Gallery */}
       <div className="flex flex-row-reverse flex-wrap-reverse grow h-full w-full bg-white outline">
         {!images ? (
-          <Loading size="xl" />
+          <div className="flex justify-center w-full items-center">
+            <Loading size="xl" />
+          </div>
         ) : (
           images.map((img, index) => {
+            // Can delete after we ensure that propper order of images is returned
             console.log('image', img, index)
             return (
               <picture

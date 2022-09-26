@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import ArtGalleryComponent from './View'
+// Used to dev when images didn't load
 import mockImages from './data'
 
 export default function ArtGallery(props) {
