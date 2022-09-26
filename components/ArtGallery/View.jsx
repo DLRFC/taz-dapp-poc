@@ -106,12 +106,3 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
     </div>
   )
 }
-
-const ImageCard = ({ url, onClick }) => (
-  <picture
-    onClick={onClick}
-    className="w-1/2 md:w-1/4 border border-brand-gray2 bg-white hover:bg-red-700 cursor-pointer"
-  >
-    <img src={url} alt="" />
-  </picture>
-)
