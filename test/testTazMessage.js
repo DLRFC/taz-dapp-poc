@@ -130,8 +130,7 @@ describe('TazMessage', () => {
   describe('# addMessage', () => {
     it('Should add a message', async () => {
       const messageContent = 'What is the name of this Dapp?'
-      const messageId = ethers.utils.id(messageContent)
-      const signal = messageId.slice(35)
+      const signal = ethers.utils.id(messageContent).slice(35)
       const proofElements = await run('createProof', {
         identitySeed,
         groupId: GROUP_ID,
@@ -140,7 +139,6 @@ describe('TazMessage', () => {
         logs: false
       })
       /*
-      console.log('messageId:', messageId)
       console.log('messageContent:', messageContent)
       console.log('proofElements.groupId:', proofElements.groupId)
       console.log('proofElements.merkleTreeRoot:', proofElements.merkleTreeRoot)
@@ -152,7 +150,6 @@ describe('TazMessage', () => {
       const tx = await contract
         .connect(signer1)
         .addMessage(
-          messageId,
           messageContent,
           proofElements.groupId,
           proofElements.merkleTreeRoot,
@@ -163,13 +160,13 @@ describe('TazMessage', () => {
           { gasLimit: 1500000 }
         )
 
-      await expect(tx).to.emit(contract, 'MessageAdded').withArgs('', messageId, anyValue, messageContent)
+      await expect(tx).to.emit(contract, 'MessageAdded').withArgs(0, anyValue, messageContent)
 
       /*
       // Method below allows for testing individual arguments separately. Same result.
       const receipt = await tx.wait()
       const interfaceMessageAdded = new ethers.utils.Interface([
-        'event MessageAdded(string parentMessageId, string messageId, uint256 messageNum, string messageContent)'
+        'event MessageAdded(string parentMessageId, string messageId, string messageContent)'
       ])
       const { data } = receipt.logs[1]
       const { topics } = receipt.logs[1]
@@ -184,9 +181,8 @@ describe('TazMessage', () => {
   describe('# replyToMessage', () => {
     it('Should reply to a message', async () => {
       const messageContent = 'The name of the Dapp is TAZ'
-      const messageId = ethers.utils.id(messageContent)
-      const parentMessageId = ethers.utils.id('What is the name of this Dapp?')
-      const signal = messageId.slice(35)
+      const parentMessageId = 1
+      const signal = ethers.utils.id(messageContent).slice(35)
 
       const proofElements = await run('createProof', {
         identitySeed,
@@ -200,7 +196,6 @@ describe('TazMessage', () => {
         .connect(signer1)
         .replyToMessage(
           parentMessageId,
-          messageId,
           messageContent,
           proofElements.groupId,
           proofElements.merkleTreeRoot,
@@ -211,14 +206,13 @@ describe('TazMessage', () => {
           { gasLimit: 1500000 }
         )
 
-      await expect(tx).to.emit(contract, 'MessageAdded').withArgs(parentMessageId, messageId, anyValue, messageContent)
+      await expect(tx).to.emit(contract, 'MessageAdded').withArgs(parentMessageId, anyValue, messageContent)
     })
 
     it('Should fail to reply to message when parentMessageId is empty', async () => {
       const messageContent = 'The name of the Dapp is unknowable'
-      const messageId = ethers.utils.id(messageContent)
-      const parentMessageId = ''
-      const signal = messageId.slice(35)
+      const parentMessageId = 0
+      const signal = ethers.utils.id(messageContent).slice(35)
 
       const proofElements = await run('createProof', {
         identitySeed,
@@ -232,7 +226,6 @@ describe('TazMessage', () => {
         .connect(signer1)
         .replyToMessage(
           parentMessageId,
-          messageId,
           messageContent,
           proofElements.groupId,
           proofElements.merkleTreeRoot,

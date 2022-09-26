@@ -12,7 +12,7 @@ export default function ArtBoard() {
   const [identityKey, setIdentityKey] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isComponentLoading, setIsComponentLoading] = useState(false)
-  const [tool, setTool] = useState()
+  const [tool, setTool] = useState('pen')
   const [userSelectedTile, setUserSelectedTile] = useState(false)
 
   const [isDrawing, setIsDrawing] = useState(false)
@@ -95,7 +95,7 @@ export default function ArtBoard() {
   }
 
   const toggleTool = (e) => {
-    if (e.target.alt === 'fill') {
+    if (tool === 'pen') {
       console.log('settofill')
       setTool('fill')
     } else {
@@ -238,7 +238,7 @@ export default function ArtBoard() {
       const newCanvas = {
         id: 10000,
         timestamp: 999999999,
-        tokenId: 100000,
+        tokenId: 0,
         uri: mintResponse.data.ipfsUrl,
         canvaUri: canvasUri
       }

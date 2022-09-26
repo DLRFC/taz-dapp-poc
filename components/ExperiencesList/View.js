@@ -83,7 +83,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => (
         </div>
 
         <div className="relative flex flex-col items-center overflow-hidden rounded-md border-2 border-brand-blue shadow-xl bg-white mt-20 mb-20">
-          <div className="flex w-full justify-between border-b-2 border-brand-blue bg-black text-15px text-brand-beige p-3">
+          <div className="flex w-full justify-between bg-black text-15px text-brand-beige p-3">
             <div>🧑‍🏫</div>
             <div>FAQ</div>
             <div></div>

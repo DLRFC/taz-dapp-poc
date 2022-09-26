@@ -10,7 +10,7 @@ import { Subgraphs } from '../../hooks/subgraphs'
 import BackToTopArrow from '../../components/svgElements/BackToTopArrow'
 import Footer from '../../components/Footer'
 
-const { API_REQUEST_TIMEOUT, FACT_ROTATION_INTERVAL } = require('../../config/goerli.json')
+const { API_REQUEST_TIMEOUT, FACT_ROTATION_INTERVAL, CHAINED_MODAL_DELAY } = require('../../config/goerli.json')
 const { FACTS } = require('../../data/facts.json')
 
 export default function Questions({ questionsProp }) {
@@ -52,17 +52,16 @@ export default function Questions({ questionsProp }) {
     event.preventDefault()
 
     closeQuestionModal()
-    openProcessingModal()
+    setTimeout(openProcessingModal, CHAINED_MODAL_DELAY)
 
     setSteps([
       { status: 'processing', text: 'Generate zero knowledge proof' },
       { status: 'queued', text: 'Submit transaction with proof and question' },
-      { status: 'queued', text: 'Update answers from on-chain events' }
+      { status: 'queued', text: 'Update questions from on-chain events' }
     ])
 
     const messageContent = question
-    const messageId = ethers.utils.id(messageContent)
-    const signal = messageId.slice(35)
+    const signal = ethers.utils.id(messageContent).slice(35)
     console.log('QUESTIONS PAGE | signal', signal)
     const { solidityProof, nullifierHash, externalNullifier, merkleTreeRoot, groupId } = await generateFullProof(
       identityKey,
@@ -72,12 +71,11 @@ export default function Questions({ questionsProp }) {
     setSteps([
       { status: 'complete', text: 'Generate zero knowledge proof' },
       { status: 'processing', text: 'Submit transaction with proof and question' },
-      { status: 'queued', text: 'Update answers from on-chain events' }
+      { status: 'queued', text: 'Update questions from on-chain events' }
     ])
 
     const body = {
-      parentMessageId: '',
-      messageId,
+      parentMessageId: 0,
       messageContent,
       merkleTreeRoot,
       groupId,
@@ -94,7 +92,8 @@ export default function Questions({ questionsProp }) {
       if (postResponse.status === 201) {
         const newQuestion = {
           id: Math.round(Math.random() * 100000000000).toString(),
-          messageId: postResponse.data.hash,
+          messageId: 0,
+          txHash: postResponse.data.hash,
           messageContent
         }
         const updatedQuestions = [newQuestion].concat(questions)
