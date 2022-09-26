@@ -193,15 +193,17 @@ export default function Answers({ messageId, txHash, questionProp, answersProp }
   return (
     <div className="min-h-[700px] h-auto flex flex-col">
       {/* <div className="z-20 fixed bottom-0"> */}
-      <div className="fixed bottom-[180px] right-2 z-30 flex justify-end">
-        <button
-          type="button"
-          className="rounded-full bg-brand-yellow px-4 py-2 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
-          onClick={openAnswerModal}
-        >
-          Answer this question
-        </button>
-      </div>
+      {messageId !== '0' && (
+        <div className="fixed bottom-[180px] right-2 z-30 flex justify-end">
+          <button
+            type="button"
+            className="rounded-full bg-brand-yellow px-4 py-2 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
+            onClick={openAnswerModal}
+          >
+            Answer this question
+          </button>
+        </div>
+      )}
       {showTopBtn && (
         <div className="fixed bottom-[180px] left-2 z-30 flex justify-end">
           <button onClick={goToTop}>

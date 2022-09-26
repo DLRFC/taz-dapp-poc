@@ -11,7 +11,6 @@ import BackArrow from '../svgElements/BackArrow'
 import Footer from '../Footer'
 
 function AnswersBoard({ messageId, txHash, question, answers }) {
-  console.log('MESSSAGEID: ', messageId)
   // const [showTopBtn, setShowTopBtn] = useState(false)
 
   // useEffect(() => {

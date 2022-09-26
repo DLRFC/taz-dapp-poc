@@ -6,7 +6,7 @@ const tazMessageAbi = require('../artifacts/contracts/TazMessage.sol/TazMessage.
 async function main() {
   const [signer1, signer2] = await ethers.getSigners()
 
-  const OLD_TAZMESSAGE_CONTRACT = '0x2d9C7Bd91da34D5cEEF048a006745B877a872fe4'
+  const OLD_TAZMESSAGE_CONTRACT = '0xE2C95FD193148321286Acf018E4fbB645F804f8B'
   const NEW_TAZMESSAGE_CONTRACT = TAZMESSAGE_CONTRACT // Assumes config has been updated
 
   const oldTazMessageContract = new ethers.Contract(OLD_TAZMESSAGE_CONTRACT, tazMessageAbi, signer1)
