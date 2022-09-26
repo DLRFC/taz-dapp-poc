@@ -97,6 +97,7 @@ export default function ArtBoard() {
   const toggleTool = (e) => {
     if (tool === 'pen') {
       console.log('settofill')
+      setFillColor(color)
       setTool('fill')
     } else {
       setTool('pen')
