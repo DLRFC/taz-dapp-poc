@@ -69,7 +69,14 @@ function QuestionsBoardComponent({ questions, clearIdentity }) {
       <div className="z-10 col-start-1 row-start-2 px-6">
         <div className="z-20 min-w-[200px] relative divide-y overflow-y-auto rounded-md border-2 border-brand-blue bg-white drop-shadow-lg">
           {questions.map((question) => (
-            <Link href={`/answers/${question.messageId}`} key={question.id}>
+            <Link
+              href={
+                question.messageId !== 0
+                  ? `/answers/${question.messageId}`
+                  : `/answers/${question.messageId}/?txHash=${question.txHash}`
+              }
+              key={question.id}
+            >
               <div className="flex w-full flex-row items-center border-brand-blue p-4 cursor-pointer">
                 <p className="text-brand-brown opacity-[85%] text-sm leading-5 w-[100%]">{question.messageContent}</p>
                 <SelectorArrow />

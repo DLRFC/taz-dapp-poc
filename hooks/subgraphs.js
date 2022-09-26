@@ -21,8 +21,7 @@ class Subgraphs {
       data: JSON.stringify({
         query: `
           {
-            members(where: {group_: {id: "${groupId}"}}, orderBy: timestamp,) {
-              id
+            members(where: {group_: {id: "${groupId}"}}, orderBy: index, first: 1000) {
               identityCommitment
               timestamp
             }
@@ -49,7 +48,6 @@ class Subgraphs {
         query: `
           {
             members(where: {group_: {id: "${groupId}"}, identityCommitment: "${identityCommitment}"}) {
-              id
               identityCommitment
               timestamp
             }
@@ -72,25 +70,31 @@ class Subgraphs {
       method: 'post',
       data: JSON.stringify({
         query: `
-          {
-            newTokens(orderBy: timestamp, orderDirection: desc) {
-              id
-              timestamp
-              tokenId
-              uri
-            }
-          }`
+        {
+          tokens(
+            first: 1000
+            where: {hasViolation: false}
+            orderBy: timestamp
+            orderDirection: desc
+          ) {
+            timestamp
+            tokenId
+            uri
+            totalVotes
+            hasViolation
+          }
+        }`
       })
     }
 
-    let newTokens = []
+    let tokens = []
     try {
-      ;({ newTokens } = await Subgraphs.request(this.tazTokenSubgraphApi, config))
+      ;({ tokens } = await Subgraphs.request(this.tazTokenSubgraphApi, config))
     } catch (err) {
       console.warn('Error fetching data from subgraph', err)
     }
 
-    return newTokens
+    return tokens
   }
 
   async getQuestions() {
@@ -99,28 +103,28 @@ class Subgraphs {
       data: JSON.stringify({
         query: `
           {
-            messageAddeds(
+            messages(
               orderBy: timestamp
-              where: {parentMessageId: ""}
+              where: {parentMessageId: 0, hasViolation: false}
               orderDirection: desc
+              first: 1000
             ) {
-              id
               messageContent
               messageId
-              messageNum
               parentMessageId
             }
           }`
       })
     }
 
-    let messageAddeds = []
+    let messages = []
     try {
-      ;({ messageAddeds } = await Subgraphs.request(this.tazMessageSubgraphApi, config))
+      ;({ messages } = await Subgraphs.request(this.tazMessageSubgraphApi, config))
     } catch (err) {
       console.log('Error fetching subgraph data: ', err)
     }
-    return messageAddeds
+
+    return messages
   }
 
   async getAnswers(messageId) {
@@ -129,39 +133,39 @@ class Subgraphs {
       data: JSON.stringify({
         query: `
         {
-          parentMessageAddeds: messageAddeds(
+          parentMessages: messages(
             orderBy: messageId
             first: 1
-            where: {messageId: "${messageId}"}
+            where: {messageId: ${messageId}}
             orderDirection: desc
           ) {
-            id
             messageContent
             messageId
-            messageNum
           }
-          messageAddeds(
+          messages(
             orderBy: timestamp
-            where: {parentMessageId: "${messageId}"}
+            where: {parentMessageId: ${messageId}, parentMessageId_not: 0, hasViolation: false}
             orderDirection: desc
+            first: 1000
           ) {
-            id
             messageContent
             messageId
-            messageNum
             parentMessageId
           }
-        } `
+        }`
       })
     }
 
-    let data = { question: {}, answers: [] }
+    let parentMessages = []
+    let messages = []
     try {
-      const { parentMessageAddeds, messageAddeds } = await Subgraphs.request(this.tazMessageSubgraphApi, config)
-      data = { question: parentMessageAddeds[0], answers: messageAddeds }
+      ;({ parentMessages, messages } = await Subgraphs.request(this.tazMessageSubgraphApi, config))
     } catch (err) {
       console.log('Error fetching subgraph data: ', err)
     }
+
+    const data = { question: parentMessages.length ? parentMessages[0] : {}, answers: messages }
+
     return data
   }
 }

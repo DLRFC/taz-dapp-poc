@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 
+import { textChangeRangeNewSpan } from 'typescript'
 import RedCircle from '../svgElements/RedCircle'
 import YellowCircle from '../svgElements/YellowCircle'
 import BlueEllipse from '../svgElements/BlueEllipse'
@@ -9,7 +10,8 @@ import BackArrow from '../svgElements/BackArrow'
 // import BackToTopArrow from '../svgElements/BackToTopArrow'
 import Footer from '../Footer'
 
-function AnswersBoard({ messageId, question, answers }) {
+function AnswersBoard({ messageId, txHash, question, answers }) {
+  console.log('MESSSAGEID: ', messageId)
   // const [showTopBtn, setShowTopBtn] = useState(false)
 
   // useEffect(() => {
@@ -40,12 +42,12 @@ function AnswersBoard({ messageId, question, answers }) {
               </div>
             </Link>
           </div>
-          {question === 0 ? (
+          {messageId === '0' && txHash.length > 0 ? (
             <div className="p-4">
               <p className="text-brand-red pb-4">Question is still being processed.</p>
               <p className="text-sm">
                 You can check your transaction on{' '}
-                <a className="py-2 underline" href={`https://goerli.etherscan.io/tx/${messageId}`}>
+                <a className="py-2 underline" href={`https://goerli.etherscan.io/tx/${txHash}`}>
                   Etherscan
                 </a>
                 .
@@ -54,7 +56,7 @@ function AnswersBoard({ messageId, question, answers }) {
           ) : (
             <div style={{ borderTopWidth: '0px' }}>
               <p className="px-2 text-brand-3xs text-brand-gray50 font-medium">
-                qID {question.messageNum.toLocaleString()}
+                qID {question.messageId ? question.messageId.toLocaleString() : '0'}
               </p>
               <p
                 className="px-2 pb-4"
@@ -85,7 +87,7 @@ function AnswersBoard({ messageId, question, answers }) {
 
               <div className="flex-col py-3 text-xs text-brand-brown">
                 <p className="px-4 pb-2 text-brand-3xs text-brand-gray50 font-medium">
-                  qID {answer.messageNum ? answer.messageNum.toLocaleString() : '0'}
+                  qID {answer.messageId ? answer.messageId.toLocaleString() : '0'}
                 </p>
                 <p className="px-4 leading-[1.3rem]">{answer.messageContent}</p>
               </div>

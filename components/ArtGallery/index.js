@@ -7,15 +7,15 @@ export default function ArtGallery(props) {
   const [activeImage, setActiveImage] = useState(null)
   const [open, setOpen] = useState(false)
 
-  const handleClick = (url) => {
-    setActiveImage(url)
+  const handleClick = (image) => {
+    setActiveImage(image)
   }
 
   const updateFromLocalStorage = () => {
     const savedCanvas = JSON.parse(window.localStorage.getItem('savedCanva'))
     const found = images.some((element) => savedCanvas && element.uri === savedCanvas.uri)
     if (found) {
-      window.localStorage.removeItem('savedQuestion')
+      window.localStorage.removeItem('savedCanva')
       console.log('image found')
     } else if (savedCanvas) {
       const updatedCanvas = [savedCanvas].concat(images)

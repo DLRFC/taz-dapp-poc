@@ -43,7 +43,7 @@ task('createProof', 'create a proof')
     proofElements.members = proofElements.group.members
 
     // Create group using custom subgraph for members (to eliminate 100-member limit)
-    // Use this if group and members are already existing
+    // // Use this if group and members are already existing
     // proofElements.group = new Group(16)
     // proofElements.groupId = groupId.toString()
     // const subgraphs = new Subgraphs()
@@ -76,6 +76,9 @@ task('createProof', 'create a proof')
     proofElements.signalBytes32 = ethers.utils.formatBytes32String(proofElements.signal)
 
     logs && console.log('TASK createProof | proofElements', proofElements)
+    logs && console.log('TASK createProof | proofElements.nullifierHash', proofElements.nullifierHash)
+    logs && console.log('TASK createProof | proofElements.solidityProof', proofElements.solidityProof)
+    logs && console.log('TASK createProof | proofElements.signalBytes32', proofElements.signalBytes32)
 
     if (logs) {
       console.log('TASK createProof | ended')

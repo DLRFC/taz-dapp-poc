@@ -20,7 +20,6 @@ export default async function handler(req, res) {
 
     const {
       parentMessageId,
-      messageId,
       messageContent,
       groupId,
       merkleTreeRoot,
@@ -45,13 +44,12 @@ export default async function handler(req, res) {
 
     let tx = null
 
-    if (parentMessageId !== '') {
+    if (parentMessageId !== 0) {
       console.log('BACKEND LOG | Transacting reply')
 
       try {
         tx = await tazMessageContract.replyToMessage(
           parentMessageId,
-          messageId,
           messageContent,
           groupId,
           merkleTreeRoot,
@@ -76,7 +74,6 @@ export default async function handler(req, res) {
       console.log('BACKEND LOG | Add Message')
 
       // function addMessage(
-      //   string memory messageId,
       //   string memory messageContent,
       //   uint256 groupId,
       //   uint256 merkleTreeRoot,
@@ -88,7 +85,6 @@ export default async function handler(req, res) {
       try {
         // Fetch nonce(based on wallet)
         tx = await tazMessageContract.addMessage(
-          messageId,
           messageContent,
           groupId,
           merkleTreeRoot,

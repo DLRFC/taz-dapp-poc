@@ -238,7 +238,7 @@ export default function ArtBoard() {
       const newCanvas = {
         id: 10000,
         timestamp: 999999999,
-        tokenId: 100000,
+        tokenId: 0,
         uri: mintResponse.data.ipfsUrl,
         canvaUri: canvasUri
       }

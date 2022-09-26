@@ -65,7 +65,7 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
                 <ImageCard
                   key={image.id}
                   url={image.canvaUri ? image.canvaUri : image.uri}
-                  onClick={() => handleClick(image.uri)}
+                  onClick={() => handleClick({ tokenId: image.tokenId, url: image.uri })}
                 />
               ))}
             </div>
