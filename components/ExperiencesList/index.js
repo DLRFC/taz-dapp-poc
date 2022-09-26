@@ -1,5 +1,5 @@
-import ExperiencesListComponent from './View'
 import { useRouter } from 'next/router'
+import ExperiencesListComponent from './View'
 
 const ExperiencesList = () => {
   const router = useRouter()

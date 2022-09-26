@@ -30,7 +30,7 @@ export default function GenerateIdentityComponent({
       <Header />
 
       <div className="flex flex-col items-center rounded-md px-[32px] py-4 z-10">
-        <div className="z-10 mt-3 h-[570px] w-full py-3">
+        <div className="z-10 mt-3 min-h-[620px] h-auto w-full py-3">
           {!imageUrl ? (
             <div className="h-full w-full">
               <p className="font-bold text-brand-h3 text-brand-beige">You've been invited to Join a Semaphore Group</p>
