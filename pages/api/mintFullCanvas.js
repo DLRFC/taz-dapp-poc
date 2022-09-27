@@ -101,7 +101,8 @@ export default async function handler(req, res) {
           console.log('IPFS url created: ', ipfsUrl)
         })
 
-        const sendTransaction = async () => {
+        // const sendTransaction = async () => {
+          try {
           const signalBytes32 = ethers.utils.formatBytes32String(signal)
           const nonce = await fetchNonce(signerAddress)
           const tx = await nftContract.safeMint(
@@ -134,6 +135,9 @@ export default async function handler(req, res) {
 
           // Send response to frontend
           res.status(201).json({ tx, ipfsUrl })
+        } catch (e) {
+          console.log(e)
+          res.status(500).json(e);
         }
 
         await retry(sendTransaction, MAX_TRANSACTION_ATTEMPTS)
