@@ -3,8 +3,8 @@ import dotenv from 'dotenv'
 import faunadb from 'faunadb'
 import { Web3Storage, File } from 'web3.storage'
 import { Blob } from '@web-std/blob'
-import { TAZTOKEN_CONTRACT } from '../../config/goerli.json'
-import { fetchWalletIndex, fetchNonce } from '../../helpers/walletHelpers'
+import { TAZTOKEN_CONTRACT, MAX_TRANSACTION_ATTEMPTS } from '../../config/goerli.json'
+import { fetchWalletIndex, fetchNonce, retry } from '../../helpers/helpers'
 
 import TazToken from '../utils/TazToken.json'
 
@@ -101,7 +101,7 @@ export default async function handler(req, res) {
           console.log('IPFS url created: ', ipfsUrl)
         })
 
-        try {
+        const sendTransaction = async () => {
           const signalBytes32 = ethers.utils.formatBytes32String(signal)
           const nonce = await fetchNonce(signerAddress)
           const tx = await nftContract.safeMint(
@@ -134,10 +134,9 @@ export default async function handler(req, res) {
 
           // Send response to frontend
           res.status(201).json({ tx, ipfsUrl })
-        } catch (error) {
-          console.log(error)
-          res.status(403).json('Error in catch 1: ', error)
         }
+
+        await retry(sendTransaction, MAX_TRANSACTION_ATTEMPTS)
       }
     } catch (error) {
       res.status(500).json('Error in catch 2: ', error)

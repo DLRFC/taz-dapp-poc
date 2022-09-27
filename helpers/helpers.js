@@ -48,10 +48,7 @@ export async function fetchNonce(address) {
       query.Lambda('walletRef', query.Get(query.Var('walletRef')))
     )
   )
-  console.log(address);
-
-  console.log(dbs.data);
-
+  
   const match = dbs.data.filter((wallet) => wallet.data.address === address)[0]
 
   const nonce = match.data.nonce
@@ -66,4 +63,21 @@ export async function fetchNonce(address) {
   )
 
   return nonce
+}
+
+export async function retry(fn, maxAttempts) {
+  const execute = async (attempt) => {
+    try {
+      return await fn()
+    } catch (err) {
+      if (attempt <= maxAttempts) {
+        const nextAttempt = attempt + 1
+        console.error(`Retrying transaction due to:`, err)
+        return execute(nextAttempt)
+      } else {
+        throw err
+      }
+    }
+  }
+  return execute(1)
 }

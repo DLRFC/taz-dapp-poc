@@ -2,8 +2,8 @@ import { ethers } from 'ethers'
 import dotenv from 'dotenv'
 import faunadb from 'faunadb'
 import TazMessage from '../utils/TazMessage.json'
-import { GROUP_ID, TAZMESSAGE_CONTRACT } from '../../config/goerli.json'
-import { fetchWalletIndex, fetchNonce } from '../../helpers/walletHelpers';
+import { GROUP_ID, TAZMESSAGE_CONTRACT, MAX_TRANSACTION_ATTEMPTS } from '../../config/goerli.json'
+import { fetchWalletIndex, fetchNonce, retry } from '../../helpers/helpers'
 
 dotenv.config({ path: '../../.env.local' })
 
@@ -53,7 +53,7 @@ export default async function handler(req, res) {
         // console.log(tazMessageContract)
         console.log(identityCommitment)
 
-        try {
+        const sendTransaction = async () => {
           console.log('Add Member Function called')
           console.log('currentIndex', currentIndex)
           const signer = new ethers.Wallet(signer_array[currentIndex]).connect(provider)
@@ -61,7 +61,7 @@ export default async function handler(req, res) {
           const tazMessageContract = new ethers.Contract(tazMessageAddress, tazMessageAbi, signer)
           const nonce = await fetchNonce(signerAddress)
           console.log(nonce)
-          const tx = await tazMessageContract.addMember(groupId, identityCommitment, {nonce})
+          const tx = await tazMessageContract.addMember(groupId, identityCommitment, { nonce })
           console.log(tx)
 
           const response = await tx.wait(1).then(
@@ -76,11 +76,11 @@ export default async function handler(req, res) {
 
           res.status(201).json(response)
           console.log(response)
-        } catch (error) {
-          console.log('TRANSACTION ERROR')
-          console.log(error)
-          res.status(403).json(error)
         }
+
+        await retry(sendTransaction, MAX_TRANSACTION_ATTEMPTS)
+
+
       } else {
         isValid = false
         console.log(isValid)
