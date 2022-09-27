@@ -8,7 +8,6 @@ import { useGenerateProof } from '../../hooks/useGenerateProof'
 import ProcessingModal from '../../components/ProcessingModal'
 import { Subgraphs } from '../../hooks/subgraphs'
 import BackToTopArrow from '../../components/svgElements/BackToTopArrow'
-import Footer from '../../components/Footer'
 
 const { API_REQUEST_TIMEOUT, FACT_ROTATION_INTERVAL, CHAINED_MODAL_DELAY } = require('../../config/goerli.json')
 const { FACTS } = require('../../data/facts.json')
@@ -138,10 +137,6 @@ export default function Questions({ questionsProp }) {
     }
   }
 
-  // const scrollToTop = () => {
-  //   window.scrollTo(0, 0)
-  // }
-
   const rotateFact = () => {
     setFact(FACTS[FACTS.indexOf(fact) + 1 === FACTS.length ? 0 : FACTS.indexOf(fact) + 1])
   }
@@ -163,8 +158,9 @@ export default function Questions({ questionsProp }) {
   }, [fact])
 
   useEffect(() => {
+    const windowHeight = window.outerHeight
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 20) {
+      if (window.scrollY > windowHeight) {
         setShowTopBtn(true)
       } else {
         setShowTopBtn(false)
@@ -181,43 +177,23 @@ export default function Questions({ questionsProp }) {
 
   return (
     <div className="min-h-[700px]">
-      <div className="fixed bottom-[180px] right-2 z-30 flex justify-end">
+      <div className="fixed bottom-[37%] right-2 z-30 flex justify-end">
         <button
           type="button"
-          className="rounded-full bg-brand-yellow px-4 py-2 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
+          className="rounded-full bg-brand-yellow ring-1 ring-brand-black py-3 px-4 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
           onClick={openQuestionModal}
         >
           Ask a question
         </button>
       </div>
       {showTopBtn && (
-        <div className="fixed bottom-2-[180px] left-2 z-30 flex justify-end">
+        <div className="fixed bottom-[25%] left-2 z-30 flex justify-end">
           <button onClick={goToTop}>
-            <BackToTopArrow size={40} fill="#1E1E1E" />
+            <BackToTopArrow />
           </button>
         </div>
       )}
-      <div className="z-20 fixed bottom-0 w-full flex-col bg-black py-5">
-        <Footer />
-      </div>
-      {/* <div className="sticky top-[400px] z-30 flex justify-between mx-2 min-w-[200px]">
-        <button type="button" onClick={scrollToTop}>
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="32" height="32" rx="16" fill="#1E1E1E" />
-            <path
-              d="M16.6607 13.219V21.3337H15.3387V13.219L11.7931 16.795L10.8584 15.8523L15.9997 10.667L21.1409 15.8523L20.2063 16.795L16.6607 13.219Z"
-              fill="#EFAD5F"
-            />
-          </svg>
-        </button>
-        <button
-          type="button"
-          onClick={openQuestionModal}
-          className="rounded-full bg-brand-yellow px-4 py-2 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
-        >
-          Ask a question
-        </button>
-      </div> */}
+
       <ProcessingModal isOpen={processingModalIsOpen} closeModal={closeProcessingModal} steps={steps} fact={fact} />
       <QuestionModal
         isOpen={questionModalIsOpen}

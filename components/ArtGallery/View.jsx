@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
-// import { RiArrowUpCircleFill } from 'react-icons/ri'
 
 import Modal from './Modal'
 import BackToTopArrow from '../svgElements/BackToTopArrow'
@@ -39,7 +38,7 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
 
       {/* Header */}
       <div className="flex flex-col w-full px-8 mb-6">
-        <div className="mt-16 mb-10">
+        <div className="mt-8 mb-10">
           <BackLink hre="/experiences-page" />
         </div>
         <p className="mb-3 text-2xl font-extrabold">
@@ -90,7 +89,7 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
         <Link href="/artBoard-page">
           <button
             type="button"
-            className="rounded-full bg-brand-yellow px-4 py-2 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
+            className="rounded-full bg-brand-yellow ring-1 ring-brand-black py-3 px-4 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
           >
             Draw with others
           </button>
@@ -99,7 +98,7 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
       {showTopBtn && (
         <div className="fixed bottom-[15%] left-2 flex justify-end">
           <button onClick={goToTop}>
-            <BackToTopArrow size={40} fill="#1E1E1E" />
+            <BackToTopArrow />
           </button>
         </div>
       )}
