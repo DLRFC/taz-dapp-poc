@@ -12,7 +12,7 @@ import Footer from '../Footer'
 function QuestionsBoardComponent({ questions, clearIdentity }) {
   return (
     <div className="grid mb-[200px]">
-      <div className="z-20 col-start-1 row-start-1 fixed">
+      <div className="z-0 col-start-1 row-start-1 fixed">
         <div className="absolute top-[142px] -left-[51px]">
           <YellowCircle />
         </div>

@@ -113,23 +113,6 @@ function AnswersBoard({ messageId, txHash, question, answers }) {
       <div className="z-10 fixed bottom-0 w-full flex-col bg-black py-5">
         <Footer />
       </div>
-      {/* <div className="fixed bottom-24 right-2 z-30 flex justify-end">
-        <Link href="/answer-question-page">
-          <button
-            type="button"
-            className="rounded-full bg-brand-yellow px-4 py-2 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
-          >
-            Answer this question
-          </button>
-        </Link>
-      </div>
-      {showTopBtn && (
-        <div className="fixed bottom-24 left-2 z-30 flex justify-end">
-          <button onClick={goToTop}>
-            <BackToTopArrow size={40} fill="#1E1E1E" />
-          </button>
-        </div>
-      )} */}
     </div>
   )
 }
