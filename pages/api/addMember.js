@@ -53,7 +53,8 @@ export default async function handler(req, res) {
         // console.log(tazMessageContract)
         console.log(identityCommitment)
 
-        const sendTransaction = async () => {
+        // const sendTransaction = async () => {
+          try {
           console.log('Add Member Function called')
           console.log('currentIndex', currentIndex)
           const signer = new ethers.Wallet(signer_array[currentIndex]).connect(provider)
@@ -76,9 +77,12 @@ export default async function handler(req, res) {
 
           res.status(201).json(response)
           console.log(response)
+        } catch (e) {
+          console.log(e)
+          res.status(500).json(e);
         }
 
-        await retry(sendTransaction, MAX_TRANSACTION_ATTEMPTS)
+        // await retry(sendTransaction, MAX_TRANSACTION_ATTEMPTS)
 
 
       } else {

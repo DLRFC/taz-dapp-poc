@@ -48,7 +48,8 @@ export default async function handler(req, res) {
     if (parentMessageId !== 0) {
       console.log('BACKEND LOG | Transacting reply')
 
-      const sendTransaction = async () => {
+      // const sendTransaction = async () => {
+        try {
         const nonce = await fetchNonce(signerAddress)
         tx = await tazMessageContract.replyToMessage(
           parentMessageId,
@@ -67,6 +68,9 @@ export default async function handler(req, res) {
         console.log('Reply Message Success!')
 
         res.status(201).json(tx)
+      } catch (e) {
+        console.log(e)
+        res.status(500).json(e)
       }
 
       await retry(sendTransaction, MAX_TRANSACTION_ATTEMPTS)
@@ -83,7 +87,8 @@ export default async function handler(req, res) {
       //   uint256 externalNullifier,
       //   uint256[8] calldata proof) external {
 
-      const sendTransaction = async () => {
+      // const sendTransaction = async () => {
+        try {
         const nonce = fetchNonce(signerAddress)
         tx = await tazMessageContract.addMessage(
           messageContent,
@@ -100,9 +105,12 @@ export default async function handler(req, res) {
         // const response = await tx.wait(1)
         console.log(tx)
         res.status(201).json(tx)
+      } catch (e) {
+        console.log(e)
+        res.status(500).json(e)
       }
 
-      await retry(sendTransaction, MAX_TRANSACTION_ATTEMPTS)
+      // await retry(sendTransaction, MAX_TRANSACTION_ATTEMPTS)
     }
   }
 }
