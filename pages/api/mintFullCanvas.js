@@ -103,7 +103,7 @@ export default async function handler(req, res) {
 
         try {
           const signalBytes32 = ethers.utils.formatBytes32String(signal)
-          const nonce = await fetchNonce(currentIndex)
+          const nonce = await fetchNonce(signerAddress)
           const tx = await nftContract.safeMint(
             signerAddress,
             ipfsUrl,
