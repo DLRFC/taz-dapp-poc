@@ -123,7 +123,7 @@ export default function InvitationCheckComponent({
                   value={invitation}
                   onChange={inviteCodeChangeHandler}
                 />
-                <p className="text-brand-beige mb-3 px-1 text-sm opacity-70">or type the 8 digits code here</p>
+                <p className="text-brand-beige mb-3 px-1 text-sm opacity-70">or type the 8 digit code here</p>
               </div>
 
               {invitation && invitation.length > 5 && (
@@ -139,8 +139,9 @@ export default function InvitationCheckComponent({
           </div>
         </div>
       )}
-
-      <Footer />
+      <div className="pb-6">
+        <Footer />
+      </div>
     </div>
   )
 }

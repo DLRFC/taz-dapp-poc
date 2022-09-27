@@ -7,10 +7,6 @@ import AnswerModal from '../../components/AnswerModal'
 import { useGenerateProof } from '../../hooks/useGenerateProof'
 import ProcessingModal from '../../components/ProcessingModal'
 import { Subgraphs } from '../../hooks/subgraphs'
-import Footer from '../../components/Footer'
-import BlueEllipse from '../../components/svgElements/BlueEllipse'
-import YellowCircle from '../../components/svgElements/YellowCircle'
-import RedCircle from '../../components/svgElements/RedCircle'
 import BackToTopArrow from '../../components/svgElements/BackToTopArrow'
 
 const { API_REQUEST_TIMEOUT, FACT_ROTATION_INTERVAL, CHAINED_MODAL_DELAY } = require('../../config/goerli.json')
@@ -149,10 +145,6 @@ export default function Answers({ messageId, txHash, questionProp, answersProp }
     }
   }
 
-  // const scrollToTop = () => {
-  //   window.scrollTo(0, 0)
-  // }
-
   const rotateFact = () => {
     setFact(FACTS[FACTS.indexOf(fact) + 1 === FACTS.length ? 0 : FACTS.indexOf(fact) + 1])
   }
@@ -174,8 +166,9 @@ export default function Answers({ messageId, txHash, questionProp, answersProp }
   }, [fact])
 
   useEffect(() => {
+    const windowHeight = window.outerHeight
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 20) {
+      if (window.scrollY > windowHeight) {
         setShowTopBtn(true)
       } else {
         setShowTopBtn(false)
@@ -192,12 +185,11 @@ export default function Answers({ messageId, txHash, questionProp, answersProp }
 
   return (
     <div className="min-h-[700px] h-auto flex flex-col">
-      {/* <div className="z-20 fixed bottom-0"> */}
       {messageId !== '0' && (
-        <div className="fixed bottom-[180px] right-2 z-30 flex justify-end">
+        <div className="fixed bottom-[50%] right-2 z-30 flex justify-end">
           <button
             type="button"
-            className="rounded-full bg-brand-yellow px-4 py-2 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
+            className="rounded-full bg-brand-yellow ring-1 ring-brand-black py-3 px-4 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
             onClick={openAnswerModal}
           >
             Answer this question
@@ -205,37 +197,12 @@ export default function Answers({ messageId, txHash, questionProp, answersProp }
         </div>
       )}
       {showTopBtn && (
-        <div className="fixed bottom-[180px] left-2 z-30 flex justify-end">
+        <div className="fixed bottom-[25%] left-2 z-30 flex justify-end">
           <button onClick={goToTop}>
-            <BackToTopArrow size={40} fill="#1E1E1E" />
+            <BackToTopArrow />
           </button>
         </div>
       )}
-      <div className="z-20 fixed bottom-0 w-full flex-col bg-black mt-20 py-5">
-        <Footer />
-      </div>
-      {/* </div> */}
-
-      {/* {question === 0 ? null : (
-        <div className="sticky top-[225px] z-30 flex justify-between mx-2 min-w-[200px]">
-          <button type="button" onClick={scrollToTop}>
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="32" height="32" rx="16" fill="#1E1E1E" />
-              <path
-                d="M16.6607 13.219V21.3337H15.3387V13.219L11.7931 16.795L10.8584 15.8523L15.9997 10.667L21.1409 15.8523L20.2063 16.795L16.6607 13.219Z"
-                fill="#EFAD5F"
-              />
-            </svg>
-          </button>
-          <button
-            type="button"
-            onClick={openAnswerModal}
-            className="rounded-full bg-brand-yellow px-4 py-2 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
-          >
-            Answer this question
-          </button>
-        </div>
-      )} */}
 
       <ProcessingModal isOpen={processingModalIsOpen} closeModal={closeProcessingModal} steps={steps} fact={fact} />
       <AnswerModal
@@ -251,18 +218,6 @@ export default function Answers({ messageId, txHash, questionProp, answersProp }
         messageId={messageId}
         txHash={txHash}
       />
-      {/* <div className="z-20 absolute bottom-0 w-full  flex-col bg-black mt-20 py-5">
-        <Footer />
-      </div> */}
-      <div className="z-0 absolute bottom-0 ">
-        <BlueEllipse />
-      </div>
-      <div className="z-0 absolute top-[369px] -right-0">
-        <YellowCircle />
-      </div>
-      <div className="z-0 absolute top-[100px] ">
-        <RedCircle />
-      </div>
     </div>
   )
 }
