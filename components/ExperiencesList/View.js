@@ -124,19 +124,17 @@ const ExperiencesListComponent = ({ clearIdentity }) => (
       <a href="https://appliedzkp.org/" target="_blank" className="pb-14 underline" rel="noreferrer">
         Privacy & Scaling Explorations
       </a>
-      <div className="flex items-center justify-left">
-        <Link href="/identity">
-          <button className="bg-brand-yellow text-[14px] text-black py-1 px-3 rounded-full mb-16 mr-6">
-            View Semaphore ID
-          </button>
-        </Link>
-        <button
-          className="bg-brand-gray2 border-brand-yellow border-[1px] text-[14px] text-brand-yellow py-1 px-3 rounded-full mb-16"
-          onClick={clearIdentity}
-        >
-          Disconnect ID
+      <Link href="/identity">
+        <button className="w-[200px] bg-brand-yellow text-[14px] text-black py-1 px-3 rounded-full mb-10">
+          View Semaphore ID
         </button>
-      </div>
+      </Link>
+      <button
+        className="w-[200px] bg-brand-gray2 border-brand-yellow border-[1px] text-[14px] text-brand-yellow py-1 px-3 rounded-full mb-16"
+        onClick={clearIdentity}
+      >
+        Disconnect ID
+      </button>
 
       <Footer />
     </div>
