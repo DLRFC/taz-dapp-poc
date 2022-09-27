@@ -50,30 +50,29 @@ const ArtBoardComponent = forwardRef(
     ]
 
     return (
-      <div>
+      <div className="flex h-auto min-h-screen flex-col justify-between overflow-x-hidden">
+        {isLoading ? (
+          <ProcessingModal isOpen={isLoading} closeModal={closeProcessingModal} steps={steps} fact={fact} />
+        ) : null}
+        {isDrawing ? (
+          <AnimatePresence initial={false} exitBeforeEnter onExitComplete={() => null} className="z-20">
+            <DrawingModal
+              stageRef={stageRef}
+              borderRef={borderRef}
+              color={color}
+              lines={lines}
+              setLines={setLines}
+              fillColor={fillColor}
+              tool={tool}
+              toggleTool={toggleTool}
+              handleUndo={handleUndo}
+              handleColorSelect={handleColorSelect}
+              minimize={minimize}
+              tiles={tiles}
+            />
+          </AnimatePresence>
+        ) : null}
         <div className="z-10 px-6 py-8 font-sans">
-          {isLoading ? (
-            <ProcessingModal isOpen={isLoading} closeModal={closeProcessingModal} steps={steps} fact={fact} />
-          ) : null}
-          {isDrawing ? (
-            <AnimatePresence initial={false} exitBeforeEnter onExitComplete={() => null} className="z-20">
-              <DrawingModal
-                stageRef={stageRef}
-                borderRef={borderRef}
-                color={color}
-                lines={lines}
-                setLines={setLines}
-                fillColor={fillColor}
-                tool={tool}
-                toggleTool={toggleTool}
-                handleUndo={handleUndo}
-                handleColorSelect={handleColorSelect}
-                minimize={minimize}
-                tiles={tiles}
-              />
-            </AnimatePresence>
-          ) : null}
-
           <div className="p-4 min-w-[200px] relative divide-y overflow-y-auto border-2 border-brand-blue rounded-md bg-white drop-shadow-lg">
             <div className="mb-4 border-0">
               <Link href="/artGallery-page">
@@ -152,7 +151,7 @@ const ArtBoardComponent = forwardRef(
             <p>CanvaId : {currentCanvas}</p>
           </div>
         </div>
-        <div className="z-0 fixed bottom-0 w-full flex items-center flex-col bg-black py-5">
+        <div className="flex w-full justify-center bg-black pb-3 pt-9">
           <Footer />
         </div>
       </div>
