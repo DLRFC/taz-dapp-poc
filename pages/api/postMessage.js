@@ -2,8 +2,8 @@ import { ethers } from 'ethers'
 import dotenv from 'dotenv'
 // import Semaphore from '../utils/Semaphore.json'
 import TazMessage from '../utils/TazMessage.json'
-import { TAZMESSAGE_CONTRACT } from '../../config/goerli.json'
-import { fetchWalletIndex, fetchNonce} from '../../helpers/walletHelpers'
+import { TAZMESSAGE_CONTRACT, MAX_TRANSACTION_ATTEMPTS } from '../../config/goerli.json'
+import { fetchWalletIndex, fetchNonce, retry} from '../../helpers/helpers'
 
 dotenv.config({ path: '../../.env.local' })
 
@@ -48,7 +48,7 @@ export default async function handler(req, res) {
     if (parentMessageId !== 0) {
       console.log('BACKEND LOG | Transacting reply')
 
-      try {
+      const sendTransaction = async () => {
         const nonce = await fetchNonce(signerAddress)
         tx = await tazMessageContract.replyToMessage(
           parentMessageId,
@@ -67,11 +67,10 @@ export default async function handler(req, res) {
         console.log('Reply Message Success!')
 
         res.status(201).json(tx)
-      } catch (error) {
-        console.log('Reply to Message transaction failed!')
-        console.log(error)
-        res.status(203).json(error)
       }
+
+      await retry(sendTransaction, MAX_TRANSACTION_ATTEMPTS)
+
     } else {
       console.log('BACKEND LOG | Add Message')
 
@@ -84,7 +83,7 @@ export default async function handler(req, res) {
       //   uint256 externalNullifier,
       //   uint256[8] calldata proof) external {
 
-      try {
+      const sendTransaction = async () => {
         const nonce = fetchNonce(signerAddress)
         tx = await tazMessageContract.addMessage(
           messageContent,
@@ -101,11 +100,9 @@ export default async function handler(req, res) {
         // const response = await tx.wait(1)
         console.log(tx)
         res.status(201).json(tx)
-      } catch (error) {
-        console.log('Add Message transaction failed!')
-        console.log(error)
-        res.status(203).json(error)
       }
+
+      await retry(sendTransaction, MAX_TRANSACTION_ATTEMPTS)
     }
   }
 }
