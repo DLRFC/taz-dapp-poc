@@ -39,6 +39,7 @@ export default async function handler(req, res) {
     console.log('signer_array[currentIndex]', signer_array[currentIndex])
     const signer = new ethers.Wallet(signer_array[currentIndex]).connect(provider)
     console.log('signer', signer)
+    const signerAddress = await signer.getAddress();
     const tazMessageContract = new ethers.Contract(tazMessageAddress, tazMessageAbi, signer)
     const bytes32Signal = ethers.utils.formatBytes32String(signal)
 
@@ -48,7 +49,7 @@ export default async function handler(req, res) {
       console.log('BACKEND LOG | Transacting reply')
 
       try {
-        const nonce = await fetchNonce(currentIndex)
+        const nonce = await fetchNonce(signerAddress)
         tx = await tazMessageContract.replyToMessage(
           parentMessageId,
           messageContent,
@@ -84,7 +85,7 @@ export default async function handler(req, res) {
       //   uint256[8] calldata proof) external {
 
       try {
-        const nonce = fetchNonce(currentIndex)
+        const nonce = fetchNonce(signerAddress)
         tx = await tazMessageContract.addMessage(
           messageContent,
           groupId,

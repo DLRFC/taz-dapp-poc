@@ -20,7 +20,7 @@ export default async function handler(req, res) {
   const signer_array = process.env.PRIVATE_KEY_ARRAY.split(',')
   const signer = new ethers.Wallet(signer_array[currentIndex]).connect(provider)
 
-  const signerAddress = signer.getAddress()
+  const signerAddress = await signer.getAddress()
   const { abi } = TazToken
   const contractAddress = TAZTOKEN_CONTRACT
   const nftContract = new ethers.Contract(contractAddress, abi, signer)
@@ -103,7 +103,7 @@ export default async function handler(req, res) {
 
         try {
           const signalBytes32 = ethers.utils.formatBytes32String(signal)
-          const nonce = await fetchNonce(currentIndex)
+          const nonce = await fetchNonce(signerAddress)
           const tx = await nftContract.safeMint(
             signerAddress,
             ipfsUrl,
