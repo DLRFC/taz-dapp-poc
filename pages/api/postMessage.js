@@ -73,7 +73,7 @@ export default async function handler(req, res) {
         res.status(500).json(e)
       }
 
-      await retry(sendTransaction, MAX_TRANSACTION_ATTEMPTS)
+      // await retry(sendTransaction, MAX_TRANSACTION_ATTEMPTS)
 
     } else {
       console.log('BACKEND LOG | Add Message')
