@@ -14,7 +14,7 @@ export async function fetchWalletIndex() {
     )
   )
 
-  const currentIndex = dbs.data[0].data.currentIndex
+  const { currentIndex } = dbs.data[0].data
 
   let nextIndex
 
@@ -48,10 +48,10 @@ export async function fetchNonce(address) {
       query.Lambda('walletRef', query.Get(query.Var('walletRef')))
     )
   )
-  
+
   const match = dbs.data.filter((wallet) => wallet.data.address === address)[0]
 
-  const nonce = match.data.nonce
+  const { nonce } = match.data
   const updatedNonce = nonce + 1
 
   await client.query(
@@ -74,9 +74,8 @@ export async function retry(fn, maxAttempts) {
         const nextAttempt = attempt + 1
         console.error(`Retrying transaction due to:`, err)
         return execute(nextAttempt)
-      } else {
-        throw err
       }
+      throw err
     }
   }
   return execute(1)
