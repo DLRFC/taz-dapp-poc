@@ -48,6 +48,9 @@ export async function fetchNonce(address) {
       query.Lambda('walletRef', query.Get(query.Var('walletRef')))
     )
   )
+  console.log(address);
+
+  console.log(dbs.data);
 
   const match = dbs.data.filter((wallet) => wallet.data.address === address)[0]
 

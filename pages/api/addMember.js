@@ -57,7 +57,7 @@ export default async function handler(req, res) {
           console.log('Add Member Function called')
           console.log('currentIndex', currentIndex)
           const signer = new ethers.Wallet(signer_array[currentIndex]).connect(provider)
-          const signerAddress = signer.getAddress()
+          const signerAddress = await signer.getAddress()
           const tazMessageContract = new ethers.Contract(tazMessageAddress, tazMessageAbi, signer)
           const nonce = await fetchNonce(signerAddress)
           console.log(nonce)

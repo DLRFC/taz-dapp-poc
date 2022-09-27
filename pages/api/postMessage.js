@@ -39,7 +39,7 @@ export default async function handler(req, res) {
     console.log('signer_array[currentIndex]', signer_array[currentIndex])
     const signer = new ethers.Wallet(signer_array[currentIndex]).connect(provider)
     console.log('signer', signer)
-    const signerAddress = signer.getAddress();
+    const signerAddress = await signer.getAddress();
     const tazMessageContract = new ethers.Contract(tazMessageAddress, tazMessageAbi, signer)
     const bytes32Signal = ethers.utils.formatBytes32String(signal)
 
