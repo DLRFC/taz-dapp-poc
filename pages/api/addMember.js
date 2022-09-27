@@ -62,7 +62,7 @@ export default async function handler(req, res) {
           const tazMessageContract = new ethers.Contract(tazMessageAddress, tazMessageAbi, signer)
           const nonce = await fetchNonce(signerAddress)
           console.log(nonce)
-          const tx = await tazMessageContract.addMember(groupId, identityCommitment, { nonce })
+          const tx = await tazMessageContract.addMember(groupId, identityCommitment, { nonce, gasLimit: 15000000 })
           console.log(tx)
 
           const response = await tx.wait(1).then(

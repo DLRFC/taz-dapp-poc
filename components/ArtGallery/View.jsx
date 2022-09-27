@@ -8,7 +8,18 @@ import Footer from '../Footer'
 import Loading from '../Loading'
 import BackLink from '../Buttons/BackLink'
 
-export default function ArtGalleryComponent({ open, handleClose, activeImage, setActiveImage, handleClick, images }) {
+export default function ArtGalleryComponent({
+  open,
+  handleClose,
+  activeImage,
+  setActiveImage,
+  handleClick,
+  images,
+  isVoting,
+  setIsVoting,
+  isTxLoading,
+  changeTxLoadingModal
+}) {
   const [showTopBtn, setShowTopBtn] = useState(false)
 
   useEffect(() => {
@@ -33,7 +44,16 @@ export default function ArtGalleryComponent({ open, handleClose, activeImage, se
   return (
     <div className="flex h-auto min-h-screen flex-col justify-between overflow-x-hidden">
       {open && (
-        <Modal onClose={handleClose} activeImage={activeImage} setActiveImage={setActiveImage} images={images} />
+        <Modal
+          onClose={handleClose}
+          activeImage={activeImage}
+          setActiveImage={setActiveImage}
+          images={images}
+          isVoting={isVoting}
+          setIsVoting={setIsVoting}
+          isTxLoading={isTxLoading}
+          changeTxLoadingModal={changeTxLoadingModal}
+        />
       )}
 
       {/* Header */}
