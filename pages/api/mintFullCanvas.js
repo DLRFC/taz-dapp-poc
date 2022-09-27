@@ -140,7 +140,7 @@ export default async function handler(req, res) {
           res.status(500).json(e);
         }
 
-        await retry(sendTransaction, MAX_TRANSACTION_ATTEMPTS)
+        // await retry(sendTransaction, MAX_TRANSACTION_ATTEMPTS)
       }
     } catch (error) {
       res.status(500).json('Error in catch 2: ', error)
