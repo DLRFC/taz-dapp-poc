@@ -232,16 +232,16 @@ export default function Answers() {
 
   return (
     <div className="h-full min-h-screen relative overflow-hidden flex flex-col">
-      <div className="absolute top-[10%] -left-[-30%]">
+      <div className="absolute top-[10%] -left-[30%]">
         <YellowEllipse />
       </div>
-      <div className="absolute top-[300px] left-[320px]">
+      <div className="absolute top-[40%] right-[-20%]">
         <BlueCircle />
       </div>
-      <div className="absolute top-[450px] left-[-51px]">
+      <div className="absolute top-[55%] left-[-10%]">
         <RedCircle />
       </div>
-      <div className="absolute bottom-[20%] left-[5%]">
+      <div className="absolute bottom-[10%] left-[5%]">
         <BunnyQ2 />
       </div>
 
