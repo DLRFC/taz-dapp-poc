@@ -4,17 +4,18 @@ import axios from 'axios'
 import { ethers } from 'ethers'
 import Link from 'next/link'
 import InfiniteScroll from 'react-infinite-scroller'
-import AnswerModal from '../../components/AnswerModal'
+import { RiArrowLeftLine } from 'react-icons/ri'
+
 import { useGenerateProof } from '../../hooks/useGenerateProof'
-import ProcessingModal from '../../components/ProcessingModal'
 import { Subgraphs } from '../../hooks/subgraphs'
+import AnswerModal from '../../components/AnswerModal'
+import ProcessingModal from '../../components/ProcessingModal'
 import Footer from '../../components/Footer'
 import BlueCircle from '../../components/svgElements/BlueCircle'
 import YellowEllipse from '../../components/svgElements/YellowEllipse'
 import BunnyQ2 from '../../components/svgElements/BunnyQ2'
 import RedCircle from '../../components/svgElements/RedCircle'
 import BackToTopArrow from '../../components/svgElements/BackToTopArrow'
-import BackArrow from '../../components/svgElements/BackArrow'
 import ConvoBubbles from '../../components/svgElements/ConvoBubbles'
 import Loading from '../../components/Loading'
 
@@ -274,10 +275,8 @@ export default function Answers() {
       {/* Begin Answer Board */}
       <div className="flex-grow mx-6 mt-8 mb-16 text-brand-brown p-4 min-w-[200px] min-h-[100%] relative divide-y overflow-y-auto border-2 border-brand-blue rounded-md bg-white drop-shadow-lg">
         <div className="mb-4 border-0">
-          <Link href="/questions" className="cursor-pointer">
-            <div className="cursor-pointer">
-              <BackArrow />
-            </div>
+          <Link href="/questions" className="cursor-pointer brand">
+            <RiArrowLeftLine className="fill-brand-gray50 cursor-pointer" />
           </Link>
         </div>
         {parentMessageId === '0' && txHash ? (
