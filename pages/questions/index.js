@@ -155,7 +155,7 @@ export default function Questions() {
 
     // Set up scroll listening for scroll to top button
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 20) {
+      if (window.scrollY > windowHeight) {
         setShowTopBtn(true)
       } else {
         setShowTopBtn(false)
@@ -215,25 +215,22 @@ export default function Questions() {
 
   return (
     <div className="min-h-[700px]">
-      <div className="fixed bottom-[180px] right-2 z-30 flex justify-end">
+      <div className="fixed bottom-[37%] right-2 z-30 flex justify-end">
         <button
           type="button"
-          className="rounded-full bg-brand-yellow px-4 py-2 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
+          className="rounded-full bg-brand-yellow ring-1 ring-brand-black py-3 px-4 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
           onClick={openQuestionModal}
         >
           Ask a question
         </button>
       </div>
       {showTopBtn && (
-        <div className="fixed bottom-2-[180px] left-2 z-30 flex justify-end">
+        <div className="fixed bottom-[25%] left-2 z-30 flex justify-end">
           <button onClick={goToTop}>
-            <BackToTopArrow size={40} fill="#1E1E1E" />
+            <BackToTopArrow />
           </button>
         </div>
       )}
-      <div className="z-20 fixed bottom-0 w-full flex-col bg-black py-5">
-        <Footer />
-      </div>
       <ProcessingModal isOpen={processingModalIsOpen} closeModal={closeProcessingModal} steps={steps} fact={fact} />
       <QuestionModal
         isOpen={questionModalIsOpen}

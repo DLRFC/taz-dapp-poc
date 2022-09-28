@@ -7,31 +7,11 @@ import BlueEllipse from '../svgElements/BlueEllipse'
 import RedCircle from '../svgElements/RedCircle'
 import SelectorArrow from '../ArrowNavigators/SelectorArrow'
 import BackTAZ from '../ArrowNavigators/BackTAZ'
-// import BackToTopArrow from '../svgElements/BackToTopArrow'
 import Footer from '../Footer'
 
 function QuestionsBoardComponent({ questions, clearIdentity }) {
-  // const [showTopBtn, setShowTopBtn] = useState(false)
-
-  // useEffect(() => {
-  //   window.addEventListener('scroll', () => {
-  //     if (window.scrollY > 20) {
-  //       setShowTopBtn(true)
-  //     } else {
-  //       setShowTopBtn(false)
-  //     }
-  //   })
-  // }, [])
-
-  // const goToTop = () => {
-  //   window.scrollTo({
-  //     top: 0,
-  //     behavior: 'smooth'
-  //   })
-  // }
-
   return (
-    <div className="grid">
+    <div className="grid mb-[200px]">
       <div className="z-0 col-start-1 row-start-1 fixed">
         <div className="absolute top-[142px] -left-[51px]">
           <YellowCircle />
@@ -44,7 +24,7 @@ function QuestionsBoardComponent({ questions, clearIdentity }) {
         </div>
       </div>
 
-      <div className="z-10 col-start-1 row-start-1">
+      <div className="z-20 col-start-1 row-start-1">
         <Link href="/experiences-page">
           <div className="flex max-w-[76px] max-h-[32px] bg-black ml-9 mt-8 mb-10 px-1 text-xl text-brand-beige2 cursor-pointer shadow-[2.0px_3.0px_3.0px_rgba(0,0,0,0.38)]">
             <BackTAZ />
@@ -88,29 +68,12 @@ function QuestionsBoardComponent({ questions, clearIdentity }) {
         </div>
       )}
 
-      {/* <div className="z-30 relative flex items-center flex-col bg-black mt-20 py-5">
+      <div className="z-10 fixed bottom-0 w-full flex-col bg-black py-5">
         <Footer />
-      </div> */}
+      </div>
       <div className="absolute overflow-hidden top-36 md:top-20 -right-0">
         <BunnyQuestion />
       </div>
-      {/* <div className="fixed bottom-24 right-2 z-30 flex justify-end">
-        <Link href="/ask-question-page">
-          <button
-            type="button"
-            className="rounded-full bg-brand-yellow px-4 py-2 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
-          >
-            Ask a question
-          </button>
-        </Link>
-      </div>
-      {showTopBtn && (
-        <div className="fixed bottom-24 left-2 z-30 flex justify-end">
-          <button onClick={goToTop}>
-            <BackToTopArrow size={40} fill="#1E1E1E" />
-          </button>
-        </div>
-      )} */}
     </div>
   )
 }

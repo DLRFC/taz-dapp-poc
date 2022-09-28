@@ -30,12 +30,12 @@ export default function GenerateIdentityComponent({
       <Header />
 
       <div className="flex flex-col items-center rounded-md px-[32px] py-4 z-10">
-        <div className="z-10 mt-3 h-[570px] w-full py-3">
+        <div className="z-10 mt-3 min-h-[620px] h-auto w-full py-3">
           {!imageUrl ? (
             <div className="h-full w-full">
               <p className="font-bold text-brand-h3 text-brand-beige">You've been invited to Join a Semaphore Group</p>
               <p className="mb-3 py-5 text-brand-beige opacity-70 text-[14px]]">
-                Accepting this invitation will generate a Semaphore ID that will be added to the following group.
+                Accepting this invitation will generate a Semaphore ID that will be added to the following group
               </p>
               <div className="bg-brand-beige rounded-2xl mb-[41px] relative shadow-[rgba(0,_0,_0,_0.38)_0px_4px_10px] h-[157px]">
                 <div className="p-5">
@@ -174,9 +174,9 @@ export default function GenerateIdentityComponent({
           )}
         </div>
       </div>
-
-      <Footer />
-      {/* <div className="absolute bottom-[50px] left-0 -z-10 h-[20%] w-full bg-black" /> */}
+      <div className="pb-6">
+        <Footer />
+      </div>
     </div>
   )
 }

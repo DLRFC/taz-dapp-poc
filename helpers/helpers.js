@@ -14,7 +14,7 @@ export async function fetchWalletIndex() {
     )
   )
 
-  const currentIndex = dbs.data[0].data.currentIndex
+  const { currentIndex } = dbs.data[0].data
 
   let nextIndex
 
@@ -35,7 +35,7 @@ export async function fetchWalletIndex() {
   return currentIndex
 }
 
-export async function fetchNonce(index) {
+export async function fetchNonce(address) {
   const secret = process.env.FAUNA_SECRET_KEY
   const client = new faunadb.Client({ secret })
   const { query } = faunadb
@@ -49,9 +49,9 @@ export async function fetchNonce(index) {
     )
   )
 
-  const match = dbs.data.filter((wallet) => wallet.data.index === index)[0]
+  const match = dbs.data.filter((wallet) => wallet.data.address === address)[0]
 
-  const nonce = match.data.nonce
+  const { nonce } = match.data
   const updatedNonce = nonce + 1
 
   await client.query(
@@ -63,4 +63,20 @@ export async function fetchNonce(index) {
   )
 
   return nonce
+}
+
+export async function retry(fn, maxAttempts) {
+  const execute = async (attempt) => {
+    try {
+      return await fn()
+    } catch (err) {
+      if (attempt <= maxAttempts) {
+        const nextAttempt = attempt + 1
+        console.error(`Retrying transaction due to:`, err)
+        return execute(nextAttempt)
+      }
+      throw err
+    }
+  }
+  return execute(1)
 }

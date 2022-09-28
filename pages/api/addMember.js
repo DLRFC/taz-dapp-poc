@@ -2,8 +2,8 @@ import { ethers } from 'ethers'
 import dotenv from 'dotenv'
 import faunadb from 'faunadb'
 import TazMessage from '../utils/TazMessage.json'
-import { GROUP_ID, TAZMESSAGE_CONTRACT } from '../../config/goerli.json'
-import { fetchWalletIndex, fetchNonce } from '../../helpers/walletHelpers';
+import { GROUP_ID, TAZMESSAGE_CONTRACT, MAX_TRANSACTION_ATTEMPTS } from '../../config/goerli.json'
+import { fetchWalletIndex, fetchNonce, retry } from '../../helpers/helpers'
 
 dotenv.config({ path: '../../.env.local' })
 
@@ -11,12 +11,10 @@ export default async function handler(req, res) {
   const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL)
   const currentIndex = await fetchWalletIndex()
   const signer_array = process.env.PRIVATE_KEY_ARRAY.split(',')
-  const signer = new ethers.Wallet(signer_array[currentIndex]).connect(provider)
   const tazMessageAbi = TazMessage.abi
   const tazMessageAddress = TAZMESSAGE_CONTRACT
   const groupId = GROUP_ID
 
-  const tazMessageContract = new ethers.Contract(tazMessageAddress, tazMessageAbi, signer)
   const { invitation, identityCommitment } = req.body
 
   if (req.method === 'GET') {
@@ -55,11 +53,16 @@ export default async function handler(req, res) {
         // console.log(tazMessageContract)
         console.log(identityCommitment)
 
-        try {
+        // const sendTransaction = async () => {
+          try {
           console.log('Add Member Function called')
-          const nonce = await fetchNonce(currentIndex)
+          console.log('currentIndex', currentIndex)
+          const signer = new ethers.Wallet(signer_array[currentIndex]).connect(provider)
+          const signerAddress = await signer.getAddress()
+          const tazMessageContract = new ethers.Contract(tazMessageAddress, tazMessageAbi, signer)
+          const nonce = await fetchNonce(signerAddress)
           console.log(nonce)
-          const tx = await tazMessageContract.addMember(groupId, identityCommitment, {nonce})
+          const tx = await tazMessageContract.addMember(groupId, identityCommitment, { nonce, gasLimit: 15000000 })
           console.log(tx)
 
           const response = await tx.wait(1).then(
@@ -74,11 +77,14 @@ export default async function handler(req, res) {
 
           res.status(201).json(response)
           console.log(response)
-        } catch (error) {
-          console.log('TRANSACTION ERROR')
-          console.log(error)
-          res.status(403).json(error)
+        } catch (e) {
+          console.log(e)
+          res.status(500).json(e);
         }
+
+        // await retry(sendTransaction, MAX_TRANSACTION_ATTEMPTS)
+
+
       } else {
         isValid = false
         console.log(isValid)

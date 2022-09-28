@@ -3,8 +3,9 @@ import Link from 'next/link'
 
 import { textChangeRangeNewSpan } from 'typescript'
 import RedCircle from '../svgElements/RedCircle'
-import YellowCircle from '../svgElements/YellowCircle'
-import BlueEllipse from '../svgElements/BlueEllipse'
+import BlueCircle from '../svgElements/BlueCircle'
+import YellowEllipse from '../svgElements/YellowEllipse'
+import BunnyQ2 from '../svgElements/BunnyQ2'
 import ConvoBubbles from '../svgElements/ConvoBubbles'
 import BackArrow from '../svgElements/BackArrow'
 // import BackToTopArrow from '../svgElements/BackToTopArrow'
@@ -31,9 +32,24 @@ function AnswersBoard({ parentMessageId, txHash, question, answers }) {
   // }
 
   return (
-    <div className="grid mb-20">
-      <div className="z-10 col-start-1 row-start-1 px-6 py-8">
-        <div className="z-0 p-4 min-w-[200px] relative divide-y overflow-y-auto border-2 border-brand-blue rounded-md bg-white drop-shadow-lg">
+    <div className="grid mb-[200px]">
+      <div className="z-0 col-start-1 row-start-1 fixed">
+        <div className="absolute top-[70px] -left-[140px]">
+          <YellowEllipse />
+        </div>
+        <div className="absolute top-[300px] left-[320px]">
+          <BlueCircle />
+        </div>
+        <div className="absolute top-[450px] left-[-51px]">
+          <RedCircle />
+        </div>
+        <div className="absolute top-[500px] left-[29px]">
+          <BunnyQ2 />
+        </div>
+      </div>
+
+      <div className="z-20 col-start-1 row-start-1 px-6 py-8 text-brand-brown">
+        <div className="p-4 min-w-[200px] relative divide-y overflow-y-auto border-2 border-brand-blue rounded-md bg-white drop-shadow-lg">
           <div className="mb-4 border-0">
             <Link href="/questions" className="cursor-pointer">
               <div className="cursor-pointer">
@@ -94,23 +110,9 @@ function AnswersBoard({ parentMessageId, txHash, question, answers }) {
           ))}
         </div>
       </div>
-      {/* <div className="fixed bottom-24 right-2 z-30 flex justify-end">
-        <Link href="/answer-question-page">
-          <button
-            type="button"
-            className="rounded-full bg-brand-yellow px-4 py-2 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
-          >
-            Answer this question
-          </button>
-        </Link>
+      <div className="z-10 fixed bottom-0 w-full flex-col bg-black py-5">
+        <Footer />
       </div>
-      {showTopBtn && (
-        <div className="fixed bottom-24 left-2 z-30 flex justify-end">
-          <button onClick={goToTop}>
-            <BackToTopArrow size={40} fill="#1E1E1E" />
-          </button>
-        </div>
-      )} */}
     </div>
   )
 }

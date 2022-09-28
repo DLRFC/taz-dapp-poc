@@ -93,7 +93,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => (
       </div>
     </div>
 
-    {/* <div className="z-20 relative flex items-left flex-col p-12 pb-5 bg-black text-brand-yellow mt-12">
+    <div className="z-20 relative flex items-left flex-col p-9 pb-6 bg-black text-brand-yellow mt-12">
       <div className="py-10 px-5 flex items-end justify-between bg-black">
         <div className="transform -ml-6 text-xl tracking-widest text-brand-beige">
           <h1>TEMP_RARY</h1>
@@ -124,14 +124,14 @@ const ExperiencesListComponent = ({ clearIdentity }) => (
       <a href="https://appliedzkp.org/" target="_blank" className="pb-14 underline" rel="noreferrer">
         Privacy & Scaling Explorations
       </a>
-      <div className="flex item-center justify-between">
+      <div className="flex items-center justify-left">
         <Link href="/identity">
-          <button className="bg-brand-yellow text-[14px] text-black py-1 px-3 rounded-full mb-20">
+          <button className="bg-brand-yellow text-[14px] text-black py-1 px-3 rounded-full mb-16 mr-6">
             View Semaphore ID
           </button>
         </Link>
         <button
-          className="bg-brand-gray2 border-brand-yellow border-[1px] text-[14px] text-brand-yellow py-1 px-3 rounded-full mb-20"
+          className="bg-brand-gray2 border-brand-yellow border-[1px] text-[14px] text-brand-yellow py-1 px-3 rounded-full mb-16"
           onClick={clearIdentity}
         >
           Disconnect ID
@@ -139,7 +139,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => (
       </div>
 
       <Footer />
-    </div> */}
+    </div>
   </div>
 )
 

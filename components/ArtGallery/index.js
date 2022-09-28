@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react'
 
 import ArtGalleryComponent from './View'
+// Used to dev when images didn't load
+import mockImages from './data'
 
 export default function ArtGallery(props) {
   const [images, setImages] = useState(props.images)
   const [activeImage, setActiveImage] = useState(null)
   const [open, setOpen] = useState(false)
+  const [isVoting, setIsVoting] = useState()
+  const [isTxLoading, setIsTxLoading] = useState(false)
 
   const handleClick = (image) => {
     setActiveImage(image)
@@ -37,6 +41,11 @@ export default function ArtGallery(props) {
     setActiveImage(null)
   }
 
+  const changeTxLoadingModal = () => {
+    console.log('isTxLoading', isTxLoading)
+    setIsTxLoading(!isTxLoading)
+  }
+
   return (
     <ArtGalleryComponent
       open={open}
@@ -45,6 +54,10 @@ export default function ArtGallery(props) {
       setActiveImage={setActiveImage}
       handleClick={handleClick}
       images={images}
+      isVoting={isVoting}
+      setIsVoting={setIsVoting}
+      isTxLoading={isTxLoading}
+      changeTxLoadingModal={changeTxLoadingModal}
     />
   )
 }

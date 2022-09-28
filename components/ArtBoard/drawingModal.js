@@ -28,7 +28,7 @@ const DrawingHtml = forwardRef(
       white: 'white',
       black: '#171717',
       'brand-orange': '#BD5141',
-      'brand-yellow': '#EFAD5F',
+      'brand-orange2': '#EE8C45',
       'brand-yellow2': '#EFD85F',
       'brand-green': '#90B188',
       'brand-blue': '#435C6C',
@@ -97,7 +97,7 @@ const DrawingHtml = forwardRef(
           onClick={(e) => e.stopPropagation()}
           className=" w-flex h-flex p-2 bg-white border-2 border-black flex flex-col items-center justify-center rounded-[5px]"
         >
-          <div className="flex grid grid-rows-1 pb-1 grid-cols-9">
+          <div className="grid grid-rows-1 pb-1 grid-cols-9">
             <div>
               <button
                 id="brand-orange"
@@ -113,12 +113,12 @@ const DrawingHtml = forwardRef(
             </div>
             <div>
               <button
-                id="brand-yellow"
-                aria-label="yellow color picker"
+                id="brand-orange2"
+                aria-label="orange2 color picker"
                 className={
-                  color === 'brand-yellow'
-                    ? 'ring ring-offset-4 ring-slate-500 ring-4 w-6 h-6 m-[5px] bg-brand-yellow rounded-full'
-                    : 'w-6 h-6 m-[5px] bg-brand-yellow rounded-full'
+                  color === 'brand-orange2'
+                    ? 'ring ring-offset-4 ring-slate-500 ring-4 w-6 h-6 m-[5px] bg-brand-orange2 rounded-full'
+                    : 'w-6 h-6 m-[5px] bg-brand-orange2 rounded-full'
                 }
                 type="submit"
                 onClick={(e) => handleColorSelect(e)}

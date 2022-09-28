@@ -2,8 +2,8 @@ import { ethers } from 'ethers'
 import dotenv from 'dotenv'
 // import Semaphore from '../utils/Semaphore.json'
 import TazMessage from '../utils/TazMessage.json'
-import { TAZMESSAGE_CONTRACT } from '../../config/goerli.json'
-import { fetchWalletIndex, fetchNonce} from '../../helpers/walletHelpers'
+import { TAZMESSAGE_CONTRACT, MAX_TRANSACTION_ATTEMPTS } from '../../config/goerli.json'
+import { fetchWalletIndex, fetchNonce, retry} from '../../helpers/helpers'
 
 dotenv.config({ path: '../../.env.local' })
 
@@ -39,6 +39,7 @@ export default async function handler(req, res) {
     console.log('signer_array[currentIndex]', signer_array[currentIndex])
     const signer = new ethers.Wallet(signer_array[currentIndex]).connect(provider)
     console.log('signer', signer)
+    const signerAddress = await signer.getAddress();
     const tazMessageContract = new ethers.Contract(tazMessageAddress, tazMessageAbi, signer)
     const bytes32Signal = ethers.utils.formatBytes32String(signal)
 
@@ -47,8 +48,9 @@ export default async function handler(req, res) {
     if (parentMessageId !== 0) {
       console.log('BACKEND LOG | Transacting reply')
 
-      try {
-        const nonce = await fetchNonce(currentIndex)
+      // const sendTransaction = async () => {
+        try {
+        const nonce = await fetchNonce(signerAddress)
         tx = await tazMessageContract.replyToMessage(
           parentMessageId,
           messageContent,
@@ -66,11 +68,13 @@ export default async function handler(req, res) {
         console.log('Reply Message Success!')
 
         res.status(201).json(tx)
-      } catch (error) {
-        console.log('Reply to Message transaction failed!')
-        console.log(error)
-        res.status(203).json(error)
+      } catch (e) {
+        console.log(e)
+        res.status(500).json(e)
       }
+
+      // await retry(sendTransaction, MAX_TRANSACTION_ATTEMPTS)
+
     } else {
       console.log('BACKEND LOG | Add Message')
 
@@ -83,8 +87,9 @@ export default async function handler(req, res) {
       //   uint256 externalNullifier,
       //   uint256[8] calldata proof) external {
 
-      try {
-        const nonce = fetchNonce(currentIndex)
+      // const sendTransaction = async () => {
+        try {
+        const nonce = fetchNonce(signerAddress)
         tx = await tazMessageContract.addMessage(
           messageContent,
           groupId,
@@ -100,11 +105,12 @@ export default async function handler(req, res) {
         // const response = await tx.wait(1)
         console.log(tx)
         res.status(201).json(tx)
-      } catch (error) {
-        console.log('Add Message transaction failed!')
-        console.log(error)
-        res.status(203).json(error)
+      } catch (e) {
+        console.log(e)
+        res.status(500).json(e)
       }
+
+      // await retry(sendTransaction, MAX_TRANSACTION_ATTEMPTS)
     }
   }
 }
