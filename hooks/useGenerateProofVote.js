@@ -31,7 +31,7 @@ export const useGenerateProofVote = () => {
 
     // Adapt Signal
     // const signal = 'proposal_1'
-    const fullProofTemp = await generateProof(identity, group, externalNullifier, signal, {
+    const fullProofTemp = await generateProof(identity, group, 115101, signal, {
       zkeyFilePath: '/semaphore.zkey',
       wasmFilePath: '/semaphoreWasm.wasm'
     })

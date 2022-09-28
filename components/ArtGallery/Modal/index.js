@@ -13,10 +13,10 @@ export default function Modal({
   setActiveImage,
   isVoting,
   setIsVoting,
-  isTxLoading,
   changeTxLoadingModal
 }) {
   const [steps, setSteps] = useState([])
+  const [isTxLoading, setIsTxLoading] = useState(false)
   const [generateFullProofVote] = useGenerateProofVote()
 
   const handleControlTabClick = (e, image) => {
@@ -32,7 +32,7 @@ export default function Modal({
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    changeTxLoadingModal()
+    setIsTxLoading(true)
     // setTimeout(openProcessingModal, CHAINED_MODAL_DELAY)
 
     setSteps([
@@ -69,9 +69,10 @@ export default function Modal({
     try {
       const postVote = await axios.post('/api/voteOnCanvas', body)
       console.log('Post Vote Response', postVote)
+      setIsTxLoading(false)
     } catch (error) {
       alert('Your transaction has failed. Please try submitting again.')
-      // internalCloseProcessingModal()
+      setIsTxLoading(false)
     }
 
     setSteps([
