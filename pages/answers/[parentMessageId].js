@@ -232,12 +232,11 @@ export default function Answers() {
 
   return (
     <div className="min-h-[700px] h-auto flex flex-col">
-      {/* <div className="z-20 fixed bottom-0"> */}
       {parentMessageId !== '0' && (
-        <div className="fixed bottom-[50%] right-2 z-30 flex justify-end">
+        <div className="fixed bottom-[25%] right-2 z-30 flex justify-end">
           <button
             type="button"
-            className="rounded-full bg-brand-yellow ring-1 ring-brand-black py-3 px-4 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
+            className="rounded-full bg-brand-yellow ring-2 ring-brand-black py-3 px-4 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
             onClick={openAnswerModal}
           >
             Answer this question
@@ -251,10 +250,10 @@ export default function Answers() {
           </button>
         </div>
       )}
-      <div className="z-20 fixed bottom-0 w-full flex-col bg-black mt-20 py-5">
+
+      {/* <div className="z-20 fixed bottom-0 w-full flex-col bg-black mt-20 py-5">
         <Footer />
-      </div>
-      {/* </div> */}
+      </div> */}
 
       <ProcessingModal isOpen={processingModalIsOpen} closeModal={closeProcessingModal} steps={steps} fact={fact} />
       <AnswerModal
@@ -264,7 +263,7 @@ export default function Answers() {
         handleSubmit={handleSubmit}
       />
       {/* Begin Answer Board */}
-      <div className="grid mb-[200px]">
+      <div className="grid mb-[85px]">
         <div className="z-0 col-start-1 row-start-1 fixed">
           <div className="absolute top-[70px] -left-[140px]">
             <YellowEllipse />
@@ -281,7 +280,7 @@ export default function Answers() {
         </div>
 
         <div className="z-20 col-start-1 row-start-1 px-6 py-8 text-brand-brown">
-          <div className="p-4 min-w-[200px] relative divide-y overflow-y-auto border-2 border-brand-blue rounded-md bg-white drop-shadow-lg">
+          <div className="p-4 min-w-[200px] min-h-[600px] relative divide-y overflow-y-auto border-2 border-brand-blue rounded-md bg-white drop-shadow-lg">
             <div className="mb-4 border-0">
               <Link href="/questions" className="cursor-pointer">
                 <div className="cursor-pointer">
@@ -314,6 +313,8 @@ export default function Answers() {
                       qID {question.messageId.toLocaleString()}
                     </p>
                     <p className="px-2 pb-4">{question.messageContent}</p>
+                    <p className="pl-6 text-red-500 text-brand-info">No one has answered this question.</p>
+                    <p className="pl-24 text-red-500 text-brand-info">Be the first!</p>
                   </div>
 
                   <InfiniteScroll loadMore={fetchItems} hasMore={hasMoreItems} loader={loader}>
@@ -345,9 +346,12 @@ export default function Answers() {
             )}
           </div>
         </div>
-        <div className="z-10 fixed bottom-0 w-full flex-col bg-black py-5">
+        {/* <div className="z-10 fixed bottom-0 w-full flex-col bg-black py-5">
           <Footer />
-        </div>
+        </div> */}
+      </div>
+      <div className="flex w-full justify-center bg-black pb-3 pt-9">
+        <Footer />
       </div>
       {/* End Answer Board */}
     </div>
