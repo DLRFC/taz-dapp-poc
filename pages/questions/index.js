@@ -214,7 +214,19 @@ export default function Questions() {
   }, [questions, fetching, nextFetchSkip])
 
   return (
-    <div className="min-h-[700px]">
+    <div className="min-h-[700px] relative overflow-hidden h-auto flex flex-col">
+      <div className="fixed">
+        <div className="absolute top-[142px] -left-[51px]">
+          <YellowCircle />
+        </div>
+        <div className="absolute top-[360px] left-[320px]">
+          <BlueEllipse />
+        </div>
+        <div className="absolute top-[500px] left-[9px]">
+          <RedCircle />
+        </div>
+      </div>
+
       <div className="fixed bottom-[25%] right-2 z-30 flex justify-end">
         <button
           type="button"
@@ -242,18 +254,6 @@ export default function Questions() {
       {/* Begin Questions Board */}
 
       <div className="grid mb-[85px]">
-        <div className="z-20 col-start-1 row-start-1 fixed">
-          <div className="absolute top-[142px] -left-[51px]">
-            <YellowCircle />
-          </div>
-          <div className="absolute top-[360px] left-[320px]">
-            <BlueEllipse />
-          </div>
-          <div className="absolute top-[500px] left-[9px]">
-            <RedCircle />
-          </div>
-        </div>
-
         <div className="z-20 col-start-1 row-start-1">
           <Link href="/experiences-page">
             <div className="flex max-w-[76px] max-h-[32px] bg-black ml-9 mt-8 mb-10 px-1 text-xl text-brand-beige2 cursor-pointer shadow-[2.0px_3.0px_3.0px_rgba(0,0,0,0.38)]">
@@ -302,7 +302,7 @@ export default function Questions() {
       {/* <div className="z-10 fixed bottom-0 w-full flex-col bg-black py-5">
           <Footer />
         </div> */}
-      <div className="flex w-full justify-center bg-black pb-3 pt-9">
+      <div className="flex w-full relative justify-center bg-black pb-3 pt-9">
         <Footer />
       </div>
       <div className="absolute overflow-hidden top-36 md:top-20 -right-0">
