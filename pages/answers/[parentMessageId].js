@@ -9,8 +9,9 @@ import { useGenerateProof } from '../../hooks/useGenerateProof'
 import ProcessingModal from '../../components/ProcessingModal'
 import { Subgraphs } from '../../hooks/subgraphs'
 import Footer from '../../components/Footer'
-import BlueEllipse from '../../components/svgElements/BlueEllipse'
-import YellowCircle from '../../components/svgElements/YellowCircle'
+import BlueCircle from '../../components/svgElements/BlueCircle'
+import YellowEllipse from '../../components/svgElements/YellowEllipse'
+import BunnyQ2 from '../../components/svgElements/BunnyQ2'
 import RedCircle from '../../components/svgElements/RedCircle'
 import BackToTopArrow from '../../components/svgElements/BackToTopArrow'
 import BackArrow from '../../components/svgElements/BackArrow'
@@ -169,8 +170,9 @@ export default function Answers() {
     fetchQuestion()
 
     // Set up scroll listening for scroll to top button
+    const windowHeight = window.outerHeight
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 20) {
+      if (window.scrollY > windowHeight) {
         setShowTopBtn(true)
       } else {
         setShowTopBtn(false)
@@ -232,10 +234,10 @@ export default function Answers() {
     <div className="min-h-[700px] h-auto flex flex-col">
       {/* <div className="z-20 fixed bottom-0"> */}
       {parentMessageId !== '0' && (
-        <div className="fixed bottom-[180px] right-2 z-30 flex justify-end">
+        <div className="fixed bottom-[50%] right-2 z-30 flex justify-end">
           <button
             type="button"
-            className="rounded-full bg-brand-yellow px-4 py-2 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
+            className="rounded-full bg-brand-yellow ring-1 ring-brand-black py-3 px-4 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
             onClick={openAnswerModal}
           >
             Answer this question
@@ -243,9 +245,9 @@ export default function Answers() {
         </div>
       )}
       {showTopBtn && (
-        <div className="fixed bottom-[180px] left-2 z-30 flex justify-end">
+        <div className="fixed bottom-[25%] left-2 z-30 flex justify-end">
           <button onClick={goToTop}>
-            <BackToTopArrow size={40} fill="#1E1E1E" />
+            <BackToTopArrow />
           </button>
         </div>
       )}
@@ -262,9 +264,24 @@ export default function Answers() {
         handleSubmit={handleSubmit}
       />
       {/* Begin Answer Board */}
-      <div className="grid mb-20">
-        <div className="z-10 col-start-1 row-start-1 px-6 py-8">
-          <div className="z-0 p-4 min-w-[200px] relative divide-y overflow-y-auto border-2 border-brand-blue rounded-md bg-white drop-shadow-lg">
+      <div className="grid mb-[200px]">
+        <div className="z-0 col-start-1 row-start-1 fixed">
+          <div className="absolute top-[70px] -left-[140px]">
+            <YellowEllipse />
+          </div>
+          <div className="absolute top-[300px] left-[320px]">
+            <BlueCircle />
+          </div>
+          <div className="absolute top-[450px] left-[-51px]">
+            <RedCircle />
+          </div>
+          <div className="absolute top-[500px] left-[29px]">
+            <BunnyQ2 />
+          </div>
+        </div>
+
+        <div className="z-20 col-start-1 row-start-1 px-6 py-8 text-brand-brown">
+          <div className="p-4 min-w-[200px] relative divide-y overflow-y-auto border-2 border-brand-blue rounded-md bg-white drop-shadow-lg">
             <div className="mb-4 border-0">
               <Link href="/questions" className="cursor-pointer">
                 <div className="cursor-pointer">
@@ -328,21 +345,11 @@ export default function Answers() {
             )}
           </div>
         </div>
+        <div className="z-10 fixed bottom-0 w-full flex-col bg-black py-5">
+          <Footer />
+        </div>
       </div>
       {/* End Answer Board */}
-
-      {/* <div className="z-20 absolute bottom-0 w-full  flex-col bg-black mt-20 py-5">
-        <Footer />
-      </div> */}
-      <div className="z-0 absolute bottom-0 ">
-        <BlueEllipse />
-      </div>
-      <div className="z-0 absolute top-[369px] -right-0">
-        <YellowCircle />
-      </div>
-      <div className="z-0 absolute top-[100px] ">
-        <RedCircle />
-      </div>
     </div>
   )
 }
