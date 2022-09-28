@@ -8,7 +8,7 @@ import GenerateTile from './generateTile'
 import BackArrow from '../svgElements/BackArrow'
 import ProcessingModal from '../ProcessingModal'
 import Loading from '../Loading'
-import TrashCan from '../svgElements/TrashCan'
+import Flame from '../svgElements/Flame'
 import Footer from '../Footer'
 
 // import { Identity } from '@semaphore-protocol/identity'
@@ -33,10 +33,12 @@ const ArtBoardComponent = forwardRef(
     canvasRef,
     color,
     fillColor,
+    setFillColor,
     startDrawing,
     isDrawing,
     minimize,
-    handleResetTile,
+    handleStartOver,
+    handleClear,
     userSelectedTile,
     closeProcessingModal,
     steps,
@@ -63,12 +65,14 @@ const ArtBoardComponent = forwardRef(
               lines={lines}
               setLines={setLines}
               fillColor={fillColor}
+              setFillColor={setFillColor}
               tool={tool}
               toggleTool={toggleTool}
               handleUndo={handleUndo}
               handleColorSelect={handleColorSelect}
               minimize={minimize}
               tiles={tiles}
+              handleClear={handleClear}
             />
           </AnimatePresence>
         )}
@@ -82,9 +86,9 @@ const ArtBoardComponent = forwardRef(
               </Link>
             </div>
             <div className="border-0 text-brand-brown" style={{ borderTopWidth: '0px' }}>
-              <p className="text-sm w-full font-bold mb-4">Select a tile to start drawing</p>
+              <p className="text-sm w-full font-bold mb-4">To draw, choose 1 open tile</p>
               <p className="text-xs opacity-[70%] mb-4">
-                Your drawing will appear alongside other&apos;s. Select 1 tile at a time.
+                You can submit one tile to this canvas. Start over to select a new tile.
               </p>
             </div>
             <div className="flex items-center justify-center">
@@ -126,16 +130,16 @@ const ArtBoardComponent = forwardRef(
               {userSelectedTile ? (
                 <div className="flex items-center justify-between w-full pt-4">
                   <button
-                    className="flex items-center font-bold text-[14px] px-4 py-2 rounded-full"
+                    className="flex items-center font-bold text-[14px] px-4 py-1.5 rounded-full border border-black"
                     type="submit"
-                    onClick={handleResetTile}
+                    onClick={handleStartOver}
                   >
-                    <TrashCan />
+                    <Flame />
                     <div className="pl-2">Start Over</div>
                   </button>
 
                   <button
-                    className="bg-brand-yellow font-bold text-[14px] px-4 py-2 rounded-full"
+                    className="bg-brand-yellow font-bold text-[14px] px-4 py-1.5 rounded-full"
                     type="submit"
                     onClick={submit}
                   >
@@ -143,12 +147,13 @@ const ArtBoardComponent = forwardRef(
                   </button>
                 </div>
               ) : (
-                <p className="text-center w-full">Select a Tile</p>
+                <p className="text-center w-full pt-4">Select a Tile</p>
               )}
             </div>
           </div>
-          <div className="flex items-center justify-center mt-5">
-            <p>CanvaId : {currentCanvas}</p>
+          <div className="flex grid grid-rows-1 justify-items-center mt-5">
+            <p className="text-xs">You were randomly assigned to</p>
+            <p className="text-xs">Canva ID: {currentCanvas}</p>
           </div>
         </div>
         <div className="flex w-full justify-center bg-black pb-3 pt-9">

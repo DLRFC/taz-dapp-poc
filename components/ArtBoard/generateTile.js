@@ -15,7 +15,9 @@ const GenerateTile = forwardRef(({ i, tiles, startDrawing }) => (
           />
         </picture>
       ) : (
-        <p className="w-[112px] h-[112px] border border-brand-gray border-collapse" />
+        <div className="w-[112px] h-[112px] border border-slate-200 border-collapse flex items-center">
+          <p className="text-sm text-brand-blue w-full text-center">open tile</p>
+        </div>
       )}
     </div>
   </td>

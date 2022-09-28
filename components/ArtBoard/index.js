@@ -97,7 +97,6 @@ export default function ArtBoard() {
   const toggleTool = (e) => {
     if (tool === 'pen') {
       console.log('settofill')
-      setFillColor(color)
       setTool('fill')
     } else {
       setTool('pen')
@@ -252,9 +251,15 @@ export default function ArtBoard() {
     }
   }
 
-  const handleResetTile = () => {
+  const handleClear = () => {
+    setFillColor('white')
+    setLines([])
+  }
+
+  const handleStartOver = () => {
     tiles[selectedTile] = ''
     setUserSelectedTile(false)
+    handleClear()
   }
 
   const closeProcessingModal = () => {
@@ -301,12 +306,13 @@ export default function ArtBoard() {
       setColor={setColor}
       setFillColor={setFillColor}
       minimize={minimize}
-      handleResetTile={handleResetTile}
+      handleStartOver={handleStartOver}
       userSelectedTile={userSelectedTile}
       closeProcessingModal={closeProcessingModal}
       steps={steps}
       fact={fact}
       currentCanvas={currentCanvas}
+      handleClear={handleClear}
     />
   )
 }
