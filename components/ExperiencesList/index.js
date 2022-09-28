@@ -1,12 +1,9 @@
-// import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import ExperiencesListComponent from './View'
 
 const ExperiencesList = () => {
-  const identity = window.localStorage.getItem('identity')
-  const urlIdentity = identity.replace('["', '').replace('"]', '').replace('","', '_')
-  console.log('identity', identity)
-  console.log('urlIdentity', urlIdentity)
+  const [identityUrl, setIdentityUrl] = useState('')
 
   const router = useRouter()
   const clearIdentity = () => {
@@ -14,7 +11,15 @@ const ExperiencesList = () => {
     window.localStorage.removeItem('identity')
     router.push('/')
   }
-  return <ExperiencesListComponent clearIdentity={clearIdentity} urlIdentity={urlIdentity} />
+
+  useEffect(() => {
+    const identity = window.localStorage.getItem('identity')
+    const identityUrlTemp = identity.replace('["', '').replace('"]', '').replace('","', '_')
+    setIdentityUrl(identityUrlTemp)
+    console.log('identity', identity)
+    console.log('urlIdentity', identityUrlTemp)
+  })
+  return <ExperiencesListComponent clearIdentity={clearIdentity} urlIdentity={identityUrl} />
 }
 
 export default ExperiencesList

@@ -6,7 +6,7 @@ import ExperiencesList from '../components/ExperiencesList'
 //   ssr: false,
 // })
 
-export default function ExperiencesListPage({ clearIdentity }) {
+export default function ExperiencesListPage({}) {
   return (
     <div>
       {' '}
