@@ -51,10 +51,10 @@ const ArtBoardComponent = forwardRef(
 
     return (
       <div className="flex h-auto min-h-screen flex-col justify-between overflow-x-hidden">
-        {isLoading ? (
+        {isLoading && (
           <ProcessingModal isOpen={isLoading} closeModal={closeProcessingModal} steps={steps} fact={fact} />
-        ) : null}
-        {isDrawing ? (
+        )}
+        {isDrawing && (
           <AnimatePresence initial={false} exitBeforeEnter onExitComplete={() => null} className="z-20">
             <DrawingModal
               stageRef={stageRef}
@@ -71,7 +71,7 @@ const ArtBoardComponent = forwardRef(
               tiles={tiles}
             />
           </AnimatePresence>
-        ) : null}
+        )}
         <div className="z-10 px-6 py-8 font-sans">
           <div className="p-4 min-w-[200px] relative divide-y overflow-y-auto border-2 border-brand-blue rounded-md bg-white drop-shadow-lg">
             <div className="mb-4 border-0">

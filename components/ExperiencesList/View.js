@@ -130,7 +130,7 @@ const ExperiencesListComponent = ({ clearIdentity }) => (
         </button>
       </Link>
       <button
-        className="w-[200px] bg-brand-gray2 border-brand-yellow border-[1px] text-[14px] text-brand-yellow py-1 px-3 rounded-full mb-16"
+        className="w-[200px] bg-brand-gray2 border-brand-yellow border text-sm text-brand-yellow py-1 px-3 rounded-full mb-16"
         onClick={clearIdentity}
       >
         Disconnect ID
