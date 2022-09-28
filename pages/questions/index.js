@@ -1,28 +1,49 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { router } from 'next'
 import axios from 'axios'
 import { ethers } from 'ethers'
-import QuestionsBoard from '../../components/QuestionsBoard'
+import Link from 'next/link'
+import InfiniteScroll from 'react-infinite-scroller'
 import QuestionModal from '../../components/QuestionModal'
 import { useGenerateProof } from '../../hooks/useGenerateProof'
 import ProcessingModal from '../../components/ProcessingModal'
 import { Subgraphs } from '../../hooks/subgraphs'
 import BackToTopArrow from '../../components/svgElements/BackToTopArrow'
+import BunnyQuestion from '../../components/svgElements/BunnyQuestion'
+import YellowCircle from '../../components/svgElements/YellowCircle'
+import BlueEllipse from '../../components/svgElements/BlueEllipse'
+import RedCircle from '../../components/svgElements/RedCircle'
+import SelectorArrow from '../../components/ArrowNavigators/SelectorArrow'
+import BackTAZ from '../../components/ArrowNavigators/BackTAZ'
 import Footer from '../../components/Footer'
+import Loading from '../../components/Loading'
 
-const { API_REQUEST_TIMEOUT, FACT_ROTATION_INTERVAL, CHAINED_MODAL_DELAY } = require('../../config/goerli.json')
+const {
+  API_REQUEST_TIMEOUT,
+  FACT_ROTATION_INTERVAL,
+  CHAINED_MODAL_DELAY,
+  ITEMS_PER_FETCH
+} = require('../../config/goerli.json')
 const { FACTS } = require('../../data/facts.json')
 
-export default function Questions({ questionsProp }) {
+export default function Questions() {
   const [generateFullProof] = useGenerateProof()
   const [questionModalIsOpen, setQuestionModalIsOpen] = useState(false)
   const [processingModalIsOpen, setProcessingModalIsOpen] = useState(false)
   const [question, setQuestion] = useState()
   const [identityKey, setIdentityKey] = useState('')
-  const [questions, setQuestions] = useState(questionsProp)
+  const [questions, setQuestions] = useState([])
   const [steps, setSteps] = useState([])
   const [fact, setFact] = useState(FACTS[Math.floor(Math.random() * FACTS.length)])
   const [showTopBtn, setShowTopBtn] = useState(false)
+  const [fetching, setFetching] = useState(false)
+  const [nextFetchSkip, setNextFetchSkip] = useState(0)
+  const hasMoreItems = nextFetchSkip > -1
+  const loader = (
+    <div className="p-12 flex justify-center">
+      <Loading size="xl" />
+    </div>
+  )
 
   const closeQuestionModal = () => {
     setQuestionModalIsOpen(false)
@@ -62,7 +83,6 @@ export default function Questions({ questionsProp }) {
 
     const messageContent = question
     const signal = ethers.utils.id(messageContent).slice(35)
-    console.log('QUESTIONS PAGE | signal', signal)
     const { solidityProof, nullifierHash, externalNullifier, merkleTreeRoot, groupId } = await generateFullProof(
       identityKey,
       signal
@@ -91,7 +111,6 @@ export default function Questions({ questionsProp }) {
       })
       if (postResponse.status === 201) {
         const newQuestion = {
-          id: Math.round(Math.random() * 100000000000).toString(),
           messageId: 0,
           txHash: postResponse.data.hash,
           messageContent
@@ -103,14 +122,14 @@ export default function Questions({ questionsProp }) {
         console.log('QUESTIONS PAGE | postResponse.status', postResponse.status)
         console.log('QUESTIONS PAGE | postResponse.data.hash', postResponse.data.hash)
 
-        // Save question to local storage
+        // Cache question while tx completes
         window.localStorage.setItem('savedQuestion', JSON.stringify(newQuestion))
       } else if (postResponse.status === 203) {
-        alert('Your Transaction have failed please try submitting again')
+        alert('Your transaction has failed. Please try submitting again.')
         internalCloseProcessingModal()
       }
     } catch (error) {
-      alert('Your Transaction have failed please try submitting again')
+      alert('Your transaction has failed. Please try submitting again.')
       internalCloseProcessingModal()
     }
 
@@ -120,27 +139,8 @@ export default function Questions({ questionsProp }) {
       { status: 'processing', text: 'Update questions from on-chain events' }
     ])
 
-    // Solution below adds the new record to state, as opposed to refreshing.
-
-    // router.reload(window.location.pathname)
-
     setTimeout(internalCloseProcessingModal, 2000)
   }
-
-  const updateFromLocalStorage = () => {
-    const savedQuestion = JSON.parse(window.localStorage.getItem('savedQuestion'))
-    const found = questions.some((element) => savedQuestion && element.messageContent === savedQuestion.messageContent)
-    if (found) {
-      window.localStorage.removeItem('savedQuestion')
-    } else if (savedQuestion) {
-      const updatedQuestions = [savedQuestion].concat(questions)
-      setQuestions(updatedQuestions)
-    }
-  }
-
-  // const scrollToTop = () => {
-  //   window.scrollTo(0, 0)
-  // }
 
   const rotateFact = () => {
     setFact(FACTS[FACTS.indexOf(fact) + 1 === FACTS.length ? 0 : FACTS.indexOf(fact) + 1])
@@ -151,18 +151,9 @@ export default function Questions({ questionsProp }) {
     if (identityKeyTemp === '') {
       identityKeyTemp = window.localStorage.getItem('identity')
       setIdentityKey(identityKeyTemp)
-      // setIsMember(true)
     }
 
-    // Check local storage for any questions pending tx finalization
-    updateFromLocalStorage()
-  }, [])
-
-  useEffect(() => {
-    setTimeout(rotateFact, FACT_ROTATION_INTERVAL)
-  }, [fact])
-
-  useEffect(() => {
+    // Set up scroll listening for scroll to top button
     window.addEventListener('scroll', () => {
       if (window.scrollY > 20) {
         setShowTopBtn(true)
@@ -172,12 +163,55 @@ export default function Questions({ questionsProp }) {
     })
   }, [])
 
+  useEffect(() => {
+    setTimeout(rotateFact, FACT_ROTATION_INTERVAL)
+  }, [fact])
+
   const goToTop = () => {
     window.scrollTo({
       top: 0,
       behavior: 'smooth'
     })
   }
+
+  const fetchItems = useCallback(async () => {
+    if (fetching) return
+
+    setFetching(true)
+
+    try {
+      const subgraphs = new Subgraphs()
+      const items = await subgraphs.getMessages(0, ITEMS_PER_FETCH, nextFetchSkip)
+
+      // Check local storage for any items cached pending tx finalization
+      if (nextFetchSkip === 0) {
+        const savedItem = JSON.parse(window.localStorage.getItem('savedQuestion'))
+        if (savedItem) {
+          const found = items.some((item) => savedItem && item.messageContent === savedItem.messageContent)
+          if (found) {
+            window.localStorage.removeItem('savedQuestion')
+          } else {
+            items.unshift(savedItem)
+          }
+        }
+      }
+
+      setQuestions(questions.concat(items))
+
+      if (items.length === ITEMS_PER_FETCH) {
+        setNextFetchSkip(nextFetchSkip + items.length)
+      } else {
+        setNextFetchSkip(-1) // -1 indicates fetching is complete
+      }
+
+      // console.log('QUESTIONS PAGE | fetched questions', items)
+    } catch (err) {
+      setNextFetchSkip(-1)
+      console.error('Error fetching data from subgraph: ', err)
+    } finally {
+      setFetching(false)
+    }
+  }, [questions, fetching, nextFetchSkip])
 
   return (
     <div className="min-h-[700px]">
@@ -200,24 +234,6 @@ export default function Questions({ questionsProp }) {
       <div className="z-20 fixed bottom-0 w-full flex-col bg-black py-5">
         <Footer />
       </div>
-      {/* <div className="sticky top-[400px] z-30 flex justify-between mx-2 min-w-[200px]">
-        <button type="button" onClick={scrollToTop}>
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="32" height="32" rx="16" fill="#1E1E1E" />
-            <path
-              d="M16.6607 13.219V21.3337H15.3387V13.219L11.7931 16.795L10.8584 15.8523L15.9997 10.667L21.1409 15.8523L20.2063 16.795L16.6607 13.219Z"
-              fill="#EFAD5F"
-            />
-          </svg>
-        </button>
-        <button
-          type="button"
-          onClick={openQuestionModal}
-          className="rounded-full bg-brand-yellow px-4 py-2 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
-        >
-          Ask a question
-        </button>
-      </div> */}
       <ProcessingModal isOpen={processingModalIsOpen} closeModal={closeProcessingModal} steps={steps} fact={fact} />
       <QuestionModal
         isOpen={questionModalIsOpen}
@@ -225,18 +241,83 @@ export default function Questions({ questionsProp }) {
         handleQuestionChange={handleQuestionChange}
         handleSubmit={handleSubmit}
       />
-      <QuestionsBoard questions={questions} />
+
+      {/* Begin Questions Board */}
+
+      <div className="grid">
+        <div className="z-0 col-start-1 row-start-1 fixed">
+          <div className="absolute top-[142px] -left-[51px]">
+            <YellowCircle />
+          </div>
+          <div className="absolute top-[360px] left-[320px]">
+            <BlueEllipse />
+          </div>
+          <div className="absolute top-[500px] left-[9px]">
+            <RedCircle />
+          </div>
+        </div>
+
+        <div className="z-10 col-start-1 row-start-1">
+          <Link href="/experiences-page">
+            <div className="flex max-w-[76px] max-h-[32px] bg-black ml-9 mt-8 mb-10 px-1 text-xl text-brand-beige2 cursor-pointer shadow-[2.0px_3.0px_3.0px_rgba(0,0,0,0.38)]">
+              <BackTAZ />
+              <h1>TAZ</h1>
+            </div>
+          </Link>
+          <div className="px-6 pt-3 pb-2">
+            <div>
+              <h2 className="ml-3 text-[24px] leading-5 font-extrabold">ASK AND ANSWER</h2>
+            </div>
+            <div>
+              <h2 className="ml-3 mb-1 text-[24px] font-extrabold">QUESTIONS FREELY</h2>
+            </div>
+            <div>
+              <h3 className="mx-3 pr-20 text-brand-body text-brand-blue">
+                More details about what makes this anonymous and copy about this long.
+              </h3>
+            </div>
+          </div>
+        </div>
+
+        <div className="z-10 col-start-1 row-start-2 px-6">
+          <div className="z-20 min-w-[200px] relative divide-y overflow-y-auto rounded-md border-2 border-brand-blue bg-white drop-shadow-lg">
+            <InfiniteScroll loadMore={fetchItems} hasMore={hasMoreItems} loader={loader}>
+              {questions.map((item) => (
+                <Link
+                  href={
+                    item.messageId !== 0
+                      ? `/answers/${item.messageId}`
+                      : `/answers/${item.messageId}/?txHash=${item.txHash}`
+                  }
+                  key={item.messageId}
+                >
+                  <div className="flex w-full flex-row items-center border-brand-blue border-b-[1px] p-4 cursor-pointer">
+                    <p className="text-brand-brown opacity-[85%] text-sm leading-5 w-[100%]">{item.messageContent}</p>
+                    <SelectorArrow />
+                  </div>
+                </Link>
+              ))}
+            </InfiniteScroll>
+          </div>
+        </div>
+
+        <div className="absolute overflow-hidden top-36 md:top-20 -right-0">
+          <BunnyQuestion />
+        </div>
+      </div>
+
+      {/* End Questions Board */}
     </div>
   )
 }
 
-export async function getServerSideProps() {
+/* export async function getServerSideProps() {
   const subgraphs = new Subgraphs()
-  const questions = await subgraphs.getQuestions()
+  const questions = await subgraphs.getMessages(0)
 
   // console.log('QUESTIONS PAGE | fetched questions', questions)
 
   return {
     props: { questionsProp: questions }
   }
-}
+} */

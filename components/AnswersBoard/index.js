@@ -10,7 +10,7 @@ import BackArrow from '../svgElements/BackArrow'
 // import BackToTopArrow from '../svgElements/BackToTopArrow'
 import Footer from '../Footer'
 
-function AnswersBoard({ messageId, txHash, question, answers }) {
+function AnswersBoard({ parentMessageId, txHash, question, answers }) {
   // const [showTopBtn, setShowTopBtn] = useState(false)
 
   // useEffect(() => {
@@ -41,7 +41,7 @@ function AnswersBoard({ messageId, txHash, question, answers }) {
               </div>
             </Link>
           </div>
-          {messageId === '0' && txHash.length > 0 ? (
+          {parentMessageId === '0' && txHash.length > 0 ? (
             <div className="p-4">
               <p className="text-brand-red pb-4">Question is still being processed.</p>
               <p className="text-sm">
@@ -55,7 +55,7 @@ function AnswersBoard({ messageId, txHash, question, answers }) {
           ) : (
             <div style={{ borderTopWidth: '0px' }}>
               <p className="px-2 text-brand-3xs text-brand-gray50 font-medium">
-                qID {question.messageId ? question.messageId.toLocaleString() : '0'}
+                qID {question ? question.messageId.toLocaleString() : '0'}
               </p>
               <p
                 className="px-2 pb-4"
@@ -73,7 +73,7 @@ function AnswersBoard({ messageId, txHash, question, answers }) {
           {answers.map((answer, index) => (
             <div
               className="flex flex-row align-top last:border-b-0"
-              key={answer.id}
+              key={answer.messageId}
               style={
                 index + 1 === answers.length
                   ? { borderTopWidth: '0px', borderBottomWidth: '0px' }
