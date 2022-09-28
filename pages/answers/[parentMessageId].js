@@ -231,20 +231,18 @@ export default function Answers() {
   }, [answers, fetching, nextFetchSkip, parentMessageId])
 
   return (
-    <div className="h-screen relative overflow-hidden flex flex-col">
-      <div className="fixed">
-        <div className="absolute top-[10%] -left-[-30%]">
-          <YellowEllipse />
-        </div>
-        <div className="absolute top-[300px] left-[320px]">
-          <BlueCircle />
-        </div>
-        <div className="absolute top-[450px] left-[-51px]">
-          <RedCircle />
-        </div>
-        <div className="absolute bottom-[20%] left-[5%]">
-          <BunnyQ2 />
-        </div>
+    <div className="h-full min-h-screen relative overflow-hidden flex flex-col">
+      <div className="absolute top-[10%] -left-[-30%]">
+        <YellowEllipse />
+      </div>
+      <div className="absolute top-[300px] left-[320px]">
+        <BlueCircle />
+      </div>
+      <div className="absolute top-[450px] left-[-51px]">
+        <RedCircle />
+      </div>
+      <div className="absolute bottom-[20%] left-[5%]">
+        <BunnyQ2 />
       </div>
 
       {parentMessageId !== '0' && (
@@ -274,72 +272,70 @@ export default function Answers() {
         handleSubmit={handleSubmit}
       />
       {/* Begin Answer Board */}
-      <div className="flex-grow mb-[23%] px-6 py-8 text-brand-brown">
-        <div className="p-4 min-w-[200px] min-h-[100%] relative divide-y overflow-y-auto border-2 border-brand-blue rounded-md bg-white drop-shadow-lg">
-          <div className="mb-4 border-0">
-            <Link href="/questions" className="cursor-pointer">
-              <div className="cursor-pointer">
-                <BackArrow />
-              </div>
-            </Link>
-          </div>
-          {parentMessageId === '0' && txHash ? (
-            <div className="p-4">
-              <p className="text-brand-red pb-4">Question is still being processed.</p>
-              <p className="text-sm">
-                You can check your transaction on{' '}
-                <a className="py-2 underline" href={`https://goerli.etherscan.io/tx/${txHash}`}>
-                  Etherscan
-                </a>
-                .
-              </p>
+      <div className="flex-grow mb-[23%] mx-6 mt-8 text-brand-brown p-4 min-w-[200px] min-h-[100%] relative divide-y overflow-y-auto border-2 border-brand-blue rounded-md bg-white drop-shadow-lg">
+        <div className="mb-4 border-0">
+          <Link href="/questions" className="cursor-pointer">
+            <div className="cursor-pointer">
+              <BackArrow />
             </div>
-          ) : (
-            question && (
-              <div style={{ borderTopWidth: '0px' }}>
-                <div
-                  style={
-                    answers.length > 0
-                      ? { borderTopWidth: '0px', borderBottomWidth: '1px', borderColor: '#EAE1DA' }
-                      : { borderTopWidth: '0px', borderBottomWidth: '0px' }
-                  }
-                >
-                  <p className="px-2 text-brand-3xs text-brand-gray50 font-medium">
-                    qID {question.messageId.toLocaleString()}
-                  </p>
-                  <p className="px-2 pb-4">{question.messageContent}</p>
-                  <p className="pl-6 text-red-500 text-brand-info">No one has answered this question.</p>
-                  <p className="pl-24 text-red-500 text-brand-info">Be the first!</p>
-                </div>
-
-                <InfiniteScroll loadMore={fetchItems} hasMore={hasMoreItems} loader={loader}>
-                  {answers.map((item, index) => (
-                    <div
-                      className="flex flex-row align-top border-b-[1px] border-brand-beige last:border-b-0"
-                      key={item.messageId}
-                      // style={
-                      //   index + 1 === item.length
-                      //     ? { borderTopWidth: '0px', borderBottomWidth: '0px' }
-                      //     : { borderTopWidth: '0px', borderBottomWidth: '1px', borderColor: '#EAE1DA' }
-                      // }
-                    >
-                      <div className="flex-col px-2 py-4">
-                        <ConvoBubbles />
-                      </div>
-
-                      <div className="flex-col py-3 text-xs text-brand-brown">
-                        <p className="px-4 pb-2 text-brand-3xs text-brand-gray50 font-medium">
-                          aID {item.messageId ? item.messageId.toLocaleString() : '0'}
-                        </p>
-                        <p className="px-4 leading-[1.3rem]">{item.messageContent}</p>
-                      </div>
-                    </div>
-                  ))}
-                </InfiniteScroll>
-              </div>
-            )
-          )}
+          </Link>
         </div>
+        {parentMessageId === '0' && txHash ? (
+          <div className="p-4">
+            <p className="text-brand-red pb-4">Question is still being processed.</p>
+            <p className="text-sm">
+              You can check your transaction on{' '}
+              <a className="py-2 underline" href={`https://goerli.etherscan.io/tx/${txHash}`}>
+                Etherscan
+              </a>
+              .
+            </p>
+          </div>
+        ) : (
+          question && (
+            <div style={{ borderTopWidth: '0px' }}>
+              <div
+                style={
+                  answers.length > 0
+                    ? { borderTopWidth: '0px', borderBottomWidth: '1px', borderColor: '#EAE1DA' }
+                    : { borderTopWidth: '0px', borderBottomWidth: '0px' }
+                }
+              >
+                <p className="px-2 text-brand-3xs text-brand-gray50 font-medium">
+                  qID {question.messageId.toLocaleString()}
+                </p>
+                <p className="px-2 pb-4">{question.messageContent}</p>
+                <p className="pl-6 text-red-500 text-brand-info">No one has answered this question.</p>
+                <p className="pl-24 text-red-500 text-brand-info">Be the first!</p>
+              </div>
+
+              <InfiniteScroll loadMore={fetchItems} hasMore={hasMoreItems} loader={loader}>
+                {answers.map((item, index) => (
+                  <div
+                    className="flex flex-row align-top border-b-[1px] border-brand-beige last:border-b-0"
+                    key={item.messageId}
+                    // style={
+                    //   index + 1 === item.length
+                    //     ? { borderTopWidth: '0px', borderBottomWidth: '0px' }
+                    //     : { borderTopWidth: '0px', borderBottomWidth: '1px', borderColor: '#EAE1DA' }
+                    // }
+                  >
+                    <div className="flex-col px-2 py-4">
+                      <ConvoBubbles />
+                    </div>
+
+                    <div className="flex-col py-3 text-xs text-brand-brown">
+                      <p className="px-4 pb-2 text-brand-3xs text-brand-gray50 font-medium">
+                        aID {item.messageId ? item.messageId.toLocaleString() : '0'}
+                      </p>
+                      <p className="px-4 leading-[1.3rem]">{item.messageContent}</p>
+                    </div>
+                  </div>
+                ))}
+              </InfiniteScroll>
+            </div>
+          )
+        )}
       </div>
       <div className="flex w-full relative justify-center bg-black pb-3 pt-9">
         <Footer />
