@@ -1,5 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
+import axios from 'axios'
+import ethers from 'ethers'
 import ProcessingModal from '../../ProcessingModal'
+import { useGenerateProofVote } from '../../../hooks/useGenerateProofVote'
+
 // import { images } from '../data'
 
 export default function Modal({
@@ -12,9 +16,9 @@ export default function Modal({
   isTxLoading,
   changeTxLoadingModal
 }) {
-  // const handleClick = () => {
-  //   onClose && onClose()
-  // }
+  const [steps, setSteps] = useState([])
+  const [generateFullProofVote] = useGenerateProofVote()
+
   const handleControlTabClick = (e, image) => {
     e.stopPropagation()
     setActiveImage(image)
@@ -25,11 +29,59 @@ export default function Modal({
     console.log('Closing')
   }
 
-  const steps = [
-    { status: 'complete', text: 'Generate zero knowledge proof' },
-    { status: 'complete', text: 'Submit transaction with proof and question' },
-    { status: 'processing', text: 'Update questions from on-chain events' }
-  ]
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+
+    changeTxLoadingModal()
+    // setTimeout(openProcessingModal, CHAINED_MODAL_DELAY)
+
+    setSteps([
+      { status: 'processing', text: 'Generate zero knowledge proof' },
+      { status: 'queued', text: 'Submit transaction with proof and vote' },
+      { status: 'queued', text: 'Update vote from on-chain events' }
+    ])
+    const identityKey = window.localStorage.getItem('identity')
+    // const messageContent = '1'
+    const signal = '1'
+    const { solidityProof, nullifierHash, externalNullifier, merkleTreeRoot, groupId } = await generateFullProofVote(
+      identityKey,
+      signal
+    )
+
+    setSteps([
+      { status: 'complete', text: 'Generate zero knowledge proof' },
+      { status: 'processing', text: 'Submit transaction with proof and vote' },
+      { status: 'queued', text: 'Update vote from on-chain events' }
+    ])
+
+    const { tokenId } = activeImage
+
+    const body = {
+      tokenId,
+      merkleTreeRoot,
+      groupId,
+      signal,
+      nullifierHash,
+      externalNullifier,
+      solidityProof
+    }
+    console.log('ANSWERS PAGE | body', body)
+    try {
+      const postVote = await axios.post('/api/voteOnCanvas', body)
+      console.log('Post Vote Response', postVote)
+    } catch (error) {
+      alert('Your transaction has failed. Please try submitting again.')
+      // internalCloseProcessingModal()
+    }
+
+    setSteps([
+      { status: 'complete', text: 'Generate zero knowledge proof' },
+      { status: 'complete', text: 'Submit transaction with proof and vote' },
+      { status: 'processing', text: 'Update vote from on-chain events' }
+    ])
+
+    // setTimeout(internalCloseProcessingModal, 2000)
+  }
 
   const isOpen = true
 
@@ -38,7 +90,7 @@ export default function Modal({
 
     <div
       onClick={onClose}
-      className="absolute left-0 top-0 bottom-0 right-0 h-[100%] w-[100%] overflow-scroll bg-[#1E1E1E] bg-opacity-70 flex flex-col items-center justify-start z-20"
+      className="absolute left-0 top-0 bottom-0 right-0 h-[2000px] w-[100%] overflow-scroll bg-[#1E1E1E] bg-opacity-70 flex flex-col items-center justify-start z-20"
     >
       {isTxLoading ? (
         <ProcessingModal isOpen={isTxLoading} closeModal={changeTxLoadingModal} steps={steps} fact={2} />
@@ -68,14 +120,16 @@ export default function Modal({
               </button>
             ) : (
               <button
-                onClick={changeTxLoadingModal}
+                onClick={handleSubmit}
                 className=" bg-[#EFAD5F] max-w-[181px] text-brand-gray2 rounded-xl my-2 px-4 py-1"
               >
                 Yes Vote!
               </button>
             )}
 
-            <button className="underline mx-2">cancel</button>
+            <button className="underline mx-2 mt-3" onClick={onClose}>
+              cancel
+            </button>
           </div>
         </div>
       )}
