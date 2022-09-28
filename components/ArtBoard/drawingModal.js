@@ -222,10 +222,10 @@ const DrawingHtml = forwardRef(
             <div>
               <button
                 id="#FFFFFF"
-                aria-label="color picker9"
+                aria-label="color picker 9"
                 className={
                   color === '#FFFFFF'
-                    ? 'outline outline-slate-500 outline-4 w-6 h-6 m-[5px] bg-["#FFFFFF"] rounded-full'
+                    ? 'ring ring-offset-4 ring-slate-500 ring-4 border border-black w-6 h-6 m-[5px] bg-["#FFFFFF"] rounded-full'
                     : 'w-6 h-6 m-[5px] bg-["#FFFFFF"] rounded-full border border-black'
                 }
                 type="submit"
