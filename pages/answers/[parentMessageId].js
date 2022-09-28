@@ -272,7 +272,7 @@ export default function Answers() {
         handleSubmit={handleSubmit}
       />
       {/* Begin Answer Board */}
-      <div className="flex-grow mb-[23%] mx-6 mt-8 text-brand-brown p-4 min-w-[200px] min-h-[100%] relative divide-y overflow-y-auto border-2 border-brand-blue rounded-md bg-white drop-shadow-lg">
+      <div className="flex-grow mx-6 mt-8 mb-16 text-brand-brown p-4 min-w-[200px] min-h-[100%] relative divide-y overflow-y-auto border-2 border-brand-blue rounded-md bg-white drop-shadow-lg">
         <div className="mb-4 border-0">
           <Link href="/questions" className="cursor-pointer">
             <div className="cursor-pointer">
