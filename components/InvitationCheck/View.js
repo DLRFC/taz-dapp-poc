@@ -49,21 +49,21 @@ export default function InvitationCheckComponent({
               <div>
                 <p className="pt-10 font-bold  text-brand-[20px] text-brand-beige">Do you have a TAZ invitation?</p>
                 <p className="py-5 mb-8  text-brand-[16px] text-brand-beige opacity-70">
-                  Use it to create your anonymous identity.
+                  If not, visit a TAZ location to grab an invitation card.
                 </p>
                 <button
                   className="text-brand-button bg-brand-yellow flex items-center justify-center w-full py-4 border-2 border-brand-gray2 shadow-[-5px_5px_0px_0px_rgba(30,30,30)]"
                   onClick={handleSignUpButton}
                 >
-                  <span className="mr-4">Yes, I was invited</span>
+                  <span className="mr-4">Scan Invite</span>
                   <RiArrowRightLine size={24} fill="#BD5141" />
                 </button>
                 <p className="py-5 px-5 text-center text-brand-info text-brand-beige opacity-70">
-                  If not, visit a TAZ location to grab an invitation card.
+                  This is an anonymous community space just for Devcon attendees.
                 </p>
               </div>
               <div>
-                <p className="py-5 font-bold mb-3 px-3 text-brand-info text-brand-beige outline-2 border-brand-black opacity-70">
+                <p className="py-5 font-bold mb-3 px-3 text-brand-h3 text-brand-beige outline-2 border-brand-black opacity-70">
                   Already a member?
                 </p>
                 <button
