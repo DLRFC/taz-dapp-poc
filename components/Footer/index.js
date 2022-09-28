@@ -4,12 +4,13 @@ const footerMessages = [
   'who am I?',
   'incognito mode 4eva',
   'making your identity safu',
-  'enter anon mode',
+  'activate anon mode',
   'your identity is burnt',
   'private since [REDACTED]',
   'anonymity lets you be you',
   'thanks for checking us out :)',
-  'The password is 🤝🏽🔭🧑🏽‍🚀✨🤌🏽'
+  'the password is 🤝🏽🔭🧑🏽‍🚀✨🤌🏽',
+  'tell us what you really think'
 ]
 
 const Footer = () => {

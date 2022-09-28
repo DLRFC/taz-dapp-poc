@@ -65,7 +65,7 @@ export default function ArtGalleryComponent({
           WELCOME TO THE DEVCON <span className="font-extrabold">XI GALLERY</span>
         </p>
         <p className="w-3/4 py-2min-h-[80px] md:min-h-fit text-brand-info text-[#1E1E1E]">
-          Every canvas has 9 anonymous contributors. There are 5 active canvases at one time.
+          Every canvas has 9 anonymous contributors. There are 4 active canvases at one time.
         </p>
       </div>
       <div className="relative bg-black">
@@ -109,7 +109,7 @@ export default function ArtGalleryComponent({
         <Link href="/artBoard-page">
           <button
             type="button"
-            className="rounded-full bg-brand-yellow ring-1 ring-brand-black py-3 px-4 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
+            className="rounded-full bg-brand-yellow ring-2 ring-brand-black py-3 px-4 drop-shadow text-brand-button font-medium text-brand-black hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-opacity-25"
           >
             Draw with others
           </button>
@@ -123,7 +123,7 @@ export default function ArtGalleryComponent({
         </div>
       )}
 
-      <div className="flex w-full justify-center bg-black py-5">
+      <div className="flex w-full justify-center bg-black pb-3 pt-9">
         <Footer />
       </div>
     </div>
