@@ -274,11 +274,10 @@ export default function Answers() {
       />
       {/* Begin Answer Board */}
       <div className="flex-grow mx-6 mt-8 mb-16 text-brand-brown p-4 min-w-[200px] min-h-[100%] relative divide-y overflow-y-auto border-2 border-brand-blue rounded-md bg-white drop-shadow-lg">
-        <div className="mb-4 border-0">
-          <Link href="/questions" className="cursor-pointer brand">
-            <RiArrowLeftLine className="fill-brand-gray50 cursor-pointer" />
-          </Link>
-        </div>
+        <Link href="/questions" className="cursor-pointer brand">
+          <RiArrowLeftLine className="fill-brand-gray50 cursor-pointer mb-4 border-0" />
+        </Link>
+
         {parentMessageId === '0' && txHash ? (
           <div className="p-4">
             <p className="text-brand-red pb-4">Question is still being processed.</p>
