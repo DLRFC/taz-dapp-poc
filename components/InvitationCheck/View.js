@@ -25,7 +25,7 @@ export default function InvitationCheckComponent({
   inviteCodeChangeHandler,
   setInvitation,
   data,
-  validate,
+  handleValidate,
   onClose,
   loadingMessage,
   invitation,
@@ -44,26 +44,26 @@ export default function InvitationCheckComponent({
       <Header />
       {!isSignUp ? (
         <div className="flex flex-col px-[32px] items-center overflow-hidden rounded-md  text-brand-gray2">
-          <div className="h-[570px] py-3 w-full  z-10">
+          <div className="min-h-[700px] h-auto py-3 w-full  z-10">
             <div className="divide-y divide-opacity-70">
               <div>
                 <p className="pt-10 font-bold  text-brand-[20px] text-brand-beige">Do you have a TAZ invitation?</p>
                 <p className="py-5 mb-8  text-brand-[16px] text-brand-beige opacity-70">
-                  Use it to create your anonymous identity.
+                  If not, visit a TAZ location to grab an invitation card.
                 </p>
                 <button
                   className="text-brand-button bg-brand-yellow flex items-center justify-center w-full py-4 border-2 border-brand-gray2 shadow-[-5px_5px_0px_0px_rgba(30,30,30)]"
                   onClick={handleSignUpButton}
                 >
-                  <span className="mr-4">Yes, I was invited</span>
+                  <span className="mr-4">Scan Invite</span>
                   <RiArrowRightLine size={24} fill="#BD5141" />
                 </button>
                 <p className="py-5 px-5 text-center text-brand-info text-brand-beige opacity-70">
-                  If not, visit a TAZ location to grab an invitation card.
+                  This is an anonymous community space just for Devcon attendees.
                 </p>
               </div>
               <div>
-                <p className="py-5 font-bold mb-3 px-3 text-brand-info text-brand-beige outline-2 border-brand-black opacity-70">
+                <p className="py-5 font-bold mb-3 px-3 text-brand-h3 text-brand-beige outline-2 border-brand-black opacity-70">
                   Already a member?
                 </p>
                 <button
@@ -123,13 +123,13 @@ export default function InvitationCheckComponent({
                   value={invitation}
                   onChange={inviteCodeChangeHandler}
                 />
-                <p className="text-brand-beige mb-3 px-1 text-sm opacity-70">or type the 8 digits code here</p>
+                <p className="text-brand-beige mb-3 px-1 text-sm opacity-70">or type the 8 digit code here</p>
               </div>
 
               {invitation && invitation.length > 5 && (
                 <button
                   className="w-full border-2 border-brand-gray2 bg-brand-yellow p-2 py-4 mb-10 shadow-[-3px_3px_0px_0px_rgba(30,30,30)] text-sm flex items-center justify-center"
-                  onClick={validate}
+                  onClick={handleValidate}
                 >
                   <span className="mr-4">Next</span>
                   <RiArrowRightLine size={24} fill="#BD5141" />
@@ -139,8 +139,9 @@ export default function InvitationCheckComponent({
           </div>
         </div>
       )}
-
-      <Footer />
+      <div className="pb-6">
+        <Footer />
+      </div>
     </div>
   )
 }

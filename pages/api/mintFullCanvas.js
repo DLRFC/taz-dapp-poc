@@ -1,11 +1,10 @@
 import { ethers } from 'ethers'
 import dotenv from 'dotenv'
 import faunadb from 'faunadb'
-import { Web3Storage, File } from 'web3.storage'
 import { Blob } from '@web-std/blob'
+import { Web3Storage, File } from 'web3.storage'
 import { TAZTOKEN_CONTRACT } from '../../config/goerli.json'
-import fetchWalletIndex from '../../helpers/fetchWalletIndex';
-
+import { fetchWalletIndex } from '../../helpers/helpers'
 import TazToken from '../utils/TazToken.json'
 
 dotenv.config({ path: '../../.env.local' })
@@ -16,22 +15,13 @@ export default async function handler(req, res) {
   const { query } = faunadb
 
   const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL)
-  const currentIndex = await fetchWalletIndex()
-  const signer_array = process.env.PRIVATE_KEY_ARRAY.split(',')
-  const signer = new ethers.Wallet(signer_array[currentIndex]).connect(provider)
-
-  const signerAddress = signer.getAddress()
   const { abi } = TazToken
   const contractAddress = TAZTOKEN_CONTRACT
-  const nftContract = new ethers.Contract(contractAddress, abi, signer)
 
   if (res.method === 'GET') {
     res.status(405).json('GET not allowed')
   } else if (req.method === 'POST') {
     try {
-      // make connection to DB
-
-      // get fileUrl and canvasId from frontend
       const { imageUri, canvasId, groupId, signal, nullifierHash, externalNullifier, merkleTreeRoot, solidityProof } =
         req.body
 
@@ -41,9 +31,6 @@ export default async function handler(req, res) {
           .json('Needs to have imageUri, canvasId, groupId, signal, nullifierHash, externalNullifier, solidityProof')
       }
 
-      // Check DB if canvas with canvasId is full
-
-      // Query all 5 canvases from the database
       const dbs = await client.query(
         query.Map(
           query.Paginate(query.Match(query.Index('all_canvases')), {
@@ -53,17 +40,16 @@ export default async function handler(req, res) {
         )
       )
 
-      // Find the matching canvas based on the canvasId
       const match = dbs.data.filter((canvas) => canvas.data.canvasId === canvasId)[0]
 
-      // Check if canvas array does not have empty tiles
       if (match.data.tiles.includes('')) {
         res.status(400).json('Canvas is not full yet')
       } else {
         console.log('canvas is full')
 
-        // Convert base64 string to Blob
-        const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
+        const web3StorageApiToken = process.env.WEB3_STORAGE_API_TOKEN
+
+        const b64toBlob = async (b64Data, contentType = '', sliceSize = 512) => {
           const byteCharacters = Buffer.from(b64Data, 'base64').toString('binary')
           const byteArrays = []
           for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
@@ -79,13 +65,9 @@ export default async function handler(req, res) {
           return blob
         }
 
-        const web3StorageApiToken = process.env.WEB3_STORAGE_API_TOKEN
-
-        // Image data
         const contentType = 'image/png'
-        // const b64Data = imageUri.subString(22)
         const b64Data = imageUri.replace('data:image/png;base64,', '')
-        const blobForServingImage = b64toBlob(b64Data, contentType) // Use for serving an image
+        const blobForServingImage = await b64toBlob(b64Data, contentType)
 
         const web3StorageClient = new Web3Storage({
           token: web3StorageApiToken,
@@ -102,6 +84,11 @@ export default async function handler(req, res) {
         })
 
         try {
+          const currentIndex = await fetchWalletIndex()
+          const signer_array = process.env.PRIVATE_KEY_ARRAY.split(',')
+          const signer = new ethers.Wallet(signer_array[currentIndex]).connect(provider)
+          const signerAddress = await signer.getAddress()
+          const nftContract = new ethers.Contract(contractAddress, abi, signer)
           const signalBytes32 = ethers.utils.formatBytes32String(signal)
           const tx = await nftContract.safeMint(
             signerAddress,
@@ -118,10 +105,6 @@ export default async function handler(req, res) {
           )
           console.log(tx)
 
-          // const response = await tx.wait(1)
-          // console.log(response)
-
-          // Reset canvas in database
           await client.query(
             query.Update(query.Ref(match.ref), {
               data: {
@@ -130,11 +113,10 @@ export default async function handler(req, res) {
             })
           )
 
-          // Send response to frontend
           res.status(201).json({ tx, ipfsUrl })
-        } catch (error) {
-          console.log(error)
-          res.status(403).json('Error in catch 1: ', error)
+        } catch (e) {
+          console.log(e)
+          res.status(401).json(e)
         }
       }
     } catch (error) {

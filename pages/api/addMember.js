@@ -3,20 +3,16 @@ import dotenv from 'dotenv'
 import faunadb from 'faunadb'
 import TazMessage from '../utils/TazMessage.json'
 import { GROUP_ID, TAZMESSAGE_CONTRACT } from '../../config/goerli.json'
-import fetchWalletIndex from '../../helpers/fetchWalletIndex'
+import { fetchWalletIndex } from '../../helpers/helpers'
 
 dotenv.config({ path: '../../.env.local' })
 
 export default async function handler(req, res) {
   const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_URL)
-  const currentIndex = await fetchWalletIndex()
-  const signer_array = process.env.PRIVATE_KEY_ARRAY.split(',')
-  const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider)
   const tazMessageAbi = TazMessage.abi
   const tazMessageAddress = TAZMESSAGE_CONTRACT
   const groupId = GROUP_ID
 
-  const tazMessageContract = new ethers.Contract(tazMessageAddress, tazMessageAbi, signer)
   const { invitation, identityCommitment } = req.body
 
   if (req.method === 'GET') {
@@ -47,18 +43,16 @@ export default async function handler(req, res) {
 
       if (match[0] && !match[0].data.isUsed) {
         isValid = true
-        console.log('MATCH DATA')
-        console.log(match[0])
-        console.log(match[0].data.isUsed)
-        console.log('GROUP ID!')
-        console.log(groupId)
-        // console.log(tazMessageContract)
-        console.log(identityCommitment)
 
         try {
           console.log('Add Member Function called')
-          const tx = await tazMessageContract.addMember(groupId, identityCommitment)
-          // console.log(tx)
+          const currentIndex = await fetchWalletIndex()
+          console.log('currentIndex', currentIndex)
+          const signer_array = process.env.PRIVATE_KEY_ARRAY.split(',')
+          const signer = new ethers.Wallet(signer_array[currentIndex]).connect(provider)
+          const tazMessageContract = new ethers.Contract(tazMessageAddress, tazMessageAbi, signer)
+          const tx = await tazMessageContract.addMember(groupId, identityCommitment, { gasLimit: 15000000 })
+          console.log(tx)
 
           const response = await tx.wait(1).then(
             client.query(
@@ -69,18 +63,14 @@ export default async function handler(req, res) {
               })
             )
           )
-
           res.status(201).json(response)
           console.log(response)
-        } catch (error) {
-          console.log('TRANSACTION ERROR')
-          console.log(error)
-          res.status(403).json(error)
+        } catch (e) {
+          console.log(e)
+          res.status(401).json(e)
         }
       } else {
         isValid = false
-        console.log(isValid)
-        console.log('Is not valid')
         res.status(401).json({ Error: 'Invalid code' })
       }
     } catch (error) {
