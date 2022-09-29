@@ -101,7 +101,7 @@ export default function Modal({
           className="mt-[140px] w-[90%] sm:w-[50%] min-h-[30%] flex flex-col justify-center items-center bg-[#FFFFFF] border-2 border-brand-gray2 rounded-md"
         >
           <div className="py-4 text-[14px] w-full text-center border-b-2 border-b-brand-gray2">
-            Canvas ID {activeImage.tokenId}
+            Canvas {activeImage.tokenId}
           </div>
           <button
             onClick={onClose}
