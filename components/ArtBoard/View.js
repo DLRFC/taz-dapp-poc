@@ -146,14 +146,12 @@ const ArtBoardComponent = forwardRef(
                     Submit tile
                   </button>
                 </div>
-              ) : (
-                <p className="text-center w-full pt-4">Select a Tile</p>
-              )}
+              ) : null}
             </div>
           </div>
           <div className="flex grid grid-rows-1 justify-items-center mt-5">
-            <p className="text-xs">You were randomly assigned to</p>
-            <p className="text-xs">Canva ID: {currentCanvas}</p>
+            <p className="text-xs pb-2">You were randomly placed on</p>
+            <p className="text-xs">Canvas {currentCanvas}</p>
           </div>
         </div>
         <div className="flex w-full justify-center bg-black pb-3 pt-9">

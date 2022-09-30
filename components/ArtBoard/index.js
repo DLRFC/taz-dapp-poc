@@ -160,7 +160,7 @@ export default function ArtBoard() {
     // Should be renamed. This is for Posting data not loading.
     setIsLoading(true)
     setSteps([
-      { status: 'processing', text: 'Generate zero knowledge proof' },
+      { status: 'processing', text: 'Generating zero knowledge proof' },
       { status: 'queued', text: 'Verify ZKP Membership and submit Art' }
     ])
     const signal = 'proposal_1'
@@ -188,8 +188,8 @@ export default function ArtBoard() {
 
     try {
       setSteps([
-        { status: 'complete', text: 'Generate zero knowledge proof' },
-        { status: 'processing', text: 'Verify ZKP Membership and submit Art' }
+        { status: 'complete', text: 'Generated zero knowledge proof' },
+        { status: 'processing', text: 'Verifying ZKP Membership and submit Art' }
       ])
       const response = await axios.post('/api/modifyCanvas', {
         updatedTiles: tilesRef.current,
@@ -200,7 +200,9 @@ export default function ArtBoard() {
         router.push('/artGallery-page')
       }
     } catch (error) {
-      alert('Tile already exists, please submit another Tile')
+      alert(
+        'Error: someone submitted their drawing to this tile before you. Don’t worry, your drawing is saved! It will be applied to the next tile you select.'
+      )
       console.log('error', error)
       console.log('data', error.response.data.existingTile)
       tiles[selectedTile] = error.response.data.existingTile
@@ -224,9 +226,9 @@ export default function ArtBoard() {
       console.log('canvasUri: ', canvasUri)
       console.log('canvasId.current: ', canvasId.current)
       setSteps([
-        { status: 'complete', text: 'Generate zero knowledge proof' },
-        { status: 'complete', text: 'Submit transaction with proof and Canva' },
-        { status: 'processing', text: 'Update ArtGallery from on-chain events' }
+        { status: 'complete', text: 'Generated zero knowledge proof' },
+        { status: 'complete', text: 'Submitted transaction with proof and Canva' },
+        { status: 'processing', text: 'Updating ArtGallery from on-chain events' }
       ])
 
       // Add Try and Catch
